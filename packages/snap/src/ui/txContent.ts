@@ -3,8 +3,10 @@
 import { copyable, panel, row, text } from '@metamask/snaps-sdk';
 import { ApiPromise } from '@polkadot/api';
 import { AnyTuple } from '@polkadot/types/types';
+import type { PalletConvictionVotingVoteVoting } from '@polkadot/types/lookup';
 import { amountToHuman } from '../util/amountToHuman';
 import { Decoded } from '../util/decodeTxMethod';
+import { getConviction, getVoteType } from '../util/governance';
 
 export const txContent = (
   api: ApiPromise,
@@ -79,6 +81,89 @@ export const txContent = (
       }
 
       return [row('Extra:', text(`**${extra}**`))];
+    case 'convictionVoting_vote':
+      const refId = `${args[0]}`;
+      const vote = args[1] as PalletConvictionVotingVoteVoting;
+      const type = getVoteType(vote);
+
+      if (vote.isStandard) {
+        const conviction = getConviction(vote.asStandard.vote);
+
+        return [
+          panel([
+            row('Referendum:', text(`**${refId}**`)),
+            row('Vote:', text(`**${type}**`)),
+            row(
+              'Amount:',
+              text(
+                `**${amountToHuman(
+                  vote.asStandard.balance,
+                  decimal,
+                )}** **${token}**`,
+              ),
+            ),
+            row('Conviction:', text(`**${conviction}** `)),
+          ]),
+        ];
+      }
+
+      if (vote.isSplit) {
+        return [
+          panel([
+            row('Referendum:', text(`**${refId}**`)),
+            row('Vote:', text(`**${type}**`)),
+            row(
+              'Aye:',
+              text(
+                `**${amountToHuman(vote.asSplit.aye, decimal)}** **${token}**`,
+              ),
+            ),
+            row(
+              'Nay:',
+              text(
+                `**${amountToHuman(vote.asSplit.nay, decimal)}** **${token}**`,
+              ),
+            ),
+          ]),
+        ];
+      }
+
+      if (vote.isSplitAbstain) {
+        return [
+          panel([
+            row('Referendum:', text(`**${refId}**`)),
+            row('Vote:', text(`**${type}**`)),
+            row(
+              'Abstain:',
+              text(
+                `**${amountToHuman(
+                  vote.asSplitAbstain.abstain,
+                  decimal,
+                )}** **${token}**`,
+              ),
+            ),
+            row(
+              'Aye:',
+              text(
+                `**${amountToHuman(
+                  vote.asSplitAbstain.aye,
+                  decimal,
+                )}** **${token}**`,
+              ),
+            ),
+            row(
+              'Nay:',
+              text(
+                `**${amountToHuman(
+                  vote.asSplitAbstain.nay,
+                  decimal,
+                )}** **${token}**`,
+              ),
+            ),
+          ]),
+        ];
+      }
+      break;
     case 'noArgsMethods':
       return [];
 
