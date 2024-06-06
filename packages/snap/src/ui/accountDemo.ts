@@ -24,17 +24,18 @@ export const accountDemo = (
 
   const { total, transferable, locked } = balances;
   return panel([
-    heading(`Your Account on ${formatChainName(chainName)}`),
+    // heading(`Your Account on ${formatChainName(chainName)}`),
+    row('Current Chain', text(`**${formatChainName(chainName)}**`)),
+    text('Address'),
+    copyable(formatted),
     divider(),
     panel([
-      text('Address'),
-      copyable(formatted),
-      row('Total', text(`**${total.toHuman()}**`)),
+      row('Total Balance', text(`**${total.toHuman()}**`)),
       row('Transferable', text(`**${transferable.toHuman()}**`)),
       row('Locked', text(`**${locked.toHuman()}**`)),
       divider(),
       button({
-        value: 'Transfer Fund',
+        value: 'Transfer fund',
         name: 'transfer',
       }),
       button({
