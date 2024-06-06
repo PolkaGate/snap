@@ -6,7 +6,7 @@ import { getFormatted } from './getFormatted';
 export type Balances = {
   total: Balance;
   transferable: Balance;
-  token: string;
+  locked: Balance;
 };
 
 /**
@@ -38,4 +38,40 @@ export async function getBalances(
   ) as Balance;
 
   return { total, transferable, token };
+}
+
+/**
+ *
+ * @param genesisHash
+ * @param address
+ */
+export async function getBalances2(
+  genesisHash: string,
+  address: string,
+): Promise<Balances> {
+  const api = await getApi(genesisHash);
+  console.log('api ', api);
+
+  const formatted = getFormatted(genesisHash, address);
+  console.log('formatted ', formatted);
+
+  const balances = (await api.query.system.account(formatted)) as unknown as {
+    data: AccountData;
+  };
+
+  console.log('balances ', balances);
+
+  const transferable = api.createType(
+    'Balance',
+    balances.data.free.sub(balances.data.frozen),
+  ) as Balance;
+
+  const total = api.createType(
+    'Balance',
+    balances.data.free.add(balances.data.reserved),
+  ) as Balance;
+
+  const locked = api.createType('Balance', balances.data.frozen) as Balance;
+
+  return { total, transferable, locked };
 }

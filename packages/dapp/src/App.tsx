@@ -75,7 +75,7 @@ export default function App() {
   }, [endpoint]);
 
   useEffect(() => {
-    isPolkaMaskInstalled && web3Enable('Polkagate-snap-dapp').then((ext: InjectedExtension[] | undefined) => {
+    isPolkaMaskInstalled && web3Enable('snap-dapp').then((ext: InjectedExtension[] | undefined) => {
       console.log('All injected extensions:', ext);
       setExtensions(ext);
     });

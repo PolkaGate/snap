@@ -41,13 +41,13 @@ async function showConfirmUpdateMetadata(
   return userResponse;
 }
 
-const getState = async () =>
+export const getState = async () =>
   await snap.request({
     method: 'snap_manageState',
     params: { operation: 'get' },
   });
 
-const updateState = async (state: any) => {
+export const updateState = async (state: any) => {
   return await snap.request({
     method: 'snap_manageState',
     params: { operation: 'update', newState: state },

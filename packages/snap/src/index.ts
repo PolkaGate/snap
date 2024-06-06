@@ -4,14 +4,21 @@ import {
   heading,
   panel,
   text,
+  OnUserInputHandler,
+  UserInputEventType,
 } from '@metamask/snaps-sdk';
 import type { OnHomePageHandler, OnInstallHandler } from '@metamask/snaps-sdk';
 import { getAddress, signJSON, signRaw } from './rpc';
-import { getMetadataList, setMetadata } from './rpc/metadata';
+import { getMetadataList, setMetadata, updateState } from './rpc/metadata';
 import { getKeyPair } from './util/getKeyPair';
 import { DEFAULT_CHAIN_NAME } from './defaults';
 import { accountDemo } from './ui/accountDemo';
-import { getDefaultTokenBalances } from './util/getDefaultTokenBalances';
+import { getGenesisHash } from './chains';
+import { getBalances2 } from './util/getBalance';
+import { accountInfo } from './ui/accountInfo';
+import { getCurrentChain } from './util/getCurrentChain';
+import { showSpinner, showTransferInputs, transfer } from './ui/transfer';
+import { showDappList } from './ui/dappList';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -46,11 +53,14 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
  * @returns A static panel rendered with custom UI.
  */
 export const onHomePage: OnHomePageHandler = async () => {
-  const { address } = await getKeyPair(DEFAULT_CHAIN_NAME);
-  const balances = await getDefaultTokenBalances(address);
+  const currentChainName = await getCurrentChain();
+  const { address } = await getKeyPair(currentChainName);
+
+  const genesisHash = getGenesisHash(currentChainName); // These will be changed when dropdown component will be available
+  const balances = await getBalances2(genesisHash, address);
 
   return {
-    content: accountDemo(address, balances),
+    content: accountDemo(address, currentChainName, balances),
   };
 };
 
@@ -59,6 +69,8 @@ export const onHomePage: OnHomePageHandler = async () => {
  * installed.
  */
 export const onInstall: OnInstallHandler = async () => {
+  updateState({ currentChain: DEFAULT_CHAIN_NAME });
+
   await snap.request({
     method: 'snap_dialog',
     params: {
@@ -75,4 +87,45 @@ export const onInstall: OnInstallHandler = async () => {
       ]),
     },
   });
+};
+
+export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
+  if (event.type === UserInputEventType.ButtonClickEvent) {
+    switch (event.name) {
+      case 'switchChain':
+        showSpinner(id, 'Switching chain ...');
+        await accountInfo(id);
+        break;
+
+      case 'transfer':
+        await showTransferInputs(id);
+        break;
+
+      case 'dapp':
+        await showDappList(id);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  if (event.type === UserInputEventType.FormSubmitEvent) {
+    const chainName = await getCurrentChain();
+
+    const value = { ...(event?.value || {}), chainName } as unknown as Record<
+      string,
+      string
+    >;
+
+    switch (event.name) {
+      case 'transferInput':
+        showSpinner(id);
+        transfer(id, value);
+        break;
+
+      default:
+        break;
+    }
+  }
 };

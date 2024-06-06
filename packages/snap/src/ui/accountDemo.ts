@@ -1,53 +1,52 @@
-import { copyable, divider, heading, panel, text } from '@metamask/snaps-sdk';
+import {
+  copyable,
+  divider,
+  heading,
+  panel,
+  row,
+  text,
+  button,
+} from '@metamask/snaps-sdk';
+import type { SnapComponent } from '@metamask/snaps-sdk/jsx';
+import { Bold, Button, Box, Text } from '@metamask/snaps-sdk/jsx';
 import { Balances } from '../util/getBalance';
 import { getGenesisHash } from '../chains';
 import { getFormatted } from '../util/getFormatted';
+import { formatChainName } from '../util/formatChainName';
 
-type tokenBalance = Record<string, Balances>;
+export const accountDemo = (
+  address: string,
+  chainName: string,
+  balances: Balances,
+) => {
+  const genesisHash = getGenesisHash(chainName);
+  const formatted = getFormatted(genesisHash, address);
 
-export const accountDemo = (address: string, balances: tokenBalance) => {
-  const polkadotGenesishash = getGenesisHash('polkadot');
-  const addressOnPolkadot = getFormatted(polkadotGenesishash, address);
-
-  const kusamaGenesishash = getGenesisHash('kusama');
-  const addressOnPKusama = getFormatted(kusamaGenesishash, address);
-
-  const { polkadotBalances, kusamaBalances, westendBalances } = balances;
-
+  const { total, transferable, locked } = balances;
   return panel([
-    heading('Your Account on Different Chains'),
+    heading(`Your Account on ${formatChainName(chainName)}`),
     divider(),
     panel([
-      text('**Polkadot**'),
-      copyable(addressOnPolkadot),
-      text(
-        `Transferable: **${polkadotBalances.transferable
-          .toHuman()
-          .replace(polkadotBalances.token, '')
-          .trim()}** / ${polkadotBalances.total.toHuman()}`,
-      ),
+      text('Address'),
+      copyable(formatted),
+      row('Total', text(`**${total.toHuman()}**`)),
+      row('Transferable', text(`**${transferable.toHuman()}**`)),
+      row('Locked', text(`**${locked.toHuman()}**`)),
       divider(),
-    ]),
-    panel([
-      text('**Kusama**'),
-      copyable(addressOnPKusama),
-      text(
-        `Transferable: **${kusamaBalances.transferable
-          .toHuman()
-          .replace(kusamaBalances.token, '')
-          .trim()}** / ${kusamaBalances.total.toHuman(true)}`,
-      ),
-      divider(),
-    ]),
-    panel([
-      text('**Westend**'),
-      copyable(address),
-      text(
-        `Transferable: **${westendBalances.transferable
-          .toHuman()
-          .replace(westendBalances.token, '')
-          .trim()}** / ${westendBalances.total.toHuman(true)}`,
-      ),
+      button({
+        value: 'Transfer Fund',
+        name: 'transfer',
+      }),
+      button({
+        variant: 'secondary',
+        value: 'View App list',
+        name: 'dapp',
+      }),
+      button({
+        variant: 'secondary',
+        value: 'Click to switch chain',
+        name: 'switchChain',
+      }),
     ]),
   ]);
 };
