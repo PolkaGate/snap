@@ -1,18 +1,16 @@
 import {
   copyable,
   divider,
-  heading,
   panel,
   row,
   text,
   button,
 } from '@metamask/snaps-sdk';
-import type { SnapComponent } from '@metamask/snaps-sdk/jsx';
-import { Bold, Button, Box, Text } from '@metamask/snaps-sdk/jsx';
-import { Balances } from '../util/getBalance';
+
 import { getGenesisHash } from '../chains';
-import { getFormatted } from '../util/getFormatted';
 import { formatChainName } from '../util/formatChainName';
+import type { Balances } from '../util/getBalance';
+import { getFormatted } from '../util/getFormatted';
 
 export const accountDemo = (
   address: string,
@@ -25,8 +23,7 @@ export const accountDemo = (
   const { total, transferable, locked } = balances;
   return panel([
     // heading(`Your Account on ${formatChainName(chainName)}`),
-    row('Current Chain', text(`**${formatChainName(chainName)}**`)),
-    text('Address'),
+    row('Account info on', text(`**${formatChainName(chainName)}**`)),
     copyable(formatted),
     divider(),
     panel([
