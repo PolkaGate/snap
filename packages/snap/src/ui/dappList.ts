@@ -20,9 +20,7 @@ export async function showDappList(id: string) {
         text(
           'Staking : **[staking.polkadot.network](https://staking.polkadot.network/)**',
         ),
-        text(
-          'Governance : **[polkassembly.io](https://polkadot.polkassembly.io//)**',
-        ),
+        text('Governance : **Coming Soon ...**'),
       ]),
     },
   });
