@@ -1,8 +1,9 @@
-import { SignerPayloadJSON } from '@polkadot/types/types';
 import type { SignerResult } from '@polkadot/api/types';
+import type { SignerPayloadJSON } from '@polkadot/types/types';
+
+import { checkAndUpdateMetaData, showConfirmTx } from '.';
 import { getApi } from '../util/getApi';
 import { getKeyPair } from '../util/getKeyPair';
-import { checkAndUpdateMetaData, showConfirmTx } from '.';
 
 export const signJSON = async (
   origin: string,
@@ -10,7 +11,7 @@ export const signJSON = async (
 ): Promise<SignerResult | undefined> => {
   try {
     const api = await getApi(payload.genesisHash);
-    checkAndUpdateMetaData(api);
+    checkAndUpdateMetaData(api).catch(console.error);
 
     const isConfirmed = await showConfirmTx(api, origin, payload);
 
@@ -28,8 +29,8 @@ export const signJSON = async (
     const { signature } = extrinsic.sign(keyPair);
 
     return { id: 1, signature };
-  } catch (e) {
-    console.info('Error while signing JSON:', e);
+  } catch (error) {
+    console.info('Error while signing JSON:', error);
     return undefined;
   }
 };

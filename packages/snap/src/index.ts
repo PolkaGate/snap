@@ -1,24 +1,28 @@
 import {
   divider,
-  OnRpcRequestHandler,
   heading,
   panel,
   text,
-  OnUserInputHandler,
   UserInputEventType,
 } from '@metamask/snaps-sdk';
-import type { OnHomePageHandler, OnInstallHandler } from '@metamask/snaps-sdk';
+import type {
+  OnHomePageHandler,
+  OnInstallHandler,
+  OnRpcRequestHandler,
+  OnUserInputHandler,
+} from '@metamask/snaps-sdk';
+
+import { getGenesisHash } from './chains';
+import { DEFAULT_CHAIN_NAME } from './defaults';
 import { getAddress, signJSON, signRaw } from './rpc';
 import { getMetadataList, setMetadata, updateState } from './rpc/metadata';
-import { getKeyPair } from './util/getKeyPair';
-import { DEFAULT_CHAIN_NAME } from './defaults';
 import { accountDemo } from './ui/accountDemo';
-import { getGenesisHash } from './chains';
-import { getBalances2 } from './util/getBalance';
 import { accountInfo } from './ui/accountInfo';
-import { getCurrentChain } from './util/getCurrentChain';
-import { showSpinner, showTransferInputs, transfer } from './ui/transfer';
 import { showDappList } from './ui/dappList';
+import { showSpinner, showTransferInputs, transfer } from './ui/transfer';
+import { getBalances2 } from './util/getBalance';
+import { getCurrentChain } from './util/getCurrentChain';
+import { getKeyPair } from './util/getKeyPair';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -76,7 +80,7 @@ export const onInstall: OnInstallHandler = async () => {
     params: {
       type: 'alert',
       content: panel([
-        heading('Your account is now created 🚀'),
+        heading('🏠 Your account is now created 🚀'),
         divider(),
         text(
           "To access your account's address in various formats, navigate to Menu → Snaps and click on the Polkagate icon.",

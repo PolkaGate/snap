@@ -61,12 +61,12 @@
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/key-tree": "^9.0.0",
-    "@polkadot/api": "^10.11.2",
-    "@polkadot/extension-chains": "^0.46.6",
-    "@polkadot/keyring": "^12.5.1",
-    "@polkadot/types": "^10.11.1",
-    "@polkadot/ui-keyring": "^3.6.3",
-    "@polkadot/util": "^12.5.1",
+    "@polkadot/api": "^11.3.1",
+    "@polkadot/extension-chains": "^0.47.6",
+    "@polkadot/keyring": "^12.6.2",
+    "@polkadot/types": "^11.3.1",
+    "@polkadot/ui-keyring": "^3.6.6",
+    "@polkadot/util": "^12.6.2",
     "chromedriver": "latest",
     "webdriverio": "latest"
   }
