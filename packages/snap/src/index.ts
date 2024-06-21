@@ -37,9 +37,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       return _params?.raw && (await signRaw(origin, _params.raw));
     case 'getAddress':
       return await getAddress(_params?.chainName);
-
-    /** To manage snap state */
-    case 'setMetadata':
+    case 'setMetadata' /** To manage snap state */:
       return (
         _params?.metaData && (await setMetadata(origin, _params?.metaData))
       );
@@ -73,7 +71,7 @@ export const onHomePage: OnHomePageHandler = async () => {
  * installed.
  */
 export const onInstall: OnInstallHandler = async () => {
-  updateState({ currentChain: DEFAULT_CHAIN_NAME });
+  updateState({ currentChain: DEFAULT_CHAIN_NAME }).catch(console.error);
 
   await snap.request({
     method: 'snap_dialog',
@@ -97,7 +95,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
   if (event.type === UserInputEventType.ButtonClickEvent) {
     switch (event.name) {
       case 'switchChain':
-        showSpinner(id, 'Switching chain ...');
+        await showSpinner(id, 'Switching chain ...');
         await accountInfo(id);
         break;
 
@@ -124,8 +122,8 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
 
     switch (event.name) {
       case 'transferInput':
-        showSpinner(id);
-        transfer(id, value);
+        await showSpinner(id);
+        await transfer(id, value);
         break;
 
       default:
