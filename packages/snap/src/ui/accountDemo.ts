@@ -31,19 +31,24 @@ export const accountDemo = (
       row('Transferable', text(`**${transferable.toHuman()}**`)),
       row('Locked', text(`**${locked.toHuman()}**`)),
       divider(),
+      // button({
+      //   value: 'Transfer fund',
+      //   name: 'transfer',
+      // }),
       button({
-        value: 'Transfer fund',
-        name: 'transfer',
-      }),
-      button({
-        variant: 'secondary',
-        value: 'View App list',
+        variant: 'primary',
+        value: 'View dApp list',
         name: 'dapp',
       }),
       button({
         variant: 'secondary',
         value: 'Click to switch chain',
         name: 'switchChain',
+      }),
+      button({
+        variant: 'secondary',
+        value: 'Export account',
+        name: 'showExportAccount',
       }),
     ]),
   ]);

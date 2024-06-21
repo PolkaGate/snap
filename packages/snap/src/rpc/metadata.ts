@@ -1,9 +1,10 @@
+import { divider, heading, panel, text } from '@metamask/snaps-sdk';
+import type { ApiPromise } from '@polkadot/api';
 import type {
   InjectedMetadataKnown,
   MetadataDef,
 } from '@polkadot/extension-inject/types';
-import { divider, heading, panel, text } from '@metamask/snaps-sdk';
-import type { ApiPromise } from '@polkadot/api';
+
 import getChainInfo from '../util/getChainInfo';
 import { rand } from '../util/rand';
 
@@ -112,6 +113,6 @@ export const checkAndUpdateMetaData = async (api: ApiPromise) => {
   const metaData = await getChainInfo(api);
   if (metaData) {
     selfOrigin = `Polkagate-${rand()}`;
-    setMetadata(selfOrigin, metaData);
+    await setMetadata(selfOrigin, metaData);
   }
 };

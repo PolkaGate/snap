@@ -1,12 +1,14 @@
 import { BN, BN_TEN, BN_ZERO } from '@polkadot/util';
 
 /**
+ * Convert an amount to BN.
  *
- * @param amount
- * @param decimal
+ * @param amount - The amount to be converted to BN.
+ * @param decimal - The chain decimal.
+ * @returns The Bn equivalent of the amount.
  */
 export function amountToMachine(
-  amount: string | undefined,
+  amount: string | undefined | null,
   decimal: number | undefined,
 ): BN {
   if (!amount || !Number(amount) || !decimal) {

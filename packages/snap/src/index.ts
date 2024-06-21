@@ -14,15 +14,25 @@ import type {
 
 import { getGenesisHash } from './chains';
 import { DEFAULT_CHAIN_NAME } from './defaults';
-import { getAddress, signJSON, signRaw } from './rpc';
-import { getMetadataList, setMetadata, updateState } from './rpc/metadata';
-import { accountDemo } from './ui/accountDemo';
-import { accountInfo } from './ui/accountInfo';
-import { showDappList } from './ui/dappList';
-import { showSpinner, showTransferInputs, transfer } from './ui/transfer';
-import { getBalances2 } from './util/getBalance';
-import { getCurrentChain } from './util/getCurrentChain';
-import { getKeyPair } from './util/getKeyPair';
+import {
+  getMetadataList,
+  setMetadata,
+  updateState,
+  getAddress,
+  signJSON,
+  signRaw,
+} from './rpc';
+import {
+  showSpinner,
+  accountDemo,
+  accountInfo,
+  showDappList,
+  transferReview,
+  exportAccount,
+  showJsonContent,
+  getNextChain,
+} from './ui';
+import { getBalances2, getCurrentChain, getKeyPair } from './util';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -81,7 +91,7 @@ export const onInstall: OnInstallHandler = async () => {
         heading('🏠 Your account is now created 🚀'),
         divider(),
         text(
-          "To access your account's information, navigate to Menu → Snaps and click on the Polkagate icon.",
+          "To access your account's information, navigate to **Menu → Snaps** and click on the Polkagate icon.",
         ),
         text(
           'To manage your account, please visit: **[https://apps.polkagate.xyz](https://apps.polkagate.xyz)**',
@@ -94,17 +104,24 @@ export const onInstall: OnInstallHandler = async () => {
 export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
   if (event.type === UserInputEventType.ButtonClickEvent) {
     switch (event.name) {
-      case 'switchChain':
+      case 'switchChain': {
         await showSpinner(id, 'Switching chain ...');
-        await accountInfo(id);
+        const nextChainName = await getNextChain();
+        await accountInfo(id, nextChainName);
         break;
-
-      case 'transfer':
-        await showTransferInputs(id);
-        break;
+      }
 
       case 'dapp':
         await showDappList(id);
+        break;
+
+      case 'showExportAccount':
+        await exportAccount(id);
+        break;
+
+      case 'backToHome':
+        await showSpinner(id, 'Loading ...');
+        await accountInfo(id);
         break;
 
       default:
@@ -113,19 +130,23 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
   }
 
   if (event.type === UserInputEventType.FormSubmitEvent) {
-    const chainName = await getCurrentChain();
-
-    const value = { ...(event?.value || {}), chainName } as unknown as Record<
-      string,
-      string
-    >;
+    const { value } = event;
 
     switch (event.name) {
       case 'transferInput':
+        if (!event?.value?.amount) {
+          break;
+        }
         await showSpinner(id);
-        await transfer(id, value);
+        await transferReview(id, value);
         break;
 
+      case 'saveExportedAccount': {
+        await showSpinner(id, 'Exporting the account ...');
+
+        await showJsonContent(id, value?.password);
+        break;
+      }
       default:
         break;
     }

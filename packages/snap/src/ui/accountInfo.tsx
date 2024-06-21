@@ -1,18 +1,19 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable jsdoc/require-jsdoc */
-
-import { getGenesisHash } from '../chains';
-import { getKeyPair } from '../util/getKeyPair';
-import { getBalances2 } from '../util/getBalance';
-import { getState, updateState } from '../rpc';
-import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
 import { accountDemo } from './accountDemo';
+import { getGenesisHash } from '../chains';
+import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
+import { getState, updateState } from '../rpc';
+import { getCurrentChain } from '../util';
+import { getBalances2 } from '../util/getBalance';
+import { getKeyPair } from '../util/getKeyPair';
 
+/**
+ * Returns the next chain in a circular way.
+ */
 export async function getNextChain() {
   const state = await getState();
   console.log('state in getNextChain', state);
 
-  const currentChainName = (state?.currentChain ||
+  const currentChainName = (state?.currentChain ??
     DEFAULT_CHAIN_NAME) as string;
   const index = CHAIN_NAMES.findIndex((name) => name === currentChainName);
 
@@ -25,7 +26,7 @@ export async function getNextChain() {
   }
 
   // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-  (state || {}).currentChain = nextChainName;
+  (state ?? {}).currentChain = nextChainName;
   console.log('update state in getNextChain', state);
 
   await updateState(state);
@@ -33,8 +34,14 @@ export async function getNextChain() {
   return nextChainName;
 }
 
+/**
+ * Show account info on the current chain.
+ *
+ * @param id - The id of current UI interface.
+ * @param chainName - Current chain name.
+ */
 export async function accountInfo(id: string, chainName?: string) {
-  const _chainName = chainName || (await getNextChain());
+  const _chainName = chainName ?? (await getCurrentChain());
 
   const { address } = await getKeyPair(_chainName);
 

@@ -1,4 +1,4 @@
-import { heading, panel, text, divider } from '@metamask/snaps-sdk';
+import { button, heading, panel, text, divider } from '@metamask/snaps-sdk';
 
 /**
  * This shows a dapp list to users.
@@ -11,16 +11,22 @@ export async function showDappList(id: string) {
     params: {
       id,
       ui: panel([
-        heading('App List'),
+        heading('dApp List'),
         divider(),
         text(
-          'Explore these Apps to streamline your daily tasks and engage with the Polkadot ecosystem',
+          'Explore these dApps to streamline your daily tasks and engage with the Polkadot ecosystem.',
         ),
         text('General : **[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
         text(
           'Staking : **[staking.polkadot.network](https://staking.polkadot.network/)**',
         ),
         text('Governance : **Coming Soon ...**'),
+        divider(),
+        button({
+          variant: 'primary',
+          value: 'Back',
+          name: 'backToHome',
+        }),
       ]),
     },
   });
