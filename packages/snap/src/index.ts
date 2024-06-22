@@ -1,17 +1,38 @@
 import {
   divider,
-  OnRpcRequestHandler,
   heading,
   panel,
   text,
+  UserInputEventType,
 } from '@metamask/snaps-sdk';
-import type { OnHomePageHandler, OnInstallHandler } from '@metamask/snaps-sdk';
-import { getAddress, signJSON, signRaw } from './rpc';
-import { getMetadataList, setMetadata } from './rpc/metadata';
-import { getKeyPair } from './util/getKeyPair';
+import type {
+  OnHomePageHandler,
+  OnInstallHandler,
+  OnRpcRequestHandler,
+  OnUserInputHandler,
+} from '@metamask/snaps-sdk';
+
+import { getGenesisHash } from './chains';
 import { DEFAULT_CHAIN_NAME } from './defaults';
-import { accountDemo } from './ui/accountDemo';
-import { getDefaultTokenBalances } from './util/getDefaultTokenBalances';
+import {
+  getMetadataList,
+  setMetadata,
+  updateState,
+  getAddress,
+  signJSON,
+  signRaw,
+} from './rpc';
+import {
+  showSpinner,
+  accountDemo,
+  accountInfo,
+  showDappList,
+  transferReview,
+  exportAccount,
+  showJsonContent,
+  getNextChain,
+} from './ui';
+import { getBalances2, getCurrentChain, getKeyPair } from './util';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -26,9 +47,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       return _params?.raw && (await signRaw(origin, _params.raw));
     case 'getAddress':
       return await getAddress(_params?.chainName);
-
-    /** To manage snap state */
-    case 'setMetadata':
+    case 'setMetadata' /** To manage snap state */:
       return (
         _params?.metaData && (await setMetadata(origin, _params?.metaData))
       );
@@ -46,11 +65,14 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
  * @returns A static panel rendered with custom UI.
  */
 export const onHomePage: OnHomePageHandler = async () => {
-  const { address } = await getKeyPair(DEFAULT_CHAIN_NAME);
-  const balances = await getDefaultTokenBalances(address);
+  const currentChainName = await getCurrentChain();
+  const { address } = await getKeyPair(currentChainName);
+
+  const genesisHash = getGenesisHash(currentChainName); // These will be changed when dropdown component will be available
+  const balances = await getBalances2(genesisHash, address);
 
   return {
-    content: accountDemo(address, balances),
+    content: accountDemo(address, currentChainName, balances),
   };
 };
 
@@ -59,15 +81,17 @@ export const onHomePage: OnHomePageHandler = async () => {
  * installed.
  */
 export const onInstall: OnInstallHandler = async () => {
+  updateState({ currentChain: DEFAULT_CHAIN_NAME }).catch(console.error);
+
   await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'alert',
       content: panel([
-        heading('Your account is now created 🚀'),
+        heading('🏠 Your account is now created 🚀'),
         divider(),
         text(
-          "To access your account's address in various formats, navigate to Menu → Snaps and click on the Polkagate icon.",
+          "To access your account's information, navigate to **Menu → Snaps** and click on the Polkagate icon.",
         ),
         text(
           'To manage your account, please visit: **[https://apps.polkagate.xyz](https://apps.polkagate.xyz)**',
@@ -75,4 +99,56 @@ export const onInstall: OnInstallHandler = async () => {
       ]),
     },
   });
+};
+
+export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
+  if (event.type === UserInputEventType.ButtonClickEvent) {
+    switch (event.name) {
+      case 'switchChain': {
+        await showSpinner(id, 'Switching chain ...');
+        const nextChainName = await getNextChain();
+        await accountInfo(id, nextChainName);
+        break;
+      }
+
+      case 'dapp':
+        await showDappList(id);
+        break;
+
+      case 'showExportAccount':
+        await exportAccount(id);
+        break;
+
+      case 'backToHome':
+        await showSpinner(id, 'Loading ...');
+        await accountInfo(id);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  if (event.type === UserInputEventType.FormSubmitEvent) {
+    const { value } = event;
+
+    switch (event.name) {
+      case 'transferInput':
+        if (!event?.value?.amount) {
+          break;
+        }
+        await showSpinner(id);
+        await transferReview(id, value);
+        break;
+
+      case 'saveExportedAccount': {
+        await showSpinner(id, 'Exporting the account ...');
+
+        await showJsonContent(id, value?.password);
+        break;
+      }
+      default:
+        break;
+    }
+  }
 };

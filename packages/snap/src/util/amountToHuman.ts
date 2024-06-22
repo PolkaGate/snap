@@ -1,5 +1,5 @@
-import { Compact, u128 } from '@polkadot/types';
-import { BN } from '@polkadot/util';
+import type { Compact, u128 } from '@polkadot/types';
+import type { BN } from '@polkadot/util';
 
 const FLOATING_POINT_DIGIT = 4;
 

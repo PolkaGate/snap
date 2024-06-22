@@ -30,7 +30,7 @@ async function showAccount(address: string) {
     method: 'snap_dialog',
     params: {
       type: 'alert',
-      content: accountDemo(address, balances),
+      content: accountDemo(address, balances), // TODO: fix parameters
     },
   });
 }

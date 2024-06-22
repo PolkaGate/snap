@@ -8,16 +8,18 @@ import {
   row,
   text,
 } from '@metamask/snaps-sdk';
-import { ApiPromise } from '@polkadot/api';
-import { SignerPayloadJSON } from '@polkadot/types/types';
+import type { ApiPromise } from '@polkadot/api';
+import type { Balance } from '@polkadot/types/interfaces';
+import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { bnToBn } from '@polkadot/util';
-import { Balance } from '@polkadot/types/interfaces';
-import getLogo from '../util/getLogo';
-import getChainName from '../util/getChainName';
-import { formatCamelCase } from '../util/formatCamelCase';
-import { getIdentity } from '../util/getIdentity';
-import { Decoded, getDecoded } from '../rpc';
+
 import { txContent } from './txContent';
+import type { Decoded } from '../rpc';
+import { getDecoded } from '../rpc';
+import { formatCamelCase } from '../util/formatCamelCase';
+import getChainName from '../util/getChainName';
+import { getIdentity } from '../util/getIdentity';
+import getLogo from '../util/getLogo';
 
 const EMPTY_LOGO = `<svg width="100" height="100">
 <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
@@ -55,7 +57,11 @@ const transactionContent = (
     divider(),
     row(
       'Action: ',
-      text(`**${formatCamelCase(section)}** (**${formatCamelCase(method)}**)`),
+      text(
+        `**${formatCamelCase(section) ?? ''}** (**${
+          formatCamelCase(method) ?? ''
+        }**)`,
+      ),
     ),
     divider(),
   ];
@@ -64,7 +70,7 @@ const transactionContent = (
     divider(),
     row('Estimated Fee:', text(`**${partialFee.toHuman()}**`)),
     divider(),
-    row('Chain Name:', text(`**${formatCamelCase(chainName)}**`)),
+    row('Chain Name:', text(`**${formatCamelCase(chainName) ?? ''}**`)),
     // divider(),
     // row('Chain Logo:', image(chainLogoSvg)), // uncomment when image size adjustment will be enabled by Metamask
     divider(),

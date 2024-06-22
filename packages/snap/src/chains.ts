@@ -1,5 +1,5 @@
 import { selectableNetworks } from '@polkadot/networks';
-import { Network } from '@polkadot/networks/types';
+import type { Network } from '@polkadot/networks/types';
 
 const westend = {
   decimals: [12],
