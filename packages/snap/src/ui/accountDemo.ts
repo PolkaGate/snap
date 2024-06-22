@@ -5,6 +5,7 @@ import {
   row,
   text,
   button,
+  heading,
 } from '@metamask/snaps-sdk';
 
 import { getGenesisHash } from '../chains';
@@ -22,12 +23,12 @@ export const accountDemo = (
 
   const { total, transferable, locked } = balances;
   return panel([
-    // heading(`Your Account on ${formatChainName(chainName)}`),
-    row('Account info on', text(`**${formatChainName(chainName)}**`)),
+    heading('Your Account information'),
+    row('Chain', text(`**${formatChainName(chainName)}**`)),
     copyable(formatted),
     divider(),
     panel([
-      row('Total Balance', text(`**${total.toHuman()}**`)),
+      row('Total', text(`**${total.toHuman()}**`)),
       row('Transferable', text(`**${transferable.toHuman()}**`)),
       row('Locked', text(`**${locked.toHuman()}**`)),
       divider(),
@@ -37,12 +38,12 @@ export const accountDemo = (
       // }),
       button({
         variant: 'primary',
-        value: 'View dApp list',
+        value: 'dApp list',
         name: 'dapp',
       }),
       button({
         variant: 'secondary',
-        value: 'Click to switch chain',
+        value: 'Switch chain',
         name: 'switchChain',
       }),
       button({
