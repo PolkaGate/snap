@@ -11,7 +11,7 @@ export async function showDappList(id: string) {
     params: {
       id,
       ui: panel([
-        heading('dApp List'),
+        heading('DApps List'),
         divider(),
         text(
           'Explore these dApps to streamline your daily tasks and engage with the Polkadot ecosystem.',

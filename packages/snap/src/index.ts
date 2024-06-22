@@ -27,12 +27,11 @@ import {
   accountDemo,
   accountInfo,
   showDappList,
-  transferReview,
   exportAccount,
   showJsonContent,
   getNextChain,
 } from './ui';
-import { getBalances2, getCurrentChain, getKeyPair } from './util';
+import { getBalances, getCurrentChain, getKeyPair } from './util';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -69,7 +68,7 @@ export const onHomePage: OnHomePageHandler = async () => {
   const { address } = await getKeyPair(currentChainName);
 
   const genesisHash = getGenesisHash(currentChainName); // These will be changed when dropdown component will be available
-  const balances = await getBalances2(genesisHash, address);
+  const balances = await getBalances(genesisHash, address);
 
   return {
     content: accountDemo(address, currentChainName, balances),
@@ -133,20 +132,19 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
     const { value } = event;
 
     switch (event.name) {
-      case 'transferInput':
-        if (!event?.value?.amount) {
-          break;
-        }
-        await showSpinner(id);
-        await transferReview(id, value);
-        break;
+      // case 'transferInput': // will be uncommented when JSX components will be released
+      //   if (!event?.value?.amount) {
+      //     break;
+      //   }
+      //   await showSpinner(id);
+      //   await transferReview(id, value);
+      //   break;
 
-      case 'saveExportedAccount': {
+      case 'saveExportedAccount':
         await showSpinner(id, 'Exporting the account ...');
-
         await showJsonContent(id, value?.password);
         break;
-      }
+
       default:
         break;
     }

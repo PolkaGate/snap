@@ -1,5 +1,5 @@
-import { ApiPromise } from '@polkadot/api';
-import { SignerPayloadJSON } from '@polkadot/types/types';
+import type { ApiPromise } from '@polkadot/api';
+import type { SignerPayloadJSON } from '@polkadot/types/types';
 
 export const buildPayload = async (
   api: ApiPromise,
@@ -49,6 +49,6 @@ export const buildPayload = async (
       version: payload.version,
     });
 
-    return raw.toPayload() as SignerPayloadJSON;
+    return raw.toPayload();
   }
 };

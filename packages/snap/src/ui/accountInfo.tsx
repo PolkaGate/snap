@@ -3,7 +3,7 @@ import { getGenesisHash } from '../chains';
 import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
 import { getState, updateState } from '../rpc';
 import { getCurrentChain } from '../util';
-import { getBalances2 } from '../util/getBalance';
+import { getBalances } from '../util/getBalance';
 import { getKeyPair } from '../util/getKeyPair';
 
 /**
@@ -47,7 +47,7 @@ export async function accountInfo(id: string, chainName?: string) {
 
   const genesisHash = getGenesisHash(_chainName);
 
-  const balances = await getBalances2(genesisHash, address);
+  const balances = await getBalances(genesisHash, address);
 
   await snap.request({
     method: 'snap_updateInterface',

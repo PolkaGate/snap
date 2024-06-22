@@ -38,7 +38,7 @@ export const accountDemo = (
       // }),
       button({
         variant: 'primary',
-        value: 'dApp list',
+        value: 'DApps list',
         name: 'dapp',
       }),
       button({
