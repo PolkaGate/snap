@@ -1,26 +1,24 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable jsdoc/require-jsdoc */
+// Copyright 2023-2024 @polkagate/snap authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import { copyable, panel, row, text } from '@metamask/snaps-sdk';
-import { ApiPromise } from '@polkadot/api';
 import { AnyTuple } from '@polkadot/types/types';
 import type { PalletConvictionVotingVoteVoting } from '@polkadot/types/lookup';
-import { amountToHuman } from '../util/amountToHuman';
-import { Decoded } from '../util/decodeTxMethod';
-import { getConviction, getVoteType } from '../util/governance';
+import { amountToHuman } from '../../util/amountToHuman';
+import { Decoded } from '../../util/decodeTxMethod';
+import { getConviction, getVoteType } from '../../util/governance';
 
-export const txContent = (
-  api: ApiPromise,
+export const txBody = (
+  decimal: number,
+  token: string,
   args: AnyTuple,
   action: string,
   decoded: Decoded,
-  maybeReceiverIdentity: string | null,
-): any[] => {
+  maybeReceiverIdentity?: string | null,
+) => {
   let amount;
   const isNoArgsMethod = args?.length === 0 && 'noArgsMethods';
   const decodedArgs = decoded?.args;
-
-  const decimal = api.registry.chainDecimals[0];
-  const token = api.registry.chainTokens[0];
 
   switch (isNoArgsMethod || action) {
     case 'balances_transfer':

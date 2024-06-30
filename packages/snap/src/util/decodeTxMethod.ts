@@ -1,4 +1,6 @@
-/* eslint-disable jsdoc/require-jsdoc */
+// Copyright 2023-2024 @polkagate/snap authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import type { Chain } from '@polkadot/extension-chains/types';
 import type { MetadataDef } from '@polkadot/extension-inject/types';
 import type { ChainProperties, Call } from '@polkadot/types/interfaces';
@@ -107,7 +109,7 @@ function decodeMethod(data: string, chain: Chain, specVersion: BN): Decoded {
         .replace(/`/gu, '');
       args = (method.toHuman() as { args: AnyJson }).args;
     } else {
-      console.log('Outdated metadata to decode', chain, specVersion);
+      console.log('Outdated metadata to decode', chain.specVersion.toString(), specVersion.toString());
     }
   } catch (error) {
     console.error(
