@@ -1,5 +1,8 @@
 import { selectableNetworks } from '@polkadot/networks';
 import type { Network } from '@polkadot/networks/types';
+import { getSavedMeta } from './rpc';
+import { metadataExpand } from '@polkadot/extension-chains';
+import { Chain } from '@polkadot/extension-chains/types';
 
 const westend = {
   decimals: [12],
@@ -39,7 +42,7 @@ const westendAssetHub = {
 
 selectableNetworks.push(westend as Network, westendAssetHub as Network);
 
-export const getChain = (genesisOrChainName: string): Network => {
+export const getChain = (genesisOrChainName: string): Network | null => {
   const chain = selectableNetworks.find(
     ({ genesisHash, network }) =>
       genesisHash.includes(genesisOrChainName as any) ||
@@ -49,9 +52,26 @@ export const getChain = (genesisOrChainName: string): Network => {
   if (chain) {
     return chain;
   }
-  throw new Error(`Chain '${genesisOrChainName}' is not recognized.`);
+
+  console.info(`Chain '${genesisOrChainName}' is not recognized.`);
+
+  return null;
 };
 
-export const getGenesisHash = (chainName: string): string => {
-  return getChain(chainName)?.genesisHash?.[0];
+export const getChain2 = async (genesis: string): Promise<Chain | null> => {
+  const metadata = await getSavedMeta(genesis);
+
+  const chain = metadata ? metadataExpand(metadata, false) : null;
+
+  if (chain) {
+    return chain;
+  }
+
+  console.info(`Chain '${genesis}' is not recognized.`);
+
+  return null;
+};
+
+export const getGenesisHash = (chainName: string): string | null => {
+  return getChain(chainName)?.genesisHash?.[0] as string;
 };
