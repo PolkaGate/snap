@@ -18,7 +18,7 @@ export async function showDappList(id: string) {
         ),
         text('General : **[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
         text(
-          'Staking : **[staking.polkadot.cloud](https://staking.polkadot.cloud/)**',
+          'Staking : **[staking.polkadot.cloud](https://staking.polkadot.cloud)**',
         ),
         text('Governance : **Coming Soon ...**'),
         divider(),
