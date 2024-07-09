@@ -7,7 +7,7 @@
     "url": "https://github.com/polkagate/snap.git"
   },
   "source": {
-    "shasum": "YhjmiMWdFd3UlMLhb4Wl/4AqyTRL+Us8neQGFEzZu4Q=",
+    "shasum": "N5fWNkAoKHuTSiwGguMQkpGiQBkEvm8OTn8P+Czqke0=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -19,7 +19,7 @@
   },
   "initialConnections": {
     "https://apps.polkagate.xyz": {},
-    "https://staking.polkadot.network": {}
+    "https://staking.polkadot.cloud": {}
   },
   "initialPermissions": {
     "endowment:network-access": {},
