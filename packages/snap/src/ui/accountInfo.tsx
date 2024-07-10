@@ -11,7 +11,7 @@ import { getKeyPair } from '../util/getKeyPair';
  */
 export async function getNextChain() {
   const state = await getState();
-  console.log('state in getNextChain', state);
+  // console.log('state in getNextChain', state);
 
   const currentChainName = (state?.currentChain ??
     DEFAULT_CHAIN_NAME) as string;
@@ -27,7 +27,7 @@ export async function getNextChain() {
 
   // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
   (state ?? {}).currentChain = nextChainName;
-  console.log('update state in getNextChain', state);
+  // console.log('update state in getNextChain', state);
 
   await updateState(state);
 
@@ -46,6 +46,8 @@ export async function accountInfo(id: string, chainName?: string) {
   const { address } = await getKeyPair(_chainName);
 
   const genesisHash = getGenesisHash(_chainName);
+
+  if (!genesisHash) throw new Error(`No genesis hash found for chain name:${_chainName}`)
 
   const balances = await getBalances(genesisHash, address);
 

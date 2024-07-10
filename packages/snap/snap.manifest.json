@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "Explore Polkadot decentralized applications and manage your tokens using your MetaMask wallet. Start your journey at apps.polkagate.xyz.",
   "proposedName": "PolkaGate",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/polkagate/snap.git"
   },
   "source": {
-    "shasum": "azVWaELfMCikfECd5jAEgof/jj66hlQ/BuKg8CzPY9I=",
+    "shasum": "FA/uWVGqQw4/rWASk1AKXaPGIwfWSzoHGWHkByzdJtA=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

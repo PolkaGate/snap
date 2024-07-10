@@ -14,35 +14,39 @@ export const signJSON = async (
   payload: SignerPayloadJSON,
 ): Promise<SignerResult | undefined> => {
   try {
-    const metadata = await getSavedMeta(payload.genesisHash);
-
     let registry;
     let isConfirmed;
 
-    if (metadata) {
-      console.info(' signing with metadata ...')
+    if (hasEndpoint(payload.genesisHash)) {
 
-      // sign with metadata
-      const chain = metadataExpand(metadata, false);
-
-      registry = chain.registry;
-      registry.setSignedExtensions(payload.signedExtensions);
-
-      isConfirmed = await reviewUseMetadata(chain, origin, payload);
-
-    } else if (hasEndpoint(payload.genesisHash)) {
-
-      console.info(' signing with api ...')
+      console.info('signing with api ...')
       // sign with api
       const api = await getApi(payload.genesisHash);
       checkAndUpdateMetaData(api).catch(console.error);
+      
       registry = api.registry
       isConfirmed = await reviewUseApi(api, origin, payload);
 
     } else {
 
-      // ask user to update metadata
-      await metadataAlert();
+      const metadata = await getSavedMeta(payload.genesisHash);
+
+      if (metadata) {
+        console.info('signing with metadata ...')
+
+        // sign with metadata
+        const chain = metadataExpand(metadata, false);
+
+        registry = chain.registry;
+        registry.setSignedExtensions(payload.signedExtensions);
+
+        isConfirmed = await reviewUseMetadata(chain, origin, payload);
+
+      } else {
+
+        // ask user to update metadata
+        await metadataAlert();
+      }
     }
 
     if (!isConfirmed) {
