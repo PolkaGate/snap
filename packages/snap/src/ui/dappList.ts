@@ -20,7 +20,7 @@ export async function showDappList(id: string) {
         text(
           'Staking : **[staking.polkadot.cloud](https://staking.polkadot.cloud)**',
         ),
-        text('Governance : **Coming Soon ...**'),
+        text('Governance : **[subsquare.io](https://polkadot.subsquare.io)**'),
         divider(),
         button({
           variant: 'primary',
