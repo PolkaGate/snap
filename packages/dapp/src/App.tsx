@@ -74,10 +74,6 @@ export default function App() {
   }, [endpoint]);
 
   useEffect(() => {
-    handleEnable();
-  }, [hasFlaskDetected]);
-
-  useEffect(() => {
     /** To get the snap account */
     extensions?.length &&
       web3Accounts().then((accounts: any) => {
@@ -98,18 +94,6 @@ export default function App() {
     }
   }, [account, chainName]);
 
-  const handleInstallClick = useCallback(() => {
-    if (hasFlaskDetected === false) {
-      const FLASK_URL = 'https://chromewebstore.google.com/detail/metamask-flask-developmen/ljfoeinjpaedjfecbmggjgodbgkmjkjk';
-
-      window.open(FLASK_URL, '_blank');
-
-      return;
-    }
-
-    handleEnable();
-  }, [hasFlaskDetected]);
- 
   const handleEnable = useCallback(() => {
     hasFlaskDetected && web3Enable('snap-only')
       .then((ext: InjectedExtension[] | undefined) => {
@@ -122,6 +106,21 @@ export default function App() {
       });
   }, [hasFlaskDetected]);
 
+  useEffect(() => {
+    hasFlaskDetected && handleEnable();
+  }, [hasFlaskDetected, handleEnable]);
+
+  const handleInstallClick = useCallback(() => {
+    if (hasFlaskDetected === false) {
+      const FLASK_URL = 'https://chromewebstore.google.com/detail/metamask-flask-developmen/ljfoeinjpaedjfecbmggjgodbgkmjkjk';
+
+      window.open(FLASK_URL, '_blank');
+
+      return;
+    }
+
+    handleEnable();
+  }, [hasFlaskDetected , handleEnable]);
 
   useEffect(() => {
     hasFlask().then(setHasFlask)
