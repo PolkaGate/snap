@@ -7,10 +7,9 @@ import { Box, Tabs, Tab, Button, Grid, Link, Typography } from '@mui/material';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import useEndpoint from './hooks/useEndpoint';
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
-import { DEFAULT_SNAP_ORIGIN, POLKAMASK_ACCOUNT_META_SOURCE } from './util/consts';
+import { POLKAMASK_ACCOUNT_META_SOURCE } from './util/consts';
 import { getFormatted } from './util/getFormatted';
 import { getChain } from './util/getChain';
-import { installPolkaMask } from './util/installPolkaMask';
 import logo from './assets/logo.svg';
 import SignMessage from './SignMessage';
 import { hasFlask } from './util/hasFlask';
@@ -75,14 +74,7 @@ export default function App() {
   }, [endpoint]);
 
   useEffect(() => {
-    isPolkaMaskInstalled && web3Enable('snap-dapp').then((ext: InjectedExtension[] | undefined) => {
-      console.log('All injected extensions:', ext);
-      setExtensions(ext);
-    });
-  }, [isPolkaMaskInstalled]);
-
-  useEffect(() => {
-    /** To getPolkaMask account */
+    /** To get the snap account */
     extensions?.length &&
       web3Accounts().then((accounts: any) => {
         const maybePolkamaskAccount = accounts.find((account: InjectedAccountWithMeta) => account.meta.source === POLKAMASK_ACCOUNT_META_SOURCE)
@@ -102,6 +94,22 @@ export default function App() {
     }
   }, [account, chainName]);
 
+  const handleEnable = useCallback(() => {
+    hasFlaskDetected && web3Enable('snap-only')
+      .then((ext: InjectedExtension[] | undefined) => {
+        console.log('All injected extensions:', ext);
+
+        const found = ext?.find(({ name }) => name === POLKAMASK_ACCOUNT_META_SOURCE);
+        setIsSnapInstalled(!!found)
+
+        setExtensions(ext);
+      });
+  }, [hasFlaskDetected]);
+
+  useEffect(() => {
+    hasFlaskDetected && handleEnable();
+  }, [hasFlaskDetected, handleEnable]);
+
   const handleInstallClick = useCallback(() => {
     if (hasFlaskDetected === false) {
       const FLASK_URL = 'https://chromewebstore.google.com/detail/metamask-flask-developmen/ljfoeinjpaedjfecbmggjgodbgkmjkjk';
@@ -111,24 +119,11 @@ export default function App() {
       return;
     }
 
-    installPolkaMask().then((installedSnap) => {
-      installedSnap && setIsSnapInstalled(installedSnap[DEFAULT_SNAP_ORIGIN]?.enabled)
-    });
-  }, [hasFlaskDetected]);
-
-  useEffect(() => {
-    handleInstallClick()
-  }, [handleInstallClick]);
+    handleEnable();
+  }, [hasFlaskDetected , handleEnable]);
 
   useEffect(() => {
     hasFlask().then(setHasFlask)
-    // getSnaps().then((snaps) => {
-    //   if (snaps?.length) {
-    //     const isDefaultSnapInstalled = !!Object.keys(snaps).find((id) => POLKAMASK_SNAP_IDS.includes(id));
-    //     setIsSnapInstalled(isDefaultSnapInstalled);
-    //     console.log('Installed snaps:', snaps)
-    //   }
-    // })
   }, []);
 
   useEffect(() => {

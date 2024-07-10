@@ -1,34 +1,73 @@
 import type { SignerResult } from '@polkadot/api/types';
 import type { SignerPayloadJSON } from '@polkadot/types/types';
 
-import { checkAndUpdateMetaData, showConfirmTx } from '.';
+import { checkAndUpdateMetaData, getSavedMeta, reviewUseApi } from '.';
 import { getApi } from '../util/getApi';
 import { getKeyPair } from '../util/getKeyPair';
+import { metadataExpand } from '@polkadot/extension-chains';
+import { reviewUseMetadata } from '../ui/review/reviewUseMetadata';
+import { hasEndpoint } from '../util';
+import { metadataAlert } from '../ui/review/metadataAlert';
 
 export const signJSON = async (
   origin: string,
   payload: SignerPayloadJSON,
 ): Promise<SignerResult | undefined> => {
   try {
-    const api = await getApi(payload.genesisHash);
-    checkAndUpdateMetaData(api).catch(console.error);
+    let registry;
+    let isConfirmed;
 
-    const isConfirmed = await showConfirmTx(api, origin, payload);
+    if (hasEndpoint(payload.genesisHash)) {
+
+      console.info('signing with api ...')
+      // sign with api
+      const api = await getApi(payload.genesisHash);
+      checkAndUpdateMetaData(api).catch(console.error);
+      
+      registry = api.registry
+      isConfirmed = await reviewUseApi(api, origin, payload);
+
+    } else {
+
+      const metadata = await getSavedMeta(payload.genesisHash);
+
+      if (metadata) {
+        console.info('signing with metadata ...')
+
+        // sign with metadata
+        const chain = metadataExpand(metadata, false);
+
+        registry = chain.registry;
+        registry.setSignedExtensions(payload.signedExtensions);
+
+        isConfirmed = await reviewUseMetadata(chain, origin, payload);
+
+      } else {
+
+        // ask user to update metadata
+        await metadataAlert();
+      }
+    }
 
     if (!isConfirmed) {
       throw new Error('User declined the signing request.');
     }
-    const keyPair = await getKeyPair(payload.genesisHash);
 
-    const extrinsic = api.registry.createType('ExtrinsicPayload', payload, {
-      version: payload.version,
-    });
+    if (registry) {
+      const keyPair = await getKeyPair(payload.genesisHash);
 
-    // TODO: Explore signing options without relying on the API and discover methods for obtaining chain metadata offline!
+      const extrinsic = registry.createType('ExtrinsicPayload', payload, {
+        version: payload.version,
+      });
 
-    const { signature } = extrinsic.sign(keyPair);
+      const { signature } = extrinsic.sign(keyPair);
 
-    return { id: 1, signature };
+      return { id: 1, signature };
+    } else {
+      throw new Error('Something went wrong while signing extrinsic.')
+    }
+    // TODO: discover new methods for obtaining chain metadata offline!
+
   } catch (error) {
     console.info('Error while signing JSON:', error);
     return undefined;

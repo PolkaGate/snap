@@ -60,11 +60,11 @@ export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
 
   return persistedData?.metadata
     ? Object.values(persistedData.metadata)?.map(
-        ({ genesisHash, specVersion }: MetadataDef) => ({
-          genesisHash,
-          specVersion,
-        }),
-      )
+      ({ genesisHash, specVersion }: MetadataDef) => ({
+        genesisHash,
+        specVersion,
+      }),
+    )
     : [{ genesisHash: '0x' as `0x${string}`, specVersion: 0 }];
 };
 
@@ -84,7 +84,7 @@ export const setMetadata = async (origin: string, data: MetadataDef) => {
     state.metadata = {};
   }
 
-  if (origin !== selfOrigin) {
+  if (origin !== selfOrigin) { // If the setMetadata function is called from a source other than the selfOrigin, we should prompt the user for confirmation before proceeding.
     /** ask user approval before saving in the snap state */
     const isConfirmed = await showConfirmUpdateMetadata(origin, data);
 
@@ -101,16 +101,15 @@ export const setMetadata = async (origin: string, data: MetadataDef) => {
 export const checkAndUpdateMetaData = async (api: ApiPromise) => {
   const list = await getMetadataList();
   const _genesisHash = api.genesisHash.toString();
-  const maybeExistingMetadata = list.find(
-    ({ genesisHash }) => genesisHash === _genesisHash,
-  );
-  if (
-    maybeExistingMetadata?.specVersion ===
-    api.runtimeVersion.specVersion.toNumber()
-  ) {
-    return; // do nothing
+
+  const maybeExistingMetadata = list.find(({ genesisHash }) => genesisHash === _genesisHash);
+
+  if (maybeExistingMetadata?.specVersion === api.runtimeVersion.specVersion.toNumber()) {
+    return; // The saved metadata is already up-to-date, so no action is required.
   }
+
   const metaData = await getChainInfo(api);
+
   if (metaData) {
     selfOrigin = `Polkagate-${rand()}`;
     await setMetadata(selfOrigin, metaData);

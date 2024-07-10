@@ -23,13 +23,15 @@ export const buildPayload = async (
 
     const payload = {
       address: from,
+      assetId: null,
       blockHash: lastHeader.hash,
       blockNumber,
       era,
       genesisHash: api.genesisHash,
+      metadataHash: null, //api.runtimeMetadata.hash.toHex(),
       method,
+      mode: 0,  // default value to ignore CheckMetadataHash
       nonce,
-      runtimeVersion: api.runtimeVersion,
       signedExtensions: [
         'CheckNonZeroSender',
         'CheckSpecVersion',
@@ -39,8 +41,10 @@ export const buildPayload = async (
         'CheckNonce',
         'CheckWeight',
         'ChargeTransactionPayment',
+        'CheckMetadataHash'
       ],
-      transactionVersion: tx.transactionVersion,
+      runtimeVersion: api.runtimeVersion,
+      tip:0,
       version: tx.version,
     };
 

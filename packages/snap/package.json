@@ -1,6 +1,6 @@
 {
   "name": "@polkagate/snap",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "A MetaMask Snap to interact with Polkadot ecosystem, a platform for cross-chain communication and scalability. Use your MetaMask wallet to access Polkadot dApps and tokens. No extra extension needed.",
   "repository": {
     "type": "git",

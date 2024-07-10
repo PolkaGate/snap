@@ -1,5 +1,9 @@
+// Copyright 2023-2024 @polkagate/snap authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { getChain } from '../chains';
+import { DEFAULT_NETWORK_PREFIX } from '../defaults';
 
 /**
  * To get the formatted address of an address.
@@ -9,8 +13,9 @@ import { getChain } from '../chains';
  * @returns The formatted address.
  */
 export function getFormatted(genesisHash: string, address: string): string {
-  const { prefix } = getChain(genesisHash as string);
+  const maybeChain = getChain(genesisHash as string);
   const publicKey = decodeAddress(address);
 
+  const prefix = maybeChain?.prefix ?? DEFAULT_NETWORK_PREFIX;
   return encodeAddress(publicKey, prefix);
 }
