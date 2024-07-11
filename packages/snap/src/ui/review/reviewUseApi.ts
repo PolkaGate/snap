@@ -7,7 +7,7 @@ import { bnToBn } from '@polkadot/util';
 
 import { getDecoded } from '../../rpc';
 import { getIdentity } from '../../util/getIdentity';
-import { txHeaderUseApi } from './';
+import { txContentUseApi } from './';
 
 export async function reviewUseApi(
   api: ApiPromise,
@@ -36,7 +36,7 @@ export async function reviewUseApi(
   const userResponse = await snap.request({
     method: 'snap_dialog',
     params: {
-      content: txHeaderUseApi(
+      content: txContentUseApi(
         api,
         origin,
         payload,

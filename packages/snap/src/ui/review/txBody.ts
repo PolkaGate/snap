@@ -3,6 +3,7 @@
 
 import { copyable, panel, row, text } from '@metamask/snaps-sdk';
 import { AnyTuple } from '@polkadot/types/types';
+// @ts-ignore
 import type { PalletConvictionVotingVoteVoting } from '@polkadot/types/lookup';
 import { amountToHuman } from '../../util/amountToHuman';
 import { Decoded } from '../../util/decodeTxMethod';
@@ -15,7 +16,8 @@ export const txBody = (
   action: string,
   decoded: Decoded,
   maybeReceiverIdentity?: string | null,
-) => {
+): any[] => {
+
   let amount;
   const isNoArgsMethod = args?.length === 0 && 'noArgsMethods';
   const decodedArgs = decoded?.args;
@@ -50,12 +52,11 @@ export const txBody = (
     case 'staking_bondExtra':
       amount = `${args[action === 'nominationPools_unbond' ? 1 : 0]}`;
 
-      return [
-        row('Amount:', text(`**${amountToHuman(amount, decimal)} ${token}**`)),
-      ];
+      return [row('Amount:', text(`**${amountToHuman(amount, decimal)} ${token}**`))];
 
     case 'staking_setPayee':
       return [row('Payee:', text(`**${args[0]}**`))];
+
     case 'nominationPools_join':
       amount = `${args[0]}`;
       const poolId = String(args[1]);
@@ -171,4 +172,6 @@ export const txBody = (
         text(JSON.stringify(decodedArgs || args, null, 2)), // decodedArgs show the args' labels as well
       ];
   }
+
+  return [];
 };

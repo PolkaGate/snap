@@ -20,7 +20,7 @@ export async function metadataAlert(): Promise<DialogResult> {
         heading('Metadata Not Found for This Chain'),
         divider(),
         image(metadata),
-        text('Update chain metadata by visiting **Settings/Metadata** menu on **[https://apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
+        text('Update via **Settings/Metadata** on **[https://apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
       ]),
       type: 'alert',
     },
