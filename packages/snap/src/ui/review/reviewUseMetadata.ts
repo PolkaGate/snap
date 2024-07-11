@@ -5,8 +5,8 @@ import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { bnToBn } from '@polkadot/util';
 
 import { getDecoded } from '../../rpc';
-import { txHeaderUseMetadata } from './txHeaderUseMetadata';
 import { Chain } from '@polkadot/extension-chains/types';
+import { txContentUseMetadata } from './txContentUseMetadata';
 
 export async function reviewUseMetadata(
   chain: Chain,
@@ -24,7 +24,7 @@ export async function reviewUseMetadata(
   const userResponse = await snap.request({
     method: 'snap_dialog',
     params: {
-      content: txHeaderUseMetadata(
+      content: txContentUseMetadata(
         chain,
         origin,
         payload,

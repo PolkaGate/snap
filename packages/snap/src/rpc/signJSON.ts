@@ -20,11 +20,11 @@ export const signJSON = async (
     if (hasEndpoint(payload.genesisHash)) {
 
       console.info('signing with api ...')
-      // sign with api
+
       const api = await getApi(payload.genesisHash);
       checkAndUpdateMetaData(api).catch(console.error);
-      
       registry = api.registry
+
       isConfirmed = await reviewUseApi(api, origin, payload);
 
     } else {
@@ -34,9 +34,7 @@ export const signJSON = async (
       if (metadata) {
         console.info('signing with metadata ...')
 
-        // sign with metadata
         const chain = metadataExpand(metadata, false);
-
         registry = chain.registry;
         registry.setSignedExtensions(payload.signedExtensions);
 
