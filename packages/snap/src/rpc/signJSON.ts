@@ -1,7 +1,7 @@
 import type { SignerResult } from '@polkadot/api/types';
 import type { SignerPayloadJSON } from '@polkadot/types/types';
 
-import { checkAndUpdateMetaData, getSavedMeta, reviewUseApi } from '.';
+import { checkAndUpdateMetaData, getSavedMeta, reviewUseApi, updateSnapState } from '.';
 import { getApi } from '../util/getApi';
 import { getKeyPair } from '../util/getKeyPair';
 import { metadataExpand } from '@polkadot/extension-chains';
@@ -17,7 +17,8 @@ export const signJSON = async (
     let registry;
     let isConfirmed;
 
-    if (hasEndpoint(payload.genesisHash)) {
+    const hasEndpoints = await hasEndpoint(payload.genesisHash)
+    if (hasEndpoints) {
 
       console.info('signing with api ...')
 
@@ -25,11 +26,15 @@ export const signJSON = async (
       checkAndUpdateMetaData(api).catch(console.error);
       registry = api.registry
 
+      // update current chain name for chains which have endpoint
+      const currentChain = await api.rpc.system.chain();
+      updateSnapState('currentChain', currentChain ).catch(console.error);
+
       isConfirmed = await reviewUseApi(api, origin, payload);
 
     } else {
 
-      const metadata = await getSavedMeta(payload.genesisHash);
+      const metadata = await getSavedMeta(payload.genesisHash) as any;
 
       if (metadata) {
         console.info('signing with metadata ...')

@@ -1,4 +1,4 @@
-import { divider, heading, panel, text } from '@metamask/snaps-sdk';
+import { Json, divider, heading, panel, text } from '@metamask/snaps-sdk';
 import type { ApiPromise } from '@polkadot/api';
 import type {
   InjectedMetadataKnown,
@@ -48,7 +48,7 @@ export const getState = async () =>
     params: { operation: 'get' },
   });
 
-export const updateState = async (state: any) => {
+export const setSnapState = async (state: any) => {
   return await snap.request({
     method: 'snap_manageState',
     params: { operation: 'update', newState: state },
@@ -69,13 +69,15 @@ export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
 };
 
 export const getSavedMeta = async (
-  genesisHash: string,
-): Promise<MetadataDef | undefined> => {
+  genesisHash?: string,
+): Promise<MetadataDef | undefined | Record<string, MetadataDef>> => {
   const persistedData = await getState();
 
-  return (persistedData?.metadata as unknown as Record<string, MetadataDef>)?.[
-    genesisHash
-  ];
+  if (genesisHash) {
+    return (persistedData?.metadata as unknown as Record<string, MetadataDef>)?.[genesisHash];
+  } else {
+    return (persistedData?.metadata as unknown as Record<string, MetadataDef>);
+  }
 };
 
 export const setMetadata = async (origin: string, data: MetadataDef) => {
@@ -95,7 +97,7 @@ export const setMetadata = async (origin: string, data: MetadataDef) => {
 
   state.metadata[data.genesisHash] = data;
 
-  return Boolean(await updateState(state));
+  return Boolean(await setSnapState(state));
 };
 
 export const checkAndUpdateMetaData = async (api: ApiPromise) => {
@@ -114,4 +116,12 @@ export const checkAndUpdateMetaData = async (api: ApiPromise) => {
     selfOrigin = `Polkagate-${rand()}`;
     await setMetadata(selfOrigin, metaData);
   }
+};
+
+export const updateSnapState = async (field: string, data: any) => {
+  const state = (await getState()) || {};
+
+  state[field] = data;
+
+  return Boolean(await setSnapState(state));
 };

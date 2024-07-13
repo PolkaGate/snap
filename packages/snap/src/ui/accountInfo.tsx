@@ -1,7 +1,7 @@
 import { accountDemo } from './accountDemo';
 import { getGenesisHash } from '../chains';
 import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
-import { getState, updateState } from '../rpc';
+import { getState, setSnapState } from '../rpc';
 import { getCurrentChain } from '../util';
 import { getBalances } from '../util/getBalance';
 import { getKeyPair } from '../util/getKeyPair';
@@ -13,8 +13,7 @@ export async function getNextChain() {
   const state = await getState();
   // console.log('state in getNextChain', state);
 
-  const currentChainName = (state?.currentChain ??
-    DEFAULT_CHAIN_NAME) as string;
+  const currentChainName = (state?.currentChain ?? DEFAULT_CHAIN_NAME) as string;
   const index = CHAIN_NAMES.findIndex((name) => name === currentChainName);
 
   let nextChainName = DEFAULT_CHAIN_NAME;
@@ -29,7 +28,7 @@ export async function getNextChain() {
   (state ?? {}).currentChain = nextChainName;
   // console.log('update state in getNextChain', state);
 
-  await updateState(state);
+  await setSnapState(state);
 
   return nextChainName;
 }
@@ -45,7 +44,7 @@ export async function accountInfo(id: string, chainName?: string) {
 
   const { address } = await getKeyPair(_chainName);
 
-  const genesisHash = getGenesisHash(_chainName);
+  const genesisHash = await getGenesisHash(_chainName);
 
   if (!genesisHash) throw new Error(`No genesis hash found for chain name:${_chainName}`)
 
@@ -55,7 +54,7 @@ export async function accountInfo(id: string, chainName?: string) {
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(address, _chainName, balances),
+      ui: accountDemo(address, _chainName, genesisHash, balances),
     },
   });
 }

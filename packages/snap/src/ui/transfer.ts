@@ -28,7 +28,7 @@ import { getKeyPair } from '../util/getKeyPair';
 // TODO: can not send params from review page to transfer since review page is not a form, this will be resolved when new snap JSX components will be available
 export async function transfer(id: string, values: Record<string, string>) {
   const { amount, recipient, chainName } = values;
-  const genesisHash = getGenesisHash(chainName);
+  const genesisHash = await getGenesisHash(chainName);
   const api = await getApi(genesisHash);
   const decimal = api.registry.chainDecimals[0];
 
@@ -109,7 +109,7 @@ export async function transferReview(
 ) {
   const { amount, recipient } = values;
   const chainName = await getCurrentChain();
-  const genesisHash = getGenesisHash(chainName);
+  const genesisHash = await getGenesisHash(chainName);
   const api = await getApi(genesisHash);
   const decimal = api.registry.chainDecimals[0];
   const token = api.registry.chainTokens[0];

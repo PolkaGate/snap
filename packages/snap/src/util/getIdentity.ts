@@ -10,7 +10,7 @@ import { hexToString } from '@polkadot/util';
  * @param api - The api to connect to a remote node.
  * @param formatted - The address to fetch its on-chain identity.
  */
-export async function getIdentity(
+export async function getIdentity( // TODO: use People chain after polkadot upgrade
   api: ApiPromise,
   formatted: string,
 ): Promise<string | null> {
@@ -23,7 +23,7 @@ export async function getIdentity(
     formatted,
   )) as Option<Registration>;
 
-  const displayName = identity?.isSome
+  const displayName = identity?.isSome && identity.unwrap().info
     ? hexToString(identity.unwrap().info.display.asRaw.toHex())
     : null;
 

@@ -3,6 +3,7 @@ import type { Network } from '@polkadot/networks/types';
 import { getSavedMeta } from './rpc';
 import { metadataExpand } from '@polkadot/extension-chains';
 import { Chain } from '@polkadot/extension-chains/types';
+import { sanitizeChainName } from './util/getChainName';
 
 const westend = {
   decimals: [12],
@@ -42,24 +43,26 @@ const westendAssetHub = {
 
 selectableNetworks.push(westend as Network, westendAssetHub as Network);
 
-export const getChain = (genesisOrChainName: string): Network | null => {
+// keyWord can be genesisHash, chainName, or even display name
+export const getChain = (keyWord: string): Network | null => {
   const chain = selectableNetworks.find(
-    ({ genesisHash, network }) =>
-      genesisHash.includes(genesisOrChainName as any) ||
-      network === genesisOrChainName,
+    ({ genesisHash, network, displayName }) =>
+      genesisHash.includes(keyWord as any) ||
+      network === keyWord ||
+      displayName === keyWord
   );
 
   if (chain) {
     return chain;
   }
 
-  console.info(`Chain '${genesisOrChainName}' is not recognized.`);
+  console.info(`Chain '${keyWord}' is not recognized.`);
 
   return null;
 };
 
-export const getChain2 = async (genesis: string): Promise<Chain | null> => {
-  const metadata = await getSavedMeta(genesis);
+export const getChainFromMetadata = async (genesis: string): Promise<Chain | null> => {
+  const metadata = await getSavedMeta(genesis) as any;
 
   const chain = metadata ? metadataExpand(metadata, false) : null;
 
@@ -72,6 +75,21 @@ export const getChain2 = async (genesis: string): Promise<Chain | null> => {
   return null;
 };
 
-export const getGenesisHash = (chainName: string): string | null => {
-  return getChain(chainName)?.genesisHash?.[0] as string;
+export async function getGenesisHash(chainName: string): Promise<string | null> {
+  const mayBeGenesisHash = getChain(chainName)?.genesisHash?.[0] as string;
+  if (mayBeGenesisHash) {
+    return mayBeGenesisHash;
+  }
+
+  const maybeMetadata = await getSavedMeta();
+  if (!maybeMetadata) {
+    return null;
+  }
+
+  const [genesisHash] = Object.entries(maybeMetadata)
+    .find(([_hash, { chain }]) =>
+      sanitizeChainName(chain) === sanitizeChainName(chainName)
+    ) || [];
+
+  return genesisHash ?? null;
 };

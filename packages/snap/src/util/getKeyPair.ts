@@ -6,7 +6,7 @@ import { Keyring } from '@polkadot/keyring';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { stringToU8a } from '@polkadot/util';
 
-import { getChain, getChain2 } from '../chains';
+import { getChain, getChainFromMetadata } from '../chains';
 import { DEFAULT_CHAIN_NAME, DEFAULT_COIN_TYPE, DEFAULT_NETWORK_PREFIX } from '../defaults';
 
 export const getKeyPair = async (
@@ -18,7 +18,7 @@ export const getKeyPair = async (
   prefix = getChain(genesisHash ?? chainName)?.prefix;
 
   if (prefix === undefined && genesisHash) {
-    prefix = (await getChain2(genesisHash))?.ss58Format;
+    prefix = (await getChainFromMetadata(genesisHash))?.ss58Format;
   }
 
   const BIP44CoinNode = (await snap.request({

@@ -20,7 +20,7 @@ import { DEFAULT_CHAIN_NAME } from './defaults';
 import {
   getMetadataList,
   setMetadata,
-  updateState,
+  setSnapState,
   getAddress,
   signJSON,
   signRaw,
@@ -35,6 +35,7 @@ import {
   getNextChain,
 } from './ui';
 import { getBalances, getCurrentChain, getKeyPair } from './util';
+import { POLKADOT_GENESIS } from '@polkadot/apps-config';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -70,11 +71,12 @@ export const onHomePage: OnHomePageHandler = async () => {
   const currentChainName = await getCurrentChain();
   const { address } = await getKeyPair(currentChainName);
 
-  const genesisHash = getGenesisHash(currentChainName); // These will be changed when dropdown component will be available
+  const genesisHash = await getGenesisHash(currentChainName) ?? POLKADOT_GENESIS; // These will be changed when dropdown component will be available
+
   const balances = await getBalances(genesisHash, address);
 
   return {
-    content: accountDemo(address, currentChainName, balances),
+    content: accountDemo(address, currentChainName, genesisHash, balances),
   };
 };
 
@@ -83,7 +85,7 @@ export const onHomePage: OnHomePageHandler = async () => {
  * installed.
  */
 export const onInstall: OnInstallHandler = async () => {
-  updateState({ currentChain: DEFAULT_CHAIN_NAME }).catch(console.error);
+  setSnapState({ currentChain: DEFAULT_CHAIN_NAME }).catch(console.error); // This runs only once
 
   await snap.request({
     method: 'snap_dialog',
