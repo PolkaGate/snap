@@ -7,8 +7,7 @@ import { getState } from '../rpc';
 export async function getCurrentChain(): Promise<string> {
   const state = await getState();
 
-  const currentChainName = (state?.currentChain ??
-    DEFAULT_CHAIN_NAME) as string;
+  const currentChainName = (state?.currentChain ??  DEFAULT_CHAIN_NAME) as string;
 
   return currentChainName;
 }

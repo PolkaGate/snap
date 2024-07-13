@@ -14,6 +14,11 @@ export async function getIdentity(
   api: ApiPromise,
   formatted: string,
 ): Promise<string | null> {
+
+  if (!api.query?.identity) {
+    return null;
+  }
+
   const identity = (await api.query.identity.identityOf(
     formatted,
   )) as Option<Registration>;
