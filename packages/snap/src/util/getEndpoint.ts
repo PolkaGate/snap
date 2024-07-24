@@ -2,26 +2,27 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { createWsEndpoints } from '@polkadot/apps-config';
-import getChainName from './getChainName';
+import getChainName, { sanitizeChainName } from './getChainName';
 
-export default function getEndpoint(
+export default async function getEndpoint(
   _genesisHash: string | undefined,
-): string | undefined {
+): Promise<string | undefined> {
+
   if (!_genesisHash) {
     console.error('genesisHash should not be undefined');
     return undefined;
   }
   const allEndpoints = createWsEndpoints(() => '');
-  const chainName = getChainName(_genesisHash);
+  const chainName = await getChainName(_genesisHash);
+  const sanitizedChainName = sanitizeChainName(chainName)?.toLocaleLowerCase();
 
-  const endpoints = chainName
-    ? allEndpoints?.filter(
-      (e) =>
-        e.value &&
-        (String(e.info)?.toLowerCase() === chainName ||
-          String(e.text)
-            ?.toLowerCase()
-            ?.includes(chainName || '')),
+  const endpoints = sanitizedChainName
+    ? allEndpoints?.filter((e) =>
+      e.value &&
+      (
+        String(e.info)?.toLowerCase() === sanitizedChainName ||
+        String(e.text)?.toLowerCase()?.includes(sanitizedChainName || '')
+      )
     )
     : [];
 

@@ -4600,7 +4600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/api-derive@npm:11.3.1, @polkadot/api-derive@npm:^11.3.1":
+"@polkadot/api-derive@npm:11.3.1":
   version: 11.3.1
   resolution: "@polkadot/api-derive@npm:11.3.1"
   dependencies:
@@ -4618,7 +4618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/api-derive@npm:12.1.1":
+"@polkadot/api-derive@npm:12.1.1, @polkadot/api-derive@npm:^12.0.2, @polkadot/api-derive@npm:^12.1.1":
   version: 12.1.1
   resolution: "@polkadot/api-derive@npm:12.1.1"
   dependencies:
@@ -4722,7 +4722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/api@npm:12.1.1, @polkadot/api@npm:^12.0.2":
+"@polkadot/api@npm:12.1.1, @polkadot/api@npm:^12.0.2, @polkadot/api@npm:^12.1.1":
   version: 12.1.1
   resolution: "@polkadot/api@npm:12.1.1"
   dependencies:
@@ -4797,9 +4797,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/apps-config@npm:^0.139.1":
-  version: 0.139.1
-  resolution: "@polkadot/apps-config@npm:0.139.1"
+"@polkadot/apps-config@npm:^0.141.1":
+  version: 0.141.1
+  resolution: "@polkadot/apps-config@npm:0.141.1"
   dependencies:
     "@acala-network/type-definitions": 5.1.2
     "@bifrost-finance/type-definitions": 1.11.3
@@ -4822,12 +4822,12 @@ __metadata:
     "@peaqnetwork/type-definitions": 0.0.4
     "@pendulum-chain/type-definitions": 0.3.8
     "@phala/typedefs": 0.2.33
-    "@polkadot/api": ^11.3.1
-    "@polkadot/api-derive": ^11.3.1
+    "@polkadot/api": ^12.0.2
+    "@polkadot/api-derive": ^12.0.2
     "@polkadot/networks": ^12.6.2
     "@polkadot/react-identicon": ^3.6.6
-    "@polkadot/types": ^11.3.1
-    "@polkadot/types-codec": ^11.3.1
+    "@polkadot/types": ^12.0.2
+    "@polkadot/types-codec": ^12.0.2
     "@polkadot/util": ^12.6.2
     "@polkadot/util-crypto": ^12.6.2
     "@polkadot/wasm-util": ^7.3.2
@@ -4847,7 +4847,7 @@ __metadata:
     pontem-types-bundle: 1.0.15
     rxjs: ^7.8.1
     tslib: ^2.6.2
-  checksum: c5b954f5315ab0ea3aa5c3480b59ba3b12c666eaf733f77a4c97b07acafe3c9ec1f8fc5e97629662d5661491d66ae240cc715b39d3c0cacef11c5cbc960a4c4f
+  checksum: c941f2c9b990774a1b59d4535e44e33a829b03d7aa7d3abbef2624bda515161026ba890d274b6d7961032700c373a51ba585f29543b61e7b7eb069acc2cd88b3
   languageName: node
   linkType: hard
 
@@ -4867,7 +4867,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/extension-inject@npm:0.47.6, @polkadot/extension-inject@npm:^0.47.6":
+"@polkadot/extension-inject@npm:0.47.6":
   version: 0.47.6
   resolution: "@polkadot/extension-inject@npm:0.47.6"
   dependencies:
@@ -4885,7 +4885,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/extension-inject@npm:0.48.2":
+"@polkadot/extension-inject@npm:0.48.2, @polkadot/extension-inject@npm:^0.48.2":
   version: 0.48.2
   resolution: "@polkadot/extension-inject@npm:0.48.2"
   dependencies:
@@ -5385,7 +5385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/types-codec@npm:11.3.1, @polkadot/types-codec@npm:^11.3.1":
+"@polkadot/types-codec@npm:11.3.1":
   version: 11.3.1
   resolution: "@polkadot/types-codec@npm:11.3.1"
   dependencies:
@@ -5396,7 +5396,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/types-codec@npm:12.1.1":
+"@polkadot/types-codec@npm:12.1.1, @polkadot/types-codec@npm:^12.0.2":
   version: 12.1.1
   resolution: "@polkadot/types-codec@npm:12.1.1"
   dependencies:
@@ -5497,7 +5497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/types-known@npm:11.3.1, @polkadot/types-known@npm:^11.3.1":
+"@polkadot/types-known@npm:11.3.1":
   version: 11.3.1
   resolution: "@polkadot/types-known@npm:11.3.1"
   dependencies:
@@ -5511,7 +5511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/types-known@npm:12.1.1":
+"@polkadot/types-known@npm:12.1.1, @polkadot/types-known@npm:^12.1.1":
   version: 12.1.1
   resolution: "@polkadot/types-known@npm:12.1.1"
   dependencies:
@@ -5659,7 +5659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/types@npm:12.1.1, @polkadot/types@npm:^12.0.2":
+"@polkadot/types@npm:12.1.1, @polkadot/types@npm:^12.0.2, @polkadot/types@npm:^12.1.1":
   version: 12.1.1
   resolution: "@polkadot/types@npm:12.1.1"
   dependencies:
@@ -6545,13 +6545,13 @@ __metadata:
     "@metamask/snaps-jest": ^8.1.2
     "@metamask/snaps-sdk": ^5.0.0
     "@metamask/utils": ^8.4.0
-    "@polkadot/api": ^11.3.1
-    "@polkadot/apps-config": ^0.139.1
+    "@polkadot/api": ^12.1.1
+    "@polkadot/apps-config": ^0.141.1
     "@polkadot/extension-chains": ^0.47.6
     "@polkadot/keyring": ^12.6.2
     "@polkadot/networks": ^12.6.2
-    "@polkadot/types": ^11.3.1
-    "@polkadot/types-known": ^11.3.1
+    "@polkadot/types": ^12.1.1
+    "@polkadot/types-known": ^12.1.1
     "@polkadot/ui-keyring": ^3.6.6
     "@polkadot/util": ^12.6.2
     "@polkadot/util-crypto": ^12.6.2
@@ -18619,10 +18619,10 @@ __metadata:
     "@mui/icons-material": ^5.15.4
     "@mui/lab": ^5.0.0-alpha.160
     "@mui/material": ^5.15.4
-    "@polkadot/api": ^11.3.1
-    "@polkadot/api-derive": ^11.3.1
-    "@polkadot/apps-config": ^0.139.1
-    "@polkadot/extension-inject": ^0.47.6
+    "@polkadot/api": ^12.1.1
+    "@polkadot/api-derive": ^12.1.1
+    "@polkadot/apps-config": ^0.141.1
+    "@polkadot/extension-inject": ^0.48.2
     "@polkagate/extension-dapp": ^0.48.2
     "@testing-library/jest-dom": ^5.17.0
     "@testing-library/react": ^13.4.0

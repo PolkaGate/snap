@@ -8,8 +8,8 @@ import getEndpoint from './getEndpoint';
  *
  * @param genesisHash - The genesisHash of the chain will be used to find an endpoint.
  */
-export function hasEndpoint(genesisHash: string): boolean {
-  const endpoint = getEndpoint(genesisHash);
+export async function hasEndpoint(genesisHash: string): Promise<boolean> {
+  const endpoint = await getEndpoint(genesisHash);
 
   return !!endpoint;
 }

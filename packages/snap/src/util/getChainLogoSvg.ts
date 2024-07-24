@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { createWsEndpoints } from '@polkadot/apps-config';
-import getChainName from './getChainName';
 
 const endpoints = createWsEndpoints(() => '');
 
@@ -13,12 +12,10 @@ const EMPTY_LOGO = `<svg width="100" height="100">
 /**
  * Find a chain logo related to its genesisHAsh.
  *
- * @param _genesisHash - A genesisHash of a chain.
+ * @param chainName - The name of a chain.
  * @returns The logo in base64 format.
  */
-export default function getChainLogoSvg(_genesisHash: string): string | null {
-  const chainName = getChainName(_genesisHash);
-  
+export default async function getChainLogoSvg(chainName: string): Promise<string | null> {  
   if (!chainName) {
     return null;
   }

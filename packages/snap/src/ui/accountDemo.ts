@@ -8,7 +8,6 @@ import {
   heading,
 } from '@metamask/snaps-sdk';
 
-import { getGenesisHash } from '../chains';
 import { formatChainName } from '../util/formatChainName';
 import type { Balances } from '../util/getBalance';
 import { getFormatted } from '../util/getFormatted';
@@ -16,12 +15,13 @@ import { getFormatted } from '../util/getFormatted';
 export const accountDemo = (
   address: string,
   chainName: string,
+  genesisHash: string,
   balances: Balances,
 ) => {
-  const genesisHash = getGenesisHash(chainName);
-  const formatted = getFormatted(genesisHash, address);
+  const formatted = genesisHash ? getFormatted(genesisHash, address) : address;
 
   const { total, transferable, locked } = balances;
+
   return panel([
     heading('Your Account information'),
     row('Chain', text(`**${formatChainName(chainName)}**`)),

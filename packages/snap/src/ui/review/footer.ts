@@ -8,11 +8,8 @@ import {
   text,
 } from '@metamask/snaps-sdk';
 import type { Balance } from '@polkadot/types/interfaces';
-import type { SignerPayloadJSON } from '@polkadot/types/types';
 
 import type { Decoded } from '../../rpc';
-import { formatCamelCase } from '../../util/formatCamelCase';
-import getChainName from '../../util/getChainName';
 import getChainLogoSvg from '../../util/getChainLogoSvg';
 
 export const sanitizeText = (text?: string) => {
@@ -21,22 +18,21 @@ export const sanitizeText = (text?: string) => {
 };
 
 export const txFooter = (
-  payload: SignerPayloadJSON,
-  decoded: Decoded,
+  docs: string,
   chainName: string | undefined,
   partialFee?: Balance,
 ) => {
-  const chainLogoSvg = getChainLogoSvg(payload.genesisHash);
+  const chainLogoSvg = getChainLogoSvg(chainName ||'');
 
   const _rest = [
     divider(),
-    row('Chain Name:', text(`**${formatCamelCase(chainName) ?? ''}**`)),
+    row('Chain Name:', text(`**${chainName ?? ''}**`)),
     // divider(),
     // row('Chain Logo:', image(chainLogoSvg)), // uncomment when image size adjustment will be enabled by Metamask
     divider(),
     row(
       'More info:',
-      text(`**${sanitizeText(decoded.docs) ?? 'Update metadata to view this!'}**`),
+      text(`**${sanitizeText(docs) ?? 'Update metadata to view this!'}**`),
       RowVariant.Default,
     ),
     row(

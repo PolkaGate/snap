@@ -8,12 +8,14 @@ import { bnToBn } from '@polkadot/util';
 import { getDecoded } from '../../rpc';
 import { getIdentity } from '../../util/getIdentity';
 import { txContentUseApi } from './';
+import getChainName from '../../util/getChainName';
 
 export async function reviewUseApi(
   api: ApiPromise,
   origin: string,
   payload: SignerPayloadJSON,
 ): Promise<string | boolean | null> {
+
   const { args, callIndex } = api.createType('Call', payload.method);
   const { method, section } = api.registry.findMetaCall(callIndex);
 
@@ -33,11 +35,14 @@ export async function reviewUseApi(
     maybeReceiverIdentity = await getIdentity(api, String(args[0]));
   }
 
+  const chainName = await getChainName(payload.genesisHash);
+
   const userResponse = await snap.request({
     method: 'snap_dialog',
     params: {
       content: txContentUseApi(
         api,
+        chainName,
         origin,
         payload,
         partialFee,
