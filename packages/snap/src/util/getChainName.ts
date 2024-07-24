@@ -15,15 +15,14 @@ export const sanitizeChainName = (chainName: string | undefined) =>
     : null;
 
 // eslint-disable-next-line jsdoc/require-jsdoc
-export default async function getChainName(
-  _genesisHash: string | undefined,
-): Promise<string | undefined> {
+export default async function getChainName(_genesisHash: string | undefined): Promise<string | undefined> {
   if (!_genesisHash) {
     console.info('_genesisHash should not be undefined');
     return undefined;
   }
-  
-  let chainName = getChain(_genesisHash)?.displayName || getChain(_genesisHash)?.network;
+
+  const maybeChain = getChain(_genesisHash);
+  let chainName = maybeChain?.displayName || maybeChain?.network;
 
   if (!chainName) {
     chainName = (await getChainFromMetadata(_genesisHash))?.name;

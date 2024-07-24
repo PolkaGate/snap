@@ -73,11 +73,9 @@ export const getSavedMeta = async (
 ): Promise<MetadataDef | undefined | Record<string, MetadataDef>> => {
   const persistedData = await getState();
 
-  if (genesisHash) {
-    return (persistedData?.metadata as unknown as Record<string, MetadataDef>)?.[genesisHash];
-  } else {
-    return (persistedData?.metadata as unknown as Record<string, MetadataDef>);
-  }
+  return genesisHash
+    ? (persistedData?.metadata as unknown as Record<string, MetadataDef>)?.[genesisHash]
+    : (persistedData?.metadata as unknown as Record<string, MetadataDef>);
 };
 
 export const setMetadata = async (origin: string, data: MetadataDef) => {

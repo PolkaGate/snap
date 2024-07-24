@@ -4,10 +4,7 @@
 import { createWsEndpoints } from '@polkadot/apps-config';
 import getChainName, { sanitizeChainName } from './getChainName';
 
-export default async function getEndpoint(
-  _genesisHash: string | undefined,
-): Promise<string | undefined> {
-
+export default async function getEndpoint(_genesisHash: string | undefined): Promise<string | undefined> {
   if (!_genesisHash) {
     console.error('genesisHash should not be undefined');
     return undefined;

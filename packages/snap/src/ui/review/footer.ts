@@ -9,7 +9,6 @@ import {
 } from '@metamask/snaps-sdk';
 import type { Balance } from '@polkadot/types/interfaces';
 
-import type { Decoded } from '../../rpc';
 import getChainLogoSvg from '../../util/getChainLogoSvg';
 
 export const sanitizeText = (text?: string) => {
