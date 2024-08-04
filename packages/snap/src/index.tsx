@@ -112,8 +112,9 @@ export const onInstall: OnInstallHandler = async () => {
 };
 
 export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
-  console.log('event:', event.type, event.name, event.value)
   const state = await getState();
+  console.log('state:', state)
+
   if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
 
     switch (event.name) {

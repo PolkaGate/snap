@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export { default as exportAccount } from './exportAccount.svg'
+export { default as ellipsisV } from './ellipsisV.svg'
 export { default as metadata } from './metadata.svg'
 export { default as send } from './send.svg'
 export { default as settings } from './settings.svg'

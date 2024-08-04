@@ -5,5 +5,10 @@
       "url": "https://raw.githubusercontent.com/MetaMask/SIPs/main/assets/sip-9/snap.manifest.schema.json"
     }
   ],
-  "cSpell.words": ["lavamoat", "nvmrc", "packagejson"]
+  "cSpell.words": [
+    "bittensor",
+    "lavamoat",
+    "nvmrc",
+    "packagejson"
+  ]
 }

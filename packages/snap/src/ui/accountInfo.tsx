@@ -41,11 +41,11 @@ export async function accountInfo(id: string, genesisHash: HexString) {
   const { address } = await getKeyPair(undefined, genesisHash);
 
   if (!genesisHash) throw new Error(`No genesis hash found for chain :${genesisHash}`)
+  updateSnapState('currentGenesisHash', genesisHash).catch(console.error);
 
   const balances = await getBalances(genesisHash, address);
   const logo = await getLogo(genesisHash)
-  updateSnapState('currentGenesisHash', genesisHash ).catch(console.error);
-  
+
   await snap.request({
     method: 'snap_updateInterface',
     params: {
