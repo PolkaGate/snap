@@ -28,7 +28,7 @@
   "dependencies": {
     "@metamask/key-tree": "^9.0.0",
     "@metamask/rpc-errors": "^6.2.1",
-    "@metamask/snaps-sdk": "^5.0.0",
+    "@metamask/snaps-sdk": "^6.2.1",
     "@polkadot/api": "^12.1.1",
     "@polkadot/apps-config": "^0.141.1",
     "@polkadot/extension-chains": "^0.47.6",

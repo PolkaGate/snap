@@ -1,17 +1,16 @@
 import { accountDemo } from './accountDemo';
-import { getGenesisHash } from '../chains';
 import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
-import { getState, setSnapState } from '../rpc';
-import { getCurrentChain } from '../util';
+import { getState, setSnapState, updateSnapState } from '../rpc';
 import { getBalances } from '../util/getBalance';
 import { getKeyPair } from '../util/getKeyPair';
+import { HexString } from '@polkadot/util/types';
+import { getLogo } from './image/chains/getLogo';
 
 /**
  * Returns the next chain in a circular way.
  */
 export async function getNextChain() {
   const state = await getState();
-  // console.log('state in getNextChain', state);
 
   const currentChainName = (state?.currentChain ?? DEFAULT_CHAIN_NAME) as string;
   const index = CHAIN_NAMES.findIndex((name) => name === currentChainName);
@@ -26,7 +25,6 @@ export async function getNextChain() {
 
   // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
   (state ?? {}).currentChain = nextChainName;
-  // console.log('update state in getNextChain', state);
 
   await setSnapState(state);
 
@@ -37,24 +35,22 @@ export async function getNextChain() {
  * Show account info on the current chain.
  *
  * @param id - The id of current UI interface.
- * @param chainName - Current chain name.
+ * @param genesisHash - Chain genesisHash.
  */
-export async function accountInfo(id: string, chainName?: string) {
-  const _chainName = chainName ?? (await getCurrentChain());
+export async function accountInfo(id: string, genesisHash: HexString) {
+  const { address } = await getKeyPair(undefined, genesisHash);
 
-  const { address } = await getKeyPair(_chainName);
-
-  const genesisHash = await getGenesisHash(_chainName);
-
-  if (!genesisHash) throw new Error(`No genesis hash found for chain name:${_chainName}`)
+  if (!genesisHash) throw new Error(`No genesis hash found for chain :${genesisHash}`)
 
   const balances = await getBalances(genesisHash, address);
-
+  const logo = await getLogo(genesisHash)
+  updateSnapState('currentGenesisHash', genesisHash ).catch(console.error);
+  
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(address, _chainName, genesisHash, balances),
+      ui: accountDemo(address, genesisHash, balances, logo),
     },
   });
 }

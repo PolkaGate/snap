@@ -1,4 +1,4 @@
-import { Json, divider, heading, panel, text } from '@metamask/snaps-sdk';
+import { divider, heading, panel, text } from '@metamask/snaps-sdk';
 import type { ApiPromise } from '@polkadot/api';
 import type {
   InjectedMetadataKnown,
@@ -7,6 +7,7 @@ import type {
 
 import getChainInfo from '../util/getChainInfo';
 import { rand } from '../util/rand';
+import { HexString } from '@polkadot/util/types';
 
 let selfOrigin: string;
 
@@ -68,9 +69,7 @@ export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
     : [{ genesisHash: '0x' as `0x${string}`, specVersion: 0 }];
 };
 
-export const getSavedMeta = async (
-  genesisHash?: string,
-): Promise<MetadataDef | undefined | Record<string, MetadataDef>> => {
+export const getSavedMeta = async (  genesisHash?: HexString): Promise<MetadataDef | undefined | Record<string, MetadataDef>> => {
   const persistedData = await getState();
 
   return genesisHash

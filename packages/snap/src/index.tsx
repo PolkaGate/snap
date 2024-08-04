@@ -24,6 +24,7 @@ import {
   getAddress,
   signJSON,
   signRaw,
+  getState,
 } from './rpc';
 import {
   showSpinner,
@@ -36,6 +37,11 @@ import {
 } from './ui';
 import { getBalances, getCurrentChain, getKeyPair } from './util';
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
+import type { Hex } from '@metamask/utils';
+import { getLogo } from './ui/image/chains/getLogo';
+import { HexString } from '@polkadot/util/types';
+import { staking } from './ui/staking';
+import { voting } from './ui/voting';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -74,9 +80,10 @@ export const onHomePage: OnHomePageHandler = async () => {
   const genesisHash = await getGenesisHash(currentChainName) ?? POLKADOT_GENESIS; // These will be changed when dropdown component will be available
 
   const balances = await getBalances(genesisHash, address);
+  const logo = await getLogo(genesisHash);
 
   return {
-    content: accountDemo(address, currentChainName, genesisHash, balances),
+    content: accountDemo(address, genesisHash, balances, logo),
   };
 };
 
@@ -86,6 +93,7 @@ export const onHomePage: OnHomePageHandler = async () => {
  */
 export const onInstall: OnInstallHandler = async () => {
   setSnapState({ currentChain: DEFAULT_CHAIN_NAME }).catch(console.error); // This runs only once
+  setSnapState({ currentGenesisHash: POLKADOT_GENESIS }).catch(console.error); // we can replace currentChainName with this currentGenesisHash
 
   await snap.request({
     method: 'snap_dialog',
@@ -106,26 +114,33 @@ export const onInstall: OnInstallHandler = async () => {
 };
 
 export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
-  if (event.type === UserInputEventType.ButtonClickEvent) {
+  console.log('event:', event.type, event.name, event.value)
+  const state = await getState();
+  if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
+
     switch (event.name) {
       case 'switchChain': {
         await showSpinner(id, 'Switching chain ...');
-        const nextChainName = await getNextChain();
-        await accountInfo(id, nextChainName);
+        const genesisHash = event.value;
+        await accountInfo(id, genesisHash);
         break;
       }
 
-      case 'dapp':
-        await showDappList(id);
+      case 'stake':
+        await staking(id);
         break;
 
-      case 'showExportAccount':
+      case 'vote':
+        await voting(id);
+        break;
+
+      case 'export':
         await exportAccount(id);
         break;
 
       case 'backToHome':
         await showSpinner(id, 'Loading ...');
-        await accountInfo(id);
+        await accountInfo(id, state?.currentGenesisHash as HexString);
         break;
 
       default:
@@ -146,8 +161,10 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
       //   break;
 
       case 'saveExportedAccount':
-        await showSpinner(id, 'Exporting the account ...');
-        await showJsonContent(id, value?.password);
+        if(value?.password){
+          await showSpinner(id, 'Exporting the account ...');
+          await showJsonContent(id, value.password as string);
+        }
         break;
 
       default:
