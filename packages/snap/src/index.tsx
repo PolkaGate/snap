@@ -30,18 +30,16 @@ import {
   showSpinner,
   accountDemo,
   accountInfo,
-  showDappList,
   exportAccount,
   showJsonContent,
-  getNextChain,
 } from './ui';
 import { getBalances, getCurrentChain, getKeyPair } from './util';
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
-import type { Hex } from '@metamask/utils';
 import { getLogo } from './ui/image/chains/getLogo';
 import { HexString } from '@polkadot/util/types';
 import { staking } from './ui/staking';
 import { voting } from './ui/voting';
+import { polkagateApps } from './ui/polkagateApps';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -125,6 +123,10 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
         await accountInfo(id, genesisHash);
         break;
       }
+
+      case 'send':
+        await polkagateApps(id);
+        break;
 
       case 'stake':
         await staking(id);

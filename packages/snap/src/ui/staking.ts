@@ -13,11 +13,10 @@ export async function staking(id: string) {
       ui: panel([
         heading('Stake Here!'),
         divider(),
-        text(
-          'Below are the recommended staking dapps where you can safely stake your tokens.',
-        ),
-        text('Staking Dashboard: **[staking.polkadot.cloud](https://staking.polkadot.cloud)**'),
-        text('PolkaGate Apps: **[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
+        text('Here are the recommended staking dapps where you can safely stake your tokens:'),
+        divider(),
+        text('1- Dashboard: **[staking.polkadot.cloud](https://staking.polkadot.cloud)**'),
+        text('2- PolkaGate Apps: **[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
         divider(),
         button({
           variant: 'primary',
