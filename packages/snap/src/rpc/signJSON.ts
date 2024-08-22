@@ -1,13 +1,14 @@
 import type { SignerResult } from '@polkadot/api/types';
 import type { SignerPayloadJSON } from '@polkadot/types/types';
 
-import { checkAndUpdateMetaData, getSavedMeta, reviewUseApi, updateSnapState } from '.';
+import { checkAndUpdateMetaData, getSavedMeta, reviewUseApi } from '.';
 import { getApi } from '../util/getApi';
 import { getKeyPair } from '../util/getKeyPair';
 import { metadataExpand } from '@polkadot/extension-chains';
 import { reviewUseMetadata } from '../ui/review/reviewUseMetadata';
 import { hasEndpoint } from '../util';
 import { metadataAlert } from '../ui/review/metadataAlert';
+import { updateSnapState } from './stateManagement';
 
 export const signJSON = async (
   origin: string,

@@ -43,6 +43,7 @@ const westendAssetHub = {
 };
 
 selectableNetworks.push(westend as Network, westendAssetHub as Network);
+export const DISABLED_NETWORKS = ['3DP network', 'xx network', 'Polkadex Mainnet', 'Stafi', 'Peaq Network', 'Genshiro Network'];
 
 // keyWord can be genesisHash, chainName, or even display name
 export const getChain = (keyWord: string): Network | null => {
@@ -77,8 +78,9 @@ export const getChainOptions = (): Options[] => {
   if (!chains) {
     return [];
   }
+  
   return chains
-    .filter(({ genesisHash }) => genesisHash?.length)
+    .filter(({ genesisHash, displayName }) => genesisHash?.length && !DISABLED_NETWORKS.includes(displayName))
     .map(({ displayName, genesisHash }) => (
       {
         value: genesisHash[0],

@@ -25,10 +25,10 @@ export const MenuBar: SnapComponent = () => {
         icon={exportAccount}
         label='Export'
       />
-      <Btn
+      {/* <Btn
         icon={settings}
         label='Setting'
-      />
+      /> */}
     </Box>
   );
 };

@@ -18,6 +18,7 @@ import { formatCamelCase } from '../util/formatCamelCase';
 import { getApi } from '../util/getApi';
 import { getCurrentChain } from '../util/getCurrentChain';
 import { getKeyPair } from '../util/getKeyPair';
+import { progress } from './progress';
 
 /**
  * Run the transfer extrinsics and then show the result page.
@@ -194,17 +195,12 @@ export async function showResult(id: string, result: Record<string, string>) {
  * @param id - The id of interface.
  * @param title - The title to show while spinning.
  */
-export async function showSpinner(id: string, title?: string) {
+export async function showSpinner(id: string, label?: string) {
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: panel([
-        heading('Processing'),
-        divider(),
-        text(title ?? 'We are working on your transaction, Please wait ...'),
-        spinner(),
-      ]),
+      ui: progress(label)
     },
   });
 }

@@ -9,8 +9,11 @@ import { HexString } from '@polkadot/util/types';
  * @param genesisHash - The genesisHash of the chain will be used to find an endpoint to use.
  */
 export async function getApi(genesisHash: HexString): Promise<ApiPromise> {
+  console.info(`Preparing API for ${genesisHash}`)
+
   const endpoint = await getEndpoint(genesisHash);
-  
+  console.info(`Selected Endpoint on ${genesisHash} is ${endpoint} `)
+
   if (!endpoint) {
     throw new Error(`No endpoint with genesisHash: '${genesisHash}'.`);
   }

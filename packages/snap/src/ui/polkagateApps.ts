@@ -15,10 +15,10 @@ export async function polkagateApps(id: string) {
         divider(),
         text(
           'With the PolkaGate app, you can **send** funds, **stake** tokens, **vote** on referenda, create an **identity**, view **assets** across chains, **unlock** tokens, and more.'),
-        text('**[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
+        text('Visit: **[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
         divider(),
         button({
-          variant: 'primary',
+          variant: 'secondary',
           value: 'Back',
           name: 'backToHome',
         }),

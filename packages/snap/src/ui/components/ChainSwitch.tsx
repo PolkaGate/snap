@@ -15,18 +15,14 @@ export const ChainSwitch: SnapComponent<Props> = ({ genesisHash, logo }: Props) 
 
   return (
     <Box direction="horizontal" alignment="space-between">
-      <Text> Chain</Text>
-      <Box direction="horizontal" >
-        <Dropdown name="switchChain" value={genesisHash}>
-          {options.map(({ value, text }) => (
-            <Option value={String(value)}>
-              {text}
-            </Option>
-          ))}
-        </Dropdown>
-        <Image src={logo} />
-      </Box>
-
+      <Image src={logo} />
+      <Dropdown name="switchChain" value={genesisHash}>
+        {options.map(({ value, text }) => (
+          <Option value={String(value)}>
+            {text}
+          </Option>
+        ))}
+      </Dropdown>
     </Box>
   );
 };

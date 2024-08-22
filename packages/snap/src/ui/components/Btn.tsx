@@ -11,8 +11,8 @@ type Props = {
 export const Btn: SnapComponent<Props> = ({ icon, label }: Props) => {
 
   return (
-    <Box direction="vertical" alignment="center">
-      <Button name={label?.toLocaleLowerCase()} variant='primary'>
+    <Box direction="vertical" alignment="start">
+      <Button name={label?.toLowerCase()} variant='primary'>
         {label}
       </Button>
       <Image src={icon} />

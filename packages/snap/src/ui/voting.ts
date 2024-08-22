@@ -21,7 +21,7 @@ export async function voting(id: string) {
         text('2- PolkaGate Apps: **[apps.polkagate.xyz](https://apps.polkagate.xyz)**'),
         divider(),
         button({
-          variant: 'primary',
+          variant: 'secondary',
           value: 'Back',
           name: 'backToHome',
         }),

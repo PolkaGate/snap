@@ -1,35 +1,11 @@
 import { accountDemo } from './accountDemo';
 import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
-import { getState, setSnapState, updateSnapState } from '../rpc';
 import { getBalances } from '../util/getBalance';
 import { getKeyPair } from '../util/getKeyPair';
 import { HexString } from '@polkadot/util/types';
 import { getLogo } from './image/chains/getLogo';
-
-/**
- * Returns the next chain in a circular way.
- */
-export async function getNextChain() {
-  const state = await getState();
-
-  const currentChainName = (state?.currentChain ?? DEFAULT_CHAIN_NAME) as string;
-  const index = CHAIN_NAMES.findIndex((name) => name === currentChainName);
-
-  let nextChainName = DEFAULT_CHAIN_NAME;
-
-  if (index + 1 === CHAIN_NAMES.length) {
-    nextChainName = CHAIN_NAMES[0];
-  } else if (index < CHAIN_NAMES.length - 1) {
-    nextChainName = CHAIN_NAMES[index + 1];
-  }
-
-  // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-  (state ?? {}).currentChain = nextChainName;
-
-  await setSnapState(state);
-
-  return nextChainName;
-}
+import { getSnapState, setSnapState, updateSnapState } from '../rpc/stateManagement';
+import { getCurrentChainTokenPrice } from '../util/getCurrentChainTokenPrice';
 
 /**
  * Show account info on the current chain.
@@ -38,7 +14,11 @@ export async function getNextChain() {
  * @param genesisHash - Chain genesisHash.
  */
 export async function accountInfo(id: string, genesisHash: HexString) {
+  console.info(`Preparing account info for ${genesisHash}`)
+
   const { address } = await getKeyPair(undefined, genesisHash);
+  const priceInUsd = await getCurrentChainTokenPrice();
+
 
   if (!genesisHash) throw new Error(`No genesis hash found for chain :${genesisHash}`)
   updateSnapState('currentGenesisHash', genesisHash).catch(console.error);
@@ -50,7 +30,7 @@ export async function accountInfo(id: string, genesisHash: HexString) {
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(address, genesisHash, balances, logo),
+      ui: accountDemo(address, genesisHash, balances, logo, priceInUsd),
     },
   });
 }

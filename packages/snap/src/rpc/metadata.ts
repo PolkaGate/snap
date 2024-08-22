@@ -8,6 +8,7 @@ import type {
 import getChainInfo from '../util/getChainInfo';
 import { rand } from '../util/rand';
 import { HexString } from '@polkadot/util/types';
+import { getSnapState, setSnapState } from './stateManagement';
 
 let selfOrigin: string;
 
@@ -43,21 +44,8 @@ async function showConfirmUpdateMetadata(
   return userResponse;
 }
 
-export const getState = async () =>
-  await snap.request({
-    method: 'snap_manageState',
-    params: { operation: 'get' },
-  });
-
-export const setSnapState = async (state: any) => {
-  return await snap.request({
-    method: 'snap_manageState',
-    params: { operation: 'update', newState: state },
-  });
-};
-
 export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
-  const persistedData = await getState();
+  const persistedData = await getSnapState();
 
   return persistedData?.metadata
     ? Object.values(persistedData.metadata)?.map(
@@ -69,8 +57,8 @@ export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
     : [{ genesisHash: '0x' as `0x${string}`, specVersion: 0 }];
 };
 
-export const getSavedMeta = async (  genesisHash?: HexString): Promise<MetadataDef | undefined | Record<string, MetadataDef>> => {
-  const persistedData = await getState();
+export const getSavedMeta = async (genesisHash?: HexString): Promise<MetadataDef | undefined | Record<string, MetadataDef>> => {
+  const persistedData = await getSnapState();
 
   return genesisHash
     ? (persistedData?.metadata as unknown as Record<string, MetadataDef>)?.[genesisHash]
@@ -78,7 +66,7 @@ export const getSavedMeta = async (  genesisHash?: HexString): Promise<MetadataD
 };
 
 export const setMetadata = async (origin: string, data: MetadataDef) => {
-  const state = (await getState()) || {};
+  const state = (await getSnapState()) || {};
   if (!state.metadata) {
     state.metadata = {};
   }
@@ -113,12 +101,4 @@ export const checkAndUpdateMetaData = async (api: ApiPromise) => {
     selfOrigin = `Polkagate-${rand()}`;
     await setMetadata(selfOrigin, metaData);
   }
-};
-
-export const updateSnapState = async (field: string, data: any) => {
-  const state = (await getState()) || {};
-
-  state[field] = data;
-
-  return Boolean(await setSnapState(state));
 };

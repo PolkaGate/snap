@@ -13,6 +13,8 @@ import { DEFAULT_NETWORK_PREFIX } from '../defaults';
  * @returns The formatted address.
  */
 export function getFormatted(genesisHash: string, address: string): string {
+  console.info(`Preparing formatted address for ${address} on ${genesisHash}`)
+
   const maybeChain = getChain(genesisHash as string);
   const publicKey = decodeAddress(address);
 

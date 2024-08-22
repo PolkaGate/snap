@@ -18,6 +18,7 @@ export type Balances = {
   locked: Balance;
   soloTotal?: Balance;
   pooledBalance?: Balance;
+  decimal: number;
 };
 
 /**
@@ -28,8 +29,12 @@ export type Balances = {
  * @returns The total, transferable, and locked balances.
  */
 export async function getBalances(genesisHash: HexString, address: string,): Promise<Balances> {
+  console.info(`getting balances for ${address} on ${genesisHash}`)
+
   const api = await getApi(genesisHash);
   const formatted = getFormatted(genesisHash, address);
+  console.info(`Formatted address for ${address} is ${formatted}`)
+
   const balances = (await api.query.system.account(formatted)) as unknown as {
     data: AccountData;
   };
@@ -46,7 +51,8 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     }
   }
 
-  let pooledBalance:BN;
+  let pooledBalance: Balance | undefined = undefined;
+
   if (api.query.staking?.ledger) {
     const mayBePooledBalance = await getPooledBalance(api, formatted);
 
@@ -73,7 +79,9 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     balances.data.frozen,
   ) as unknown as Balance;
 
-  return { total, transferable, locked, soloTotal, pooledBalance };
+  const decimal = api.registry.chainDecimals[0];
+
+  return { total, transferable, locked, soloTotal, pooledBalance, decimal };
 }
 
 

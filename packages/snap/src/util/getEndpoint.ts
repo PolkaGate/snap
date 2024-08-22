@@ -6,13 +6,15 @@ import getChainName, { sanitizeChainName } from './getChainName';
 import { HexString } from '@polkadot/util/types';
 
 export default async function getEndpoint(_genesisHash: HexString | undefined): Promise<string | undefined> {
+  console.info(`Getting ENDPOINT for ${_genesisHash}`)
+
   if (!_genesisHash) {
     console.error('genesisHash should not be undefined');
     return undefined;
   }
   const allEndpoints = createWsEndpoints(() => '');
   const chainName = await getChainName(_genesisHash);
-  const sanitizedChainName = sanitizeChainName(chainName)?.toLocaleLowerCase();
+  const sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
 
   const endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>
@@ -23,6 +25,10 @@ export default async function getEndpoint(_genesisHash: HexString | undefined): 
       )
     )
     : [];
+
+  if (endpoints.length === 0) {
+    throw new Error(' No endpoints found for this chain!')
+  }
 
   return (
     endpoints[3]?.value ||
