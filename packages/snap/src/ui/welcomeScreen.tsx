@@ -20,7 +20,6 @@ export const welcomeScreen = (address: string, genesisHash: HexString, logo: str
       <Divider />
       <Text>Explore features like managing balances, staking, voting in governance, and more—all from the PolkaGate home screen.</Text>
       <Text>To get started, open MetaMask, go to <Bold>Menu → Snaps</Bold>, and click the PolkaGate icon.</Text>
-      <Divider />
     </Box>
   );
 };
