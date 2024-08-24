@@ -5,7 +5,6 @@ import { getFormatted } from '../util/getFormatted';
 
 import { Copyable, Box, Heading, Divider, Text, Bold } from "@metamask/snaps-sdk/jsx";
 
-import { MenuBar } from './components';
 import { HexString } from '@polkadot/util/types';
 
 export const welcomeScreen = (address: string, genesisHash: HexString, logo: string) => {
@@ -15,12 +14,13 @@ export const welcomeScreen = (address: string, genesisHash: HexString, logo: str
 
   return (
     <Box >
-      <Heading>🏠 Your account is now created 🚀</Heading>
+      <Heading>"🎉 Polkadot Account Created! 🚀"</Heading>
+      <Text>Your account address:</Text>
       <Copyable value={formatted} />
       <Divider />
-      <Text> To access your account's details, navigate to  Metamask <Bold>Menu → Snaps</Bold> and click on the PolkaGate icon.</Text>
+      <Text>Explore features like managing balances, staking, voting in governance, and more—all from the PolkaGate home screen.</Text>
+      <Text>To get started, open MetaMask, go to <Bold>Menu → Snaps</Bold>, and click the PolkaGate icon.</Text>
       <Divider />
-      <MenuBar />
     </Box>
   );
 };

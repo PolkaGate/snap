@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Box, SnapComponent } from "@metamask/snaps-sdk/jsx";
-import { exportAccount, send, stake, vote, settings } from '../image/icons';
+import { send, stake, vote, more } from '../image/icons';
 import { Btn } from "./Btn";
 
 
@@ -22,13 +22,9 @@ export const MenuBar: SnapComponent = () => {
         label='Vote'
       />
       <Btn
-        icon={exportAccount}
-        label='Export'
+        icon={more}
+        label='More'
       />
-      {/* <Btn
-        icon={settings}
-        label='Setting'
-      /> */}
     </Box>
   );
 };

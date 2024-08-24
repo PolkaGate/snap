@@ -1,7 +1,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import {  UserInputEventType } from '@metamask/snaps-sdk';
+import { UserInputEventType } from '@metamask/snaps-sdk';
 import type {
   OnHomePageHandler,
   OnInstallHandler,
@@ -36,6 +36,7 @@ import { getCurrentChainTokenPrice } from './util/getCurrentChainTokenPrice';
 import getChainName from './util/getChainName';
 import { DEFAULT_CHAIN_NAME } from './defaults';
 import { welcomeScreen } from './ui/welcomeScreen';
+import { showMore } from './ui/showMore';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -96,7 +97,7 @@ export const onInstall: OnInstallHandler = async () => {
     method: 'snap_dialog',
     params: {
       type: 'alert',
-      content:welcomeScreen(address, genesisHash, logo)
+      content: welcomeScreen(address, genesisHash, logo)
     },
   });
 };
@@ -116,6 +117,10 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
 
       case 'send':
         await polkagateApps(id);
+        break;
+
+      case 'more':
+        await showMore(id);
         break;
 
       case 'stake':

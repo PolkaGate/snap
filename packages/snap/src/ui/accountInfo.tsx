@@ -1,10 +1,9 @@
-import { accountDemo } from './accountDemo';
-import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
+import { accountDemo } from './partials/accountDemo';
 import { getBalances } from '../util/getBalance';
 import { getKeyPair } from '../util/getKeyPair';
 import { HexString } from '@polkadot/util/types';
 import { getLogo } from './image/chains/getLogo';
-import { getSnapState, setSnapState, updateSnapState } from '../rpc/stateManagement';
+import { updateSnapState } from '../rpc/stateManagement';
 import { getCurrentChainTokenPrice } from '../util/getCurrentChainTokenPrice';
 
 /**
