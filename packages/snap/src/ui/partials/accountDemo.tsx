@@ -4,7 +4,7 @@
 import type { Balances } from '../../util/getBalance';
 import { getFormatted } from '../../util/getFormatted';
 
-import { Copyable, Box, Heading, Divider, Text } from "@metamask/snaps-sdk/jsx";
+import { Copyable, Box, Heading, Divider } from '@metamask/snaps-sdk/jsx';
 
 import { BalanceInfo, ChainSwitch, MenuBar } from '../components';
 import { HexString } from '@polkadot/util/types';
