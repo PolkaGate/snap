@@ -4,9 +4,8 @@
 import { BN } from '@polkadot/util';
 import type { Balances } from '../../util/getBalance';
 
-import { Box, Text, Row, SnapComponent } from "@metamask/snaps-sdk/jsx";
+import { Box, Row, SnapComponent, Value } from "@metamask/snaps-sdk/jsx";
 import { Balance } from '@polkadot/types/interfaces';
-import React from 'react';
 
 type Props = {
   balances: Balances;
@@ -28,7 +27,7 @@ const BalanceRow: SnapComponent<BalanceRowProps> = ({ label, balance, decimal, p
 
   return (
     <Row label={label}>
-      <Text>{balance ? balance.toHuman() : '0'}   |   {String(value)} USD</Text>
+      <Value value= {balance ? balance.toHuman() : '0'}  extra={`$${String(value)}`} />
     </Row>
   );
 };
