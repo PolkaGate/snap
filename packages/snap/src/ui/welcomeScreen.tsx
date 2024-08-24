@@ -14,7 +14,7 @@ export const welcomeScreen = (address: string, genesisHash: HexString, logo: str
 
   return (
     <Box >
-      <Heading>"🎉 Polkadot Account Created! 🚀"</Heading>
+      <Heading>🎉 Polkadot Account Created! 🚀</Heading>
       <Text>Your account address:</Text>
       <Copyable value={formatted} />
       <Divider />
