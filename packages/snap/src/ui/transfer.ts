@@ -6,7 +6,6 @@ import {
   input,
   panel,
   text,
-  spinner,
   row,
   divider,
   copyable,
@@ -183,27 +182,6 @@ export async function showResult(id: string, result: Record<string, string>) {
           name: 'sendDone',
           children: [button('Done', ButtonType.Submit, 'submit')],
         }),
-      ]),
-    },
-  });
-}
-
-/**
- * Show an spinner while processing.
- *
- * @param id - The id of interface.
- * @param title - The title to show while spinning.
- */
-export async function showSpinner(id: string, title?: string) {
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: panel([
-        heading('Processing'),
-        divider(),
-        text(title ?? 'We are working on your transaction, Please wait ...'),
-        spinner(),
       ]),
     },
   });

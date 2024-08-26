@@ -15,7 +15,7 @@ const EMPTY_LOGO = `<svg width="100" height="100">
  * @param chainName - The name of a chain.
  * @returns The logo in base64 format.
  */
-export default async function getChainLogoSvg(chainName: string): Promise<string | null> {  
+export default function getChainLogoSvg(chainName: string): string | null {  
   if (!chainName) {
     return null;
   }

@@ -1,13 +1,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-  divider,
-  heading,
-  panel,
-  text,
-  UserInputEventType,
-} from '@metamask/snaps-sdk';
+import { UserInputEventType } from '@metamask/snaps-sdk';
 import type {
   OnHomePageHandler,
   OnInstallHandler,
@@ -16,11 +10,9 @@ import type {
 } from '@metamask/snaps-sdk';
 
 import { getGenesisHash } from './chains';
-import { DEFAULT_CHAIN_NAME } from './defaults';
 import {
   getMetadataList,
   setMetadata,
-  setSnapState,
   getAddress,
   signJSON,
   signRaw,
@@ -29,13 +21,22 @@ import {
   showSpinner,
   accountDemo,
   accountInfo,
-  showDappList,
   exportAccount,
   showJsonContent,
-  getNextChain,
 } from './ui';
-import { getBalances, getCurrentChain, getKeyPair } from './util';
+import { getBalances, getKeyPair } from './util';
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
+import { getLogo } from './ui/image/chains/getLogo';
+import { HexString } from '@polkadot/util/types';
+import { staking } from './ui/staking';
+import { voting } from './ui/voting';
+import { polkagateApps } from './ui/polkagateApps';
+import { getSnapState, setSnapState, updateSnapState } from './rpc/stateManagement';
+import { getCurrentChainTokenPrice } from './util/getCurrentChainTokenPrice';
+import getChainName from './util/getChainName';
+import { DEFAULT_CHAIN_NAME } from './defaults';
+import { welcomeScreen } from './ui/welcomeScreen';
+import { showMore } from './ui/showMore';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -68,15 +69,15 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
  * @returns A static panel rendered with custom UI.
  */
 export const onHomePage: OnHomePageHandler = async () => {
-  const currentChainName = await getCurrentChain();
+  const currentChainName = DEFAULT_CHAIN_NAME; // to reset chain on each new visit
   const { address } = await getKeyPair(currentChainName);
-
   const genesisHash = await getGenesisHash(currentChainName) ?? POLKADOT_GENESIS; // These will be changed when dropdown component will be available
-
   const balances = await getBalances(genesisHash, address);
+  const logo = await getLogo(genesisHash);
+  const priceInUsd = await getCurrentChainTokenPrice();
 
   return {
-    content: accountDemo(address, currentChainName, genesisHash, balances),
+    content: accountDemo(address, genesisHash, balances, logo, priceInUsd),
   };
 };
 
@@ -85,47 +86,59 @@ export const onHomePage: OnHomePageHandler = async () => {
  * installed.
  */
 export const onInstall: OnInstallHandler = async () => {
-  setSnapState({ currentChain: DEFAULT_CHAIN_NAME }).catch(console.error); // This runs only once
+  setSnapState({ currentGenesisHash: POLKADOT_GENESIS }).catch(console.error);
+
+  const genesisHash = POLKADOT_GENESIS;
+  const { address } = await getKeyPair(undefined, genesisHash);
+  const logo = await getLogo(genesisHash)
+
 
   await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'alert',
-      content: panel([
-        heading('🏠 Your account is now created 🚀'),
-        divider(),
-        text(
-          "To access your account's information, navigate to **Menu → Snaps** and click on the Polkagate icon.",
-        ),
-        text(
-          'To manage your account, please visit: **[https://apps.polkagate.xyz](https://apps.polkagate.xyz)**',
-        ),
-      ]),
+      content: welcomeScreen(address, genesisHash, logo)
     },
   });
 };
 
 export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
-  if (event.type === UserInputEventType.ButtonClickEvent) {
+  if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
+
     switch (event.name) {
       case 'switchChain': {
-        await showSpinner(id, 'Switching chain ...');
-        const nextChainName = await getNextChain();
-        await accountInfo(id, nextChainName);
+        const genesisHash = event.value;
+        const destinationChainName = await getChainName(genesisHash)
+        await showSpinner(id, `Switching chain to ${destinationChainName} ...`);
+        await updateSnapState('currentGenesisHash', genesisHash);
+        await accountInfo(id, genesisHash);
         break;
       }
 
-      case 'dapp':
-        await showDappList(id);
+      case 'send':
+        await polkagateApps(id);
         break;
 
-      case 'showExportAccount':
+      case 'more':
+        await showMore(id);
+        break;
+
+      case 'stake':
+        await staking(id);
+        break;
+
+      case 'vote':
+        await voting(id);
+        break;
+
+      case 'export':
         await exportAccount(id);
         break;
 
       case 'backToHome':
         await showSpinner(id, 'Loading ...');
-        await accountInfo(id);
+        const state = await getSnapState();
+        await accountInfo(id, state?.currentGenesisHash as HexString);
         break;
 
       default:
@@ -137,17 +150,11 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
     const { value } = event;
 
     switch (event.name) {
-      // case 'transferInput': // will be uncommented when JSX components will be released
-      //   if (!event?.value?.amount) {
-      //     break;
-      //   }
-      //   await showSpinner(id);
-      //   await transferReview(id, value);
-      //   break;
-
       case 'saveExportedAccount':
-        await showSpinner(id, 'Exporting the account ...');
-        await showJsonContent(id, value?.password);
+        if (value?.password) {
+          await showSpinner(id, 'Exporting the account ...');
+          await showJsonContent(id, value.password as string);
+        }
         break;
 
       default:

@@ -1,60 +1,35 @@
-import { accountDemo } from './accountDemo';
-import { getGenesisHash } from '../chains';
-import { DEFAULT_CHAIN_NAME, CHAIN_NAMES } from '../defaults';
-import { getState, setSnapState } from '../rpc';
-import { getCurrentChain } from '../util';
+import { accountDemo } from './partials/accountDemo';
 import { getBalances } from '../util/getBalance';
 import { getKeyPair } from '../util/getKeyPair';
-
-/**
- * Returns the next chain in a circular way.
- */
-export async function getNextChain() {
-  const state = await getState();
-  // console.log('state in getNextChain', state);
-
-  const currentChainName = (state?.currentChain ?? DEFAULT_CHAIN_NAME) as string;
-  const index = CHAIN_NAMES.findIndex((name) => name === currentChainName);
-
-  let nextChainName = DEFAULT_CHAIN_NAME;
-
-  if (index + 1 === CHAIN_NAMES.length) {
-    nextChainName = CHAIN_NAMES[0];
-  } else if (index < CHAIN_NAMES.length - 1) {
-    nextChainName = CHAIN_NAMES[index + 1];
-  }
-
-  // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-  (state ?? {}).currentChain = nextChainName;
-  // console.log('update state in getNextChain', state);
-
-  await setSnapState(state);
-
-  return nextChainName;
-}
+import { HexString } from '@polkadot/util/types';
+import { getLogo } from './image/chains/getLogo';
+import { updateSnapState } from '../rpc/stateManagement';
+import { getCurrentChainTokenPrice } from '../util/getCurrentChainTokenPrice';
 
 /**
  * Show account info on the current chain.
  *
  * @param id - The id of current UI interface.
- * @param chainName - Current chain name.
+ * @param genesisHash - Chain genesisHash.
  */
-export async function accountInfo(id: string, chainName?: string) {
-  const _chainName = chainName ?? (await getCurrentChain());
+export async function accountInfo(id: string, genesisHash: HexString) {
+  console.info(`Preparing account info for ${genesisHash}`)
 
-  const { address } = await getKeyPair(_chainName);
+  const { address } = await getKeyPair(undefined, genesisHash);
+  const priceInUsd = await getCurrentChainTokenPrice();
 
-  const genesisHash = await getGenesisHash(_chainName);
 
-  if (!genesisHash) throw new Error(`No genesis hash found for chain name:${_chainName}`)
+  if (!genesisHash) throw new Error(`No genesis hash found for chain :${genesisHash}`)
+  updateSnapState('currentGenesisHash', genesisHash).catch(console.error);
 
   const balances = await getBalances(genesisHash, address);
+  const logo = await getLogo(genesisHash)
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(address, _chainName, genesisHash, balances),
+      ui: accountDemo(address, genesisHash, balances, logo, priceInUsd),
     },
   });
 }

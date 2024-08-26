@@ -8,12 +8,15 @@ import { stringToU8a } from '@polkadot/util';
 
 import { getChain, getChainFromMetadata } from '../chains';
 import { DEFAULT_CHAIN_NAME, DEFAULT_COIN_TYPE, DEFAULT_NETWORK_PREFIX } from '../defaults';
+import { HexString } from '@polkadot/util/types';
 
 export const getKeyPair = async (
   chainName: string = DEFAULT_CHAIN_NAME,
-  genesisHash?: string,
+  genesisHash?: HexString,
 ): Promise<KeyringPair> => {
 
+  console.info(`Getting keypair for ${genesisHash}`);
+  
   let prefix: number | undefined;
   prefix = getChain(genesisHash ?? chainName)?.prefix;
 

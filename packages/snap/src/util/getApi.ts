@@ -1,15 +1,19 @@
 import { ApiPromise, HttpProvider } from '@polkadot/api';
 
 import getEndpoint from './getEndpoint';
+import { HexString } from '@polkadot/util/types';
 
 /**
  * To get the api for a chain.
  *
  * @param genesisHash - The genesisHash of the chain will be used to find an endpoint to use.
  */
-export async function getApi(genesisHash: string): Promise<ApiPromise> {
+export async function getApi(genesisHash: HexString): Promise<ApiPromise> {
+  console.info(`Preparing API for ${genesisHash}`)
+
   const endpoint = await getEndpoint(genesisHash);
-  
+  console.info(`Selected Endpoint on ${genesisHash} is ${endpoint} `)
+
   if (!endpoint) {
     throw new Error(`No endpoint with genesisHash: '${genesisHash}'.`);
   }

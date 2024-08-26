@@ -1,6 +1,6 @@
 {
   "name": "@polkagate/snap",
-  "version": "0.4.2",
+  "version": "0.5.1",
   "description": "A MetaMask Snap to interact with Polkadot ecosystem, a platform for cross-chain communication and scalability. Use your MetaMask wallet to access Polkadot dApps and tokens. No extra extension needed.",
   "repository": {
     "type": "git",
@@ -26,9 +26,9 @@
     "test": "jest --silent"
   },
   "dependencies": {
-    "@metamask/key-tree": "^9.0.0",
-    "@metamask/rpc-errors": "^6.2.1",
-    "@metamask/snaps-sdk": "^5.0.0",
+    "@metamask/key-tree": "^9.1.2",
+    "@metamask/rpc-errors": "^6.3.1",
+    "@metamask/snaps-sdk": "^6.2.1",
     "@polkadot/api": "^12.1.1",
     "@polkadot/apps-config": "^0.141.1",
     "@polkadot/extension-chains": "^0.47.6",
@@ -39,16 +39,18 @@
     "@polkadot/ui-keyring": "^3.6.6",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
-    "buffer": "^6.0.3"
+    "@polkagate/apps-config": "^0.140.3",
+    "buffer": "^6.0.3",
+    "umi-request": "^1.4.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@lavamoat/allow-scripts": "^3.0.4",
     "@metamask/auto-changelog": "^3.4.4",
-    "@metamask/eslint-config": "^12.2.0",
-    "@metamask/eslint-config-jest": "^12.1.0",
-    "@metamask/eslint-config-nodejs": "^12.1.0",
-    "@metamask/eslint-config-typescript": "^12.1.0",
+    "@metamask/eslint-config": "^13.0.0",
+    "@metamask/eslint-config-jest": "^13.0.0",
+    "@metamask/eslint-config-nodejs": "^13.0.0",
+    "@metamask/eslint-config-typescript": "^13.0.0",
     "@metamask/snaps-cli": "^6.2.0",
     "@metamask/snaps-jest": "^8.1.2",
     "@metamask/utils": "^8.4.0",

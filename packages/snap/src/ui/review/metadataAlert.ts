@@ -9,7 +9,7 @@ import {
   text,
   image
 } from '@metamask/snaps-sdk';
-import metadata from "../image/metadata.svg";
+import { metadata } from '../image/icons';
 
 export async function metadataAlert(): Promise<DialogResult> {
 
