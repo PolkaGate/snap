@@ -71,7 +71,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
 
   const total = api.createType(
     'Balance',
-    balances.data.free.add(balances.data.reserved),
+    balances.data.free.add(balances.data.reserved).add(pooledBalance || BN_ZERO),
   ) as unknown as Balance;
 
   const locked = api.createType(
