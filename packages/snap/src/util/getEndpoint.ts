@@ -5,7 +5,7 @@ import { createWsEndpoints } from '@polkadot/apps-config';
 import getChainName, { sanitizeChainName } from './getChainName';
 import { HexString } from '@polkadot/util/types';
 
-export default async function getEndpoint(_genesisHash: HexString | undefined): Promise<string | undefined> {
+export default async function getEndpoint(_genesisHash: HexString | undefined, ignoreLightClient = true): Promise<string | undefined> {
   console.info(`Getting ENDPOINT for ${_genesisHash}`)
 
   if (!_genesisHash) {
@@ -18,7 +18,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined): 
 
   const endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>
-      e.value &&
+      e.value && (!ignoreLightClient || !e.value.startsWith('light') ) &&
       (
         String(e.info)?.toLowerCase() === sanitizedChainName ||
         String(e.text)?.toLowerCase()?.includes(sanitizedChainName || '')
@@ -27,7 +27,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined): 
     : [];
 
   if (endpoints.length === 0) {
-    throw new Error(' No endpoints found for this chain!')
+   return; // we can use metadata for signing in such cases
   }
 
   return (
