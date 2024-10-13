@@ -32,7 +32,7 @@ import { staking } from './ui/staking';
 import { voting } from './ui/voting';
 import { polkagateApps } from './ui/polkagateApps';
 import { getSnapState, setSnapState, updateSnapState } from './rpc/stateManagement';
-import { getCurrentChainTokenPrice } from './util/getCurrentChainTokenPrice';
+import { getNativeTokenPrice } from './util/getNativeTokenPrice';
 import getChainName from './util/getChainName';
 import { DEFAULT_CHAIN_NAME } from './defaults';
 import { welcomeScreen } from './ui/welcomeScreen';
@@ -74,7 +74,7 @@ export const onHomePage: OnHomePageHandler = async () => {
   const genesisHash = await getGenesisHash(currentChainName) ?? POLKADOT_GENESIS; // These will be changed when dropdown component will be available
   const balances = await getBalances(genesisHash, address);
   const logo = await getLogo(genesisHash);
-  const priceInUsd = await getCurrentChainTokenPrice();
+  const priceInUsd = await getNativeTokenPrice(genesisHash);
 
   return {
     content: accountDemo(address, genesisHash, balances, logo, priceInUsd),

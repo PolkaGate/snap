@@ -4,7 +4,7 @@ import { getKeyPair } from '../util/getKeyPair';
 import { HexString } from '@polkadot/util/types';
 import { getLogo } from './image/chains/getLogo';
 import { updateSnapState } from '../rpc/stateManagement';
-import { getCurrentChainTokenPrice } from '../util/getCurrentChainTokenPrice';
+import { getNativeTokenPrice } from '../util/getNativeTokenPrice';
 
 /**
  * Show account info on the current chain.
@@ -16,7 +16,7 @@ export async function accountInfo(id: string, genesisHash: HexString) {
   console.info(`Preparing account info for ${genesisHash}`)
 
   const { address } = await getKeyPair(undefined, genesisHash);
-  const priceInUsd = await getCurrentChainTokenPrice();
+  const priceInUsd = await getNativeTokenPrice(genesisHash);
 
 
   if (!genesisHash) throw new Error(`No genesis hash found for chain :${genesisHash}`)

@@ -18,10 +18,13 @@ export const accountDemo = (address: string, genesisHash: HexString, balances: B
     <Box >
       <Heading>Account</Heading>
       <Copyable value={formatted} />
+      <Divider />
+      <Heading>Chain</Heading>
       <ChainSwitch genesisHash={genesisHash} logo={logo} />
       <Divider />
       <Heading>Balance</Heading>
       <BalanceInfo balances={balances} price={price} />
+      <Divider />
       <Divider />
       <MenuBar />
     </Box>
