@@ -23,14 +23,14 @@ import {
   accountInfo,
   exportAccount,
   showJsonContent,
+  polkagateApps,
+  staking,
+  voting
 } from './ui';
 import { getBalances, getKeyPair } from './util';
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
 import { getLogo } from './ui/image/chains/getLogo';
 import { HexString } from '@polkadot/util/types';
-import { staking } from './ui/staking';
-import { voting } from './ui/voting';
-import { polkagateApps } from './ui/polkagateApps';
 import { getSnapState, setSnapState, updateSnapState } from './rpc/stateManagement';
 import { getNativeTokenPrice } from './util/getNativeTokenPrice';
 import getChainName from './util/getChainName';
@@ -136,7 +136,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
         break;
 
       case 'backToHome':
-        await showSpinner(id, 'Loading ...');
+        await showSpinner(id, 'Loading, please wait ...');
         const state = await getSnapState();
         await accountInfo(id, state?.currentGenesisHash as HexString);
         break;

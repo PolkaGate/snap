@@ -1,5 +1,4 @@
-import { Box, Image, Button, SnapComponent, Divider, Link, Heading } from "@metamask/snaps-sdk/jsx";
-import { book, email, exportAccount, twitter, webSite, youtube } from "./image/icons";
+import { Box, Button, SnapComponent, Divider, Link, Heading, Icon, Section, IconName, Footer, Container } from "@metamask/snaps-sdk/jsx";
 
 /**
  * This shows the more page
@@ -16,35 +15,45 @@ export async function showMore(id: string) {
   });
 }
 
-export const ui = () => {
+const ui = () => {
 
   return (
-    <Box direction="vertical" alignment="start">
-      <Heading>PolkaGate Snap Menu</Heading>
-      <MenuItem icon={exportAccount} name='export' label={'Export Account as JSON File'} />
-      <Divider />
-      <LinkItem icon={book} link='https://docs.polkagate.xyz' label={'View Documents'} />
-      <Divider />
-      <LinkItem icon={twitter} link='https://x.com/@polkagate' label={'Follow Us on X (twitter)'} />
-      <LinkItem icon={youtube} link='https://youtube.com/@polkagate' label={'Subscribe to YouTube Channel'} />
-      <LinkItem icon={webSite} link='https://polkagate.xyz' label={'Visit Website'} />
-      <LinkItem icon={email} link='mailto:polkagate@outlook.com' label={'Contact Us'} />
-      <Button name='backToHome' variant='destructive'>
-        Back
-      </Button>
-    </Box>
+    <Container>
+      <Box direction="vertical" alignment="start">
+        <Section>
+          <Box direction='horizontal' alignment='start'>
+            <Icon name="menu" size="md" />
+            <Heading>PolkaGate Snap Menu</Heading>
+          </Box>
+          <Divider />
+          <MenuItem icon='export' name='export' label={'Export Account as JSON File'} />
+          <Divider />
+          <LinkItem icon={'book'} link='https://docs.polkagate.xyz' label={'View Documents'} />
+          <Divider />
+          <LinkItem icon={'twitter'} link='https://x.com/@polkagate' label={'Follow Us on X (twitter)'} />
+          <LinkItem icon={'bookmark'} link='https://youtube.com/@polkagate' label={'Subscribe to YouTube Channel'} />
+          <LinkItem icon={'home'} link='https://polkagate.xyz' label={'Visit Website'} />
+          <LinkItem icon={'people'} link='mailto:polkagate@outlook.com' label={'Contact Us'} />
+        </Section>
+      </Box>
+      <Footer>
+        <Button name='backToHome' variant="destructive">
+          Back
+        </Button>
+      </Footer>
+    </Container>
   );
 };
 
 
 type MenuProps = {
-  icon: string;
+  icon: IconName;
   name: string;
   label: string;
 }
 
 type LinkProps = {
-  icon: string;
+  icon: IconName;
   link: string;
   label: string;
 }
@@ -53,7 +62,7 @@ export const MenuItem: SnapComponent<MenuProps> = ({ icon, name, label }: MenuPr
 
   return (
     <Box direction="horizontal" alignment="start">
-      <Image src={icon} />
+      <Icon name={icon} size="md" />
       <Button name={name?.toLowerCase()} variant='primary'>
         {label}
       </Button>
@@ -65,7 +74,7 @@ export const LinkItem: SnapComponent<LinkProps> = ({ icon, link, label }: LinkPr
 
   return (
     <Box direction="horizontal" alignment="start">
-      <Image src={icon} />
+      <Icon name={icon} size="md" />
       <Link href={link}>
         {label}
       </Link>
