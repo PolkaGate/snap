@@ -1,34 +1,35 @@
 import { HexString } from '@polkadot/util/types';
-import getPrices from '../getPrices';
+import { PriceValue } from './getPrices';
 import { getSnapState } from '../rpc/stateManagement';
 import getChainName, { sanitizeChainName } from './getChainName';
-import { getCurrentChain } from './getCurrentChain';
 
 const PRICE_VALIDITY_PERIOD = 5 * 60 * 1000;
+
+const DEFAULT_PRICE_VALUE = {
+  value: 0,
+  change: 0
+}
 /**
  * To get the chain's native token price.
  */
-export async function getNativeTokenPrice(genesisHash:HexString): Promise<number> {
+export async function getNativeTokenPrice(genesisHash: HexString): Promise<{genesisHash:HexString, price:PriceValue}> {
   const chainName = await getChainName(genesisHash);
   const priceId = sanitizeChainName(chainName)?.toLowerCase();
 
-  if(!priceId){
+  if (!priceId) {
     console.info('No priceId for genesisHash:', genesisHash)
-  
-    return 0;
+
+    return {genesisHash, price: DEFAULT_PRICE_VALUE};
   }
 
   const { priceInfo } = await getSnapState();
 
-  console.info('chain name in getNativeTokenPrice is:', priceId)
-  console.info('price info:', priceInfo)
-
+  let price = DEFAULT_PRICE_VALUE;
   if (priceInfo?.date && Date.now() - priceInfo.date < PRICE_VALIDITY_PERIOD && priceInfo.prices[priceId]) {
     // price exists and is updated
-    return priceInfo.prices[priceId].value || 0;
+    price= priceInfo.prices[priceId];
   }
 
-  const newPriceInfo = await getPrices();
 
-  return newPriceInfo?.prices[priceId]?.value || 0;
+  return {genesisHash, price};
 }

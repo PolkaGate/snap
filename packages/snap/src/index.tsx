@@ -9,7 +9,6 @@ import type {
   OnUserInputHandler,
 } from '@metamask/snaps-sdk';
 
-import { getGenesisHash } from './chains';
 import {
   getMetadataList,
   setMetadata,
@@ -27,16 +26,16 @@ import {
   staking,
   voting
 } from './ui';
-import { getBalances, getKeyPair } from './util';
+import { getKeyPair } from './util';
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
 import { getLogo } from './ui/image/chains/getLogo';
-import { HexString } from '@polkadot/util/types';
-import { getSnapState, setSnapState, updateSnapState } from './rpc/stateManagement';
-import { getNativeTokenPrice } from './util/getNativeTokenPrice';
+import { setSnapState, updateSnapState } from './rpc/stateManagement';
 import getChainName from './util/getChainName';
-import { DEFAULT_CHAIN_NAME } from './defaults';
 import { welcomeScreen } from './ui/welcomeScreen';
 import { showMore } from './ui/showMore';
+import { receive } from './ui/receive';
+import { balanceDetails } from './ui/balanceDetails';
+import { handleBalancesAll } from './util/handleBalancesAll';
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
@@ -69,15 +68,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
  * @returns A static panel rendered with custom UI.
  */
 export const onHomePage: OnHomePageHandler = async () => {
-  const currentChainName = DEFAULT_CHAIN_NAME; // to reset chain on each new visit
-  const { address } = await getKeyPair(currentChainName);
-  const genesisHash = await getGenesisHash(currentChainName) ?? POLKADOT_GENESIS; // These will be changed when dropdown component will be available
-  const balances = await getBalances(genesisHash, address);
-  const logo = await getLogo(genesisHash);
-  const priceInUsd = await getNativeTokenPrice(genesisHash);
+  const { address, balancesAll, logos, pricesInUsd } = await handleBalancesAll()
 
   return {
-    content: accountDemo(address, genesisHash, balances, logo, priceInUsd),
+    content: accountDemo(address, balancesAll, logos, pricesInUsd),
   };
 };
 
@@ -102,21 +96,31 @@ export const onInstall: OnInstallHandler = async () => {
   });
 };
 
-export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
+export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
+
+  // const state = await snap.request({
+  //   method: 'snap_getInterfaceState',
+  //   params: { id },
+  // });
+
   if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
 
     switch (event.name) {
       case 'switchChain': {
         const genesisHash = event.value;
         const destinationChainName = await getChainName(genesisHash)
-        await showSpinner(id, `Switching chain to ${destinationChainName} ...`);
+        await showSpinner(id, `Switching format to ${destinationChainName} ...`);
         await updateSnapState('currentGenesisHash', genesisHash);
-        await accountInfo(id, genesisHash);
+        await receive(id, genesisHash);
         break;
       }
 
       case 'send':
         await polkagateApps(id);
+        break;
+
+      case 'receive':
+        await receive(id);
         break;
 
       case 'more':
@@ -135,10 +139,13 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
         await exportAccount(id);
         break;
 
+      case 'balanceDetails':
+        await balanceDetails(id, context?.show === undefined ? true : !context.show);
+        break;
+
       case 'backToHome':
         await showSpinner(id, 'Loading, please wait ...');
-        const state = await getSnapState();
-        await accountInfo(id, state?.currentGenesisHash as HexString);
+        await accountInfo(id);
         break;
 
       default:

@@ -19,6 +19,8 @@ export type Balances = {
   soloTotal?: Balance;
   pooledBalance?: Balance;
   decimal: number;
+  genesisHash: HexString;
+  token: string;
 };
 
 /**
@@ -32,6 +34,14 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
   console.info(`getting balances for ${address} on ${genesisHash}`)
 
   const api = await getApi(genesisHash);
+
+  if (!api) {
+    // FixMe:
+    return { genesisHash, total: BN_ZERO, transferable: BN_ZERO, locked: BN_ZERO, soloTotal: BN_ZERO, pooledBalance: BN_ZERO, decimal: 10, token: 'Unit' };
+  }
+
+  const decimal = api.registry.chainDecimals[0];
+  const token = api.registry.chainTokens[0];
   const formatted = getFormatted(genesisHash, address);
   console.info(`Formatted address for ${address} is ${formatted}`)
 
@@ -39,7 +49,14 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     data: AccountData;
   };
 
+  if (balances.data.free.isZero()) {
+    // no need to more check
+    const ZERO_BALANCE = api.createType('Balance', BN_ZERO) as unknown as Balance;
+    return { genesisHash, total: ZERO_BALANCE, transferable: ZERO_BALANCE, locked: ZERO_BALANCE, soloTotal: ZERO_BALANCE, pooledBalance: ZERO_BALANCE, decimal, token };
+  }
+
   let soloTotal;
+
   if (api.query.staking?.ledger) {
     const ledger = await api.query.staking.ledger(formatted);
 
@@ -53,7 +70,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
 
   let pooledBalance: Balance | undefined = undefined;
 
-  if (api.query.staking?.ledger) {
+  if (api.query.nominationPools?.poolMembers) {
     const mayBePooledBalance = await getPooledBalance(api, formatted);
 
     if (mayBePooledBalance) {
@@ -66,7 +83,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
 
   const transferable = api.createType(
     'Balance',
-    balances.data.free.sub(balances.data.frozen),
+    balances.data.free.sub(balances.data.frozen || balances.data.miscFrozen),
   ) as unknown as Balance;
 
   const total = api.createType(
@@ -76,12 +93,10 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
 
   const locked = api.createType(
     'Balance',
-    balances.data.frozen,
+    (balances.data.frozen || balances.data.miscFrozen),
   ) as unknown as Balance;
 
-  const decimal = api.registry.chainDecimals[0];
-
-  return { total, transferable, locked, soloTotal, pooledBalance, decimal };
+  return { genesisHash, total, transferable, locked, soloTotal, pooledBalance, decimal, token };
 }
 
 

@@ -18,7 +18,10 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
 
   const endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>
-      e.value && (!ignoreLightClient || !e.value.startsWith('light') ) &&
+      e.value && (!ignoreLightClient || !e.value.startsWith('light') ) && !e.value.includes('onfinality') &&
+     // Check if e.value matches the pattern 'wss://<any_number>'
+     !/^wss:\/\/\d+$/.test(e.value)
+     &&
       (
         String(e.info)?.toLowerCase() === sanitizedChainName ||
         String(e.text)?.toLowerCase()?.includes(sanitizedChainName || '')
