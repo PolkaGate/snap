@@ -1,4 +1,4 @@
-import { DEFAULT_CHAIN_NAME } from '../defaults';
+import { DEFAULT_CHAIN_NAME } from '../constants';
 import { getSnapState } from '../rpc/stateManagement';
 import getChainName, { sanitizeChainName } from './getChainName';
 
@@ -6,9 +6,9 @@ import getChainName, { sanitizeChainName } from './getChainName';
  * To get the current chain name, sanitized and lower case.
  */
 export async function getCurrentChain(): Promise<string> {
-  const {currentGenesisHash} = await getSnapState();
+  const { currentGenesisHash } = await getSnapState();
 
-  if(!currentGenesisHash){
+  if (!currentGenesisHash) {
     console.info(`current chain name is default, ${DEFAULT_CHAIN_NAME}`)
     return DEFAULT_CHAIN_NAME;
   }

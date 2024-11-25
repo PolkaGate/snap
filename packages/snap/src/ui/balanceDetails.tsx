@@ -5,19 +5,19 @@ import { handleBalancesAll } from '../util/handleBalancesAll';
 import { accountDemo } from './partials/accountDemo';
 
 /**
- * Show account info on the current chain.
+ * Show balance details for all tokens
  *
  * @param id - The id of current UI interface.
- * @param genesisHash - Chain genesisHash.
  */
-export async function accountInfo(id: string) {
-  const {address, balancesAll, logos, pricesInUsd} = await handleBalancesAll()
-  
+export async function balanceDetails(id: string, show?:boolean) {
+  const { address, balancesAll, logos, pricesInUsd } = await handleBalancesAll()
+
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(address, balancesAll, logos, pricesInUsd),
+      ui: accountDemo(address, balancesAll, logos, pricesInUsd, show),
+      context: { show: !!show }
     },
   });
 }

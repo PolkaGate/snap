@@ -3,7 +3,7 @@
 
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { getChain } from '../chains';
-import { DEFAULT_NETWORK_PREFIX } from '../defaults';
+import { DEFAULT_NETWORK_PREFIX } from '../constants';
 
 /**
  * To get the formatted address of an address.

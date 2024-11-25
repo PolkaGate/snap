@@ -30,6 +30,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "preinstall": "NODE_ENV=production node ./setDappPath.js",
+    "dev": "NODE_ENV=development node ./setDappPath.js ",
     "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

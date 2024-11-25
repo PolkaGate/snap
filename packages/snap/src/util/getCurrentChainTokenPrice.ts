@@ -1,4 +1,4 @@
-import getPrices from '../getPrices';
+import getPrices, { PricesType } from './getPrices';
 import { getSnapState } from '../rpc/stateManagement';
 import { getCurrentChain } from './getCurrentChain';
 
@@ -21,4 +21,19 @@ export async function getCurrentChainTokenPrice(): Promise<number> {
   const newPriceInfo = await getPrices();
 
   return newPriceInfo?.prices[currentChainName]?.value || 0;
+}
+
+export async function updateTokenPrices(): Promise<PricesType | undefined> {
+  const { priceInfo } = await getSnapState();
+
+  console.info('price info:', priceInfo)
+
+  if (priceInfo?.date && Date.now() - priceInfo.date < PRICE_VALIDITY_PERIOD) {
+    // price exists and is updated
+    return priceInfo.prices;
+  }
+
+  const newPriceInfo = await getPrices();
+
+  return newPriceInfo?.prices;
 }

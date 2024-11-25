@@ -1,72 +1,54 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { BN } from '@polkadot/util';
 import type { Balances } from '../../util/getBalance';
 
-import { Box, Row, SnapComponent, Value } from "@metamask/snaps-sdk/jsx";
-import { Balance } from '@polkadot/types/interfaces';
+import { Box, Card, Divider, Text, Row, SnapComponent, Section } from "@metamask/snaps-sdk/jsx";
+import { amountToHuman } from '../../util/amountToHuman';
 
 type Props = {
   balances: Balances;
-  price: number
-}
-
-type BalanceRowProps = {
-  balance: Balance | undefined;
-  decimal: number;
-  label: string;
   price: number;
+  logo: string;
+  showDetail?: boolean;
 }
 
-const balanceToValue = (total: BN, decimal: number, price: number) => (total.toNumber() * price / (10 ** decimal)).toFixed(1)
-
-const BalanceRow: SnapComponent<BalanceRowProps> = ({ label, balance, decimal, price }: BalanceRowProps) => {
-
-  const value = balance ? balanceToValue(balance, decimal, price) : 0;
-
-  return (
-    <Row label={label}>
-      <Value value= {balance ? balance.toHuman() : '0'}  extra={`$${String(value)}`} />
-    </Row>
-  );
-};
-
-export const BalanceInfo: SnapComponent<Props> = ({ balances, price }: Props) => {
-  const { total, transferable, locked, soloTotal, pooledBalance, decimal } = balances;
+export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showDetail }: Props) => {
+  const { total, transferable, locked, soloTotal, pooledBalance, decimal, token } = balances;
+  const totalPrice = parseFloat(amountToHuman(total, decimal)) * price;
 
   return (
     <Box>
-      <BalanceRow
-        label={'Total'}
-        balance={total}
-        decimal={decimal}
-        price={price}
+      <Card
+        image={logo}
+        title={token}
+        description={`$${price}`}
+        value={`${amountToHuman(total, decimal)} ${token}`}
+        extra={`$${totalPrice.toFixed(2)}`}
       />
-      <BalanceRow
-        label={'Transferable'}
-        balance={transferable}
-        decimal={decimal}
-        price={price}
-      />
-      <BalanceRow
-        label={'Locked'}
-        balance={locked}
-        decimal={decimal}
-        price={price}
-      />
-      <BalanceRow
-        label={'Staked (solo)'}
-        balance={soloTotal}
-        decimal={decimal}
-        price={price}
-      />
-      <BalanceRow
-        label={'Staked (pool)'}
-        balance={pooledBalance}
-        decimal={decimal}
-        price={price}
-      />
+      {!!showDetail &&
+        <Section>
+          <Divider />
+          <Row label="Transferable">
+            <Text>{`${amountToHuman(transferable, decimal)} ${token}`}</Text>
+          </Row>
+          {!locked.isZero() &&
+            <Row label="Locked" tooltip='The amount locked in referenda.'>
+              <Text>{`${amountToHuman(locked, decimal)} ${token}`}</Text>
+            </Row>
+          }
+          {!!(soloTotal && !soloTotal.isZero()) &&
+            <Row label="Staked (solo)">
+              <Text>{`${amountToHuman(soloTotal, decimal)} ${token}`}</Text>
+            </Row>
+          }
+          {!!(pooledBalance && !pooledBalance.isZero()) &&
+            <Row label="Staked (pool)">
+              <Text>{`${amountToHuman(pooledBalance, decimal)} ${token}`}</Text>
+            </Row>
+          }
+        </Section>
+      }
     </Box>
   );
 };

@@ -1,9 +1,9 @@
-import { getAllChains } from "./chains";
-import { updateSnapState } from "./rpc/stateManagement";
-import { sanitizeChainName } from "./util/getChainName";
+import { getAllChains } from "../chains";
+import { updateSnapState } from "../rpc/stateManagement";
+import { sanitizeChainName } from "./getChainName";
 import { createAssets } from '@polkagate/apps-config/assets';
 
-interface PriceValue {
+export interface PriceValue {
   value: number;
   change: number;
 }
@@ -44,36 +44,36 @@ const getPriceIds = () => {
   return nonDuplicatedPriceIds.size ? [...nonDuplicatedPriceIds] as string[] : null;
 }
 
-export default async function getPrices( currencyCode = 'usd') {
+export default async function getPrices(currencyCode = 'usd') {
   const priceIds = getPriceIds();
 
-  if(!priceIds){
+  if (!priceIds) {
     console.error('No price ids!');
     return;
   }
   console.log('getting prices for:', priceIds.sort());
 
   const revisedPriceIds = priceIds.map((item) => (EXTRA_PRICE_IDS[item] || item));
-try{
-  const prices = await getReq(`https://api.coingecko.com/api/v3/simple/price?ids=${revisedPriceIds.join(',')}&vs_currencies=${currencyCode}&include_24hr_change=true`);
+  try {
+    const prices = await getReq(`https://api.coingecko.com/api/v3/simple/price?ids=${revisedPriceIds.join(',')}&vs_currencies=${currencyCode}&include_24hr_change=true`);
 
-  const outputObjectPrices: PricesType = {};
+    const outputObjectPrices: PricesType = {};
 
-  for (const [key, value] of Object.entries(prices)) {
-    outputObjectPrices[key] = {
-      change: value[`${currencyCode}_24h_change`] as number,
-      value: value[currencyCode] as number,
-    };
+    for (const [key, value] of Object.entries(prices)) {
+      outputObjectPrices[key] = {
+        change: value[`${currencyCode}_24h_change`] as number,
+        value: value[currencyCode] as number,
+      };
+    }
+
+    const price = { currencyCode, date: Date.now(), prices: outputObjectPrices };
+
+    await updateSnapState('priceInfo', price).catch(console.error);
+
+    return price;
+  } catch {
+    console.log('Something went wrong while getting prices! Try again later.')
   }
-
-  const price = { currencyCode, date: Date.now(), prices: outputObjectPrices };
-
-  await updateSnapState('priceInfo', price).catch(console.error);
-
-  return price;
-}catch{
-  console.log('Something went wrong while getting prices! Try again later.')
-}
 }
 
 async function getReq(api: string): Promise<Record<string, any>> {

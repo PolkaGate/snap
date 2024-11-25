@@ -1,4 +1,4 @@
-import { DEFAULT_CHAIN_NAME } from '../defaults';
+import { DEFAULT_CHAIN_NAME } from '../constants';
 import { getKeyPair } from '../util/getKeyPair';
 
 export const getAddress = async (chainName?: string): Promise<string> => {

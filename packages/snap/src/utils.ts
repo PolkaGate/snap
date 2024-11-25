@@ -1,4 +1,5 @@
 import { assert } from '@metamask/utils';
+import { BN, hexToBn, isHex } from '@polkadot/util';
 
 /**
  * Get the current count from the Snap state.
@@ -42,3 +43,7 @@ export async function increment() {
 
   return newState.count;
 }
+
+export const isHexToBn = (i?: string): BN | undefined => i
+  ? isHex(i) ? hexToBn(i) : new BN(i)
+  : undefined;

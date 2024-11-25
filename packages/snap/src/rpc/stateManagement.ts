@@ -1,8 +1,9 @@
 import { HexString } from "@polkadot/util/types";
 import type { MetadataDef } from '@polkadot/extension-inject/types';
-import { PricesType } from "../getPrices";
+import { PricesType } from "../util/getPrices";
 
 interface State {
+  balancesAll?: any;
   currentGenesisHash?: HexString;
   metadata?: Record<HexString, MetadataDef>;
   priceInfo?: {
@@ -14,18 +15,18 @@ interface State {
 
 type StateValues = State[keyof State];
 
-export const getSnapState = async () =>
-  await snap.request({
-    method: 'snap_manageState',
-    params: { operation: 'get' },
-  }) as State;
-
-export const setSnapState = async (newState:State) => {
+export const setSnapState = async (newState: State) => {
   return await snap.request({
     method: 'snap_manageState',
     params: { operation: 'update', newState },
   });
 };
+
+export const getSnapState = async () =>
+  await snap.request({
+    method: 'snap_manageState',
+    params: { operation: 'get' },
+  }) as State;
 
 export const updateSnapState = async (field: keyof State, data: any) => {
   const state = (await getSnapState()) || {};
