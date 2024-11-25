@@ -6715,12 +6715,12 @@ __metadata:
   linkType: hard
 
 "@polkadot/x-bigint@npm:^13.0.2":
-  version: 13.2.2
-  resolution: "@polkadot/x-bigint@npm:13.2.2"
+  version: 13.2.3
+  resolution: "@polkadot/x-bigint@npm:13.2.3"
   dependencies:
-    "@polkadot/x-global": 13.2.2
+    "@polkadot/x-global": 13.2.3
     tslib: ^2.8.0
-  checksum: 983001a8b12ed3f4f226c7a58726fcb762c6bc93c451892fb8a998e6c22057cf6f35d909cd5435ca0baddebcdc389f0adae1f3106a5190b602e9d426eaaed884
+  checksum: 7d4708159e2066ccb96569994ee7dd3b621b1b786be2489e390efd05163b54489097ad31b08826c67c52a171fc9ccb27939c181b13ba674c2ff854ef4d1dffd6
   languageName: node
   linkType: hard
 
@@ -6748,13 +6748,13 @@ __metadata:
   linkType: hard
 
 "@polkadot/x-fetch@npm:^13.0.2":
-  version: 13.2.2
-  resolution: "@polkadot/x-fetch@npm:13.2.2"
+  version: 13.2.3
+  resolution: "@polkadot/x-fetch@npm:13.2.3"
   dependencies:
-    "@polkadot/x-global": 13.2.2
+    "@polkadot/x-global": 13.2.3
     node-fetch: ^3.3.2
     tslib: ^2.8.0
-  checksum: 53d3e279cae86fe0b5ef929049fbec85b40c13e8c8de1601e68bd036090085e3edc964cf2cc1d7a9022ca4e15e6353b905b32d95d8b8ba760278de2e52fee67a
+  checksum: 5c13a22f0f98d2dcb1c7fe408fd931ad01af5106fdbf08e8724e1845be7bb28094389e25207baaa477b056736daeda44eb306a507b208978873ae958b567fee5
   languageName: node
   linkType: hard
 
@@ -6797,12 +6797,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/x-global@npm:13.2.2, @polkadot/x-global@npm:^13.0.2":
-  version: 13.2.2
-  resolution: "@polkadot/x-global@npm:13.2.2"
+"@polkadot/x-global@npm:13.2.3, @polkadot/x-global@npm:^13.0.2":
+  version: 13.2.3
+  resolution: "@polkadot/x-global@npm:13.2.3"
   dependencies:
     tslib: ^2.8.0
-  checksum: e779b89dc9aa2fcb56d82b7f98bf213abca90c0176c9e1c40931c3c98f5a4a95ceebc826024f479a897ac408323ed8de71735b2f5513a98a0c50afacbd48d9cb
+  checksum: 52098fe8f677c61832e8e015c0fb0efad567be11f1373af8fa746bb835efd67c2f6efad2971cf626d66fbaa5b178dc30540aea7403ee0bd94d80dfe2df399a85
   languageName: node
   linkType: hard
 
@@ -7053,13 +7053,13 @@ __metadata:
   linkType: hard
 
 "@polkadot/x-ws@npm:^13.0.2":
-  version: 13.2.2
-  resolution: "@polkadot/x-ws@npm:13.2.2"
+  version: 13.2.3
+  resolution: "@polkadot/x-ws@npm:13.2.3"
   dependencies:
-    "@polkadot/x-global": 13.2.2
+    "@polkadot/x-global": 13.2.3
     tslib: ^2.8.0
     ws: ^8.18.0
-  checksum: b488d524ae12ff19d7bab28a5cbc8e58a0cfe44dc829f7d3bdc949936af566f2737500d3c0cd33e8434d5b389d26670ed0c856a3eb5dd3df3f5bd193e2396b2a
+  checksum: fffec50094367cac54640d32490ffcf19f791c9445476ddda59b9aecdc13dc3deda7414c16a608c5d23673d8491d56ccc65f19784511b9ebcd2f4451eda87153
   languageName: node
   linkType: hard
 
@@ -7680,9 +7680,9 @@ __metadata:
   linkType: hard
 
 "@substrate/connect-known-chains@npm:^1.1.5":
-  version: 1.6.0
-  resolution: "@substrate/connect-known-chains@npm:1.6.0"
-  checksum: f4cc6eac1f8ec59654394823b87b9433320cb11a555f9036e6beda6cd4c94ff6861fc552bc442517a8f6cfc2046caeb8465a8e62adca47870f9722581bb4b3eb
+  version: 1.7.0
+  resolution: "@substrate/connect-known-chains@npm:1.7.0"
+  checksum: deb958c6fc6d6d21d5294860184c4493a416016384951c9aa5fb30a488d87eca604f26230362f0b22bcf263aeb721570fe5f099af33a150031b089a13422e564
   languageName: node
   linkType: hard
 
@@ -18490,13 +18490,13 @@ __metadata:
   linkType: hard
 
 "nock@npm:^13.5.4":
-  version: 13.5.5
-  resolution: "nock@npm:13.5.5"
+  version: 13.5.6
+  resolution: "nock@npm:13.5.6"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     propagate: ^2.0.0
-  checksum: 91947b683992096a694140714323f11493b8ad9961c172e3e574c4801131fea259755e95c48e7e01527c14209967c20f151ff03b6bf6700471f0f76fa4071d32
+  checksum: 82d31ef7a428e8a6bc430b2772745ecb1f9c8835170789bbcc29c9036614adf3b7112daeb6d59edd93f4340a9a96acee401021572d469a7a0e09a669679f2794
   languageName: node
   linkType: hard
 
@@ -23399,9 +23399,9 @@ __metadata:
   linkType: hard
 
 "tslib@npm:^2.6.3, tslib@npm:^2.8.0":
-  version: 2.8.0
-  resolution: "tslib@npm:2.8.0"
-  checksum: de852ecd81adfdb4870927e250763345f07dc13fe7f395ce261424966bb122a0992ad844c3ec875c9e63e72afe2220a150712984e44dfd1a8a7e538a064e3d46
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
   languageName: node
   linkType: hard
 

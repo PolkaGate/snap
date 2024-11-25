@@ -14,7 +14,7 @@
     "@polkadot/api-derive": "^12.1.1",
     "@polkadot/apps-config": "^0.141.1",
     "@polkadot/extension-inject": "^0.48.2",
-    "@polkagate/extension-dapp": "../../../polkadot-js-extension/packages/extension-dapp/build",
+    "@polkagate/extension-dapp": "^0.48.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -30,6 +30,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "preinstall": "NODE_ENV=production node ./setDappPath.js",
+    "dev": "NODE_ENV=development node ./setDappPath.js ",
     "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -13,7 +13,7 @@ cd packages/snap/
 # $1: patch | minor | major (passed as an argument)
 npm version "$1"
 
-# Step 4-1: Apply version in snao,manifest,json and update the shasum
+# Step 4-1: Apply version in snap,manifest,json and update the shasum
 yarn
 yarn build
 
