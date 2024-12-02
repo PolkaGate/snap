@@ -12,6 +12,7 @@ export const sanitizeChainName = (chainName: string | undefined) =>
       ?.replace(' chain', '')
       ?.replace(' Chain', '')
       ?.replace(' Finance', '')
+      ?.replace(' Protocol', '')
       ?.replace(/\s/gu, '')
     : null;
 

@@ -28,6 +28,7 @@ export const getLogo = async (genesisHash: HexString): Promise<string> => {
         case 'darwinia':
             return darwinia;
         case 'hydradx':
+        case 'hydration':
             return hydradx;
         case 'karura':
             return karura;

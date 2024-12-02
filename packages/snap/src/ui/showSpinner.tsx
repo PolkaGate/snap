@@ -1,9 +1,9 @@
-import { Box, Spinner, Text } from "@metamask/snaps-sdk/jsx";
+import { Box, Icon, Spinner, Text } from "@metamask/snaps-sdk/jsx";
 /**
  * Show an spinner while processing.
  *
  * @param id - The id of interface.
- * @param title - The title to show while spinning.
+ * @param label - The title to show while spinning.
  */
 export async function showSpinner(id: string, label?: string) {
   await snap.request({
@@ -18,11 +18,15 @@ export async function showSpinner(id: string, label?: string) {
 export const ui = (label?: string) => {
 
   return (
-    <Box direction="vertical" alignment="center">
+    <Box direction="vertical" alignment="center" center>
       <Spinner />
-      <Text>
-        {label || 'Processing, Please Wait!'}
-      </Text>
+      <Box direction="horizontal" alignment="center" center>
+        <Icon name="loading" size="md" color='muted'/>
+        <Text alignment="center">
+          {label || 'Processing, Please Wait!'}
+        </Text>
+      </Box>
     </Box>
+
   );
 };

@@ -8,5 +8,4 @@ export * from './polkagateApps';
 export * from './review/';
 export * from './showSpinner';
 export * from './staking';
-export * from './transfer';
 export * from './voting';

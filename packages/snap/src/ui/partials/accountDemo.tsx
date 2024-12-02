@@ -3,11 +3,25 @@
 
 import type { Balances } from '../../util/getBalance';
 
-import { Box, Heading, Section, Icon, Text, Button } from '@metamask/snaps-sdk/jsx';
+import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } from '@metamask/snaps-sdk/jsx';
 
 import { BalanceInfo } from '../components';
 import { amountToHuman } from '../../util/amountToHuman';
 import { PriceValue } from '../../util/getPrices';
+
+type CTAProps = {
+  icon: `${IconName}`;
+  label: string;
+  name: string;
+}
+const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
+  <Box direction='vertical' alignment='center' center>
+    <Button name={name} variant='primary' >
+      <Icon size='md' color='primary' name={icon} />
+    </Button >
+    <Text alignment='center'> {label}</Text>
+  </Box>
+)
 
 export const accountDemo = (
   address: string,
@@ -41,28 +55,11 @@ export const accountDemo = (
         </Box>
         <Section>
           <Box alignment='space-around' direction='horizontal'>
-            <Button name='send' variant='primary'>
-              <Icon size='md' color='primary' name='send-1' />
-            </Button>
-            <Button name='receive' variant='primary'>
-              <Icon size='md' color='primary' name='qr-code' />
-            </Button>
-            <Button name='stake' variant='primary'>
-              <Icon size='md' color='primary' name='stake' />
-            </Button>
-            <Button name='vote' variant='primary'>
-              <Icon size='md' color='primary' name='people' />
-            </Button>
-            <Button name='more' variant='primary'>
-              <Icon size='md' color='primary' name='more-horizontal' />
-            </Button>
-          </Box>
-          <Box alignment='space-around' direction='horizontal'>
-            <Text alignment='center'> Send</Text>
-            <Text alignment='center'> Receive</Text>
-            <Text alignment='center'> Stake</Text>
-            <Text alignment='center'> Vote</Text>
-            <Text alignment='center'> More</Text>
+            <CTA icon='send-1' name='send' label='Send' />
+            <CTA icon='qr-code' name='receive' label='Receive' />
+            <CTA icon='stake' name='stake' label='Stake' />
+            <CTA icon='people' name='vote' label='Vote' />
+            <CTA icon='more-horizontal' name='more' label='More' />
           </Box>
         </Section>
       </Section>

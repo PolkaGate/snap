@@ -1,7 +1,6 @@
 export const DEFAULT_NETWORK_PREFIX = 42; // 42 is for substrate
 export const DEFAULT_COIN_TYPE = 354; // 354 is for Polkadot
 export const DEFAULT_CHAIN_NAME = 'polkadot'; // Since Westend shares the same address prefix as Substrate, the address format for both is identical
-export const CHAIN_NAMES = ['westend', 'polkadot', 'kusama'];
 
 export const NOT_LISTED_CHAINS = [
     '0x742a2ca70c2fda6cee4f8df98d64c4c670a052d9568058982dad9d5a7a135c5b', // Darwinia
@@ -16,6 +15,9 @@ export const NOT_LISTED_CHAINS = [
     '0x1bb969d85965e4bb5a651abbedf21a54b6b31a21f66b5401cc3f1e286268d736', // Phala
     '0x6fbd74e5e1d0a61d52ccfe9d4adaed16dd3a7caa37c6bc4d0c2fa12e8b2f4063', // Polymesh
     '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5', // SORA
+    '0xcdedc8eadbfa209d3f207bba541e57c3c58a667b05a2e1d1e86353c9000758da', // Integritee
+    '0xfe1b4c55fd4d668101126434206571a7838a8b6b93a6d1b95d607e78e6c53763', // Vara
+    '0x4a587bf17a404e3572747add7aab7bbe56e805a5479c6c436f07f36fcc8d3ae1', // Frequency
   ]
   
   export const PRICE_VALIDITY_PERIOD = 2 * 60 * 1000;

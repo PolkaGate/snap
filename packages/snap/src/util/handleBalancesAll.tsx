@@ -3,7 +3,7 @@
 
 
 import { getChainOptions } from '../chains';
-import { getBalances, getKeyPair } from '.';
+import { Balances, getBalances, getKeyPair } from '.';
 import { getLogo } from '../ui/image/chains/getLogo';
 import { HexString } from '@polkadot/util/types';
 import { getSnapState, updateSnapState } from '../rpc/stateManagement';
@@ -14,16 +14,16 @@ import { isHexToBn } from '../utils';
 
 export const handleBalancesAll = async () => {
   const options = getChainOptions()
-  const selectedOptions = options.filter(({ value }) => !NOT_LISTED_CHAINS.includes(value));//.slice(0, 2);
+  const selectedOptions = options.filter(({ value }) => !NOT_LISTED_CHAINS.includes(value))//.slice(0, 3);
 
   const currentChainName = DEFAULT_CHAIN_NAME; // to reset chain on each new visit
   const { address } = await getKeyPair(currentChainName);
-  let balancesAll;
+  let balancesAll: Balances[];
   const savedBalancesAll = await getSnapState();
 
   const logoList = await Promise.all(selectedOptions.map(({ value }) => getLogo(value as HexString)));
-  
-  const logos =selectedOptions.map(({ value }, index) => {
+
+  const logos = selectedOptions.map(({ value }, index) => {
     return { genesisHash: value, logo: logoList[index] }
   });
 
@@ -38,10 +38,11 @@ export const handleBalancesAll = async () => {
       item.pooledBalance = isHexToBn(item.pooledBalance);
     })
     balancesAll = temp;
+
   } else {
+
     const balancesAllPromises = selectedOptions.map(({ value }) => getBalances(value as HexString, address))
     balancesAll = await Promise.all(balancesAllPromises)
-
     await updateSnapState('balancesAll', { date: Date.now(), data: JSON.stringify(balancesAll) });
   }
 
