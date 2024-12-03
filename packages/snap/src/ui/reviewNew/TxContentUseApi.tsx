@@ -18,8 +18,10 @@ type Props = {
   partialFee: Balance;
   decoded: Decoded;
   maybeReceiverIdentity: string | null;
+  logo: string;
 }
-export const TxContentUseApi: SnapComponent<Props> = ({ api, chainName, origin, payload, partialFee, decoded, maybeReceiverIdentity }) => {
+
+export const TxContentUseApi: SnapComponent<Props> = ({ api, chainName, logo, origin, payload, partialFee, decoded, maybeReceiverIdentity }) => {
   const { args, callIndex } = api.createType('Call', payload.method);
   const { method, section } = api.registry.findMetaCall(callIndex);
 
@@ -40,18 +42,19 @@ export const TxContentUseApi: SnapComponent<Props> = ({ api, chainName, origin, 
             origin={origin}
             section={section}
           />
-          <ReviewBody 
-           decimal={decimal}
-           token={token}
-           args={args}
-           action={action}
-           decoded={decoded}
-           maybeReceiverIdentity={maybeReceiverIdentity}
+          <ReviewBody
+            decimal={decimal}
+            token={token}
+            args={args}
+            action={action}
+            decoded={decoded}
+            maybeReceiverIdentity={maybeReceiverIdentity}
           />
           <ReviewFooter
             docs={decoded.docs}
             chainName={chainName}
             partialFee={partialFee}
+            logo={logo}
           />
         </Box>
       </Box>

@@ -5,7 +5,7 @@ import type { OnInstallHandler } from '@metamask/snaps-sdk';
 
 import { getKeyPair } from '../util';
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
-import { getLogo } from '../ui/image/chains/getLogo';
+import { getLogoByGenesisHash } from '../ui/image/chains/getLogoByGenesisHash';
 import { setSnapState } from '../rpc/stateManagement';
 import { welcomeScreen } from '../ui/welcomeScreen';
 
@@ -20,7 +20,7 @@ export const onInstall: OnInstallHandler = async () => {
 
   const genesisHash = POLKADOT_GENESIS;
   const { address } = await getKeyPair(undefined, genesisHash);
-  const logo = await getLogo(genesisHash)
+  const logo = await getLogoByGenesisHash(genesisHash)
 
 
   await snap.request({

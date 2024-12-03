@@ -2,7 +2,7 @@ import { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import { assetHub, ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist } from ".";
 
-export const getLogo = async (genesisHash: HexString): Promise<string> => {
+export const getLogoByGenesisHash = async (genesisHash: HexString): Promise<string> => {
     const chainName = await getChainName(genesisHash);
     const sanitizedChainName = sanitizeChainName(chainName);
 

@@ -14,6 +14,7 @@ import { bnToBn } from "@polkadot/util";
 import { getIdentity } from "../../util/getIdentity";
 import { TxContentUseApi } from "../reviewNew";
 import { Json } from "@metamask/utils";
+import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
 
 export async function approveSend(id: string, genesisHash: HexString, amount: string, recipient: string) {
   const { address } = await getKeyPair();
@@ -44,6 +45,7 @@ export async function approveSend(id: string, genesisHash: HexString, amount: st
   );
 
   const maybeReceiverIdentity = await getIdentity(api, address);
+  const logo = await getLogoByGenesisHash(genesisHash);
 
   await snap.request({
     method: 'snap_updateInterface',
@@ -58,6 +60,7 @@ export async function approveSend(id: string, genesisHash: HexString, amount: st
           partialFee={fee}
           decoded={decoded}
           maybeReceiverIdentity={maybeReceiverIdentity}
+          logo={logo}
         />
       ),
       context: {

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Balance } from '@polkadot/types/interfaces';
-import { Box, Divider, Icon, Row, Section, SnapComponent, Text, Tooltip } from '@metamask/snaps-sdk/jsx';
+import { Box, Divider, Icon, Image, Row, Section, SnapComponent, Text, Tooltip } from '@metamask/snaps-sdk/jsx';
 
 export const sanitizeText = (text?: string) => {
   // To replace text formatted like a link [A](B) with a something different like (A)(B)
@@ -12,18 +12,26 @@ export const sanitizeText = (text?: string) => {
 type Props = {
   docs: string;
   chainName: string | undefined;
-  partialFee?: Balance
+  logo: string;
+  partialFee?: Balance;
 }
 
-const Rest: SnapComponent<Props> = ({ docs, chainName }) => {
+const Rest: SnapComponent<Props> = ({ docs, chainName, logo }) => {
+
   return (
     <Box>
       <Divider />
-      <Row label="Chain Name" tooltip='The extrinsic which will be send to blockchain.'>
+      <Box direction='horizontal' alignment='space-between'>
         <Text>
-          {`${chainName ?? ''}`}
+          Chain name
         </Text>
-      </Row>
+        <Box direction='horizontal'>
+          <Image src={logo} />
+          <Text>
+          {`${chainName ?? ''}`}
+          </Text>
+        </Box>
+      </Box>
       <Divider />
       <Box direction='horizontal' alignment='start' center>
         <Text>
@@ -37,13 +45,13 @@ const Rest: SnapComponent<Props> = ({ docs, chainName }) => {
   )
 };
 
-export const ReviewFooter: SnapComponent<Props> = ({ docs, chainName, partialFee }) => {
+export const ReviewFooter: SnapComponent<Props> = ({ docs, chainName, logo, partialFee }) => {
   return (
     <Box>
       <Section>
         {!!partialFee &&
           <Box>
-            <Row label="Estimated Fee">
+            <Row label="Estimated fee">
               <Text>
                 {partialFee.toHuman()}
               </Text>
@@ -53,6 +61,7 @@ export const ReviewFooter: SnapComponent<Props> = ({ docs, chainName, partialFee
         <Rest
           docs={docs}
           chainName={chainName}
+          logo={logo}
         />
       </Section>
       <Row label="Attention" variant='warning'>

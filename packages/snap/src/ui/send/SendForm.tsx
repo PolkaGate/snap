@@ -10,7 +10,7 @@ import {
   type SnapComponent,
 } from '@metamask/snaps-sdk/jsx';
 
-import jazzicon from './jazzicon.svg';
+import jazzicon1 from '../image/jazzicon/jazzicon1.svg';
 import { TokenSelector } from './TokenSelector';
 import { PriceValue } from '../../util/getPrices';
 import { Balances } from '../../util';
@@ -63,7 +63,7 @@ export const SendForm: SnapComponent<SendFormProps> = ({
       </Field>
       <Field label="To account" error={formErrors?.to}>
         <Box>
-          <Image src={jazzicon} />
+          <Image src={jazzicon1} />
         </Box>
         <Input
           name="to"

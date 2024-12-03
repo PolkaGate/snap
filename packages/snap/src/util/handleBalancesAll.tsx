@@ -4,7 +4,7 @@
 
 import { getChainOptions } from '../chains';
 import { Balances, getBalances, getKeyPair } from '.';
-import { getLogo } from '../ui/image/chains/getLogo';
+import { getLogoByGenesisHash } from '../ui/image/chains/getLogoByGenesisHash';
 import { HexString } from '@polkadot/util/types';
 import { getSnapState, updateSnapState } from '../rpc/stateManagement';
 import { getNativeTokenPrice } from './getNativeTokenPrice';
@@ -21,7 +21,7 @@ export const handleBalancesAll = async () => {
   let balancesAll: Balances[];
   const savedBalancesAll = await getSnapState();
 
-  const logoList = await Promise.all(selectedOptions.map(({ value }) => getLogo(value as HexString)));
+  const logoList = await Promise.all(selectedOptions.map(({ value }) => getLogoByGenesisHash(value as HexString)));
 
   const logos = selectedOptions.map(({ value }, index) => {
     return { genesisHash: value, logo: logoList[index] }

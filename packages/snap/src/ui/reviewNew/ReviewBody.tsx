@@ -36,14 +36,17 @@ export const ReviewBody: SnapComponent<Props> = ({ decimal, token, args, action,
               {`${amountToHuman(amount, decimal, 4, true)} ${token}`}
             </Text>
           </Row>
-          <Row label="To">
+          <Box direction='horizontal' alignment='space-between'>
+            <Text>
+              To
+            </Text>
             {maybeReceiverIdentity
               ? <Text>
                 {maybeReceiverIdentity}
               </Text>
               : <ShortAddress address={to} />
             }
-          </Row>
+          </Box>
         </Section>
       );
     // case 'staking_bond':

@@ -6,7 +6,7 @@ import { getKeyPair } from "../util";
 import { POLKADOT_GENESIS } from "@polkadot/apps-config";
 import { getFormatted } from "../util/getFormatted";
 import { ChainSwitch } from "./components";
-import { getLogo } from "./image/chains/getLogo";
+import { getLogoByGenesisHash } from "./image/chains/getLogoByGenesisHash";
 import { HexString } from "@polkadot/util/types";
 import QRCode from 'qrcode';
 
@@ -15,7 +15,7 @@ export async function receive(id: string, genesisHash?: HexString) {
 
   const _genesisHash = genesisHash || POLKADOT_GENESIS;
   const formatted = getFormatted(_genesisHash, address);
-  const logo = await getLogo(_genesisHash);
+  const logo = await getLogoByGenesisHash(_genesisHash);
 
   const qrCode = await QRCode.toString(formatted, { errorCorrectionLevel: 'H' })
 
