@@ -20,11 +20,8 @@ export async function transfer(id: string, payload: SignerPayloadJSON) {
   const { method, section } = api.registry.findMetaCall(callIndex);
 
   const call = api.tx[section][method](...args)
-
   const keyPair = await getKeyPair(genesisHash);
-
   const txHash = await call.signAndSend(keyPair);
-
   const chainName = await getChainName(genesisHash)
 
   await snap.request({

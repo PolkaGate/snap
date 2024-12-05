@@ -42,38 +42,35 @@ export const SendForm: SnapComponent<SendFormProps> = ({
   const _selectedToken = selectedToken || nonZeroBalances[0];
 
   return (
-    <Form name="sendForm">
+    <Form name='sendForm'>
       <TokenSelector
         selectedToken={_selectedToken}
         nonZeroBalances={nonZeroBalances}
         logos={logos}
         pricesInUsd={pricesInUsd}
       />
-      <Field label="Send amount" error={formErrors?.amount}>
+      <Field label='Send amount' error={formErrors?.amount}>
         <Box>
           <Icon name='send-2' color='muted' />
         </Box>
-        <Input name="amount" type="number" placeholder="Enter amount to send" />
-        <Box direction="horizontal" center>
-          <Text color="alternative">{_selectedToken.token}</Text>
-          {/* <Button name="swap">
-          <Icon name="swap-vertical" color="primary" size="md" />
-        </Button> */}
+        <Input name='amount' type='number' placeholder='Enter amount to send' />
+        <Box direction='horizontal' center>
+          <Text color='alternative'>{_selectedToken.token}</Text>
         </Box>
       </Field>
-      <Field label="To account" error={formErrors?.to}>
+      <Field label='To account' error={formErrors?.to}>
         <Box>
           <Image src={jazzicon1} />
         </Box>
         <Input
-          name="to"
-          placeholder="Enter receiving address"
+          name='to'
+          placeholder='Enter receiving address'
           value={clearAddress ? '' : undefined}
         />
         {displayClearIcon && (
           <Box>
-            <Button name="clear">
-              <Icon name="close" color="primary" />
+            <Button name='clear'>
+              <Icon name='close' color='primary' />
             </Button>
           </Box>
         )}

@@ -21,7 +21,7 @@ export function formValidation(
 ): SendFormErrors {
   const errors: Partial<SendFormErrors> = {};
 
-  if (formState?.to && !isValidAddress(formState.to)) {
+  if ( formState?.to?.length && !isValidAddress(formState.to)) {
     errors.to = 'Invalid address';
   }
 
