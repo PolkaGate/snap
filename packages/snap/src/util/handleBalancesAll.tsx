@@ -12,7 +12,7 @@ import { DEFAULT_CHAIN_NAME, NOT_LISTED_CHAINS, PRICE_VALIDITY_PERIOD } from '..
 import { updateTokenPrices } from './getCurrentChainTokenPrice';
 import { isHexToBn } from '../utils';
 
-export const handleBalancesAll = async () => {
+export const handleBalancesAll = async (savedOnly?: boolean) => {
   const options = getChainOptions()
   const selectedOptions = options.filter(({ value }) => !NOT_LISTED_CHAINS.includes(value))//.slice(0, 3);
 
@@ -21,13 +21,7 @@ export const handleBalancesAll = async () => {
   let balancesAll: Balances[];
   const savedBalancesAll = await getSnapState();
 
-  const logoList = await Promise.all(selectedOptions.map(({ value }) => getLogoByGenesisHash(value as HexString)));
-
-  const logos = selectedOptions.map(({ value }, index) => {
-    return { genesisHash: value, logo: logoList[index] }
-  });
-
-  if (savedBalancesAll.balancesAll && Date.now() - Number(savedBalancesAll.balancesAll.date) < PRICE_VALIDITY_PERIOD) {
+  if (savedBalancesAll.balancesAll && (savedOnly || Date.now() - Number(savedBalancesAll.balancesAll.date) < PRICE_VALIDITY_PERIOD)) {
     const temp = JSON.parse(savedBalancesAll.balancesAll.data);
 
     temp.forEach((item) => {
@@ -45,6 +39,11 @@ export const handleBalancesAll = async () => {
     balancesAll = await Promise.all(balancesAllPromises)
     await updateSnapState('balancesAll', { date: Date.now(), data: JSON.stringify(balancesAll) });
   }
+
+  const logoList = await Promise.all(selectedOptions.map(({ value }) => getLogoByGenesisHash(value as HexString)));
+  const logos = selectedOptions.map(({ value }, index) => {
+    return { genesisHash: value, logo: logoList[index] }
+  });
 
   await updateTokenPrices();
   const pricesInUsd = await Promise.all(selectedOptions.map(({ value }) => getNativeTokenPrice(value as HexString)));

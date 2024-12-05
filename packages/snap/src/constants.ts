@@ -18,6 +18,7 @@ export const NOT_LISTED_CHAINS = [
     '0xcdedc8eadbfa209d3f207bba541e57c3c58a667b05a2e1d1e86353c9000758da', // Integritee
     '0xfe1b4c55fd4d668101126434206571a7838a8b6b93a6d1b95d607e78e6c53763', // Vara
     '0x4a587bf17a404e3572747add7aab7bbe56e805a5479c6c436f07f36fcc8d3ae1', // Frequency
+    '0xb3db41421702df9a7fcac62b53ffeac85f7853cc4e689e0b93aeb3db18c09d82', // Centrifuge
   ]
   
   export const PRICE_VALIDITY_PERIOD = 2 * 60 * 1000;

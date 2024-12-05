@@ -53,7 +53,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         const clearAddress = event.name === 'clear';
         const displayClearIcon = !clearAddress && sendForm && Boolean(sendForm.to) && sendForm.to !== '';
 
-        await send(id, sendForm?.tokenSelector, sendForm?.amount, sendForm?.to, formErrors, displayClearIcon, clearAddress);
+        await send(id, sendForm?.amount, formErrors, sendForm?.to, sendForm?.tokenSelector, displayClearIcon, clearAddress);
         break;
 
       case 'sendReview':
