@@ -8,17 +8,17 @@ import { getLogoByGenesisHash } from '../ui/image/chains/getLogoByGenesisHash';
 import { HexString } from '@polkadot/util/types';
 import { getSnapState, updateSnapState } from '../rpc/stateManagement';
 import { getNativeTokenPrice } from './getNativeTokenPrice';
-import { DEFAULT_CHAIN_NAME, DEFAULT_CHAINS_GENESIS, NOT_LISTED_CHAINS, PRICE_VALIDITY_PERIOD } from '../constants';
+import { DEFAULT_CHAIN_NAME, DEFAULT_CHAINS_GENESIS, PRICE_VALIDITY_PERIOD } from '../constants';
 import { updateTokenPrices } from './getCurrentChainTokenPrice';
 import { isHexToBn } from '../utils';
 
 export function areArraysEqual(arr1: string[], arr2: string[]): boolean {
-  if (arr1.length !== arr2.length) return false; // Check length
+  if (arr1.length !== arr2.length) return false;
 
-  const sortedArr1 = [...arr1].sort(); // Sort the first array
-  const sortedArr2 = [...arr2].sort(); // Sort the second array
+  const sortedArr1 = [...arr1].sort();
+  const sortedArr2 = [...arr2].sort();
 
-  return sortedArr1.every((value, index) => value === sortedArr2[index]); // Compare values
+  return sortedArr1.every((value, index) => value === sortedArr2[index]);
 }
 
 export const handleBalancesAll = async (savedOnly?: boolean) => {
