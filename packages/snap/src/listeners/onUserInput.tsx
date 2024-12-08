@@ -6,14 +6,13 @@ import type { OnUserInputHandler } from '@metamask/snaps-sdk';
 
 import {
   showSpinner,
-  accountInfo,
+  home,
   exportAccount,
   showJsonContent,
   staking,
   voting
 } from '../ui';
 import { updateSnapState } from '../rpc/stateManagement';
-import getChainName from '../util/getChainName';
 import { showMore } from '../ui/showMore';
 import { receive } from '../ui/receive';
 import { balanceDetails } from '../ui/balanceDetails';
@@ -23,6 +22,9 @@ import { formValidation } from '../ui/send/utils';
 import { approveSend } from '../ui/send/approveSend';
 import { HexString } from '@polkadot/util/types';
 import { transfer } from '../ui/send/transfer';
+import { CustomizeChains } from '../ui/selectChains/CustomizeChains';
+import { SelectedChainsFormState } from '../ui/selectChains/types';
+import { DEFAULT_CHAINS_GENESIS } from '../constants';
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -30,6 +32,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
     method: 'snap_getInterfaceState',
     params: { id },
   });
+
   const sendForm = state.sendForm as SendFormState;
 
   if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
@@ -37,8 +40,8 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
     switch (event.name) {
       case 'switchChain': {
         const genesisHash = event.value;
-        const destinationChainName = await getChainName(genesisHash)
-        await showSpinner(id, `Switching format to ${destinationChainName} ...`);
+        // const destinationChainName = await getChainName(genesisHash)
+        // await showSpinner(id, `Switching format to ${destinationChainName} ...`);
         await updateSnapState('currentGenesisHash', genesisHash);
         await receive(id, genesisHash);
         break;
@@ -92,10 +95,25 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await balanceDetails(id, context?.show === undefined ? true : !context.show);
         break;
 
+      case 'refreshSelectedChains':
+        await showSpinner(id, 'Loading, please wait ...');
+        await updateSnapState('selectedChains', DEFAULT_CHAINS_GENESIS);
+      case 'customizeChains':
+        await showSpinner(id, 'Loading, please wait ...');
+        await CustomizeChains(id);
+        break;
+      case 'applySelectedChains':
+        await showSpinner(id, 'Loading, please wait ...');
+        const selectedChains = state.selectedChains as SelectedChainsFormState;
+        const filtered = Object.entries(selectedChains).filter(([key, value]) => value).map(([key]) => key);
+        await updateSnapState('selectedChains', filtered);
+        await home(id);
+        break;
+
       case 'backToHome':
       case 'cancelSend':
         await showSpinner(id, 'Loading, please wait ...');
-        await accountInfo(id);
+        await home(id);
         break;
 
       default:

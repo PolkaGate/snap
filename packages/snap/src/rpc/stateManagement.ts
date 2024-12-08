@@ -4,6 +4,7 @@ import { PricesType } from "../util/getPrices";
 
 interface State {
   balancesAll?: any;
+  selectedChains?: string[];
   currentGenesisHash?: HexString;
   metadata?: Record<HexString, MetadataDef>;
   priceInfo?: {
@@ -22,11 +23,14 @@ export const setSnapState = async (newState: State) => {
   });
 };
 
-export const getSnapState = async () =>
-  await snap.request({
+export const getSnapState = async (label?: string) => {
+  const state = await snap.request({
     method: 'snap_manageState',
     params: { operation: 'get' },
   }) as State;
+
+  return label ? state?.[label] : state;
+}
 
 export const updateSnapState = async (field: keyof State, data: any) => {
   const state = (await getSnapState()) || {};

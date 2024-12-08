@@ -13,9 +13,9 @@ import { handleBalancesAll } from '../util/handleBalancesAll';
  * @returns A static panel rendered with custom UI.
  */
 export const onHomePage: OnHomePageHandler = async () => {
-  const { address, balancesAll, logos, pricesInUsd } = await handleBalancesAll()
+  const { balancesAll, logos, pricesInUsd } = await handleBalancesAll()
 
   return {
-    content: accountDemo(address, balancesAll, logos, pricesInUsd),
+    content: accountDemo(balancesAll, logos, pricesInUsd),
   };
 };

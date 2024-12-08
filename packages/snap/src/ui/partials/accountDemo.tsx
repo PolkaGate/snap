@@ -24,7 +24,6 @@ const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
 )
 
 export const accountDemo = (
-  address: string,
   balancesAll: Balances[],
   logos: { genesisHash: string, logo: string }[],
   prices: { genesisHash: string, price: PriceValue }[],
@@ -67,14 +66,16 @@ export const accountDemo = (
         <Heading>Tokens</Heading>
         {!!nonZeroBalances?.length &&
           <Box center direction='horizontal'>
-            <Button name='balanceDetails' variant='primary'>
-              {showDetail ? 'hide' : 'show'}  details
-            </Button>
-            <Icon color='muted' name={showDetail ? 'arrow-down' : 'arrow-right'} />
+            <Button name='balanceDetails' variant='primary' >
+              <Icon size='md' color={showDetail ? 'muted' : 'primary'} name='card-token' />
+            </Button >
+            <Button name='customizeChains' variant='primary' >
+              <Icon size='md' color='primary' name='customize' />
+            </Button >
           </Box>}
       </Box>
       {nonZeroBalances?.length
-        ? nonZeroBalances.map((balances, index) => {
+        ? nonZeroBalances.map((balances) => {
 
           const logo = logos.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.logo as string;
           const price = prices.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.price.value as number; // needs that prices be token-based when supporting multi asset chains
