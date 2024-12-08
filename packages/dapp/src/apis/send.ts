@@ -14,7 +14,7 @@ export type TxResult = {
   failureText?: string;
 };
 
-export async function send(  from: string | AccountId,  api: ApiPromise,  ptx: SubmittableExtrinsic<'promise', ISubmittableResult>,  payload: SignerPayloadJSON,  signature: HexString,): Promise<TxResult> {
+export async function send(from: string | AccountId, api: ApiPromise, ptx: SubmittableExtrinsic<'promise', ISubmittableResult>, payload: SignerPayloadJSON, signature: HexString,): Promise<TxResult> {
   return new Promise((resolve) => {
     console.info('sending a tx ...');
     ptx.addSignature(from, signature, payload);

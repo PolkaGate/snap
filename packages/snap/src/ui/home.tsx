@@ -1,6 +1,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { getSnapState } from '../rpc/stateManagement';
 import { handleBalancesAll } from '../util/handleBalancesAll';
 import { accountDemo } from './partials/accountDemo';
 
@@ -10,14 +11,14 @@ import { accountDemo } from './partials/accountDemo';
  * @param id - The id of current UI interface.
  * @param genesisHash - Chain genesisHash.
  */
-export async function accountInfo(id: string) {
-  const {address, balancesAll, logos, pricesInUsd} = await handleBalancesAll()
+export async function home(id: string) {
+  const {balancesAll, logos, pricesInUsd} = await handleBalancesAll()
   
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(address, balancesAll, logos, pricesInUsd),
+      ui: accountDemo(balancesAll, logos, pricesInUsd),
     },
   });
 }

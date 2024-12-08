@@ -12,13 +12,13 @@ export async function getApi(genesisHash: HexString): Promise<ApiPromise | null>
   console.info(`Preparing API for ${genesisHash}`)
 
   const endpoint = await getEndpoint(genesisHash);
-  console.info(`Selected Endpoint on ${genesisHash} is ${endpoint} `)
-
   if (!endpoint) {
     console.error(`No endpoint with genesisHash: '${genesisHash}'.`);
     
     return null;
   }
+  console.info(`Selected Endpoint on ${genesisHash} is ${endpoint} `)
+
   const adjustedUrl = endpoint.replace('wss://', 'https://'); // since Metamask snap does not support web sockets at the moment we use https instead
   const httpProvider = new HttpProvider(adjustedUrl);
 

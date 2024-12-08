@@ -3,14 +3,27 @@
 
 import type { Balances } from '../../util/getBalance';
 
-import { Box, Heading, Section, Icon, Text, Button } from '@metamask/snaps-sdk/jsx';
+import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } from '@metamask/snaps-sdk/jsx';
 
 import { BalanceInfo } from '../components';
 import { amountToHuman } from '../../util/amountToHuman';
 import { PriceValue } from '../../util/getPrices';
 
+type CTAProps = {
+  icon: `${IconName}`;
+  label: string;
+  name: string;
+}
+const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
+  <Box direction='vertical' alignment='center' center>
+    <Button name={name} variant='primary' >
+      <Icon size='md' color='primary' name={icon} />
+    </Button >
+    <Text alignment='center'> {label}</Text>
+  </Box>
+)
+
 export const accountDemo = (
-  address: string,
   balancesAll: Balances[],
   logos: { genesisHash: string, logo: string }[],
   prices: { genesisHash: string, price: PriceValue }[],
@@ -41,43 +54,29 @@ export const accountDemo = (
         </Box>
         <Section>
           <Box alignment='space-around' direction='horizontal'>
-            <Button name='send' variant='primary'>
-              <Icon size='md' color='primary' name='send-1' />
-            </Button>
-            <Button name='receive' variant='primary'>
-              <Icon size='md' color='primary' name='qr-code' />
-            </Button>
-            <Button name='stake' variant='primary'>
-              <Icon size='md' color='primary' name='stake' />
-            </Button>
-            <Button name='vote' variant='primary'>
-              <Icon size='md' color='primary' name='people' />
-            </Button>
-            <Button name='more' variant='primary'>
-              <Icon size='md' color='primary' name='more-horizontal' />
-            </Button>
-          </Box>
-          <Box alignment='space-around' direction='horizontal'>
-            <Text alignment='center'> Send</Text>
-            <Text alignment='center'> Receive</Text>
-            <Text alignment='center'> Stake</Text>
-            <Text alignment='center'> Vote</Text>
-            <Text alignment='center'> More</Text>
+            <CTA icon='send-1' name='send' label='Send' />
+            <CTA icon='qr-code' name='receive' label='Receive' />
+            <CTA icon='stake' name='stake' label='Stake' />
+            <CTA icon='people' name='vote' label='Vote' />
+            <CTA icon='more-horizontal' name='more' label='More' />
           </Box>
         </Section>
       </Section>
       <Box alignment='space-between' direction='horizontal'>
         <Heading>Tokens</Heading>
-        {!!nonZeroBalances?.length &&
-          <Box center direction='horizontal'>
-            <Button name='balanceDetails' variant='primary'>
-              {showDetail ? 'hide' : 'show'}  details
-            </Button>
-            <Icon color='muted' name={showDetail ? 'arrow-down' : 'arrow-right'} />
-          </Box>}
+        <Box center direction='horizontal'>
+          {!!nonZeroBalances?.length &&
+            <Button name='balanceDetails' variant='primary' >
+              <Icon size='md' color={showDetail ? 'muted' : 'primary'} name='card-token' />
+            </Button >
+          }
+          <Button name='customizeChains' variant='primary' >
+            <Icon size='md' color='primary' name='customize' />
+          </Button >
+        </Box>
       </Box>
       {nonZeroBalances?.length
-        ? nonZeroBalances.map((balances, index) => {
+        ? nonZeroBalances.map((balances) => {
 
           const logo = logos.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.logo as string;
           const price = prices.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.price.value as number; // needs that prices be token-based when supporting multi asset chains
@@ -89,7 +88,11 @@ export const accountDemo = (
           )
         })
         : <Section>
-          <Text alignment='center'> No tokens to show!</Text>
+          <Text alignment='center'> No tokens on the selected networks!</Text>
+          <Box direction='horizontal' alignment='center'>
+            <Text alignment='center' color='muted'>Select your preferred networks using the icon above.</Text>
+            <Icon size='md' color='muted' name='customize' />
+          </Box>
         </Section>
       }
     </Box>

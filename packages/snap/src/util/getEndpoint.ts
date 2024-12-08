@@ -14,7 +14,12 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
   }
   const allEndpoints = createWsEndpoints(() => '');
   const chainName = await getChainName(_genesisHash);
-  const sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
+  let sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
+
+  // FixMe: should be removed when its applied in polkadot apps config, or using polkagate package
+  if(sanitizedChainName === 'hydration'){
+    sanitizedChainName = 'hydradx'
+  }
 
   const endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>

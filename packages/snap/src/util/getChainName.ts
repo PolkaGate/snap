@@ -12,6 +12,8 @@ export const sanitizeChainName = (chainName: string | undefined) =>
       ?.replace(' chain', '')
       ?.replace(' Chain', '')
       ?.replace(' Finance', '')
+      ?.replace(' Mainnet', '')
+      ?.replace(' Protocol', '')
       ?.replace(/\s/gu, '')
     : null;
 
@@ -28,8 +30,6 @@ export default async function getChainName(_genesisHash: HexString | undefined):
   if (!chainName) {
     chainName = (await getChainFromMetadata(_genesisHash))?.name;
   }
-
-  console.info('chainName is:', chainName);
 
   return chainName;
 }

@@ -9,8 +9,6 @@ import {
 } from '@metamask/snaps-sdk';
 import type { Balance } from '@polkadot/types/interfaces';
 
-import getChainLogoSvg from '../../util/getChainLogoSvg';
-
 export const sanitizeText = (text?: string) => {
   // To replace text formatted like a link [A](B) with an something different like (A)(B)
   return text?.replace(/\[(.*?)\]\((.*?)\)/g, '($1)($2)');
@@ -21,13 +19,10 @@ export const txFooter = (
   chainName: string | undefined,
   partialFee?: Balance,
 ) => {
-  const chainLogoSvg = getChainLogoSvg(chainName ||'');
 
   const _rest = [
     divider(),
     row('Chain Name:', text(`**${chainName ?? ''}**`)),
-    // divider(),
-    // row('Chain Logo:', image(chainLogoSvg)), // uncomment when image size adjustment will be enabled by Metamask
     divider(),
     row(
       'More info:',

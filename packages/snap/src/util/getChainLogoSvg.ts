@@ -15,9 +15,9 @@ const EMPTY_LOGO = `<svg width="100" height="100">
  * @param chainName - The name of a chain.
  * @returns The logo in base64 format.
  */
-export default function getChainLogoSvg(chainName: string): string | null {  
+export default function getChainLogoSvg(chainName: string): string {  
   if (!chainName) {
-    return null;
+    return EMPTY_LOGO;
   }
   const endpoint = endpoints.find((o) => o.info?.toLowerCase() === chainName);
 
