@@ -64,15 +64,16 @@ export const accountDemo = (
       </Section>
       <Box alignment='space-between' direction='horizontal'>
         <Heading>Tokens</Heading>
-        {!!nonZeroBalances?.length &&
-          <Box center direction='horizontal'>
+        <Box center direction='horizontal'>
+          {!!nonZeroBalances?.length &&
             <Button name='balanceDetails' variant='primary' >
               <Icon size='md' color={showDetail ? 'muted' : 'primary'} name='card-token' />
             </Button >
-            <Button name='customizeChains' variant='primary' >
-              <Icon size='md' color='primary' name='customize' />
-            </Button >
-          </Box>}
+          }
+          <Button name='customizeChains' variant='primary' >
+            <Icon size='md' color='primary' name='customize' />
+          </Button >
+        </Box>
       </Box>
       {nonZeroBalances?.length
         ? nonZeroBalances.map((balances) => {
@@ -87,7 +88,11 @@ export const accountDemo = (
           )
         })
         : <Section>
-          <Text alignment='center'> No tokens to show!</Text>
+          <Text alignment='center'> No tokens on the selected networks!</Text>
+          <Box direction='horizontal' alignment='center'>
+            <Text alignment='center' color='muted'>Select your preferred networks using the icon above.</Text>
+            <Icon size='md' color='muted' name='customize' />
+          </Box>
         </Section>
       }
     </Box>
