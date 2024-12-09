@@ -31,7 +31,5 @@ export default async function getChainName(_genesisHash: HexString | undefined):
     chainName = (await getChainFromMetadata(_genesisHash))?.name;
   }
 
-  console.info('chainName is:', chainName);
-
   return chainName;
 }

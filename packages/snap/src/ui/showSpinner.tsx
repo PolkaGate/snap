@@ -1,4 +1,5 @@
-import { Box, Icon, Spinner, Text } from "@metamask/snaps-sdk/jsx";
+import { Box, Icon, Image, Spinner, Text } from "@metamask/snaps-sdk/jsx";
+import { hourglass } from "./image/icons";
 /**
  * Show an spinner while processing.
  *
@@ -19,14 +20,11 @@ export const ui = (label?: string) => {
 
   return (
     <Box direction="vertical" alignment="center" center>
+      <Image src={hourglass} />
+      <Text alignment="center">
+        {label || 'Processing, Please Wait!'}
+      </Text>
       <Spinner />
-      <Box direction="horizontal" alignment="center" center>
-        <Icon name="loading" size="md" color='muted'/>
-        <Text alignment="center">
-          {label || 'Processing, Please Wait!'}
-        </Text>
-      </Box>
     </Box>
-
   );
 };

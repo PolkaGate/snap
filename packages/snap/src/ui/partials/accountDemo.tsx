@@ -8,6 +8,21 @@ import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } fr
 import { BalanceInfo } from '../components';
 import { amountToHuman } from '../../util/amountToHuman';
 import { PriceValue } from '../../util/getPrices';
+import { BALANCE_FETCH_TYPE } from '../../util/handleBalancesAll';
+
+type CTAProps = {
+  icon: `${IconName}`;
+  label: string;
+  name: string;
+}
+const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
+  <Box direction='vertical' alignment='center' center>
+    <Button name={name} variant='primary' >
+      <Icon size='md' color='primary' name={icon} />
+    </Button >
+    <Text alignment='center'> {label}</Text>
+  </Box>
+)
 
 type CTAProps = {
   icon: `${IconName}`;
@@ -24,11 +39,10 @@ const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
 )
 
 export const accountDemo = (
-  address: string,
   balancesAll: Balances[],
   logos: { genesisHash: string, logo: string }[],
   prices: { genesisHash: string, price: PriceValue }[],
-  showDetail?: boolean
+  showDetails?: boolean
 ) => {
 
   const totalBalance = balancesAll.reduce((acc, { total, decimal }, index) => acc + Number(amountToHuman(total, decimal)) * prices[index].price.value, 0)
@@ -65,28 +79,35 @@ export const accountDemo = (
       </Section>
       <Box alignment='space-between' direction='horizontal'>
         <Heading>Tokens</Heading>
-        {!!nonZeroBalances?.length &&
-          <Box center direction='horizontal'>
-            <Button name='balanceDetails' variant='primary'>
-              {showDetail ? 'hide' : 'show'}  details
-            </Button>
-            <Icon color='muted' name={showDetail ? 'arrow-down' : 'arrow-right'} />
-          </Box>}
+        <Box center direction='horizontal'>
+          {!!nonZeroBalances?.length &&
+            <Button name='balanceDetails' variant='primary' >
+              <Icon size='md' color={showDetails ? 'muted' : 'primary'} name='card-token' />
+            </Button >
+          }
+          <Button name='customizeChains' variant='primary' >
+            <Icon size='md' color='primary' name='customize' />
+          </Button >
+        </Box>
       </Box>
       {nonZeroBalances?.length
-        ? nonZeroBalances.map((balances, index) => {
+        ? nonZeroBalances.map((balances) => {
 
           const logo = logos.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.logo as string;
           const price = prices.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.price.value as number; // needs that prices be token-based when supporting multi asset chains
 
           return (
             <Section>
-              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetail} />
+              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} />
             </Section>
           )
         })
         : <Section>
-          <Text alignment='center'> No tokens to show!</Text>
+          <Text alignment='center'> No tokens on the selected networks!</Text>
+          <Box direction='horizontal' alignment='center'>
+            <Text alignment='center' color='muted'>Select your preferred networks using the icon above.</Text>
+            <Icon size='md' color='muted' name='customize' />
+          </Box>
         </Section>
       }
     </Box>

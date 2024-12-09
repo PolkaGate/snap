@@ -35,7 +35,7 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
       <Section>
         <Box direction='horizontal' alignment="start">
           <Icon color='muted' name='wallet' size='md' />
-          <Text color='muted'>Select a chain to view your address and its QR code.</Text>
+          <Text color='muted'>Select a network to view your address and its QR code.</Text>
         </Box>
         <ChainSwitch genesisHash={genesisHash} logo={logo} />
         <Copyable value={formatted} />

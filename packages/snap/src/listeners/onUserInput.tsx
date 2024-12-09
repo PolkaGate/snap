@@ -6,14 +6,13 @@ import type { OnUserInputHandler } from '@metamask/snaps-sdk';
 
 import {
   showSpinner,
-  accountInfo,
+  home,
   exportAccount,
   showJsonContent,
   staking,
   voting
 } from '../ui';
 import { updateSnapState } from '../rpc/stateManagement';
-import getChainName from '../util/getChainName';
 import { showMore } from '../ui/showMore';
 import { receive } from '../ui/receive';
 import { balanceDetails } from '../ui/balanceDetails';
@@ -22,7 +21,11 @@ import { SendFormState } from '../ui/send/types';
 import { formValidation } from '../ui/send/utils';
 import { approveSend } from '../ui/send/approveSend';
 import { HexString } from '@polkadot/util/types';
-import { transfer } from '../ui/send/transfer';
+import { confirmation } from '../ui/send/confirmation';
+import { CustomizeChains } from '../ui/selectChains/CustomizeChains';
+import { SelectedChainsFormState } from '../ui/selectChains/types';
+import { DEFAULT_CHAINS_GENESIS } from '../constants';
+import { BALANCE_FETCH_TYPE } from '../util/handleBalancesAll';
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -37,8 +40,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
     switch (event.name) {
       case 'switchChain': {
         const genesisHash = event.value;
-        const destinationChainName = await getChainName(genesisHash)
-        await showSpinner(id, `Switching format to ${destinationChainName} ...`);
         await updateSnapState('currentGenesisHash', genesisHash);
         await receive(id, genesisHash);
         break;
@@ -53,7 +54,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         const clearAddress = event.name === 'clear';
         const displayClearIcon = !clearAddress && sendForm && Boolean(sendForm.to) && sendForm.to !== '';
 
-        await send(id, sendForm?.tokenSelector, sendForm?.amount, sendForm?.to, formErrors, displayClearIcon, clearAddress);
+        await send(id, sendForm?.amount, formErrors, sendForm?.to, sendForm?.tokenSelector, displayClearIcon, clearAddress);
         break;
 
       case 'sendReview':
@@ -65,7 +66,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
 
       case 'confirmSend':
         await showSpinner(id, 'Working, please wait ...');
-        await transfer(id, context.payload);
+        await confirmation(id, context.payload);
         break;
 
       case 'receive':
@@ -92,10 +93,30 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await balanceDetails(id, context?.show === undefined ? true : !context.show);
         break;
 
+      case 'refreshSelectedChains':
+        await showSpinner(id, 'Resetting, please wait ...');
+        await updateSnapState('selectedChains', DEFAULT_CHAINS_GENESIS);
+      case 'customizeChains':
+        await showSpinner(id, 'Loading, please wait ...');
+        await CustomizeChains(id);
+        break;
+      case 'applySelectedChains':
+        await showSpinner(id, 'Applying, please wait ...');
+        const selectedChains = state.selectedChains as SelectedChainsFormState;
+        const filtered = Object.entries(selectedChains).filter(([key, value]) => value).map(([key]) => key);
+        await updateSnapState('selectedChains', filtered);
+        await home(id);
+        break;
+
+      case 'backToHomeWithUpdate':
+        await showSpinner(id, 'Updating, please wait ...');
+        await home(id, BALANCE_FETCH_TYPE.FORCE_UPDATE);
+        break;
+
       case 'backToHome':
       case 'cancelSend':
         await showSpinner(id, 'Loading, please wait ...');
-        await accountInfo(id);
+        await home(id);
         break;
 
       default:
@@ -109,7 +130,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
     switch (event.name) {
       case 'saveExportedAccount':
         if (value?.password) {
-          await showSpinner(id, 'Exporting the account ...');
+          await showSpinner(id, 'Exporting, please wait ...');
           await showJsonContent(id, value.password as string);
         }
         break;

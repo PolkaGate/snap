@@ -53,9 +53,15 @@ export const SendForm: SnapComponent<SendFormProps> = ({
         <Box>
           <Icon name='send-2' color='muted' />
         </Box>
-        <Input name='amount' type='number' placeholder='Enter amount to send' />
+        <Input
+          name='amount'
+          type='number'
+          placeholder='Enter amount to send'
+        />
         <Box direction='horizontal' center>
-          <Text color='alternative'>{_selectedToken.token}</Text>
+          <Text color='alternative'>
+            {_selectedToken.token}
+          </Text>
         </Box>
       </Field>
       <Field label='To account' error={formErrors?.to}>
