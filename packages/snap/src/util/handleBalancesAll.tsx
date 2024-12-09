@@ -21,7 +21,13 @@ export function areArraysEqual(arr1: string[], arr2: string[]): boolean {
   return sortedArr1.every((value, index) => value === sortedArr2[index]);
 }
 
-export const handleBalancesAll = async (savedOnly?: boolean) => {
+export enum BALANCE_FETCH_TYPE {
+  RECENTLY_FETCHED,
+  SAVED_ONLY,
+  FORCE_UPDATE
+}
+
+export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
   const options = getChainOptions();
   const snapState = await getSnapState();
   const selectedChains = snapState?.selectedChains || DEFAULT_CHAINS_GENESIS;
@@ -40,7 +46,8 @@ export const handleBalancesAll = async (savedOnly?: boolean) => {
     noChainsChange = areArraysEqual(savedBalancedChains, selectedChains);
   }
 
-  if (noChainsChange && snapState.balancesAll && (savedOnly || Date.now() - Number(snapState.balancesAll.date) < PRICE_VALIDITY_PERIOD)) {
+
+  if (noChainsChange && snapState.balancesAll && fetchType !== BALANCE_FETCH_TYPE.FORCE_UPDATE && (fetchType === BALANCE_FETCH_TYPE.SAVED_ONLY || Date.now() - Number(snapState.balancesAll.date) < PRICE_VALIDITY_PERIOD)) {
     const parsedBalancesAll = JSON.parse(snapState.balancesAll.data);
 
     parsedBalancesAll.forEach((item) => {

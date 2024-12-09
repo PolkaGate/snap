@@ -42,7 +42,7 @@ export const SendConfirmation: SnapComponent<Props> = ({ chainName, txHash }) =>
       </Section>
     </Box>
     <Footer>
-      <Button name="backToHome" >
+      <Button name="backToHomeWithUpdate" >
         Home
       </Button>
     </Footer>

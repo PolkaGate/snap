@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getSnapState } from '../rpc/stateManagement';
-import { handleBalancesAll } from '../util/handleBalancesAll';
+import { BALANCE_FETCH_TYPE, handleBalancesAll } from '../util/handleBalancesAll';
 import { accountDemo } from './partials/accountDemo';
 
 /**
@@ -11,8 +11,8 @@ import { accountDemo } from './partials/accountDemo';
  * @param id - The id of current UI interface.
  * @param genesisHash - Chain genesisHash.
  */
-export async function home(id: string) {
-  const {balancesAll, logos, pricesInUsd} = await handleBalancesAll()
+export async function home(id: string, balanceFetchType?:BALANCE_FETCH_TYPE) {
+  const {balancesAll, logos, pricesInUsd} = await handleBalancesAll(balanceFetchType)
   
   await snap.request({
     method: 'snap_updateInterface',

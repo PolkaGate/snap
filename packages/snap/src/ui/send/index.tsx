@@ -1,6 +1,6 @@
 import { Box, Container } from "@metamask/snaps-sdk/jsx";
 import { SendFlowFooter } from "./SendFlowFooter";
-import { handleBalancesAll } from "../../util/handleBalancesAll";
+import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../util/handleBalancesAll";
 import { SendForm } from "./SendForm";
 import { SendFormErrors } from "./types";
 import { TransactionSummary } from "./TransactionSummary";
@@ -20,7 +20,7 @@ export async function send(
   clearAddress?: boolean,
 ) {
 
-  const { address, balancesAll, logos, pricesInUsd } = await handleBalancesAll(true);
+  const { address, balancesAll, logos, pricesInUsd } = await handleBalancesAll(BALANCE_FETCH_TYPE.SAVED_ONLY);
   const nonZeroBalances = balancesAll.filter(({ total }) => !total.isZero());
   const tokenGenesis = selectedTokenGenesisHash?.split(',');
   const maybeSelectedToken = tokenGenesis && balancesAll.find(({ token, genesisHash }) => tokenGenesis[0] === token && tokenGenesis[1] === genesisHash);

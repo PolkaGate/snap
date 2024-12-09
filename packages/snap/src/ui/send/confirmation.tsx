@@ -8,7 +8,7 @@ import getChainName from "../../util/getChainName";
 import { SignerPayloadJSON } from "@polkadot/types/types";
 import { SendConfirmation } from "./SendConfirmation";
 
-export async function transfer(id: string, payload: SignerPayloadJSON) {
+export async function confirmation(id: string, payload: SignerPayloadJSON) {
   const { genesisHash } = payload;
   const api = await getApi(genesisHash);
 

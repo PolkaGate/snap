@@ -8,6 +8,7 @@ import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } fr
 import { BalanceInfo } from '../components';
 import { amountToHuman } from '../../util/amountToHuman';
 import { PriceValue } from '../../util/getPrices';
+import { BALANCE_FETCH_TYPE } from '../../util/handleBalancesAll';
 
 type CTAProps = {
   icon: `${IconName}`;
@@ -27,7 +28,7 @@ export const accountDemo = (
   balancesAll: Balances[],
   logos: { genesisHash: string, logo: string }[],
   prices: { genesisHash: string, price: PriceValue }[],
-  showDetail?: boolean
+  showDetails?: boolean
 ) => {
 
   const totalBalance = balancesAll.reduce((acc, { total, decimal }, index) => acc + Number(amountToHuman(total, decimal)) * prices[index].price.value, 0)
@@ -67,7 +68,7 @@ export const accountDemo = (
         <Box center direction='horizontal'>
           {!!nonZeroBalances?.length &&
             <Button name='balanceDetails' variant='primary' >
-              <Icon size='md' color={showDetail ? 'muted' : 'primary'} name='card-token' />
+              <Icon size='md' color={showDetails ? 'muted' : 'primary'} name='card-token' />
             </Button >
           }
           <Button name='customizeChains' variant='primary' >
@@ -83,7 +84,7 @@ export const accountDemo = (
 
           return (
             <Section>
-              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetail} />
+              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} />
             </Section>
           )
         })
