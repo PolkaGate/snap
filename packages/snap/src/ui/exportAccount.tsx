@@ -21,20 +21,20 @@ const ui = () => {
 
   return (
     <Container>
-      <Box direction="vertical" alignment="start">
+      <Box direction='vertical' alignment='start'>
         <Section>
           <Box direction='horizontal' alignment='start'>
-            <Icon name="export" size="md" />
+            <Icon name='export' size='md' />
             <Heading>Export Account!</Heading>
           </Box>
           <Divider />
           <Text alignment='start'> Here, you can export your account as a JSON file, which can be used to import your account in another extension or wallet.</Text>
           <Box>
-            <Form name="saveExportedAccount">
-              <Field label="Enter a password to encrypt your data" error='Password can not be empty'>
-                <Input name="password" placeholder="password ..." type='password' />
+            <Form name='saveExportedAccount'>
+              <Field label='Enter a password to encrypt your data' error='Password can not be empty'>
+                <Input name='password' placeholder='password ...' type='password' />
               </Field>
-              <Button name='exportAccountBtn' type="submit" variant="primary">
+              <Button name='exportAccountBtn' type='submit' variant='primary'>
                 Export
               </Button>
             </Form>
@@ -42,7 +42,7 @@ const ui = () => {
         </Section>
       </Box>
       <Footer>
-        <Button name='backToHome' variant="destructive">
+        <Button name='backToHome' variant='destructive'>
           Back
         </Button>
       </Footer>
@@ -76,10 +76,10 @@ const jsonContentUi = (json: string) => {
 
   return (
     <Container>
-      <Box direction="vertical" alignment="start">
+      <Box direction='vertical' alignment='start'>
         <Section>
           <Box direction='horizontal' alignment='start'>
-            <Icon name="export" size="md" />
+            <Icon name='export' size='md' />
             <Heading>Export Account!</Heading>
           </Box>
           <Divider />
@@ -88,7 +88,7 @@ const jsonContentUi = (json: string) => {
         </Section>
       </Box>
       <Footer>
-        <Button name='backToHome' variant="destructive">
+        <Button name='backToHome' variant='destructive'>
           Back
         </Button>
       </Footer>

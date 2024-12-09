@@ -151,14 +151,16 @@ export const getChainOptions = (): Options[] => {
     return [];
   }
 
-  return chains
+  const options = chains
     .filter(({ genesisHash, displayName }) => genesisHash?.length && !DISABLED_NETWORKS.includes(displayName))
     .map(({ displayName, genesisHash }) => (
       {
-        value: genesisHash[0],
+        value: genesisHash[0] as HexString,
         text: displayName
       }
-    ))
+    ));
+
+  return options
 };
 
 export const getChainFromMetadata = async (genesis: HexString): Promise<Chain | null> => {

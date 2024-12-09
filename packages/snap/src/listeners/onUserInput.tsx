@@ -9,8 +9,8 @@ import {
   home,
   exportAccount,
   showJsonContent,
-  staking,
-  voting
+  voting,
+  stakingIndex
 } from '../ui';
 import { updateSnapState } from '../rpc/stateManagement';
 import { showMore } from '../ui/showMore';
@@ -24,8 +24,11 @@ import { HexString } from '@polkadot/util/types';
 import { confirmation } from '../ui/send/confirmation';
 import { CustomizeChains } from '../ui/selectChains/CustomizeChains';
 import { SelectedChainsFormState } from '../ui/selectChains/types';
-import { DEFAULT_CHAINS_GENESIS } from '../constants';
 import { BALANCE_FETCH_TYPE } from '../util/handleBalancesAll';
+import { transfer } from '../ui/send/transfer';
+import { stakeFormValidation } from '../ui/stake/utils';
+import { StakeFormState } from '../ui/stake/types';
+import { stake } from '../ui/stake/stake';
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -33,7 +36,9 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
     method: 'snap_getInterfaceState',
     params: { id },
   });
+
   const sendForm = state.sendForm as SendFormState;
+  const stakeForm = state.stakeForm as StakeFormState;
 
   if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
 
@@ -50,20 +55,20 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
       case 'amount':
       case 'clear':
       case 'to':
-        const formErrors = formValidation(sendForm, context);
-        const clearAddress = event.name === 'clear';
-        const displayClearIcon = !clearAddress && sendForm && Boolean(sendForm.to) && sendForm.to !== '';
+        {
+          const formErrors = formValidation(sendForm, context);
+          const clearAddress = event.name === 'clear';
+          const displayClearIcon = !clearAddress && sendForm && Boolean(sendForm.to) && sendForm.to !== '';
 
-        await send(id, sendForm?.amount, formErrors, sendForm?.to, sendForm?.tokenSelector, displayClearIcon, clearAddress);
-        break;
-
+          await send(id, sendForm?.tokenSelector, sendForm?.amount, sendForm?.to, formErrors, displayClearIcon, clearAddress);
+          break;
+        }
       case 'sendReview':
         await showSpinner(id, 'Loading, please wait ...');
         const { tokenSelector, amount, to } = sendForm;
         const genesisHash = tokenSelector.split(',')[1] as HexString;
         await approveSend(id, genesisHash, amount, to);
         break;
-
       case 'confirmSend':
         await showSpinner(id, 'Working, please wait ...');
         await confirmation(id, context.payload);
@@ -73,16 +78,23 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await receive(id);
         break;
 
-      case 'more':
-        await showMore(id);
-        break;
-
       case 'stake':
-        await staking(id);
+        await showSpinner(id, 'Loading, please wait ...');
+        await stakingIndex(id);
+        break;
+      case 'stakeWithUs':
+      case 'stakeTokenSelector':
+      case 'stakeAmount':
+        const formErrors = stakeFormValidation(stakeForm, context);
+        await stake(id, stakeForm?.stakeTokenSelector, stakeForm?.stakeAmount, formErrors, context?.stakingInfo);
         break;
 
       case 'vote':
         await voting(id);
+        break;
+
+      case 'more':
+        await showMore(id);
         break;
 
       case 'export':

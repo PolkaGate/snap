@@ -7,5 +7,5 @@ export * from './partials/accountDemo';
 export * from './polkagateApps';
 export * from './review/';
 export * from './showSpinner';
-export * from './staking';
+export * from './stake';
 export * from './voting';
