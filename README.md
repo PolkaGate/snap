@@ -69,5 +69,5 @@ https://sayfer.io/audits/metamask-snap-audit-report-for-polkagate-snap/
 
 ---
 
-For more detailed help, please refer to the [wiki](https://github.com/PolkaGate/snap/wiki).
+For more detailed help, please refer to the [docs.polkagate.xyz](https://docs.polkagate.xyz).
 
