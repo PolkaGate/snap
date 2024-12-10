@@ -19,6 +19,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+      - name: Enable Corepack and set Yarn version
+        run: |
+          corepack enable
+          corepack prepare yarn@3.2.1 --activate
       - name: Install Dependencies
         run: |
           if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
@@ -35,6 +39,11 @@ jobs:
         with:
           path: ./packages/snap/dist
           key: snap-${{ runner.os }}-${{ github.sha }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.yarn-cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
   # e2e:
   #   name: End-to-end Tests
