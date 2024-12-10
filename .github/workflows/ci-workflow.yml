@@ -25,7 +25,7 @@ jobs:
           corepack prepare yarn@3.2.1 --activate
       - name: Install Dependencies
         run: |
-          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]] || git diff --exit-code yarn.lock; then
             yarn install
           else
             yarn install --immutable
