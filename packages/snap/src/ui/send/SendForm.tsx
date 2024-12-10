@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Field,
@@ -26,6 +27,7 @@ export type SendFormProps = {
   }[];
   nonZeroBalances: Balances[];
   pricesInUsd: { genesisHash: string, price: PriceValue }[];
+  recipient: string | undefined;
   selectedToken: Balances;
 };
 
@@ -36,7 +38,8 @@ export const SendForm: SnapComponent<SendFormProps> = ({
   logos,
   nonZeroBalances,
   pricesInUsd,
-  selectedToken,
+  recipient,
+  selectedToken
 }) => {
 
   const _selectedToken = selectedToken || nonZeroBalances[0];
@@ -66,7 +69,10 @@ export const SendForm: SnapComponent<SendFormProps> = ({
       </Field>
       <Field label='To account' error={formErrors?.to}>
         <Box>
-          <Image src={jazzicon1} />
+          {recipient
+            ? <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${recipient}`} />
+            : <Image src={jazzicon1} />
+          }
         </Box>
         <Input
           name='to'

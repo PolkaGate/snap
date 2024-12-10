@@ -39,7 +39,7 @@ export async function send(
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(fee, nonZeroBalances, logos, pricesInUsd, selectedToken, formErrors, displayClearIcon, clearAddress, selectedTokenPrice, total),
+      ui: ui(fee, nonZeroBalances, logos, pricesInUsd, recipient, selectedToken, formErrors, displayClearIcon, clearAddress, selectedTokenPrice, total),
       context: {
         decimal: selectedToken.decimal,
         transferable: selectedToken.transferable.toString()
@@ -48,7 +48,7 @@ export async function send(
   });
 }
 
-const ui = (fee, nonZeroBalances, logos, pricesInUsd, selectedToken, formErrors, displayClearIcon, clearAddress, selectedTokenPrice, total) => {
+const ui = (fee, nonZeroBalances, logos, pricesInUsd, recipient, selectedToken, formErrors, displayClearIcon, clearAddress, selectedTokenPrice, total) => {
 
   return (
     <Container>
@@ -65,6 +65,7 @@ const ui = (fee, nonZeroBalances, logos, pricesInUsd, selectedToken, formErrors,
           nonZeroBalances={nonZeroBalances}
           pricesInUsd={pricesInUsd}
           selectedToken={selectedToken}
+          recipient={recipient}
         />
         {fee &&
           <TransactionSummary

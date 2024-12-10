@@ -4,8 +4,7 @@
 import { AnyTuple } from '@polkadot/types/types';
 import { amountToHuman } from '../../util/amountToHuman';
 import { Decoded } from '../../util/decodeTxMethod';
-import { Box, Row, Section, SnapComponent, Text } from '@metamask/snaps-sdk/jsx';
-import { ShortAddress } from './ShortAddress';
+import { Address, Box, Row, Section, SnapComponent, Text } from '@metamask/snaps-sdk/jsx';
 
 type Props = {
   decimal: number;
@@ -44,7 +43,7 @@ export const ReviewBody: SnapComponent<Props> = ({ decimal, token, args, action,
               ? <Text>
                 {maybeReceiverIdentity}
               </Text>
-              : <ShortAddress address={to} />
+              : <Address address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${to}`} />
             }
           </Box>
         </Section>

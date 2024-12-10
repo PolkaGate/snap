@@ -64,8 +64,12 @@ export const accountDemo = (
           <Heading size='lg'>{`$${totalBalance.toFixed(2)}`}</Heading>
         </Box>
         <Box alignment='space-between' direction='horizontal'>
-          <Text alignment='start' color='muted'> {`available $${availableBalance.toFixed(2)}`}</Text>
-          <Text alignment='start' color={colorOfChanges}> {`${signOfChanges}$${totalBalanceChanges.toFixed(2)}`}</Text>
+          <Text alignment='start' color='muted'>
+            {`available $${availableBalance.toFixed(2)}`}
+          </Text>
+          <Text alignment='start' color={colorOfChanges}>
+            {`${signOfChanges}$${Math.abs(totalBalanceChanges).toFixed(2)}`}
+          </Text>
         </Box>
         <Section>
           <Box alignment='space-around' direction='horizontal'>
