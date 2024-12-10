@@ -19,7 +19,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      - run: yarn install --immutable
+      - name: Install Dependencies
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            yarn install
+          else
+            yarn install --immutable
+          fi
       - run: yarn build
       # - run: yarn lint
       # - run: yarn test
