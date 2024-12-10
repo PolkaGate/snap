@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # For Yarn projects, use "npm"
+    directory: "/packages/snap" # Path to the directory containing package.json
+    schedule:
+      interval: "daily" # Options: daily, weekly, monthly
