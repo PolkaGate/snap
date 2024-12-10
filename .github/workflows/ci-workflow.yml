@@ -24,7 +24,7 @@ jobs:
           corepack enable
           corepack prepare yarn@3.2.1 --activate
       - name: Install dependencies without immutable
-        run: yarn install --no-lockfile
+        run: yarn install --no-immutable
   
       - name: Verify dependencies with immutable
         run: |
