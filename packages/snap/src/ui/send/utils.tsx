@@ -37,14 +37,14 @@ export function formValidation(
 }
 
 
-export const getTransferFee = async (address: string, amount: string, genesisHash: HexString, recipient: string): Promise<Balance> => {
+export const getTransferFee = async (address: string, amount: number, genesisHash: HexString, recipient: string): Promise<Balance> => {
   const api = await getApi(genesisHash);
   if (!api) {
     throw new Error('cant connect to network, check your internet connection!');
   }
 
   const decimal = api.registry.chainDecimals[0];
-  const amountAsBN = amountToMachine(amount, decimal);
+  const amountAsBN = amountToMachine(String(amount), decimal);
   const params = [recipient, amountAsBN];
   const call = api.tx.balances.transferKeepAlive(...params);
   checkAndUpdateMetaData(api).catch(console.error);

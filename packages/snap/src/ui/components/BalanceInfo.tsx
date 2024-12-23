@@ -3,7 +3,7 @@
 
 import type { Balances } from '../../util/getBalance';
 
-import { Box, Card, Divider, Text, Row, SnapComponent, Section, Icon, IconName } from "@metamask/snaps-sdk/jsx";
+import { Box, Card, Divider, Text, SnapComponent, Icon, IconName } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from '../../util/amountToHuman';
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
   price: number;
   logo: string;
   showDetail?: boolean;
+  hideBalance: boolean | undefined;
 }
 
 type DetailRowProps = {
@@ -37,7 +38,7 @@ export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, label, valu
   );
 };
 
-export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showDetail }: Props) => {
+export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showDetail, hideBalance }: Props) => {
   const { total, transferable, locked, soloTotal, pooledBalance, decimal, token } = balances;
   const totalPrice = parseFloat(amountToHuman(total, decimal)) * price;
 
@@ -47,8 +48,16 @@ export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showD
         image={logo}
         title={token}
         description={`$${price}`}
-        value={`${amountToHuman(total, decimal)} ${token}`}
-        extra={`$${totalPrice.toFixed(2)}`}
+        value={
+          hideBalance
+            ? '••••••••'
+            : `${amountToHuman(total, decimal)} ${token}`
+        }
+        extra={
+          hideBalance
+            ? '••••••••'
+            : `$${totalPrice.toFixed(2)}`
+        }
       />
       {!!showDetail &&
         <Box>

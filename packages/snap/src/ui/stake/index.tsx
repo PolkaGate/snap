@@ -1,79 +1,98 @@
-import { Box, Button, Container, Footer, Image, Heading, Section, Text, Icon } from '@metamask/snaps-sdk/jsx';
-import { FlowHeader } from '../send/FlowHeader';
+import { Box, Button, Container, Footer, Checkbox } from '@metamask/snaps-sdk/jsx';
+import { StakeFlowHeader } from './components/StakeFlowHeader';
 import { handleBalancesAll } from '../../util/handleBalancesAll';
-import { amountToHuman } from '../../util/amountToHuman';
-import { getClaimableRewards } from '../../util';
+import { Balances } from '../../util';
+import { STAKING_CHAINS } from './const';
+import getChainName from '../../util/getChainName';
+import { HexString } from '@polkadot/util/types';
+import { StakedTokens } from './components/StakedTokens';
+import { StakeAndEarn } from './components/StakeAndEarn';
+import { RewardsInfo } from '../../util/types';
+import { getStakingRewards } from './utils/getStakingRewards';
+
+async function fetchStaking(): Promise<Record<string, unknown>> {
+  const response = await fetch('https://raw.githubusercontent.com/PolkaGate/snap/refs/heads/main/packages/snap/staking.json');
+  if (!response.ok) {
+    throw new Error('Failed to fetch JSON file');
+  }
+
+  const info = await response.json();
+  return info;
+}
+
+export interface StakingIndexContextType {
+  balancesAll: Balances[],
+  stakingRates: Record<string, number>;
+  recommendedValidators: string[];
+}
 
 export async function stakingIndex(id: string) {
+  const { address, balancesAll, logos } = await handleBalancesAll();
+  const stakedTokens = balancesAll.filter(({ pooledBalance, soloTotal }) =>( pooledBalance && !pooledBalance.isZero()) || ( soloTotal && !soloTotal.isZero()));
+  const rewardsInfo = await getStakingRewards(address, stakedTokens);
+  const { rates: stakingRates, validators: recommendedValidators } = await fetchStaking();
 
-  const { address, balancesAll, logos, pricesInUsd } = await handleBalancesAll();
-  const stakedTokens = balancesAll.filter(({ pooledBalance }) => pooledBalance && !pooledBalance.isZero());
-  const rewardsInfo = await getClaimableRewards(address, stakedTokens);
+  const notStakedChains = STAKING_CHAINS.filter((item) => !stakedTokens.find(({ genesisHash }) => item === String(genesisHash)));
+  const nonStakedChainNames = (await Promise.all(notStakedChains.map((genesisHash) => getChainName(genesisHash as HexString))))
+  const nonStakedChainInfo = notStakedChains.map((genesisHash, index) => ({ genesisHash, name: nonStakedChainNames[index] })).filter(({ name }) => !!name);
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(stakedTokens, logos, pricesInUsd, rewardsInfo)
+      ui: ui(balancesAll, logos, nonStakedChainInfo, rewardsInfo, stakedTokens, stakingRates),
+      context: {
+        address,
+        logos,
+        recommendedValidators,
+        stakingRates,
+        stakedTokens,
+        rewardsInfo,
+      }
     },
   });
 }
 
-const ui = (stakedTokens, logos, pricesInUsd, rewardsInfo) => {
+const ui = (
+  balancesAll: Balances[],
+  logos: { genesisHash: string; logo: string; }[],
+  nonStakedChainInfo: { genesisHash: HexString, name: string }[],
+  rewardsInfo: RewardsInfo[],
+  stakedTokens: Balances[],
+  stakingRates:  Record<string, number>
+) => {
 
   return (
     <Container>
       <Box direction='vertical' alignment='start'>
-        <FlowHeader
+        <StakeFlowHeader
           action='backToHome'
-          label='Stake'
+          label='Staking'
         />
-        <Heading>Staked Tokens</Heading>
-        {stakedTokens.map((tokenInfo) => {
-          const { token, pooledBalance, decimal } = tokenInfo;
-          const foundLogoInfo = logos.find(({ genesisHash }) => genesisHash === tokenInfo.genesisHash);
-          const foundRewardInfo = rewardsInfo.find(({ genesisHash }) => genesisHash === tokenInfo.genesisHash);
-          const netStaked = pooledBalance.sub(foundRewardInfo.reward);
-
-          return (
-            <Section>
-              <Box direction='horizontal' alignment='space-between'>
-                <Box direction='horizontal'>
-                  <Image src={foundLogoInfo.logo} />
-                  <Box direction='vertical'>
-                    <Text>
-                      {token}
-                    </Text>
-                    <Text color='muted'>
-                      claimable rewards
-                    </Text>
-                  </Box>
-                </Box>
-                <Box direction='vertical' alignment='end'>
-                  <Text alignment='end'>
-                    {`${amountToHuman(netStaked, decimal, 4, true)} ${token}`}
-                  </Text>
-                  <Box direction='horizontal' alignment='end'>
-                    <Button name='claimRewards' >
-                      <Icon name='download' />
-                    </Button>
-                    <Text color='success' alignment='end'>
-                      {`${amountToHuman(foundRewardInfo.reward, decimal, 6, true)} ${token}`}
-                    </Text>
-                  </Box>
-                </Box>
-              </Box>
-            </Section>
-          )
-        })
+        {
+          !!stakedTokens.length &&
+          <StakedTokens
+            logos={logos}
+            rewardsInfo={rewardsInfo}
+            stakedTokens={stakedTokens}
+            stakingRates={stakingRates}
+          />
         }
+        {
+          !!nonStakedChainInfo.length &&
+          <StakeAndEarn
+            balancesAll={balancesAll}
+            nonStakedChainInfo={nonStakedChainInfo}
+            stakingRates={stakingRates}
+          />
+        }
+        <Box direction='horizontal' alignment='center'>
+          <Checkbox name="enableTestnetStaking" label="Enable test networks" />
+        </Box>
       </Box>
       <Footer>
         <Button name='backToHome' variant='destructive'>
           Back
-        </Button>
-        <Button name='claimRewards' variant='destructive'>
-          Claim
         </Button>
       </Footer>
     </Container>

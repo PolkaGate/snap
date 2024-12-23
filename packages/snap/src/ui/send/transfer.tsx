@@ -6,7 +6,7 @@ import { getKeyPair } from "../../util";
 import { getApi } from "../../util/getApi";
 import getChainName from "../../util/getChainName";
 import { SignerPayloadJSON } from "@polkadot/types/types";
-import { SendConfirmation } from "./SendConfirmation";
+import { Confirmation } from "./Confirmation";
 
 export async function transfer(id: string, payload: SignerPayloadJSON) {
   const { genesisHash } = payload;
@@ -29,7 +29,7 @@ export async function transfer(id: string, payload: SignerPayloadJSON) {
     params: {
       id,
       ui: (
-        <SendConfirmation
+        <Confirmation
           chainName={chainName}
           txHash={String(txHash)}
         />

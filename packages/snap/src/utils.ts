@@ -47,3 +47,22 @@ export async function increment() {
 export const isHexToBn = (i?: string): BN | undefined => i
   ? isHex(i) ? hexToBn(i) : new BN(i)
   : undefined;
+
+export function toTitleCase(input: string | undefined): string | undefined {
+  if (!input) {
+    return undefined;
+  }
+
+  let words = input.replace(/([A-Z])/g, ' $1')?.replace(/[_-]/g, ' ')?.split(' ');
+
+  words = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+
+  return words.join(' ');
+}
+
+export function isEmptyObject(obj: Record<string, unknown>): boolean {
+  return Object.keys(obj).length === 0;
+}
+

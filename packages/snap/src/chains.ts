@@ -5,45 +5,47 @@ import { metadataExpand } from '@polkadot/extension-chains';
 import { Chain } from '@polkadot/extension-chains/types';
 import { sanitizeChainName } from './util/getChainName';
 import { HexString } from '@polkadot/util/types';
+import { KUSAMA_PEOPLE_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH } from './constants';
+import { POLKADOT_GENESIS_HASH } from './ui/stake/const';
 
-const testnets:Network[] = [
+const testnets: Network[] = [
   {
-  decimals: [12],
-  displayName: 'Westend',
-  genesisHash: [
-    '0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e',
-  ],
-  hasLedgerSupport: false,
-  icon: 'polkadot',
-  isIgnored: false,
-  isTestnet: true,
-  network: 'westend',
-  prefix: 42,
-  slip44: 354,
-  standardAccount: '*25519',
-  symbols: ['WND'],
-  website: 'https://polkadot.network',
-},
- {
-  decimals: [12],
-  displayName: "Paseo",
-  genesisHash: [
-    "0x77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f",
-  ],
-  hasLedgerSupport: false,
-  icon: "polkadot",
-  isIgnored: false,
-  isTestnet: true,
-  network: "paseo",
-  prefix: 42,
-  slip44: 0,
-  standardAccount: "*25519",
-  symbols: ["PAS"],
-  website: "https://polkadot.network",
-}
+    decimals: [12],
+    displayName: 'Westend',
+    genesisHash: [
+      '0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e',
+    ],
+    hasLedgerSupport: false,
+    icon: 'polkadot',
+    isIgnored: false,
+    isTestnet: true,
+    network: 'westend',
+    prefix: 42,
+    slip44: 354,
+    standardAccount: '*25519',
+    symbols: ['WND'],
+    website: 'https://polkadot.network',
+  },
+  {
+    decimals: [12],
+    displayName: "Paseo",
+    genesisHash: [
+      "0x77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f",
+    ],
+    hasLedgerSupport: false,
+    icon: "polkadot",
+    isIgnored: false,
+    isTestnet: true,
+    network: "paseo",
+    prefix: 42,
+    slip44: 0,
+    standardAccount: "*25519",
+    symbols: ["PAS"],
+    website: "https://polkadot.network",
+  }
 ]
 
-const assetHubs:Network[] = [
+const assetHubs: Network[] = [
   {
     decimals: [10],
     displayName: "Polkadot Asset Hub",
@@ -114,7 +116,70 @@ const assetHubs:Network[] = [
   },
 ];
 
-selectableNetworks.push(...testnets, ...assetHubs);
+const peopleChains = [
+  {
+    "decimals": [12],
+    "displayName": "Westend People",
+    "genesisHash": [WESTEND_PEOPLE_GENESIS_HASH],
+    "hasLedgerSupport": false,
+    "icon": "polkadot",
+    "isIgnored": false,
+    "isTestnet": true,
+    "network": "westendPeople",
+    "prefix": 42,
+    "slip44": 354,
+    "symbols": ["WND"],
+    "standardAccount": "*25519",
+    "website": "https://polkadot.network"
+  },
+  {
+    "decimals": [12],
+    "displayName": "Kusama People",
+    "genesisHash": [KUSAMA_PEOPLE_GENESIS_HASH],
+    "hasLedgerSupport": false,
+    "icon": "polkadot",
+    "isIgnored": false,
+    "isTestnet": false,
+    "network": "kusamaPeople",
+    "prefix": 2,
+    "slip44": 434,
+    "symbols": ["KSM"],
+    "standardAccount": "*25519",
+    "website": "https://kusama.network"
+  },
+  {
+    "decimals": [10],
+    "displayName": "Polkadot People",
+    "genesisHash": [POLKADOT_PEOPLE_GENESIS_HASH],
+    "hasLedgerSupport": false,
+    "icon": "polkadot",
+    "isIgnored": false,
+    "isTestnet": false,
+    "network": "polkadotPeople",
+    "prefix": 0,
+    "slip44": 354,
+    "symbols": ["DOT"],
+    "standardAccount": "*25519",
+    "website": "https://polkadot.network"
+  },
+  {
+    "decimals": [10],
+    "displayName": "Paseo People",
+    "genesisHash": [PASEO_PEOPLE_GENESIS_HASH],
+    "hasLedgerSupport": false,
+    "icon": "polkadot",
+    "isIgnored": false,
+    "isTestnet": true,
+    "network": "paseoPeople",
+    "prefix": 42,
+    "slip44": 354,
+    "symbols": ["PAS"],
+    "standardAccount": "*25519",
+    "website": "https://polkadot.network"
+  }
+];
+
+selectableNetworks.push(...testnets, ...peopleChains, ...assetHubs);
 export const DISABLED_NETWORKS = ['3DP network', 'xx network', 'Polkadex Mainnet', 'Stafi', 'Peaq Network', 'Genshiro Network'];
 
 // keyWord can be genesisHash, chainName, or even display name
@@ -151,16 +216,14 @@ export const getChainOptions = (): Options[] => {
     return [];
   }
 
-  const options = chains
+  return chains
     .filter(({ genesisHash, displayName }) => genesisHash?.length && !DISABLED_NETWORKS.includes(displayName))
     .map(({ displayName, genesisHash }) => (
       {
-        value: genesisHash[0] as HexString,
+        value: genesisHash[0],
         text: displayName
       }
-    ));
-
-  return options
+    ))
 };
 
 export const getChainFromMetadata = async (genesis: HexString): Promise<Chain | null> => {

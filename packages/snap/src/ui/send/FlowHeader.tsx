@@ -4,7 +4,7 @@ import { Box, Button, Heading, Icon, Tooltip } from '@metamask/snaps-sdk/jsx';
 type Props={
 action:string;
 label:string;
-tooltip:string;
+tooltip?:string;
 }
 
 /**

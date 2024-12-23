@@ -13,10 +13,16 @@ module.exports = {
     },
 
     {
-      files: ['**/*.{ts,tsx}'],
-      extends: ['@metamask/eslint-config-typescript'],
+      files: ["**/*.ts", "**/*.tsx"],
+      extends: ["@metamask/eslint-config-typescript"],
       rules: {
-        '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+        // This allows importing the `Text` JSX component.
+        "@typescript-eslint/no-shadow": [
+          "error",
+          {
+            allow: ["Text"],
+          },
+        ],
       },
     },
 
@@ -27,19 +33,6 @@ module.exports = {
         '@typescript-eslint/no-shadow': [
           'error',
           { allow: ['describe', 'expect', 'it'] },
-        ],
-      },
-    },
-    {
-      files: ["**/*.ts", "**/*.tsx"],
-      extends: ["@metamask/eslint-config-typescript"],
-      rules: {
-        // This allows importing the `Text` JSX component.
-        "@typescript-eslint/no-shadow": [
-          "error",
-          {
-            allow: ["Text"],
-          },
         ],
       },
     }

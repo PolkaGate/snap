@@ -2,8 +2,7 @@ import { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import { assetHub, ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist, edgeware, equilibrium, frequency, integritee, parallel, pendulum, phala, polimec, polymesh, sora, vara, paseo } from ".";
 
-export const getLogoByGenesisHash = async (genesisHash: HexString): Promise<string> => {
-    const chainName = await getChainName(genesisHash);
+export const getLogoByChainName =  (chainName?: string): string => {
     const sanitizedChainName = sanitizeChainName(chainName);
 
     switch (sanitizedChainName?.toLowerCase()) {
@@ -79,4 +78,9 @@ export const getLogoByGenesisHash = async (genesisHash: HexString): Promise<stri
         default:
             return globe;
     }
+};
+
+export const getLogoByGenesisHash = async (genesisHash: HexString): Promise<string> => {
+    const chainName = await getChainName(genesisHash);
+    return getLogoByChainName(chainName);
 };

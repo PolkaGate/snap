@@ -5,6 +5,7 @@ import type { OnHomePageHandler } from '@metamask/snaps-sdk';
 
 import { accountDemo } from '../ui';
 import { handleBalancesAll } from '../util/handleBalancesAll';
+import { getSnapState } from '../rpc/stateManagement';
 
 
 /**
@@ -14,8 +15,9 @@ import { handleBalancesAll } from '../util/handleBalancesAll';
  */
 export const onHomePage: OnHomePageHandler = async () => {
   const { balancesAll, logos, pricesInUsd } = await handleBalancesAll()
+  const hideBalance = await getSnapState('hideBalance');
 
   return {
-    content: accountDemo(balancesAll, logos, pricesInUsd),
+    content: accountDemo(hideBalance, balancesAll, logos, pricesInUsd),
   };
 };

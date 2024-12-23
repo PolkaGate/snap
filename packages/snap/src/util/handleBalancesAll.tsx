@@ -22,9 +22,19 @@ export function areArraysEqual(arr1: string[], arr2: string[]): boolean {
 }
 
 export enum BALANCE_FETCH_TYPE {
-  RECENTLY_FETCHED,
+  RECENTLY_FETCHED, // default
   SAVED_ONLY,
   FORCE_UPDATE
+}
+
+function transformAllValues(obj: any, transformer: (value: any) => any): void {
+  for (const key in obj) {
+    if (obj[key] && typeof obj[key] === 'object') {
+      transformAllValues(obj[key], transformer);
+    } else {
+      obj[key] = transformer(obj[key]);
+    }
+  }
 }
 
 export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
@@ -47,7 +57,7 @@ export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
   }
 
 
-  if (noChainsChange && snapState.balancesAll && fetchType !== BALANCE_FETCH_TYPE.FORCE_UPDATE && (fetchType === BALANCE_FETCH_TYPE.SAVED_ONLY || Date.now() - Number(snapState.balancesAll.date) < PRICE_VALIDITY_PERIOD)) {
+  if (noChainsChange && snapState.balancesAll && fetchType !== BALANCE_FETCH_TYPE.FORCE_UPDATE && (fetchType === BALANCE_FETCH_TYPE.SAVED_ONLY || ((Date.now() - Number(snapState.balancesAll.date)) < PRICE_VALIDITY_PERIOD))) {
     const parsedBalancesAll = JSON.parse(snapState.balancesAll.data);
 
     parsedBalancesAll.forEach((item) => {
@@ -56,13 +66,23 @@ export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
       item.locked = isHexToBn(item.locked)
       item.soloTotal = isHexToBn(item.soloTotal)
       item.pooledBalance = isHexToBn(item.pooledBalance);
+      if (item.pooled) {
+        item.pooled.total = isHexToBn(item.pooled.total);
+        item.pooled.active = isHexToBn(item.pooled.active);
+        item.pooled.claimable = isHexToBn(item.pooled.claimable);
+        item.pooled.unlocking = isHexToBn(item.pooled.unlocking);
+        item.pooled.redeemable = isHexToBn(item.pooled.redeemable);
+      }
     })
+
     balancesAll = parsedBalancesAll;
 
   } else {
 
     const balancesAllPromises = selectedOptions.map(({ value }) => getBalances(value as HexString, address))
-    balancesAll = await Promise.all(balancesAllPromises)
+    balancesAll = await Promise.all(balancesAllPromises);
+
+    console.log('balances:', balancesAll)
     await updateSnapState('balancesAll', { date: Date.now(), data: JSON.stringify(balancesAll) });
   }
 

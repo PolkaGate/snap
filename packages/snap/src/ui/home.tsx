@@ -13,12 +13,13 @@ import { accountDemo } from './partials/accountDemo';
  */
 export async function home(id: string, balanceFetchType?:BALANCE_FETCH_TYPE) {
   const {balancesAll, logos, pricesInUsd} = await handleBalancesAll(balanceFetchType)
-  
+  const hideBalance = await getSnapState('hideBalance');
+
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(balancesAll, logos, pricesInUsd),
+      ui: accountDemo(hideBalance, balancesAll, logos, pricesInUsd),
     },
   });
 }

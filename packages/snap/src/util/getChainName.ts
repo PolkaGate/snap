@@ -18,7 +18,7 @@ export const sanitizeChainName = (chainName: string | undefined) =>
     : null;
 
 // eslint-disable-next-line jsdoc/require-jsdoc
-export default async function getChainName(_genesisHash: HexString | undefined): Promise<string | undefined> {
+export default async function getChainName(_genesisHash: HexString | undefined, sanitized?: boolean): Promise<string | undefined> {
   if (!_genesisHash) {
     console.info('_genesisHash should not be undefined');
     return undefined;
@@ -29,6 +29,12 @@ export default async function getChainName(_genesisHash: HexString | undefined):
 
   if (!chainName) {
     chainName = (await getChainFromMetadata(_genesisHash))?.name;
+  }
+  
+  console.info('chainName is:', chainName);
+  
+  if (sanitized) {
+    return sanitizeChainName(chainName)?.toLocaleLowerCase() as string;
   }
 
   return chainName;

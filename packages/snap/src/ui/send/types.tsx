@@ -7,7 +7,7 @@
  */
 export type SendFormState = {
   to: string;
-  amount: string;
+  amount: number;
   tokenSelector: string;
 };
 

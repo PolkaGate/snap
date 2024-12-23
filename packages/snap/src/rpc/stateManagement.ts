@@ -32,7 +32,7 @@ export const getSnapState = async (label?: string) => {
   return label ? state?.[label] : state;
 }
 
-export const updateSnapState = async (field: keyof State, data: any) => {
+export const updateSnapState = async (field: keyof State | string, data: any) => {
   const state = (await getSnapState()) || {};
 
   state[field] = JSON.parse(JSON.stringify(data));

@@ -8,27 +8,14 @@ import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } fr
 import { BalanceInfo } from '../components';
 import { amountToHuman } from '../../util/amountToHuman';
 import { PriceValue } from '../../util/getPrices';
-import { BALANCE_FETCH_TYPE } from '../../util/handleBalancesAll';
+import { TotalBalance } from './TotalBalance';
 
 type CTAProps = {
   icon: `${IconName}`;
   label: string;
   name: string;
 }
-const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
-  <Box direction='vertical' alignment='center' center>
-    <Button name={name} variant='primary' >
-      <Icon size='md' color='primary' name={icon} />
-    </Button >
-    <Text alignment='center'> {label}</Text>
-  </Box>
-)
 
-type CTAProps = {
-  icon: `${IconName}`;
-  label: string;
-  name: string;
-}
 const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
   <Box direction='vertical' alignment='center' center>
     <Button name={name} variant='primary' >
@@ -39,6 +26,7 @@ const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
 )
 
 export const accountDemo = (
+  hideBalance: boolean | undefined,
   balancesAll: Balances[],
   logos: { genesisHash: string, logo: string }[],
   prices: { genesisHash: string, price: PriceValue }[],
@@ -53,29 +41,21 @@ export const accountDemo = (
     return acc + value * prices[index].price.change / 100
   }, 0)
 
-  const signOfChanges = totalBalanceChanges > 0 ? '+' : totalBalanceChanges < 0 ? '-' : '';
-  const colorOfChanges = totalBalanceChanges > 0 ? 'success' : totalBalanceChanges < 0 ? 'error' : 'default';
 
   return (
     <Box>
       <Section>
-        <Box alignment='space-between' direction='horizontal'>
-          <Heading> Total balance</Heading>
-          <Heading size='lg'>{`$${totalBalance.toFixed(2)}`}</Heading>
-        </Box>
-        <Box alignment='space-between' direction='horizontal'>
-          <Text alignment='start' color='muted'>
-            {`available $${availableBalance.toFixed(2)}`}
-          </Text>
-          <Text alignment='start' color={colorOfChanges}>
-            {`${signOfChanges}$${Math.abs(totalBalanceChanges).toFixed(2)}`}
-          </Text>
-        </Box>
+        <TotalBalance
+          hideBalance={hideBalance}
+          totalBalance={totalBalance}
+          availableBalance={availableBalance}
+          totalBalanceChanges={totalBalanceChanges}
+        />
         <Section>
           <Box alignment='space-around' direction='horizontal'>
             <CTA icon='send-1' name='send' label='Send' />
             <CTA icon='qr-code' name='receive' label='Receive' />
-            <CTA icon='stake' name='stake' label='Stake' />
+            <CTA icon='stake' name='stakeIndex' label='Stake' />
             <CTA icon='people' name='vote' label='Vote' />
             <CTA icon='more-horizontal' name='more' label='More' />
           </Box>
@@ -102,7 +82,7 @@ export const accountDemo = (
 
           return (
             <Section>
-              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} />
+              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} hideBalance={hideBalance} />
             </Section>
           )
         })

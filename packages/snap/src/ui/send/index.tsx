@@ -12,7 +12,7 @@ import { FlowHeader } from "./FlowHeader";
 
 export async function send(
   id: string,
-  amount: string | undefined,
+  amount: number | undefined,
   formErrors: SendFormErrors,
   recipient: string | undefined,
   selectedTokenGenesisHash: string | undefined,
