@@ -88,7 +88,7 @@ const jsonContentUi = (json: string) => {
         </Section>
       </Box>
       <Footer>
-        <Button name='backToHome' variant='destructive'>
+        <Button name='backToHomeWithoutUpdate' variant='destructive'>
           Back
         </Button>
       </Footer>

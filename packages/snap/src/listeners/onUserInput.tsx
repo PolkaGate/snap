@@ -87,10 +87,15 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await updateSnapState('hideBalance', false);
         await home(id);
         break;
-        
+
       case 'backToHome':
         await showSpinner(id, 'Loading, please wait ...');
         await home(id);
+        break;
+
+      case 'backToHomeWithoutUpdate':
+        await showSpinner(id, 'Loading, please wait ...');
+        await home(id,BALANCE_FETCH_TYPE.SAVED_ONLY);
         break;
 
       //===================================CUSTOMIZE CHAINS===================================//

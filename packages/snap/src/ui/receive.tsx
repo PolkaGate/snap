@@ -42,7 +42,7 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
         <Image src={qrCode} />
       </Section>
       <Footer>
-        <Button name='backToHome' variant="destructive">
+        <Button name='backToHomeWithoutUpdate' variant="destructive">
           Back
         </Button>
       </Footer>
