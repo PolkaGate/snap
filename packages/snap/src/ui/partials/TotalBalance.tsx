@@ -17,6 +17,9 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
   const colorOfChanges = totalBalanceChanges > 0 ? 'success' : totalBalanceChanges < 0 ? 'error' : 'default';
   const locked = totalBalance - availableBalance;
 
+  const decimalToFixForTotal = totalBalance < 100000 ? 2 : 0;
+  const decimalToFixForBalanceChange = totalBalanceChanges < 100000 ? 2 : 0;
+
   return (
     <Box >
       <Box alignment='space-between' direction='horizontal' center>
@@ -28,7 +31,7 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
           <Text alignment='end' color='muted'>
             {hideBalance
               ? '••••••••'
-              : `$${locked.toFixed(2)}`
+              : `$${locked.toFixed(2)} USD`
             }
           </Text>
         </Box>
@@ -38,7 +41,7 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
           <Heading size='lg'>
             {hideBalance
               ? '●●●●●●●●'
-              : `$${totalBalance.toFixed(2)}`
+              : `$${totalBalance.toFixed(decimalToFixForTotal)} USD`
             }
           </Heading>
           <Button name={hideBalance ? 'showBalance' : 'hideBalance'}>
@@ -51,7 +54,7 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
         <Text alignment='start' color={colorOfChanges}>
           {hideBalance
             ? '••••••••'
-            : `${signOfChanges}$${Math.abs(totalBalanceChanges).toFixed(2)}`
+            : `${signOfChanges}$${Math.abs(totalBalanceChanges).toFixed(decimalToFixForBalanceChange)} • 24h`
           }
         </Text>
       </Box>
