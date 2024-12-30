@@ -9,12 +9,13 @@ import { Balances } from "../../../util";
 import { handleBalancesAll } from "../../../util/handleBalancesAll";
 import { getPoolRewards } from "../utils/getStakingRewards";
 import { RewardsInfo } from "../../../util/types";
-import { StakingAction } from "./components/StakingAction";
 import { YourPool } from "./components/YourPool";
 import { YourStake } from "./components/YourStake";
 import { Unstaking } from "./components/Unstaking";
 import { Redeemable } from "./components/Redeemable";
 import { Rewards } from "./components/Rewards";
+import { ActionRow } from "../../components/ActionRow";
+import { BN } from "@polkadot/util";
 
 export async function stakePoolReview(
   id: string,
@@ -25,7 +26,7 @@ export async function stakePoolReview(
   const { address, balancesAll, pricesInUsd } = await handleBalancesAll();
   const genesisHash = maybeGenesisHash || context?.genesisHash;
 
-  const stakedPoolBalances = balancesAll.filter(({ pooledBalance, genesisHash: _gh }) => (pooledBalance && !pooledBalance.isZero()) && _gh === genesisHash);
+  const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
   const rewardsInfo = await getPoolRewards(address, stakedPoolBalances);
 
   const stakedToken = stakedPoolBalances.find((balance) => balance.genesisHash === genesisHash)
@@ -48,6 +49,7 @@ export async function stakePoolReview(
         pooledBalance: stakedToken?.pooledBalance?.toString(),
         claimable: stakedToken?.pooled?.claimable?.toString(),
         redeemable: stakedToken?.pooled?.redeemable?.toString(),
+        active: stakedToken?.pooled?.active?.toString(),
       }
     },
   });
@@ -97,15 +99,17 @@ const ui = (
           price={price}
         />
         <Section>
-          <StakingAction
+          <ActionRow
             label='Stake more'
             icon='add'
             name='poolStakeMore'
+            disabled={!active || new BN(active).isZero()}
           />
-          <StakingAction
+          <ActionRow
             label='Unstake'
             icon='minus'
             name='poolUnstake'
+            disabled={!active || new BN(active).isZero()}
           />
         </Section>
         <YourPool

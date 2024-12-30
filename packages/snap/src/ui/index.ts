@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export * from './home';
-export * from './exportAccount';
-export * from './partials/accountDemo';
-export * from './polkagateApps';
+export * from './more/exportAccount';
+export * from './home/partials/accountDemo';
 export * from './review/';
 export * from './showSpinner';
 export * from './stake';

@@ -103,7 +103,7 @@ export async function getPooledBalance(api: ApiPromise, address: string): Promis
   return {
     pooledBalance: active.add(claimable).add(unlocking),
     pooled: {
-      total: active.add(claimable).add(unlocking).toString(),
+      total: active.add(claimable).add(unlocking).add(redeemable).toString(),
       active: active.toString(),
       claimable: claimable.toString(),
       unlocking: unlocking.toString(),

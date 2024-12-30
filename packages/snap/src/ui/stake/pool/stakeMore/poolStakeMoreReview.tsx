@@ -5,19 +5,18 @@ import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
 import { birdDown } from "../../../image/icons";
 import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
+import { Account } from "../../components/Account";
 
 export async function poolStakeMoreReview(
   id: string,
   context: StakingInitContextType
 ) {
 
-  let { amount, decimal, token, price, claimable, fee } = context;
-
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(amount, claimable, decimal, token, price, fee),
+      ui: ui(context),
       context: {
         ...(context || {})
       }
@@ -26,14 +25,10 @@ export async function poolStakeMoreReview(
 }
 
 const ui = (
-  amount: string | undefined,
-  claimable: string,
-  decimal: number,
-  token: string,
-  price: number,
-  fee: string,
+  context: StakingInitContextType
 ) => {
 
+  let {address, amount, decimal, genesisHash, token, price, claimable, fee } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
 
   return (
@@ -54,6 +49,10 @@ const ui = (
           </Text>
         </Box>
         <Section>
+          <Account
+            address={address}
+            genesisHash={genesisHash}
+          />
           <Row2
             label=' Network fee'
             value={`${amountToHuman(fee, decimal, 4, true)} ${token}`}

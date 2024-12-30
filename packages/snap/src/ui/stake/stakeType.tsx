@@ -68,7 +68,7 @@ const ui = (
       </Box>
       <Footer>
         <Button name='stakeInit'>
-          Apply
+          Continue
         </Button>
       </Footer>
     </Container >

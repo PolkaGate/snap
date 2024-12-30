@@ -1,13 +1,13 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Balances } from '../../util/getBalance';
+import type { Balances } from '../../../util/getBalance';
 
 import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } from '@metamask/snaps-sdk/jsx';
 
-import { BalanceInfo } from '../components';
-import { amountToHuman } from '../../util/amountToHuman';
-import { PriceValue } from '../../util/getPrices';
+import { BalanceInfo } from '../../components';
+import { amountToHuman } from '../../../util/amountToHuman';
+import { PriceValue } from '../../../util/getPrices';
 import { TotalBalance } from './TotalBalance';
 
 type CTAProps = {
@@ -65,8 +65,13 @@ export const accountDemo = (
         <Heading>Tokens</Heading>
         <Box center direction='horizontal'>
           {!!nonZeroBalances?.length &&
+            <Button name='refreshBalances' variant='primary' >
+              <Icon size='md' color='primary' name='refresh' />
+            </Button >
+          }
+          {!!nonZeroBalances?.length &&
             <Button name='balanceDetails' variant='primary' >
-              <Icon size='md' color={showDetails ? 'muted' : 'primary'} name='card-token' />
+              <Icon size='md' color='primary' name={showDetails ? 'arrow-up' : 'arrow-down'} />
             </Button >
           }
           <Button name='customizeChains' variant='primary' >

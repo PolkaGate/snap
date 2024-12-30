@@ -8,27 +8,27 @@ import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
 import { amountToMachine } from "../../../../util/amountToMachine";
-import { BN } from "@polkadot/util";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../../components/UnstakeForm";
 import { getPoolUnstake } from "./util/getPoolUnstake";
 import { OUTPUT_TYPE } from "../../../../constants";
+import { BN } from "@polkadot/util";
 
 export async function poolUnstakeConfirm(id: string, context: StakingInitContextType) {
-  const { address, amount, claimable, decimal, genesisHash, pooledBalance, poolId } = context;
+  const { address, active, amount, decimal, genesisHash, poolId } = context;
   const api = await getApi(genesisHash);
-  const netStaked = new BN(pooledBalance!).sub(new BN(claimable || 0));
 
   if (!api) {
     throw new Error('cant connect to network, check your internet connection!');
   }
 
   let amountAsBN = amountToMachine(amount, decimal);
-  if (amountToHuman(netStaked, decimal, STAKED_AMOUNT_DECIMAL_POINT) === amount) { // if wants unstake all
-    amountAsBN = netStaked
+
+  if (Number(amountToHuman(active, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(amount)) { // if wants unstake all
+    amountAsBN = new BN(active);
   }
 
-  let { call, params } = await getPoolUnstake(address, amountToMachine(amount, decimal), genesisHash, poolId, OUTPUT_TYPE.CALL_PARAMS);
+  let { call, params } = await getPoolUnstake(address, amountAsBN, genesisHash, poolId, OUTPUT_TYPE.CALL_PARAMS);
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);

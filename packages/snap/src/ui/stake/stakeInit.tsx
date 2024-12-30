@@ -8,7 +8,7 @@ import { getSnapState } from "../../rpc/stateManagement";
 import { StakeForm } from "./components/StakeForm";
 import { POLKAGATE_POOL_IDS } from "./const";
 import { Row2 } from "./components/Row2";
-import { PoolSelectorFormState, StakeFormErrors, StakingDataType, StakingInitContextType } from "./types";
+import { PoolSelectorFormState, StakeFormErrors, StakeTypeFormState, StakingDataType, StakingInitContextType } from "./types";
 import { ellipsis } from "./components/PoolSelector";
 import { isEmptyObject } from "../../utils";
 
@@ -27,16 +27,16 @@ export async function stakeInit(
   formAmount: number | undefined,
   formErrors: StakeFormErrors,
   context: StakingInitContextType,
-  newSelection: NewSelectionType
+  newSelection: NewSelectionType,
+  stakeTypeForm: StakeTypeFormState
 ) {
 
   const { address, amount, decimal, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, token, transferable } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
 
-
   const minimumActiveStake = stakingInfo?.minimumActiveStake
   const minimumActiveStakeInHuman = Number(amountToHuman(minimumActiveStake, decimal) || 0);
-  const stakingType = Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo';
+  const stakingType = stakeTypeForm?.stakingTypeOptions || Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo';
 
   const DEFAULT_STAKING_DATA = {
     type: stakingType,

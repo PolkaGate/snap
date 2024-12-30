@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Box, Container, Footer, Button, Image, Section } from "@metamask/snaps-sdk/jsx";
-import { SendFormErrors } from "../../../send/types";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { getBalances, getKeyPair } from "../../../../util";
@@ -78,7 +77,7 @@ const ui = (
   amount: string | undefined,
   claimable: string | undefined,
   decimal: number,
-  formErrors:StakeFormErrors,
+  formErrors: StakeFormErrors,
   logo: string,
   token: string,
   transferable: number,

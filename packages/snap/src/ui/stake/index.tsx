@@ -1,14 +1,16 @@
-import { Box, Button, Container, Footer, Checkbox } from '@metamask/snaps-sdk/jsx';
+import { Box, Button, Container, Footer, Checkbox, Form } from '@metamask/snaps-sdk/jsx';
 import { StakeFlowHeader } from './components/StakeFlowHeader';
 import { handleBalancesAll } from '../../util/handleBalancesAll';
 import { Balances } from '../../util';
-import { STAKING_CHAINS } from './const';
+import { STAKING_CHAINS, STAKING_TEST_CHAINS } from './const';
 import getChainName from '../../util/getChainName';
 import { HexString } from '@polkadot/util/types';
 import { StakedTokens } from './components/StakedTokens';
 import { StakeAndEarn } from './components/StakeAndEarn';
 import { RewardsInfo } from '../../util/types';
 import { getStakingRewards } from './utils/getStakingRewards';
+import { BN } from '@polkadot/util';
+import { getSnapState } from '../../rpc/stateManagement';
 
 async function fetchStaking(): Promise<Record<string, unknown>> {
   const response = await fetch('https://raw.githubusercontent.com/PolkaGate/snap/refs/heads/main/packages/snap/staking.json');
@@ -28,19 +30,35 @@ export interface StakingIndexContextType {
 
 export async function stakingIndex(id: string) {
   const { address, balancesAll, logos } = await handleBalancesAll();
-  const stakedTokens = balancesAll.filter(({ pooledBalance, soloTotal }) =>( pooledBalance && !pooledBalance.isZero()) || ( soloTotal && !soloTotal.isZero()));
+
+  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking');
+
+  const stakedTokens = balancesAll
+    .filter(({ genesisHash }) =>
+      isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(genesisHash)
+    ).filter(({ pooled, soloTotal }) =>
+      (!new BN(pooled?.total || 0).isZero() || (soloTotal && !soloTotal.isZero()))
+    );
+
   const rewardsInfo = await getStakingRewards(address, stakedTokens);
   const { rates: stakingRates, validators: recommendedValidators } = await fetchStaking();
 
-  const notStakedChains = STAKING_CHAINS.filter((item) => !stakedTokens.find(({ genesisHash }) => item === String(genesisHash)));
+  const notStakedChains = STAKING_CHAINS
+    .filter((item) =>
+      isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(item)
+    ).filter((item) =>
+      !stakedTokens.find(({ genesisHash }) => item === String(genesisHash))
+    );
+
   const nonStakedChainNames = (await Promise.all(notStakedChains.map((genesisHash) => getChainName(genesisHash as HexString))))
   const nonStakedChainInfo = notStakedChains.map((genesisHash, index) => ({ genesisHash, name: nonStakedChainNames[index] })).filter(({ name }) => !!name);
+
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(balancesAll, logos, nonStakedChainInfo, rewardsInfo, stakedTokens, stakingRates),
+      ui: ui(balancesAll, isTestNetStakingEnabled, logos, nonStakedChainInfo, rewardsInfo, stakedTokens, stakingRates),
       context: {
         address,
         logos,
@@ -55,11 +73,12 @@ export async function stakingIndex(id: string) {
 
 const ui = (
   balancesAll: Balances[],
+  isTestNetStakingEnabled: boolean | undefined,
   logos: { genesisHash: string; logo: string; }[],
   nonStakedChainInfo: { genesisHash: HexString, name: string }[],
   rewardsInfo: RewardsInfo[],
   stakedTokens: Balances[],
-  stakingRates:  Record<string, number>
+  stakingRates: Record<string, number>
 ) => {
 
   return (
@@ -87,7 +106,9 @@ const ui = (
           />
         }
         <Box direction='horizontal' alignment='center'>
-          <Checkbox name="enableTestnetStaking" label="Enable test networks" />
+          <Form name='testNetStaking'>
+            <Checkbox name="enableTestnetStaking" label="Enable test networks" checked={isTestNetStakingEnabled} />
+          </Form>
         </Box>
       </Box>
       <Footer>

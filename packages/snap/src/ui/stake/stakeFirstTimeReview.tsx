@@ -4,7 +4,8 @@ import { StakeFlowHeader } from "./components/StakeFlowHeader";
 import { Balance } from "@polkadot/types/interfaces";
 import { getStakingFee } from "./utils/getStakingFee";
 import { Row2 } from "./components/Row2";
-import { StakingDataType, StakingInitContextType } from "./types";
+import { StakingInitContextType } from "./types";
+import { Account } from "./components/Account";
 
 export async function stakeFirstTimeReview(
   id: string,
@@ -12,15 +13,14 @@ export async function stakeFirstTimeReview(
 ) {
 
 
-  let { address, amount, decimal, token, price, genesisHash, stakingData, DEFAULT_STAKING_DATA } = context;
-
+  let { address, amount, genesisHash, stakingData } = context;
   const fee = await getStakingFee(address, amount, genesisHash, stakingData)
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(amount, decimal, token, price, fee, stakingData, DEFAULT_STAKING_DATA),
+      ui: ui(fee, context),
       context: {
         ...(context || {})
       }
@@ -29,14 +29,12 @@ export async function stakeFirstTimeReview(
 }
 
 const ui = (
-  amount: string | undefined,
-  decimal: number,
-  token: string,
-  price: number,
+
   fee: Balance,
-  stakingData: StakingDataType,
-  DEFAULT_STAKING_DATA
+  context: StakingInitContextType,
 ) => {
+
+  let { address, amount, decimal, genesisHash, token, price, stakingData, DEFAULT_STAKING_DATA } = context;
 
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
 
@@ -58,6 +56,10 @@ const ui = (
           </Text>
         </Box>
         <Section>
+          <Account
+            address={address}
+            genesisHash={genesisHash}
+          />
           <Row2
             label=' Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}

@@ -10,13 +10,14 @@ import { StakingInitContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getRedeem } from "./util/getRedeem";
+import { Account } from "../../components/Account";
 
 export async function poolRedeem(
   id: string,
   context: StakingInitContextType,
 ) {
 
-  let { address, redeemable, decimal, token, price, genesisHash } = context;
+  let { address, genesisHash } = context;
 
   const fee = await getRedeem(address, genesisHash)
 
@@ -24,7 +25,7 @@ export async function poolRedeem(
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(redeemable, decimal, token, price, fee),
+      ui: ui(context fee),
       context: {
         ...(context || {}),
       }
@@ -33,12 +34,11 @@ export async function poolRedeem(
 }
 
 const ui = (
-  redeemable: string | undefined,
-  decimal: number,
-  token: string,
-  price: number,
+  context: StakingInitContextType,
   fee: Balance
 ) => {
+
+  let { address, redeemable, decimal, token, price, genesisHash } = context;
 
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
   const amount = new BN(redeemable);
@@ -61,6 +61,10 @@ const ui = (
           </Text>
         </Box>
         <Section>
+        <Account
+            address={address}
+            genesisHash={genesisHash}
+          />
           <Row2
             label=' Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}

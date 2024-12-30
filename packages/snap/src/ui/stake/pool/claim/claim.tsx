@@ -10,6 +10,7 @@ import { StakingInitContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getClaimFee } from "./util/getClaimFee";
+import { Account } from "../../components/Account";
 
 export async function claim(
   id: string,
@@ -17,7 +18,7 @@ export async function claim(
   restakeRewards?: boolean
 ) {
 
-  let { address, claimable, decimal, token, price, genesisHash } = context;
+  let { address, genesisHash } = context;
 
   const fee = await getClaimFee(address, genesisHash, restakeRewards)
 
@@ -25,7 +26,7 @@ export async function claim(
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(claimable, decimal, token, price, fee),
+      ui: ui(context, fee),
       context: {
         ...(context || {}),
         restakeRewards
@@ -35,13 +36,11 @@ export async function claim(
 }
 
 const ui = (
-  claimable: string | undefined,
-  decimal: number,
-  token: string,
-  price: number,
+  context: StakingInitContextType,
   fee: Balance
 ) => {
 
+  let { address, claimable, decimal, token, price, genesisHash } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
   const amount = new BN(claimable);
 
@@ -63,6 +62,10 @@ const ui = (
           </Text>
         </Box>
         <Section>
+          <Account
+            address={address}
+            genesisHash={genesisHash}
+          />
           <Row2
             label=' Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}

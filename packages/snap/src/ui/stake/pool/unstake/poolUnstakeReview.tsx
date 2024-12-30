@@ -1,22 +1,21 @@
-import { Box, Container, Image, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
+import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
 import { PoolUnstakeExtraInfo } from "./component/PoolUnstakeExtraInfo";
+import { Account } from "../../components/Account";
 
 export async function poolUnstakeReview(
   id: string,
   context: StakingInitContextType
 ) {
 
-  let { amount, decimal, token, price, claimable, fee, unbondingDuration } = context;
-  
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(amount, claimable, decimal, token, price, fee, unbondingDuration),
+      ui: ui(context),
       context: {
         ...(context || {})
       }
@@ -25,15 +24,10 @@ export async function poolUnstakeReview(
 }
 
 const ui = (
-  amount: string | undefined,
-  claimable: string,
-  decimal: number,
-  token: string,
-  price: number,
-  fee: string,
-  unbondingDuration: number,
+  context: StakingInitContextType
 ) => {
 
+  let { address, amount, decimal, genesisHash, token, price, claimable, fee, unbondingDuration } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
 
   return (
@@ -54,6 +48,10 @@ const ui = (
           </Text>
         </Box>
         <Section>
+          <Account
+            address={address}
+            genesisHash={genesisHash}
+          />
           <Row2
             label=' Network fee'
             value={`${amountToHuman(fee, decimal, 4, true)} ${token}`}

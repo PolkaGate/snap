@@ -1,8 +1,8 @@
 import getPrices, { PricesType } from './getPrices';
 import { getSnapState } from '../rpc/stateManagement';
 import { getCurrentChain } from './getCurrentChain';
+import { PRICE_VALIDITY_PERIOD } from '../constants';
 
-const PRICE_VALIDITY_PERIOD = 5 * 60 * 1000;
 /**
  * To get the current chain's native token price.
  */

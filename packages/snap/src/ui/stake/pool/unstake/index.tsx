@@ -23,10 +23,10 @@ export async function poolUnstake(
   context: StakingInitContextType,
 ) {
 
-  const { address, amount, claimable, pooledBalance, decimal, genesisHash, logos, poolId, price, token, transferable } = context;
+  const { address, active, amount, claimable, pooledBalance, decimal, genesisHash, logos, poolId, price, token, transferable } = context;
   const _amount = formAmount !== undefined ? formAmount : amount;
 
-  const netStaked = new BN(pooledBalance).sub(new BN(claimable || 0));
+  const netStaked = new BN(active || 0);
   const _address = address || (await getKeyPair(undefined, genesisHash)).address;
   const _logo = logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
 

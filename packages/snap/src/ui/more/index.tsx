@@ -1,4 +1,6 @@
 import { Box, Button, SnapComponent, Divider, Link, Heading, Icon, Section, IconName, Footer, Container } from "@metamask/snaps-sdk/jsx";
+import { MoreHeader } from "./MoreHeader";
+import { ActionRow } from "../components/ActionRow";
 
 /**
  * This shows the more page
@@ -20,16 +22,21 @@ const ui = () => {
   return (
     <Container>
       <Box direction="vertical" alignment="start">
+        <MoreHeader
+          action='backToHomeWithoutUpdate'
+          label='More settings'
+        />
         <Section>
-          <Box direction='horizontal' alignment='start'>
-            <Icon name="menu" size="md" />
-            <Heading>PolkaGate Snap Menu</Heading>
-          </Box>
-          <Divider />
-          <MenuItem icon='export' name='export' label={'Export Account as JSON File'} />
-          <Divider />
+          <ActionRow
+            label='Export Account as JSON File'
+            name='export'
+            icon='export'
+          />
+        </Section>
+        <Section>
           <LinkItem icon={'book'} link='https://docs.polkagate.xyz' label={'View Documents'} />
-          <Divider />
+        </Section>
+        <Section>
           <LinkItem icon={'twitter'} link='https://x.com/@polkagate' label={'Follow Us on X (twitter)'} />
           <LinkItem icon={'bookmark'} link='https://youtube.com/@polkagate' label={'Subscribe to YouTube Channel'} />
           <LinkItem icon={'home'} link='https://polkagate.xyz' label={'Visit Website'} />

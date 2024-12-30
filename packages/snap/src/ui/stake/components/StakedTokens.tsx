@@ -5,7 +5,7 @@ import { RewardsInfo } from '../../../util/types';
 import { sanitizeChainName } from '../../../util/getChainName';
 import { getChain } from '../../../chains';
 import { poolSmall, soloSmall } from '../../image/icons';
-import { BN_ZERO } from '@polkadot/util';
+import { BN, BN_ZERO } from '@polkadot/util';
 
 interface Props {
   logos: { genesisHash: string; logo: string; }[];
@@ -35,7 +35,7 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
       {
         stakedTokens.map((stakedToken) => {
 
-          const { token, soloTotal, pooledBalance, decimal, genesisHash } = stakedToken;
+          const { token, soloTotal, pooled, decimal, genesisHash } = stakedToken;
           const foundLogoInfo = logos.find(({ genesisHash }) => genesisHash === stakedToken.genesisHash);
 
           const maybeChain = getChain(genesisHash);
@@ -43,15 +43,18 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
           const sanitizedChainName = sanitizeChainName(chainName)?.toLocaleLowerCase() as string;
           const rate = stakingRates[sanitizedChainName];
 
-          const { poolReward, netPoolStaked } = poolRewardsBreakDown(rewardsInfo, stakedToken);
+          const netPoolStaked =  new BN(pooled?.active || 0);
+          const hasPoolStaked = pooled && (!new BN(pooled.total).isZero())
+
+          const { poolReward } = poolRewardsBreakDown(rewardsInfo, stakedToken);
 
           const soloRewardInfo = rewardsInfo.find(({ genesisHash, type }) => genesisHash === stakedToken.genesisHash && type === 'Solo');
 
-          const hasDualStaking = !!pooledBalance && !pooledBalance.isZero() && !!soloTotal && !soloTotal.isZero();
+          const hasDualStaking = !!netPoolStaked && !netPoolStaked.isZero() && !!soloTotal && !soloTotal.isZero();
 
           return (
             <Box>
-              {!!pooledBalance && !pooledBalance.isZero() &&
+              {!!hasPoolStaked &&
                 <Section>
                   <Box direction='horizontal' alignment='space-between'>
                     <Box direction='horizontal'>
@@ -69,8 +72,8 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
                           </Text>
                         </Box>
                       }
-                      <Button name={`stakeDetailsPool,${genesisHash}`} variant='primary'>
-                        <Icon name='arrow-right' color='muted' size='md' />
+                      <Button name={`stakeDetailsPool,${genesisHash}`} variant='primary' >
+                        <Icon name='arrow-right' color='primary' size='md' />
                       </Button>
                     </Box>
                   </Box>

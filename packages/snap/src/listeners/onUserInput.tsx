@@ -6,15 +6,13 @@ import type { OnUserInputHandler } from '@metamask/snaps-sdk';
 import {
   showSpinner,
   home,
-  exportAccount,
-  showJsonContent,
   voting,
   stakingIndex
 } from '../ui';
 import { updateSnapState } from '../rpc/stateManagement';
-import { showMore } from '../ui/showMore';
+import { showMore } from '../ui/more';
 import { receive } from '../ui/receive';
-import { balanceDetails } from '../ui/balanceDetails';
+import { balanceDetails } from '../ui/home/balanceDetails';
 import { send } from '../ui/send';
 import { SendFormState } from '../ui/send/types';
 import { formValidation } from '../ui/send/utils';
@@ -47,6 +45,8 @@ import { poolUnstakeConfirm } from '../ui/stake/pool/unstake/poolUnstakeConfirm'
 import { sendConfirmation } from '../ui/send/sendConfirmation';
 import { poolRedeem } from '../ui/stake/pool/redeem/poolRedeem';
 import { poolRedeemConfirm } from '../ui/stake/pool/redeem/poolRedeemConfirm';
+import { exportAccount } from '../ui/more/exportAccount';
+import { showJsonContent } from '../ui/more/showJsonContent';
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -73,11 +73,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await balanceDetails(id, context?.show === undefined ? true : !context.show);
         break;
 
-      case 'backToHomeWithUpdate':
-        await showSpinner(id, 'Updating, please wait ...');
-        await home(id, BALANCE_FETCH_TYPE.FORCE_UPDATE);
-        break;
-
       case 'hideBalance':
         await updateSnapState('hideBalance', true);
         await home(id);
@@ -88,14 +83,21 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await home(id);
         break;
 
+      case 'backToHomeWithoutUpdate':
+        await showSpinner(id, 'Loading, please wait ...');
+        await home(id, BALANCE_FETCH_TYPE.SAVED_ONLY);
+        break;
+
+      case 'refreshBalances':
+      case 'backToHomeWithUpdate':
+
+        await showSpinner(id, 'Updating, please wait ...');
+        await home(id, BALANCE_FETCH_TYPE.FORCE_UPDATE);
+        break;
+
       case 'backToHome':
         await showSpinner(id, 'Loading, please wait ...');
         await home(id);
-        break;
-
-      case 'backToHomeWithoutUpdate':
-        await showSpinner(id, 'Loading, please wait ...');
-        await home(id,BALANCE_FETCH_TYPE.SAVED_ONLY);
         break;
 
       //===================================CUSTOMIZE CHAINS===================================//
@@ -155,6 +157,9 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         break;
 
       //===================================STAKING===================================//
+      case 'enableTestnetStaking':
+        const testNetStaking = state.testNetStaking as SelectedChainsFormState;
+        await updateSnapState('enableTestnetStaking', testNetStaking.enableTestnetStaking);
       case 'stakeIndex':
         await showSpinner(id, 'Loading, please wait ...');
         await stakingIndex(id);
@@ -169,15 +174,18 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
       case 'stakeInit':
         await showSpinner(id, 'Loading, please wait ...');
       case 'stakeAmount':
-        const formErrors = stakePoolFormValidation(stakeForm, context);
-        const selectPoolForm = state.selectPoolForm as PoolSelectorFormState;
-        const newSelection = {
-          selectPoolForm,
-          selectedValidators: eventName === 'stakeInitWithSelectedValidators' ? context.selectedValidators : undefined
-        }
-        await stakeInit(id, stakeForm?.stakeAmount, formErrors, context, newSelection);
-        break;
+        {
+          const stakeTypeForm = state.stakeTypeForm as StakeTypeFormState;
 
+          const formErrors = stakePoolFormValidation(stakeForm, context);
+          const selectPoolForm = state.selectPoolForm as PoolSelectorFormState;
+          const newSelection = {
+            selectPoolForm,
+            selectedValidators: eventName === 'stakeInitWithSelectedValidators' ? context.selectedValidators : undefined
+          }
+          await stakeInit(id, stakeForm?.stakeAmount, formErrors, context, newSelection, stakeTypeForm);
+          break;
+        }
       case 'stakingType':
         await showSpinner(id, 'Loading, please wait ...');
       case 'stakingTypeOptions':
@@ -280,6 +288,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await showSpinner(id, 'Working, please wait ...');
         await poolUnstakeConfirm(id, context);
         break;
+
       //===================================OTHERS===================================//
       case 'vote':
         await voting(id);
@@ -290,24 +299,19 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         break;
 
       case 'export':
-        await exportAccount(id);
+      case 'exportAccountPassword':
+        const exportPasswordForm = state.exportAccountForm;
+
+        await exportAccount(id, exportPasswordForm?.exportAccountPassword);
         break;
 
-      default:
-        break;
-    }
-  }
-
-  if (event.type === UserInputEventType.FormSubmitEvent) {
-    const { value } = event;
-
-    switch (event.name) {
-      case 'saveExportedAccount':
-        if (value?.password) {
+      case 'exportAccount':
+        {
+          const exportPasswordForm = state.exportAccountForm as unknown as StakeFormState;
           await showSpinner(id, 'Exporting, please wait ...');
-          await showJsonContent(id, value.password as string);
+          await showJsonContent(id, exportPasswordForm?.exportAccountPassword as string);
+          break;
         }
-        break;
 
       default:
         break;

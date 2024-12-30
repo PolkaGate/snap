@@ -27,8 +27,6 @@ export const getPoolUnstake = async (
   const optSpans = await api.query['staking']['slashingSpans'](address);
   const spanCount = optSpans.isNone ? 0 : optSpans.unwrap().prior.length + 1;
 
-
-
   let call = api.tx['nominationPools']['unbond'];
   let params = [address, amount] as unknown[];
 

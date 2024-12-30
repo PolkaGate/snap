@@ -18,7 +18,6 @@ export function unstakePoolFormValidation(
   const errors: Partial<StakeFormErrors> = {};
   const amount = formState?.poolUnstakeAmount;
 
-  console.log('context',context)
   if (amount && Number(amount) && context) {
 
     const { decimal, claimable, pooledBalance, minJoinBond, token } = context;

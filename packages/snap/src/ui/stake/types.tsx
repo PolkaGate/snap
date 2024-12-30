@@ -117,6 +117,7 @@ export interface StakingInitContextType {
   call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
   claimable?:string;
   pooledBalance?:string;
+  redeemable?:string;
   decimal: number;
   genesisHash: HexString;
   logo: string;

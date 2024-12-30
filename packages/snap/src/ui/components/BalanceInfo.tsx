@@ -5,6 +5,7 @@ import type { Balances } from '../../util/getBalance';
 
 import { Box, Card, Divider, Text, SnapComponent, Icon, IconName } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from '../../util/amountToHuman';
+import { BN } from '@polkadot/util';
 
 type Props = {
   balances: Balances;
@@ -39,7 +40,7 @@ export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, label, valu
 };
 
 export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showDetail, hideBalance }: Props) => {
-  const { total, transferable, locked, soloTotal, pooledBalance, decimal, token } = balances;
+  const { total, transferable, locked, soloTotal, pooled, decimal, token } = balances;
   const totalPrice = parseFloat(amountToHuman(total, decimal)) * price;
 
   return (
@@ -81,9 +82,9 @@ export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showD
           />
           <DetailRow
             iconName='stake'
-            show={!!(pooledBalance && !pooledBalance.isZero())}
+            show={!new BN(pooled?.total || 0).isZero()}
             label='Staked (pool)'
-            value={`${amountToHuman(pooledBalance, decimal)} ${token}`}
+            value={`${amountToHuman(pooled?.total, decimal)} ${token}`}
           />
           {/* {!locked.isZero() &&
             <Row label="Locked" tooltip='The amount locked in referenda.'>

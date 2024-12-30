@@ -2,8 +2,7 @@ import { HexString } from '@polkadot/util/types';
 import { PriceValue } from './getPrices';
 import { getSnapState } from '../rpc/stateManagement';
 import getChainName, { sanitizeChainName } from './getChainName';
-
-const PRICE_VALIDITY_PERIOD = 5 * 60 * 1000;
+import { PRICE_VALIDITY_PERIOD } from '../constants';
 
 const DEFAULT_PRICE_VALUE = {
   value: 0,

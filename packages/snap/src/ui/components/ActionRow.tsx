@@ -4,19 +4,20 @@ interface Props {
   label: string;
   name: string;
   icon: IconName;
+  disabled?: boolean;
 }
 
-export const StakingAction: SnapComponent<Props> = ({ label, name, icon }) => (
+export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled }) => (
   <Box direction="horizontal" alignment="space-between" center>
     <Box direction="horizontal" alignment="start" center>
-      <Button name={name} variant='primary' type='button'>
+      <Button name={name} variant='primary' type='button' disabled={disabled}>
         <Icon color="muted" name={icon} />
       </Button>
-      <Button name={name} variant='primary' type='button'>
-          {label}
+      <Button name={name} variant='primary' type='button' disabled={disabled}>
+        {label}
       </Button>
     </Box>
-    <Button name={name} variant='primary' type='button'>
+    <Button name={name} variant='primary' type='button' disabled={disabled}>
       <Icon name='arrow-right' color='muted' size='md' />
     </Button>
   </Box>

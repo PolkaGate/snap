@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 
-import { Box, Heading, Icon, Text, Button, SnapComponent, Bold } from '@metamask/snaps-sdk/jsx';
+import { Box, Heading, Icon, Text, Button, SnapComponent, Bold, Tooltip } from '@metamask/snaps-sdk/jsx';
 
 interface Props {
   hideBalance: boolean | undefined;
@@ -27,7 +27,9 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
           <Bold>Total balance</Bold>
         </Text>
         <Box alignment='end' direction='horizontal'>
-          <Icon name='lock' color='muted' />
+          <Tooltip content='Total balance locked!'>
+            <Icon name='lock' color='muted' />
+          </Tooltip>
           <Text alignment='end' color='muted'>
             {hideBalance
               ? '••••••••'
