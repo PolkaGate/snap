@@ -24,7 +24,10 @@ const ui = (options: Options[], logoList: string[], selectedChains: HexString[])
   return (
     <Container>
       <Box direction="vertical" alignment="start">
-        <Box center direction='horizontal' alignment="space-between">
+        <Box direction="horizontal" alignment="space-between" center>
+          <Button name='backToHomeWithoutUpdate'>
+            <Icon name="arrow-left" color="primary" size="md" />
+          </Button>
           <Heading>Networks</Heading>
           <Box direction="horizontal" alignment="end">
             <Button name='refreshSelectedChains' variant='primary' >
