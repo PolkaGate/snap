@@ -19,13 +19,13 @@ export async function poolRedeem(
 
   let { address, genesisHash } = context;
 
-  const fee = await getRedeem(address, genesisHash)
+  const fee = await getRedeem(address, genesisHash) as Balance;
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(context fee),
+      ui: ui(context, fee),
       context: {
         ...(context || {}),
       }
@@ -41,7 +41,7 @@ const ui = (
   let { address, redeemable, decimal, token, price, genesisHash } = context;
 
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
-  const amount = new BN(redeemable);
+  const amount = new BN(redeemable!);
 
   return (
     <Container>
