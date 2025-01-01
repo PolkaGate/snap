@@ -10,7 +10,7 @@ import { Confirmation } from "../../../send/Confirmation";
 import { amountToMachine } from "../../../../util/amountToMachine";
 
 export async function poolStakeMoreConfirm(id: string, context: StakingInitContextType) {
-  const { amount, decimal, genesisHash, restakeRewards } = context;
+  const { amount, decimal, genesisHash } = context;
   const api = await getApi(genesisHash);
 
   if (!api) {
@@ -29,9 +29,14 @@ export async function poolStakeMoreConfirm(id: string, context: StakingInitConte
   await snap.request({
     method: 'snap_updateInterface',
     params: {
+      context: {
+        ...(context || {}),
+      },
       id,
       ui: (
         <Confirmation
+          action='stakePoolReviewWithUpdate'
+          button='Done'
           chainName={chainName}
           txHash={String(txHash)}
         />

@@ -1,5 +1,4 @@
 import { Box, Button, Container, Footer, Checkbox, Form } from '@metamask/snaps-sdk/jsx';
-import { StakeFlowHeader } from './components/StakeFlowHeader';
 import { handleBalancesAll } from '../../util/handleBalancesAll';
 import { Balances } from '../../util';
 import { STAKING_CHAINS, STAKING_TEST_CHAINS } from './const';
@@ -11,6 +10,7 @@ import { RewardsInfo } from '../../util/types';
 import { getStakingRewards } from './utils/getStakingRewards';
 import { BN } from '@polkadot/util';
 import { getSnapState } from '../../rpc/stateManagement';
+import { FlowHeader } from '../components/FlowHeader';
 
 async function fetchStaking(): Promise<Record<string, unknown>> {
   const response = await fetch('https://raw.githubusercontent.com/PolkaGate/snap/refs/heads/main/packages/snap/staking.json');
@@ -31,7 +31,7 @@ export interface StakingIndexContextType {
 export async function stakingIndex(id: string) {
   const { address, balancesAll, logos } = await handleBalancesAll();
 
-  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking');
+  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking') ?? true; 
 
   const stakedTokens = balancesAll
     .filter(({ genesisHash }) =>
@@ -84,9 +84,10 @@ const ui = (
   return (
     <Container>
       <Box direction='vertical' alignment='start'>
-        <StakeFlowHeader
+        <FlowHeader
           action='backToHome'
           label='Staking'
+          tooltipType='staking'
         />
         {
           !!stakedTokens.length &&

@@ -115,9 +115,9 @@ export interface StakingInitContextType {
   address: string;
   amount: string | undefined,
   call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
-  claimable?:string;
-  pooledBalance?:string;
-  redeemable?:string;
+  claimable?: string;
+  pooledBalance?: string;
+  redeemable?: string;
   decimal: number;
   genesisHash: HexString;
   logo: string;
@@ -126,7 +126,40 @@ export interface StakingInitContextType {
   price: number;
   rate: number;
   recommendedValidators: HexString[];
-  restakeRewards?:boolean;
+  restakeRewards?: boolean;
+  rewardsInfo: RewardsInfo[];
+  stakedTokens: Balances[];
+  sanitizedChainName: string;
+  selectedValidators?: HexString[];
+  stakingData: StakingDataType | undefined;
+  stakingRates: Record<string, number>;
+  stakingInfo: StakingInfoType;
+  token: string;
+  transferable: number;
+  validators?: AllValidators;
+}
+
+export interface PayeeAccount { Account: string }
+export type Payee = 'Staked' | 'Controller' | 'Stash' | PayeeAccount;
+
+export interface StakingSoloContextType {
+  address: string;
+  amount: string | undefined,
+  call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
+  active?: string;
+  minNominatorBond?: string;
+  minimumActiveStake?: string;
+  redeemable?: string;
+  decimal: number;
+  genesisHash: HexString;
+  logo: string;
+  logos: { genesisHash: HexString, logo: string }[];
+  fee?: string;
+  payee?: { initial: Payee, maybeNew: Payee };
+  params?: unknown[];
+  price: number;
+  rate: number;
+  recommendedValidators: HexString[];
   rewardsInfo: RewardsInfo[];
   stakedTokens: Balances[];
   sanitizedChainName: string;

@@ -3,7 +3,6 @@
 
 import { Box, Container, Section, Text, Footer, Button, Heading, Checkbox, Form, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
@@ -11,6 +10,8 @@ import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getClaimFee } from "./util/getClaimFee";
 import { Account } from "../../components/Account";
+import { POOL_CLAIMABLE_DECIMAL } from "../components/ClaimRewards";
+import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function claim(
   id: string,
@@ -47,15 +48,16 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeDetailsPool'
           label='Claim rewards'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
-            {`${amountToHuman(amount, decimal, 4, true)} ${token}`}
+            {`${amountToHuman(amount, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
           </Heading>
           <Text color="muted">
             ${(Number(amountToHuman(amount, decimal) || 0) * price).toFixed(2)}
@@ -67,7 +69,7 @@ const ui = (
             genesisHash={genesisHash}
           />
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

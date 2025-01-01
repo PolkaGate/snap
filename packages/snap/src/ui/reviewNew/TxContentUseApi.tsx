@@ -8,7 +8,7 @@ import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { type Decoded } from '../../rpc';
 import { ReviewBody, ReviewFooter, ReviewHeader } from '.';
 import { Box, Button, Container, Footer, SnapComponent } from '@metamask/snaps-sdk/jsx';
-import { FlowHeader } from '../send/FlowHeader';
+import { FlowHeader } from '../components/FlowHeader';
 
 type Props = {
   api: ApiPromise;
@@ -35,6 +35,7 @@ export const TxContentUseApi: SnapComponent<Props> = ({ api, chainName, logo, or
         <FlowHeader
           action='send'
           label='Send review'
+          tooltipType='send'
         />
         <Box>
           <ReviewHeader

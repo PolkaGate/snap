@@ -1,13 +1,12 @@
 import type { Balance } from '@polkadot/types/interfaces';
 import type { AccountData } from '@polkadot/types/interfaces/balances/types';
-import type { Option } from '@polkadot/types';
-import type { PalletStakingRewardDestination } from '@polkadot/types/lookup';
 
 import { getApi } from './getApi';
 import { getFormatted } from './getFormatted';
 import { BN_ZERO } from '@polkadot/util';
 import { HexString } from '@polkadot/util/types';
 import { getPooledBalance, PoolBalances } from './getPooledBalance';
+import { getSoloBalances, SoloBalance } from './getSoloBalances';
 
 export type Balances = {
   total: Balance;
@@ -18,6 +17,7 @@ export type Balances = {
   pooledBalance?: Balance;
   pooled?: PoolBalances,
   poolId?: number;
+  solo?:SoloBalance;
   poolName?: string;
   decimal: number;
   genesisHash: HexString;
@@ -35,12 +35,20 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
   console.info(`getting balances for ${address} on ${genesisHash}`)
 
   const api = await getApi(genesisHash);
+
   const POOLED_BALANCES_DEFAULT = {
     total: BN_ZERO,
     active: BN_ZERO,
     claimable: BN_ZERO,
     unlocking: BN_ZERO,
-    redeemable: BN_ZERO,
+    redeemable: BN_ZERO
+  }
+
+  const SOLO_BALANCES_DEFAULT = {
+    total: BN_ZERO,
+    active: BN_ZERO,
+    unlocking: BN_ZERO,
+    redeemable: BN_ZERO
   }
 
   if (!api) {
@@ -53,6 +61,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
       soloTotal: BN_ZERO,
       pooledBalance: BN_ZERO,
       pooled: POOLED_BALANCES_DEFAULT,
+      solo: SOLO_BALANCES_DEFAULT,
       decimal: 10,
       token: 'Unit'
     };
@@ -78,31 +87,13 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
       soloTotal: ZERO_BALANCE,
       pooledBalance: ZERO_BALANCE,
       pooled: POOLED_BALANCES_DEFAULT,
+      solo: SOLO_BALANCES_DEFAULT,
       decimal,
       token
     };
   }
 
-  let soloTotal;
-  let rewardsDestination;
-
-  if (api.query.staking?.ledger) {
-    const ledger = await api.query.staking.ledger(formatted);
-
-    if (ledger.isSome) {
-      soloTotal = api.createType('Balance', ledger.unwrap().total) as unknown as Balance;
-
-      const payee = (await api.query.staking.payee(formatted)) as Option<PalletStakingRewardDestination>;
-      if (payee.isSome) {
-        const unwrappedPayee = payee.unwrap();
-        rewardsDestination = (unwrappedPayee.isStash || unwrappedPayee.isStaked)
-          ? formatted
-          : unwrappedPayee.isAccount
-            ? String(unwrappedPayee.asAccount)
-            : null
-      }
-    }
-  }
+  const { soloTotal, solo, rewardsDestination } = await getSoloBalances(api, genesisHash, formatted);
 
   let pooledBalance: Balance | undefined = undefined;
   let pooledBalanceDetails: PoolBalances | undefined = undefined;
@@ -143,6 +134,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     pooled: pooledBalanceDetails,
     poolId: maybePoolId,
     poolName: maybePoolName,
+    solo,
     rewardsDestination,
     soloTotal,
     total,

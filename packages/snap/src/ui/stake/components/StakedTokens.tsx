@@ -28,6 +28,7 @@ export const poolRewardsBreakDown = (rewardsInfo: RewardsInfo[], stakedToken: Ba
     netPoolStaked
   }
 }
+
 export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedTokens, stakingRates }) => {
 
   return (
@@ -142,7 +143,7 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
                         </Box>
                       }
                       <Button name={`stakeDetailsSolo,${genesisHash}`} variant='primary'>
-                        <Icon name='arrow-right' color='muted' size='md' />
+                        <Icon name='arrow-right' color='primary' size='md' />
                       </Button>
                     </Box>
                   </Box>

@@ -1,10 +1,9 @@
 import { Box, Button, Container, Footer, Text, Divider, Avatar, Tooltip } from '@metamask/snaps-sdk/jsx';
-import { StakeFlowHeader } from './components/StakeFlowHeader';
 import { amountToHuman } from '../../util/amountToHuman';
-import { HexString } from '@polkadot/util/types';
 import getPools, { PoolInfo } from './utils/getPools';
 import { WentWrong } from '../components/WentWrong';
 import { StakingInitContextType } from './types';
+import { FlowHeader } from '../components/FlowHeader';
 
 const MAX_POOL_NAME_TO_SHOW = 30;
 
@@ -20,7 +19,7 @@ export async function selectPool(id: string, context: StakingInitContextType) {
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui( poolsInfo, context),
+      ui: ui(poolsInfo, context),
       context: {
         ...context
       }
@@ -39,10 +38,11 @@ const ui = (
   return (
     <Container>
       <Box direction='vertical' alignment='start'>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeInit'
           label='Select pool'
           showHome
+          tooltipType='staking'
         />
         {!activePoolsCount
           ? <WentWrong label='Something went wrong while fetching pools ...' />

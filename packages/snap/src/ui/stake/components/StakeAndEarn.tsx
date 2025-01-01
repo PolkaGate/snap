@@ -22,7 +22,7 @@ export const StakeAndEarn: SnapComponent<Props> = ({ balancesAll, nonStakedChain
 
         const sanitizedChainName = sanitizeChainName(name)?.toLocaleLowerCase() as string;
         const rate = stakingRates[sanitizedChainName];
-        const logo = getLogoByChainName(sanitizedChainName)
+        const logo = getLogoByChainName(sanitizedChainName, true)
         const balance = balancesAll.find((balance) => balance.genesisHash === genesisHash)
 
         return (

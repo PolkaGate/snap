@@ -13,7 +13,7 @@ type Props = {
 export const SendFlowFooter: SnapComponent<Props> = ({ disabled, name = "sendReview" }) => (
   <Footer>
     <Button name={name} disabled={disabled}>
-      Review
+      Continue
     </Button>
   </Footer>
 );

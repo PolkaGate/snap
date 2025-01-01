@@ -3,7 +3,6 @@
 
 import { Box, Container, Footer, Button, Image, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { getBalances, getKeyPair } from "../../../../util";
 import { getSnapState } from "../../../../rpc/stateManagement";
 import { StakeForm } from "../../components/StakeForm";
@@ -15,6 +14,7 @@ import { amountToMachine } from "../../../../util/amountToMachine";
 import { birdUp } from "../../../image/icons";
 import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
 import { isEmptyObject } from "../../../../utils";
+import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolStakeMore(
   id: string,
@@ -90,10 +90,11 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeDetailsPool'
           label='Stake more'
           showHome
+          tooltipType='staking'
         />
         <StakeForm
           amount={amount}
@@ -108,7 +109,7 @@ const ui = (
         />
         <Section>
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

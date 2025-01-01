@@ -9,6 +9,7 @@ import { ChainSwitch } from "./components";
 import { getLogoByGenesisHash } from "./image/chains/getLogoByGenesisHash";
 import { HexString } from "@polkadot/util/types";
 import QRCode from 'qrcode';
+import { FlowHeader } from "./components/FlowHeader";
 
 export async function receive(id: string, genesisHash?: HexString) {
   const { address } = await getKeyPair();
@@ -17,7 +18,7 @@ export async function receive(id: string, genesisHash?: HexString) {
   const formatted = getFormatted(_genesisHash, address);
   const logo = await getLogoByGenesisHash(_genesisHash);
 
-  const qrCode = await QRCode.toString(formatted, { errorCorrectionLevel: 'H' })
+  const qrCode = await QRCode.toString(formatted, { errorCorrectionLevel: 'H' });
 
   await snap.request({
     method: 'snap_updateInterface',
@@ -32,15 +33,17 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
 
   return (
     <Container>
-      <Section>
-        <Box direction='horizontal' alignment="start">
-          <Icon color='muted' name='wallet' size='md' />
-          <Text color='muted'>Select a network to view your address and its QR code.</Text>
-        </Box>
+      <Box>
+        <FlowHeader
+          action='backToHome'
+          label='Receive'
+          tooltipType="send"
+        />
+        <Text alignment="start" color='muted'>Select a network to view your address and its QR code.</Text>
         <ChainSwitch genesisHash={genesisHash} logo={logo} />
         <Copyable value={formatted} />
         <Image src={qrCode} />
-      </Section>
+      </Box>
       <Footer>
         <Button name='backToHomeWithoutUpdate' variant="destructive">
           Back

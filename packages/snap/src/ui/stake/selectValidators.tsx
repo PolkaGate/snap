@@ -1,10 +1,10 @@
-import { Box, Button, Container, Footer, Text, Divider, Tooltip, Address, Icon, Checkbox, Form, Avatar } from '@metamask/snaps-sdk/jsx';
-import { StakeFlowHeader } from './components/StakeFlowHeader';
+import { Box, Button, Container, Footer, Text, Divider, Tooltip, Icon, Checkbox, Form, Avatar } from '@metamask/snaps-sdk/jsx';
 import { WentWrong } from './components/WentWrong';
 import { getValidators } from './utils/getValidators';
 import { getValidatorsIdentities, Identities } from './utils/getValidatorIdentities';
 import { ellipsis } from './components/PoolSelector';
 import { StakingInitContextType, ValidatorInfo } from './types';
+import { FlowHeader } from '../components/FlowHeader';
 
 export async function selectValidators(
   id: string,
@@ -53,11 +53,12 @@ const ui = (
   return (
     <Container>
       <Box direction='vertical' alignment='start'>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeInit'
           label='Select validators'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         {!allValidators
           ? <WentWrong label='Something went wrong while fetching ...' />

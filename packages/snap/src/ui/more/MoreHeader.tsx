@@ -11,7 +11,7 @@ type Props = {
 /**
  * A component that shows the more flow header.
  *
- * @returns The more FlowHeader component.
+ * @returns The MoreFlowHeader component.
  */
 export const MoreHeader: SnapComponent<Props> = ({ action, label, isSubAction, showHome }) => (
   <Box direction="horizontal" alignment="space-between" center>

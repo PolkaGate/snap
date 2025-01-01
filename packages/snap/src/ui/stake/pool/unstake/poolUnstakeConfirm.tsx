@@ -2,7 +2,6 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { getApi } from "../../../../util/getApi";
 import { StakingInitContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
@@ -16,11 +15,6 @@ import { BN } from "@polkadot/util";
 
 export async function poolUnstakeConfirm(id: string, context: StakingInitContextType) {
   const { address, active, amount, decimal, genesisHash, poolId } = context;
-  const api = await getApi(genesisHash);
-
-  if (!api) {
-    throw new Error('cant connect to network, check your internet connection!');
-  }
 
   let amountAsBN = amountToMachine(amount, decimal);
 
@@ -28,7 +22,7 @@ export async function poolUnstakeConfirm(id: string, context: StakingInitContext
     amountAsBN = new BN(active);
   }
 
-  let { call, params } = await getPoolUnstake(address, amountAsBN, genesisHash, poolId, OUTPUT_TYPE.CALL_PARAMS);
+  const { call, params } = await getPoolUnstake(address, amountAsBN, genesisHash, poolId, OUTPUT_TYPE.CALL_PARAMS);
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);
@@ -38,9 +32,14 @@ export async function poolUnstakeConfirm(id: string, context: StakingInitContext
   await snap.request({
     method: 'snap_updateInterface',
     params: {
+      context: {
+        ...(context || {}),
+      },
       id,
       ui: (
         <Confirmation
+          action='stakePoolReviewWithUpdate'
+          button='Done'
           chainName={chainName}
           txHash={String(txHash)}
         />

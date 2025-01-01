@@ -1,10 +1,10 @@
 import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
 import { PoolUnstakeExtraInfo } from "./component/PoolUnstakeExtraInfo";
 import { Account } from "../../components/Account";
+import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolUnstakeReview(
   id: string,
@@ -33,11 +33,12 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='poolUnstake'
           label='Unstake'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
@@ -53,7 +54,7 @@ const ui = (
             genesisHash={genesisHash}
           />
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(fee, decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

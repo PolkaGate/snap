@@ -3,7 +3,6 @@
 
 import { Box, Container, Footer, Button, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { getBalances, getKeyPair } from "../../../../util";
 import { Row2 } from "../../components/Row2";
 import { StakeFormErrors, StakingInitContextType } from "../../types";
@@ -15,6 +14,7 @@ import { Balance } from "@polkadot/types/interfaces";
 import { getPoolUnstake } from "./util/getPoolUnstake";
 import { PoolUnstakeExtraInfo } from "./component/PoolUnstakeExtraInfo";
 import { isEmptyObject } from "../../../../utils";
+import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolUnstake(
   id: string,
@@ -23,7 +23,7 @@ export async function poolUnstake(
   context: StakingInitContextType,
 ) {
 
-  const { address, active, amount, claimable, pooledBalance, decimal, genesisHash, logos, poolId, price, token, transferable } = context;
+  const { address, active, amount, claimable, decimal, genesisHash, logos, poolId, price, token, transferable } = context;
   const _amount = formAmount !== undefined ? formAmount : amount;
 
   const netStaked = new BN(active || 0);
@@ -84,10 +84,11 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeDetailsPool'
           label='Unstake'
           showHome
+          tooltipType='staking'
         />
         <UnstakeForm
           amount={amount}
@@ -102,7 +103,7 @@ const ui = (
         />
         <Section>
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

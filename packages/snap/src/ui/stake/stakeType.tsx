@@ -1,9 +1,9 @@
 import { Box, Container, Footer, Button, RadioGroup, Radio, Field, Form } from "@metamask/snaps-sdk/jsx";
-import { StakeFlowHeader } from "./components/StakeFlowHeader";
 import { StakeTypeFormState, StakingInitContextType } from "./types";
 import getPools, { PoolInfo } from "./utils/getPools";
 import { PoolOptions } from "./components/PoolOptions";
 import { SoloOptions } from "./components/SoloOptions";
+import { FlowHeader } from "../components/FlowHeader";
 
 export async function stakeType(
   id: string,
@@ -40,11 +40,12 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeInit'
           label='Staking type'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         <Box alignment="center" center>
           <Form name="stakeTypeForm">

@@ -1,11 +1,11 @@
 import { Box, Container, Image, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
 import { birdDown } from "../../../image/icons";
 import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
 import { Account } from "../../components/Account";
+import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolStakeMoreReview(
   id: string,
@@ -28,17 +28,18 @@ const ui = (
   context: StakingInitContextType
 ) => {
 
-  let {address, amount, decimal, genesisHash, token, price, claimable, fee } = context;
+  let { address, amount, decimal, genesisHash, token, price, claimable, fee } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
 
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='poolStakeMore'
           label='Stake more'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
@@ -54,7 +55,7 @@ const ui = (
             genesisHash={genesisHash}
           />
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(fee, decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

@@ -5,6 +5,8 @@ import { sanitizeChainName } from '../../util/getChainName';
 
 type Props = {
   chainName?: string;
+  button?: string;
+  action?: string;
   txHash: string;
 }
 
@@ -13,7 +15,7 @@ type Props = {
  *
  * @returns The Confirmation component.
  */
-export const Confirmation: SnapComponent<Props> = ({ chainName, txHash }) => (
+export const Confirmation: SnapComponent<Props> = ({ action, button, chainName, txHash }) => (
   <Container>
     <Box>
       <Box alignment='center' center direction='horizontal'>
@@ -42,9 +44,15 @@ export const Confirmation: SnapComponent<Props> = ({ chainName, txHash }) => (
       </Section>
     </Box>
     <Footer>
-      <Button name="backToHomeWithUpdate" >
-        Home
-      </Button>
+      {
+        button && action
+          ? <Button name={action} >
+            {button}
+          </Button>
+          : <Button name="backToHomeWithUpdate" >
+            Home
+          </Button>
+      }
     </Footer>
   </Container>
 );

@@ -1,11 +1,11 @@
 import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../util/amountToHuman";
-import { StakeFlowHeader } from "./components/StakeFlowHeader";
 import { Balance } from "@polkadot/types/interfaces";
 import { getStakingFee } from "./utils/getStakingFee";
 import { Row2 } from "./components/Row2";
 import { StakingInitContextType } from "./types";
 import { Account } from "./components/Account";
+import { FlowHeader } from "../components/FlowHeader";
 
 export async function stakeFirstTimeReview(
   id: string,
@@ -29,7 +29,6 @@ export async function stakeFirstTimeReview(
 }
 
 const ui = (
-
   fee: Balance,
   context: StakingInitContextType,
 ) => {
@@ -41,11 +40,12 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeInit'
           label='Start staking'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
@@ -61,7 +61,7 @@ const ui = (
             genesisHash={genesisHash}
           />
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

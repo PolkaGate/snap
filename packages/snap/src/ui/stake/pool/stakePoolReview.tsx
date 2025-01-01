@@ -1,12 +1,11 @@
 import { Box, Container, Section } from "@metamask/snaps-sdk/jsx";
-import { StakeFlowHeader } from "../components/StakeFlowHeader";
 import { StakingInitContextType } from "../types";
 import { HexString } from "@polkadot/util/types";
 import getChainName from "../../../util/getChainName";
 import { toTitleCase } from "../../../utils";
 import { poolRewardsBreakDown } from "../components/StakedTokens";
 import { Balances } from "../../../util";
-import { handleBalancesAll } from "../../../util/handleBalancesAll";
+import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../../util/handleBalancesAll";
 import { getPoolRewards } from "../utils/getStakingRewards";
 import { RewardsInfo } from "../../../util/types";
 import { YourPool } from "./components/YourPool";
@@ -16,14 +15,16 @@ import { Redeemable } from "./components/Redeemable";
 import { Rewards } from "./components/Rewards";
 import { ActionRow } from "../../components/ActionRow";
 import { BN } from "@polkadot/util";
+import { FlowHeader } from "../../components/FlowHeader";
 
 export async function stakePoolReview(
   id: string,
   context: StakingInitContextType,
   maybeGenesisHash: HexString,
+  withUpdate?: boolean
 ) {
 
-  const { address, balancesAll, pricesInUsd } = await handleBalancesAll();
+  const { address, balancesAll, pricesInUsd } = await handleBalancesAll(withUpdate ? BALANCE_FETCH_TYPE.FORCE_UPDATE : BALANCE_FETCH_TYPE.SAVED_ONLY);
   const genesisHash = maybeGenesisHash || context?.genesisHash;
 
   const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
@@ -67,10 +68,11 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeIndex'
           label={`${toTitleCase(sanitizedChainName)} staking`}
           isSubAction
+          tooltipType='staking'
         />
         <Redeemable
           amount={redeemable}

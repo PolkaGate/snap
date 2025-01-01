@@ -23,9 +23,14 @@ export async function poolRedeemConfirm(id: string, context: StakingInitContextT
   await snap.request({
     method: 'snap_updateInterface',
     params: {
+      context: {
+        ...(context || {}),
+      },
       id,
       ui: (
         <Confirmation
+          action='stakePoolReviewWithUpdate'
+          button='Done'
           chainName={chainName}
           txHash={String(txHash)}
         />

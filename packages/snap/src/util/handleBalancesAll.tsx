@@ -27,16 +27,6 @@ export enum BALANCE_FETCH_TYPE {
   FORCE_UPDATE
 }
 
-function transformAllValues(obj: any, transformer: (value: any) => any): void {
-  for (const key in obj) {
-    if (obj[key] && typeof obj[key] === 'object') {
-      transformAllValues(obj[key], transformer);
-    } else {
-      obj[key] = transformer(obj[key]);
-    }
-  }
-}
-
 export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
   const options = getChainOptions();
   const snapState = await getSnapState();
@@ -72,6 +62,12 @@ export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
         item.pooled.claimable = isHexToBn(item.pooled.claimable);
         item.pooled.unlocking = isHexToBn(item.pooled.unlocking);
         item.pooled.redeemable = isHexToBn(item.pooled.redeemable);
+      }
+      if (item.solo) {
+        item.solo.total = isHexToBn(item.solo.total);
+        item.solo.active = isHexToBn(item.solo.active);
+        item.solo.unlocking = isHexToBn(item.solo.unlocking);
+        item.solo.redeemable = isHexToBn(item.solo.redeemable);
       }
     })
 

@@ -1,7 +1,6 @@
 import { Box, Container, Section, Text, Footer, Button, Icon } from "@metamask/snaps-sdk/jsx";
 import { HexString } from "@polkadot/util/types";
 import { amountToHuman } from "../../util/amountToHuman";
-import { StakeFlowHeader } from "./components/StakeFlowHeader";
 import { getBalances, getKeyPair } from "../../util";
 import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
 import { getSnapState } from "../../rpc/stateManagement";
@@ -11,6 +10,7 @@ import { Row2 } from "./components/Row2";
 import { PoolSelectorFormState, StakeFormErrors, StakeTypeFormState, StakingDataType, StakingInitContextType } from "./types";
 import { ellipsis } from "./components/PoolSelector";
 import { isEmptyObject } from "../../utils";
+import { FlowHeader } from "../components/FlowHeader";
 
 interface NewSelectionType {
   selectPoolForm: PoolSelectorFormState | undefined;
@@ -133,10 +133,11 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeIndex'
           label={`Stake ${token}`}
           showHome
+          tooltipType='staking'
         />
         <StakeForm
           amount={amount}

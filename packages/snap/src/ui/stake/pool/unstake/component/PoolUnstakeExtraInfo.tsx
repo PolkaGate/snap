@@ -1,8 +1,9 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { Box, Text, Icon, SnapComponent } from "@metamask/snaps-sdk/jsx";
+import { Box, SnapComponent } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../../util/amountToHuman";
+import { InfoRow } from "../../../components/InfoRow";
 
 interface Props {
   claimable: string;
@@ -10,19 +11,6 @@ interface Props {
   token: string;
   unbondingDuration: number;
 }
-
-interface InoRowProps {
-  text: string;
-}
-
-const InfoRow: SnapComponent<InoRowProps> = ({ text }) => (
-  <Box direction="horizontal" alignment="start">
-    <Icon name='info' color='muted' />
-    <Text color='muted'>
-      {text}
-    </Text>
-  </Box>
-)
 
 export const PoolUnstakeExtraInfo: SnapComponent<Props> = ({ claimable, decimal, token, unbondingDuration }) => (
   <Box>

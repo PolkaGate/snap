@@ -18,6 +18,7 @@ export interface Prices {
 
 export type StakingType= 'Solo' | 'Pool';
 export type SubStakingType='Claimable' | 'TotalClaimed';
+
 export interface RewardsInfo {
   type: StakingType;
   subType?:SubStakingType;

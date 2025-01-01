@@ -9,6 +9,8 @@ interface Props {
   price: number;
 }
 
+export const POOL_CLAIMABLE_DECIMAL = 5;
+
 export const ClaimRewards: SnapComponent<Props> = ({ amount, token, decimal, price }) => (
   <Box>
     {!!amount && !new BN(amount).isZero() &&
@@ -18,7 +20,7 @@ export const ClaimRewards: SnapComponent<Props> = ({ amount, token, decimal, pri
           <Box direction="horizontal" alignment="space-between" center>
             <Box direction="vertical" alignment="start">
               <Text>
-                {`${amountToHuman(amount || 0, decimal, 5, true)} ${token}`}
+                {`${amountToHuman(amount || 0, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
               </Text>
               <Text color="muted">
                 ${`${(Number(amountToHuman(amount || 0, decimal)) * price).toFixed(2)}`}

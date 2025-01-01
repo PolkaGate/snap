@@ -43,9 +43,6 @@ const ui = (maybePassword?: string) => {
         </Section>
       </Box>
       <Footer>
-        <Button name='more' variant='destructive'>
-          Back
-        </Button>
         <Button name='exportAccount' variant='primary' disabled={!maybePassword}>
           Export
         </Button>

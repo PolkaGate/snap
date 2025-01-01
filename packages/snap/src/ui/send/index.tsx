@@ -8,7 +8,7 @@ import { HexString } from "@polkadot/util/types";
 import { amountToHuman } from "../../util/amountToHuman";
 import { Balance } from "@polkadot/types/interfaces";
 import { getTransferFee } from "./utils";
-import { FlowHeader } from "./FlowHeader";
+import { FlowHeader } from "../components/FlowHeader";
 
 export async function send(
   id: string,
@@ -56,6 +56,7 @@ const ui = (fee, nonZeroBalances, logos, pricesInUsd, recipient, selectedToken, 
         <FlowHeader
           action='backToHome'
           label='Send'
+          tooltipType="send"
         />
         <SendForm
           clearAddress={clearAddress}

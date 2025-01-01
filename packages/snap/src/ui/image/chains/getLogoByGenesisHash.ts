@@ -1,8 +1,9 @@
 import { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import { assetHub, ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist, edgeware, equilibrium, frequency, integritee, parallel, pendulum, phala, polimec, polymesh, sora, vara, paseo } from ".";
+import { KusamaSqr, PaseoSqr, PolkadotSqr, WestendSqr } from "../chainsSquare";
 
-export const getLogoByChainName =  (chainName?: string): string => {
+export const getLogoByChainName = (chainName?: string, showSquare?: boolean): string => {
     const sanitizedChainName = sanitizeChainName(chainName);
 
     switch (sanitizedChainName?.toLowerCase()) {
@@ -27,7 +28,7 @@ export const getLogoByChainName =  (chainName?: string): string => {
         case 'integritee':
             return integritee;
         case 'polkadot':
-            return polkadot;
+            return showSquare ? PolkadotSqr : polkadot;
         case 'parallel':
             return parallel;
         case 'centrifuge':
@@ -54,9 +55,9 @@ export const getLogoByChainName =  (chainName?: string): string => {
         case 'kulupu':
             return kulupu;
         case 'kusama':
-            return kusama;
+            return showSquare ? KusamaSqr : kusama;
         case 'paseo':
-            return paseo;
+            return showSquare ? PaseoSqr : paseo;
         case 'picasso':
             return picasso;
         case 'nodle':
@@ -64,7 +65,7 @@ export const getLogoByChainName =  (chainName?: string): string => {
         case 'ternoa':
             return ternoa;
         case 'westend':
-            return westend;
+            return showSquare ? WestendSqr : westend;
         case 'zeitgeist':
             return zeitgeist;
         case 'polkadotassethub':

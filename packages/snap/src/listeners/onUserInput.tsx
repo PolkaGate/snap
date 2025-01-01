@@ -47,6 +47,23 @@ import { poolRedeem } from '../ui/stake/pool/redeem/poolRedeem';
 import { poolRedeemConfirm } from '../ui/stake/pool/redeem/poolRedeemConfirm';
 import { exportAccount } from '../ui/more/exportAccount';
 import { showJsonContent } from '../ui/more/showJsonContent';
+import { stakeSoloReview } from '../ui/stake/solo';
+import { soloRedeem } from '../ui/stake/solo/redeem/soloRedeem';
+import { soloRedeemConfirm } from '../ui/stake/solo/redeem/soloRedeemConfirm';
+import { soloStakeMore } from '../ui/stake/solo/stakeMore/soloStakeMore';
+import { soloStakeMoreReview } from '../ui/stake/solo/stakeMore/soloStakeMoreReview';
+import { soloStakeMoreConfirm } from '../ui/stake/solo/stakeMore/soloStakeMoreConfirm';
+import { StakeMoreSoloFormState, stakeMoreSoloFormValidation } from '../ui/stake/solo/stakeMore/util/stakeMoreSoloFormValidation';
+import { soloUnstake } from '../ui/stake/solo/unstake';
+import { soloUnstakeReview } from '../ui/stake/solo/unstake/soloUnstakeReview';
+import { soloUnstakeConfirm } from '../ui/stake/solo/unstake/soloUnstakeConfirm';
+import { unstakeSoloFormValidation } from '../ui/stake/solo/unstake/util/unstakeSoloFormValidation';
+import { rewardsDestination } from '../ui/stake/solo/rewards';
+import { RewardsDestinationFormState } from '../ui/stake/solo/rewards/types';
+import { rewardsDestinationReview } from '../ui/stake/solo/rewards/rewardsDestinationReview';
+import { rewardsDestinationConfirm } from '../ui/stake/solo/rewards/rewardsDestinationConfirm';
+import { SoloUnstakeFormState } from '../ui/stake/solo/unstake/types';
+
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -215,14 +232,31 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await stakeFirstTimeReview(id, context);
         break;
 
+      case 'stakeConfirm':
+        await showSpinner(id, 'Working, please wait ...',true);
+        await confirmStake(id, context);
+        break;
+
+      // POOL 
       case 'stakeDetailsPool':
         await showSpinner(id, 'Loading, please wait ...');
         await stakePoolReview(id, context, maybeGenesisHash);
         break;
 
-      case 'stakeConfirm':
-        await showSpinner(id, 'Working, please wait ...');
-        await confirmStake(id, context);
+      case 'stakePoolReviewWithUpdate':
+        await showSpinner(id, 'Updating, please wait ...');
+        await stakePoolReview(id, context, maybeGenesisHash, true);
+        break;
+
+      // SOLO 
+      case 'stakeDetailsSolo':
+        await showSpinner(id, 'Loading, please wait ...');
+        await stakeSoloReview(id, context, maybeGenesisHash);
+        break;
+
+      case 'stakeSoloReviewWithUpdate':
+        await showSpinner(id, 'Updating, please wait ...');
+        await stakeSoloReview(id, context, maybeGenesisHash, true);
         break;
 
       /** ----------------------------claim--------------------------------- */
@@ -238,6 +272,19 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         break;
 
       /** ----------------------------redeem--------------------------------- */
+
+      // SOLO
+      case 'soloRedeem':
+        await showSpinner(id, 'Loading, please wait ...');
+        await soloRedeem(id, context);
+        break;
+
+      case 'soloRedeemConfirm':
+        await showSpinner(id, 'Working, please wait ...');
+        await soloRedeemConfirm(id, context);
+        break;
+
+      // POOL
       case 'poolRedeem':
         await showSpinner(id, 'Loading, please wait ...');
         await poolRedeem(id, context);
@@ -248,7 +295,30 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await poolRedeemConfirm(id, context);
         break;
 
-      /** ----------------------------pool stake more--------------------------------- */
+      /** ---------------------------- stake more--------------------------------- */
+
+      // SOLO
+      case 'soloStakeMore':
+        await showSpinner(id, 'Loading, please wait ...');
+      case 'stakeMoreAmountSolo':
+        {
+          const stakeMoreForm = state.stakeForm as StakeMoreSoloFormState;
+          const formErrors = stakeMoreSoloFormValidation(stakeMoreForm, context);
+          await soloStakeMore(id, stakeMoreForm?.stakeMoreAmountSolo, formErrors, context);
+          break;
+        }
+
+      case 'soloStakeMoreReview':
+        await showSpinner(id, 'Loading, please wait ...');
+        await soloStakeMoreReview(id, context);
+        break;
+
+      case 'soloStakeMoreConfirm':
+        await showSpinner(id, 'Working, please wait ...');
+        await soloStakeMoreConfirm(id, context);
+        break;
+
+      // POOL
       case 'poolStakeMore':
         await showSpinner(id, 'Loading, please wait ...');
       case 'stakeMoreAmount':
@@ -268,7 +338,30 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await showSpinner(id, 'Working, please wait ...');
         await poolStakeMoreConfirm(id, context);
         break;
-      /** ----------------------------pool unstake--------------------------------- */
+      /** ---------------------------- unstake--------------------------------- */
+
+      // SOLO      
+      case 'soloUnstake':
+        await showSpinner(id, 'Loading, please wait ...');
+      case 'soloUnstakeAmount':
+        {
+          const unstakeForm = state.unstakeForm as unknown as SoloUnstakeFormState;
+          const formErrors = unstakeSoloFormValidation(unstakeForm, context);
+          await soloUnstake(id, unstakeForm?.soloUnstakeAmount, formErrors, context);
+          break;
+        }
+
+      case 'soloUnstakeReview':
+        await showSpinner(id, 'Loading, please wait ...');
+        await soloUnstakeReview(id, context);
+        break;
+
+      case 'soloUnstakeConfirm':
+        await showSpinner(id, 'Working, please wait ...');
+        await soloUnstakeConfirm(id, context);
+        break;
+
+      // POOL
       case 'poolUnstake':
         await showSpinner(id, 'Loading, please wait ...');
       case 'poolUnstakeAmount':
@@ -287,6 +380,25 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
       case 'poolUnstakeConfirm':
         await showSpinner(id, 'Working, please wait ...');
         await poolUnstakeConfirm(id, context);
+        break;
+
+      /** ---------------------------- rewardsDestination--------------------------------- */
+      case 'rewardsDestination':
+      case 'rewardsDestinationOptions':
+        await showSpinner(id, 'Loading, please wait ...');
+        const rewardsDestinationForm = state.rewardsDestinationForm as unknown as RewardsDestinationFormState;
+
+        await rewardsDestination(id, context, rewardsDestinationForm?.rewardsDestinationOptions);
+        break;
+
+      case 'rewardsDestinationReview':
+        await showSpinner(id);
+        await rewardsDestinationReview(id, context);
+        break;
+     
+        case 'rewardsDestinationConfirm':
+          await showSpinner(id, 'Working, please wait ...', true);
+          await rewardsDestinationConfirm(id, context);
         break;
 
       //===================================OTHERS===================================//

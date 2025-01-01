@@ -14,7 +14,7 @@ export interface PoolBalances {
   claimable: string;
   unlocking: string;
   redeemable: string;
-  toBeReleased: {
+  toBeReleased?: {
     amount: string;
     date: number;
 }[]

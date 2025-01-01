@@ -3,7 +3,6 @@
 
 import { Box, Container, Section, Text, Footer, Button, Heading, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { StakeFlowHeader } from "../../components/StakeFlowHeader";
 import { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
@@ -11,6 +10,7 @@ import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getRedeem } from "./util/getRedeem";
 import { Account } from "../../components/Account";
+import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolRedeem(
   id: string,
@@ -46,11 +46,12 @@ const ui = (
   return (
     <Container>
       <Box>
-        <StakeFlowHeader
+        <FlowHeader
           action='stakeDetailsPool'
           label='Redeem'
           showHome
           isSubAction
+          tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
@@ -61,12 +62,12 @@ const ui = (
           </Text>
         </Box>
         <Section>
-        <Account
+          <Account
             address={address}
             genesisHash={genesisHash}
           />
           <Row2
-            label=' Network fee'
+            label='Network fee'
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />

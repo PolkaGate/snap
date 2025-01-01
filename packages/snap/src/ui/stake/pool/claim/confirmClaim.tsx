@@ -32,9 +32,14 @@ export async function confirmClaim(id: string, context: StakingInitContextType) 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
+      context: {
+        ...(context || {}),
+      },
       id,
       ui: (
         <Confirmation
+          action='stakePoolReviewWithUpdate'
+          button='Done'
           chainName={chainName}
           txHash={String(txHash)}
         />

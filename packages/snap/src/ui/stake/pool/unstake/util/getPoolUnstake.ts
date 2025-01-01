@@ -5,7 +5,8 @@ import { Balance } from "@polkadot/types/interfaces";
 import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
 import { AnyTuple } from "@polkadot/types/types";
 import { OUTPUT_TYPE } from "../../../../../constants";
-
+import type { Option } from '@polkadot/types';
+import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 
 export const getPoolUnstake = async (
   address: string,
@@ -20,8 +21,9 @@ export const getPoolUnstake = async (
     throw new Error('cant connect to network, check your internet connection!');
   }
 
-  const stakingLedger = await api.query.staking.ledger(address);
-  const unlockingLen = stakingLedger?.unlocking?.length;
+  const stakingLedger = (await api.query.staking.ledger(address)) as Option<PalletStakingStakingLedger>;
+  const unlockingLen = stakingLedger.isSome ?stakingLedger.unwrap().unlocking?.length : 0;
+
   const maxUnlockingChunks = api.consts['staking']['maxUnlockingChunks'].toNumber();
 
   const optSpans = await api.query['staking']['slashingSpans'](address);

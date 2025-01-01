@@ -39,7 +39,7 @@ export const UnstakeForm: SnapComponent<Props> = ({
             {token}
           </Heading>
         </Box>
-        <Input name={name || 'stakeAmount'} type="number" placeholder={placeHolder || "Enter amount to stake"} value={amount} />
+        <Input name={name || 'unstakeAmount'} type="number" placeholder={placeHolder || "Enter amount to unstake"} value={amount} />
         <Text color="muted">
           ${(Number(amount || 0) * price).toFixed(2)}
         </Text>

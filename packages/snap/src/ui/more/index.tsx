@@ -37,7 +37,7 @@ const ui = () => {
           <LinkItem icon={'book'} link='https://docs.polkagate.xyz' label={'View Documents'} />
         </Section>
         <Section>
-          <LinkItem icon={'twitter'} link='https://x.com/@polkagate' label={'Follow Us on X (twitter)'} />
+          <LinkItem icon={'twitter'} link='https://x.com/@polkagate' label={'Follow Us on X'} />
           <LinkItem icon={'bookmark'} link='https://youtube.com/@polkagate' label={'Subscribe to YouTube Channel'} />
           <LinkItem icon={'home'} link='https://polkagate.xyz' label={'Visit Website'} />
           <LinkItem icon={'people'} link='mailto:polkagate@outlook.com' label={'Contact Us'} />
@@ -53,38 +53,17 @@ const ui = () => {
 };
 
 
-type MenuProps = {
-  icon: IconName;
-  name: string;
-  label: string;
-}
-
 type LinkProps = {
   icon: IconName;
   link: string;
   label: string;
 }
 
-export const MenuItem: SnapComponent<MenuProps> = ({ icon, name, label }: MenuProps) => {
-
-  return (
-    <Box direction="horizontal" alignment="start">
-      <Icon name={icon} size="md" />
-      <Button name={name?.toLowerCase()} variant='primary'>
-        {label}
-      </Button>
-    </Box>
-  );
-};
-
-export const LinkItem: SnapComponent<LinkProps> = ({ icon, link, label }: LinkProps) => {
-
-  return (
-    <Box direction="horizontal" alignment="start">
-      <Icon name={icon} size="md" />
-      <Link href={link}>
-        {label}
-      </Link>
-    </Box>
-  );
-};
+const LinkItem: SnapComponent<LinkProps> = ({ icon, link, label }: LinkProps) => (
+  <Box direction="horizontal" alignment="start">
+    <Icon name={icon} size="inherit" color="muted" />
+    <Link href={link}>
+      {label}
+    </Link>
+  </Box>
+);

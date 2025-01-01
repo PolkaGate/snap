@@ -23,13 +23,12 @@ export async function confirmStake(id: string, context: StakingInitContextType) 
   let params;
   let call;
 
-  if (stakingData?.pool) {
+  if (stakingData.type === 'Pool') {
     const poolId = new BN(stakingData.pool.id);
     params = [amountAsBN, poolId];
     call = api.tx['nominationPools']['join']; // can add auto compound tx fee as well
 
   } else {
-
     const bonded = api.tx['staking']['bond'];
     const bondParams = [amountAsBN, 'Staked'];
     const nominated = api.tx['staking']['nominate'];
@@ -48,9 +47,14 @@ export async function confirmStake(id: string, context: StakingInitContextType) 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
+      context: {
+        ...(context || {}),
+      },
       id,
       ui: (
         <Confirmation
+          action='stakeSoloReviewWithUpdate'
+          button='Done'
           chainName={chainName}
           txHash={String(txHash)}
         />
