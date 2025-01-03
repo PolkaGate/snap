@@ -2,7 +2,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { StakingSoloContextType } from "../../types";
+import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
@@ -14,7 +14,7 @@ export async function soloStakeMoreConfirm(id: string, context: StakingSoloConte
   const { address, amount, decimal, genesisHash } = context;
 
   const amountAsBN = amountToMachine(amount, decimal)
-  const { call, params } = await getSoloStakeMore(address, amountAsBN, genesisHash, OUTPUT_TYPE.CALL_PARAMS);
+  const { call, params } = await getSoloStakeMore(address, amountAsBN, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);

@@ -2,7 +2,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { StakingSoloContextType } from "../../types";
+import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
@@ -13,7 +13,7 @@ import { BN } from "@polkadot/util";
 export async function soloRedeemConfirm(id: string, context: StakingSoloContextType) {
   const { address, active, genesisHash } = context;
 
-  const { call, params } = await getRedeemSolo(address, genesisHash, OUTPUT_TYPE.CALL_PARAMS)
+  const { call, params } = await getRedeemSolo(address, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
 
   const keyPair = await getKeyPair(genesisHash);
