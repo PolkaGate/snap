@@ -20,7 +20,7 @@ export async function soloRedeemConfirm(id: string, context: StakingSoloContextT
   const txHash = await call(...(params || [])).signAndSend(keyPair);
 
   const chainName = await getChainName(genesisHash)
-  const returnPage = new BN(active || 0).isZero() ? 'stakeInit' : 'stakeSoloReviewWithUpdate';
+  const returnPage = new BN(active || 0).isZero() ? 'stakeIndex' : 'stakeSoloReviewWithUpdate';
 
   await snap.request({
     method: 'snap_updateInterface',

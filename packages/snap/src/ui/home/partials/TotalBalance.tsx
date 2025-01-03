@@ -27,7 +27,7 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
           <Bold>Total balance</Bold>
         </Text>
         <Box alignment='end' direction='horizontal'>
-          <Tooltip content='Total balance locked!'>
+          <Tooltip content='Locked balance'>
             <Icon name='lock' color='muted' />
           </Tooltip>
           <Text alignment='end' color='muted'>

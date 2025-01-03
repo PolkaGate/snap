@@ -2,27 +2,17 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { getApi } from "../../../../util/getApi";
-import { StakingInitContextType } from "../../types";
+import { CallParamsType, StakingInitContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
+import { getClaim } from "./util/getClaim";
+import { OUTPUT_TYPE } from "../../../../constants";
 
 export async function confirmClaim(id: string, context: StakingInitContextType) {
-  const { genesisHash, restakeRewards } = context;
-  const api = await getApi(genesisHash);
+  const { address, genesisHash, restakeRewards } = context;
 
-  if (!api) {
-    throw new Error('cant connect to network, check your internet connection!');
-  }
-
-  let params = [] as unknown[];
-  let call = api.tx['nominationPools']['claimPayout'];
-
-  if (restakeRewards) {
-    params = ['Rewards'];
-    call = api.tx['nominationPools']['bondExtra'];
-  }
+  const { call, params } = await getClaim(address, genesisHash, restakeRewards, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);

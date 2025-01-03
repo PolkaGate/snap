@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { SnapComponent } from "@metamask/snaps-sdk/jsx";
+import { InfoRow } from "../../../components/InfoRow";
 
 interface Props {
 }

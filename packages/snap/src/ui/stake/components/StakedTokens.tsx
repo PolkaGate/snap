@@ -58,7 +58,7 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
               {!!hasPoolStaked &&
                 <Section>
                   <Box direction='horizontal' alignment='space-between'>
-                    <Box direction='horizontal'>
+                    <Box direction='horizontal' center>
                       <Image src={foundLogoInfo.logo} />
                       <Text color='muted'>
                         {sanitizedChainName.toUpperCase()}

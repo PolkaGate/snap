@@ -19,7 +19,7 @@ import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloUnstake(
   id: string,
-  formAmount: number | undefined,
+  formAmount: string | undefined,
   formErrors: StakeFormErrors,
   context: StakingSoloContextType,
 ) {
@@ -42,7 +42,7 @@ export async function soloUnstake(
     _decimal = balances.decimal;
   }
 
-  const fee = context.fee || await getSoloUnstake(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, OUTPUT_TYPE.FEE);
+  const fee = context.fee || await getSoloUnstake(address, _amount || '0', genesisHash, OUTPUT_TYPE.FEE);
   const stakingInfo = context.stakingInfo || await getStakingInfo(genesisHash);
 
   await snap.request({

@@ -2,24 +2,18 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { getApi } from "../../../../util/getApi";
-import { StakingPoolContextType } from "../../types";
+import { CallParamsType, StakingPoolContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
 import { amountToMachine } from "../../../../util/amountToMachine";
+import { getPoolStakeMore } from "./util/getPoolStakeMore";
+import { OUTPUT_TYPE } from "../../../../constants";
 
 export async function poolStakeMoreConfirm(id: string, context: StakingPoolContextType) {
-  const { amount, decimal, genesisHash } = context;
-  const api = await getApi(genesisHash);
+  const { address, amount, decimal, genesisHash } = context;
 
-  if (!api) {
-    throw new Error('cant connect to network, check your internet connection!');
-  }
-
-  const amountAsBN = amountToMachine(amount, decimal)
-  let params = [{ FreeBalance: amountAsBN.toString() }];
-  let call = api.tx['nominationPools']['bondExtra'];
+  const { call, params } = await getPoolStakeMore(address, amountToMachine(amount, decimal), genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);

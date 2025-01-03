@@ -7,6 +7,7 @@ import { AnyTuple } from "@polkadot/types/types";
 import { OUTPUT_TYPE } from "../../../../../constants";
 import type { Option } from '@polkadot/types';
 import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
+import { handleOutput } from "../../../../../util/handleOutput";
 
 export const getPoolUnstake = async (
   address: string,
@@ -40,15 +41,5 @@ export const getPoolUnstake = async (
     params = [[poolWithdrawUnbonded(poolId, spanCount), unbonded(address, amount)]];
   }
 
-  let feeAsBalance = api.createType('Balance', BN_ZERO);
-
-  if ((!output || output === OUTPUT_TYPE.FEE) && call) {
-    const { partialFee } = await call(...params).paymentInfo(address);
-    feeAsBalance = api.createType('Balance', partialFee || BN_ZERO);
-  }
-
-
-  return output === OUTPUT_TYPE.CALL_PARAMS
-    ? { call, params }
-    : feeAsBalance as Balance;
+    return await handleOutput(address, api, call, params, output);
 }

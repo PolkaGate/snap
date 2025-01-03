@@ -9,12 +9,12 @@ import { StakeForm } from "../../components/StakeForm";
 import { Row2 } from "../../components/Row2";
 import { StakeFormErrors, StakingPoolContextType } from "../../types";
 import { BN, BN_ZERO } from "@polkadot/util";
-import { getPoolStakeMoreFee } from "./util/getPoolStakeMoreFee";
 import { amountToMachine } from "../../../../util/amountToMachine";
 import { birdUp } from "../../../image/icons";
 import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
 import { isEmptyObject } from "../../../../utils";
 import { FlowHeader } from "../../../components/FlowHeader";
+import { getPoolStakeMore } from "./util/getPoolStakeMore";
 
 export async function poolStakeMore(
   id: string,
@@ -50,7 +50,7 @@ export async function poolStakeMore(
     _rate = stakingRates?.[sanitizedChainName || ''] || 0;
   }
 
-  const fee = context.fee || await getPoolStakeMoreFee(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash);
+  const fee = context.fee || await getPoolStakeMore(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash);
 
   await snap.request({
     method: 'snap_updateInterface',

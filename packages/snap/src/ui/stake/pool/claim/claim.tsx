@@ -8,7 +8,7 @@ import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
-import { getClaimFee } from "./util/getClaimFee";
+import { getClaim } from "./util/getClaim";
 import { Account } from "../../components/Account";
 import { POOL_CLAIMABLE_DECIMAL } from "../components/ClaimRewards";
 import { FlowHeader } from "../../../components/FlowHeader";
@@ -21,7 +21,7 @@ export async function claim(
 
   let { address, genesisHash } = context;
 
-  const fee = await getClaimFee(address, genesisHash, restakeRewards)
+  const fee = context.fee || await getClaim(address, genesisHash, restakeRewards) as Balance;
 
   await snap.request({
     method: 'snap_updateInterface',
@@ -30,6 +30,7 @@ export async function claim(
       ui: ui(context, fee),
       context: {
         ...(context || {}),
+        fee: String(fee),
         restakeRewards
       }
     },

@@ -1,19 +1,20 @@
 import { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { BN, BN_ZERO } from "@polkadot/util";
 import { Balance } from "@polkadot/types/interfaces";
 import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
 import { AnyTuple } from "@polkadot/types/types";
 import { OUTPUT_TYPE } from "../../../../../constants";
 import { amountToHuman } from "../../../../../util/amountToHuman";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../components/UnstakeForm";
-import type { Option } from '@polkadot/types';
+import type { Option, u32 } from '@polkadot/types';
 import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
+import { handleOutput } from "../../../../../util/handleOutput";
+import { amountToMachine } from "../../../../../util/amountToMachine";
 
 
 export const getSoloUnstake = async (
   address: string,
-  amount: BN,
+  userInputAmount: string,
   genesisHash: HexString,
   output?: OUTPUT_TYPE
 ): Promise<{ call: SubmittableExtrinsicFunction<"promise", AnyTuple>; params: unknown[]; } | Balance> => {
@@ -24,13 +25,13 @@ export const getSoloUnstake = async (
   }
 
   const decimal = api.registry.chainDecimals[0];
+  let _amount = amountToMachine(userInputAmount, decimal);
+
   const stakingLedger = (await api.query.staking.ledger(address)) as Option<PalletStakingStakingLedger>;
   const unlockingLen = stakingLedger.isSome ? stakingLedger.unwrap().unlocking?.length : 0;
   const active = stakingLedger.isSome ? stakingLedger.unwrap().active : 0;
-  const maxUnlockingChunks = api.consts['staking']['maxUnlockingChunks'].toNumber();
-  let _amount = amount;
+  const maxUnlockingChunks = (api.consts['staking']['maxUnlockingChunks'] as u32).toNumber();
 
-  const isUnstakingAll = Number(amountToHuman(active, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(amount);
 
   const optSpans = await api.query['staking']['slashingSpans'](address);
   const spanCount = optSpans.isNone ? 0 : optSpans.unwrap().prior.length + 1;
@@ -41,8 +42,10 @@ export const getSoloUnstake = async (
 
   if (unlockingLen > maxUnlockingChunks) {
     const withdrawUnbonded = api.tx['staking']['withdrawUnbonded'];
-    params.push([withdrawUnbonded(spanCount)]);
+    params.push(withdrawUnbonded(spanCount));
   }
+
+  const isUnstakingAll = Number(amountToHuman(active, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(userInputAmount);
 
   if (isUnstakingAll) {
     _amount = active;
@@ -58,19 +61,10 @@ export const getSoloUnstake = async (
 
   if (params.length) {
     call = api.tx['utility']['batchAll'];
-    params.push([unbonded(amount)]);
+    params.push(unbonded(_amount));
   }
 
-  let feeAsBalance = api.createType('Balance', BN_ZERO);
   const _params = params.length ? [params] : [_amount];
 
-  if ((!output || output === OUTPUT_TYPE.FEE) && call) {
-    const { partialFee } = await call(..._params).paymentInfo(address);
-    feeAsBalance = api.createType('Balance', partialFee || BN_ZERO);
-  }
-
-
-  return output === OUTPUT_TYPE.CALL_PARAMS
-    ? { call, params: _params }
-    : feeAsBalance as Balance;
+  return await handleOutput(address, api, call, _params, output);
 }

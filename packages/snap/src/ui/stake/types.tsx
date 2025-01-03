@@ -78,7 +78,6 @@ export interface StakingInfoType {
   unbondingDuration: number;
 }
 
-
 export interface ExposureOverview {
   total: BN;
   own: BN
@@ -135,70 +134,26 @@ export interface StakingInitContextType {
   stakingRates: Record<string, number>;
   stakingInfo: StakingInfoType;
   token: string;
-  transferable: number;
+  transferable: string;
   validators?: AllValidators;
 }
 
-export interface StakingPoolContextType {
-  address: string;
-  amount: string | undefined,
-  call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
-  claimable?: string;
-  pooledBalance?: string;
-  redeemable?: string;
-  decimal: number;
-  genesisHash: HexString;
-  logo: string;
-  fee?: string;
-  params?: unknown[];
-  price: number;
-  rate: number;
-  recommendedValidators: HexString[];
-  restakeRewards?: boolean;
-  rewardsInfo: RewardsInfo[];
-  stakedTokens: Balances[];
-  sanitizedChainName: string;
-  selectedValidators?: HexString[];
-  stakingData: StakingDataType | undefined;
-  stakingRates: Record<string, number>;
-  stakingInfo: StakingInfoType;
-  token: string;
-  validators?: AllValidators;
-  transferable: string;
-  active: string;
+export interface StakingPoolContextType extends StakingInitContextType {
+  active?: string;
+  logos: { genesisHash: HexString, logo: string }[];
+  poolId?: number;
 }
 
 export interface PayeeAccount { Account: string }
 export type Payee = 'Staked' | 'Controller' | 'Stash' | PayeeAccount;
 
-export interface StakingSoloContextType {
-  address: string;
-  amount: string | undefined,
-  call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
+export interface StakingSoloContextType extends StakingInitContextType {
   active?: string;
   minNominatorBond?: string;
+  unbondingDuration?: number;
   minimumActiveStake?: string;
-  redeemable?: string;
-  decimal: number;
-  genesisHash: HexString;
-  logo: string;
   logos: { genesisHash: HexString, logo: string }[];
-  fee?: string;
   payee?: { initial: Payee, maybeNew: Payee };
-  params?: unknown[];
-  price: number;
-  rate: number;
-  recommendedValidators: HexString[];
-  rewardsInfo: RewardsInfo[];
-  stakedTokens: Balances[];
-  sanitizedChainName: string;
-  selectedValidators?: HexString[];
-  stakingData: StakingDataType | undefined;
-  stakingRates: Record<string, number>;
-  stakingInfo: StakingInfoType;
-  token: string;
-  transferable: number;
-  validators?: AllValidators;
 }
 
 export interface CallParamsType {

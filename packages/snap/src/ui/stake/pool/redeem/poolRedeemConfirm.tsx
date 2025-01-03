@@ -17,7 +17,7 @@ export async function poolRedeemConfirm(id: string, context: StakingPoolContextT
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);
   const chainName = await getChainName(genesisHash)
-  const returnPage = new BN(active || 0).isZero() ? 'stakeInit' : 'stakePoolReviewWithUpdate';
+  const returnPage = new BN(active || 0).isZero() ? 'stakeIndex' : 'stakePoolReviewWithUpdate';
 
   await snap.request({
     method: 'snap_updateInterface',

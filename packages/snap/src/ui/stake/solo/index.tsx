@@ -5,7 +5,6 @@ import getChainName from "../../../util/getChainName";
 import { toTitleCase } from "../../../utils";
 import { Balances } from "../../../util";
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../../util/handleBalancesAll";
-import { YourStake } from "./components/YourStake";
 import { Unstaking } from "./components/Unstaking";
 import { Redeemable } from "./components/Redeemable";
 import { ActionRow } from "../../components/ActionRow";
@@ -13,6 +12,7 @@ import { BN } from "@polkadot/util";
 import { getSoloRewards } from "../utils/getSoloTotalReward";
 import { Rewards } from "./components/Rewards";
 import { FlowHeader } from "../../components/FlowHeader";
+import { YourStake } from "../pool/components/YourStake";
 
 export async function stakeSoloReview(
   id: string,

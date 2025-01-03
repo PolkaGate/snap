@@ -2,7 +2,7 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { StakingSoloContextType } from "../../types";
+import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
@@ -11,7 +11,7 @@ import { GET_PAYEE_OUTPUT_TYPE, getPayee } from "./util/getPayee";
 export async function rewardsDestinationConfirm(id: string, context: StakingSoloContextType) {
   const { address, genesisHash, payee } = context;
 
-  const { call, params } = await getPayee(address, genesisHash, GET_PAYEE_OUTPUT_TYPE.CALL_PARAMS, payee?.maybeNew);
+  const { call, params } = await getPayee(address, genesisHash, GET_PAYEE_OUTPUT_TYPE.CALL_PARAMS, payee?.maybeNew) as CallParamsType;
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);
