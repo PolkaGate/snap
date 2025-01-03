@@ -200,3 +200,8 @@ export interface StakingSoloContextType {
   transferable: number;
   validators?: AllValidators;
 }
+
+export interface CallParamsType {
+  call: SubmittableExtrinsicFunction<"promise", AnyTuple>;
+  params: unknown[];
+}

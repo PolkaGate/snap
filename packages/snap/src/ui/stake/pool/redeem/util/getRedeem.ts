@@ -3,20 +3,14 @@ import { getApi } from "../../../../../util/getApi";
 import { BN_ZERO } from "@polkadot/util";
 import { Balance } from "@polkadot/types/interfaces";
 import { OUTPUT_TYPE } from "../../../../../constants";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
+import { CallParamsType } from "../../../types";
 
 
 export const getRedeem = async (
   address: string,
   genesisHash: HexString,
   output?: OUTPUT_TYPE
-): Promise<
-  Balance |
-  {
-    call: SubmittableExtrinsicFunction<"promise", AnyTuple>;
-    params: unknown[];
-  }> => {
+): Promise<Balance | CallParamsType> => {
 
   const api = await getApi(genesisHash);
   if (!api) {
