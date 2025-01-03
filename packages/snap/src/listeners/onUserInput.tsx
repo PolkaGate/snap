@@ -59,7 +59,6 @@ import { soloUnstakeReview } from '../ui/stake/solo/unstake/soloUnstakeReview';
 import { soloUnstakeConfirm } from '../ui/stake/solo/unstake/soloUnstakeConfirm';
 import { unstakeSoloFormValidation } from '../ui/stake/solo/unstake/util/unstakeSoloFormValidation';
 import { rewardsDestination } from '../ui/stake/solo/rewards';
-import { RewardsDestinationFormState } from '../ui/stake/solo/rewards/types';
 import { rewardsDestinationReview } from '../ui/stake/solo/rewards/rewardsDestinationReview';
 import { rewardsDestinationConfirm } from '../ui/stake/solo/rewards/rewardsDestinationConfirm';
 import { SoloUnstakeFormState } from '../ui/stake/solo/unstake/types';
@@ -233,7 +232,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         break;
 
       case 'stakeConfirm':
-        await showSpinner(id, 'Working, please wait ...',true);
+        await showSpinner(id, 'Working, please wait ...', true);
         await confirmStake(id, context);
         break;
 
@@ -385,20 +384,21 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
       /** ---------------------------- rewardsDestination--------------------------------- */
       case 'rewardsDestination':
       case 'rewardsDestinationOptions':
-        await showSpinner(id, 'Loading, please wait ...');
-        const rewardsDestinationForm = state.rewardsDestinationForm as unknown as RewardsDestinationFormState;
+        const [_, option] = event.name.split(',');
 
-        await rewardsDestination(id, context, rewardsDestinationForm?.rewardsDestinationOptions);
+        await showSpinner(id, 'Loading, please wait ...');
+
+        await rewardsDestination(id, context, option);
         break;
 
       case 'rewardsDestinationReview':
         await showSpinner(id);
         await rewardsDestinationReview(id, context);
         break;
-     
-        case 'rewardsDestinationConfirm':
-          await showSpinner(id, 'Working, please wait ...', true);
-          await rewardsDestinationConfirm(id, context);
+
+      case 'rewardsDestinationConfirm':
+        await showSpinner(id, 'Working, please wait ...', true);
+        await rewardsDestinationConfirm(id, context);
         break;
 
       //===================================OTHERS===================================//
