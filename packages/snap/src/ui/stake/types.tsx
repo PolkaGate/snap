@@ -139,6 +139,35 @@ export interface StakingInitContextType {
   validators?: AllValidators;
 }
 
+export interface StakingPoolContextType {
+  address: string;
+  amount: string | undefined,
+  call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
+  claimable?: string;
+  pooledBalance?: string;
+  redeemable?: string;
+  decimal: number;
+  genesisHash: HexString;
+  logo: string;
+  fee?: string;
+  params?: unknown[];
+  price: number;
+  rate: number;
+  recommendedValidators: HexString[];
+  restakeRewards?: boolean;
+  rewardsInfo: RewardsInfo[];
+  stakedTokens: Balances[];
+  sanitizedChainName: string;
+  selectedValidators?: HexString[];
+  stakingData: StakingDataType | undefined;
+  stakingRates: Record<string, number>;
+  stakingInfo: StakingInfoType;
+  token: string;
+  validators?: AllValidators;
+  transferable: string;
+  active: string;
+}
+
 export interface PayeeAccount { Account: string }
 export type Payee = 'Staked' | 'Controller' | 'Stash' | PayeeAccount;
 

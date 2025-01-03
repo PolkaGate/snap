@@ -2,7 +2,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { StakingInitContextType } from "../../types";
+import { StakingPoolContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
@@ -13,7 +13,7 @@ import { getPoolUnstake } from "./util/getPoolUnstake";
 import { OUTPUT_TYPE } from "../../../../constants";
 import { BN } from "@polkadot/util";
 
-export async function poolUnstakeConfirm(id: string, context: StakingInitContextType) {
+export async function poolUnstakeConfirm(id: string, context: StakingPoolContextType) {
   const { address, active, amount, decimal, genesisHash, poolId } = context;
 
   let amountAsBN = amountToMachine(amount, decimal);

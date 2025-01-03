@@ -7,7 +7,7 @@ import { getBalances, getKeyPair } from "../../../../util";
 import { getSnapState } from "../../../../rpc/stateManagement";
 import { StakeForm } from "../../components/StakeForm";
 import { Row2 } from "../../components/Row2";
-import { StakeFormErrors, StakingInitContextType } from "../../types";
+import { StakeFormErrors, StakingPoolContextType } from "../../types";
 import { BN, BN_ZERO } from "@polkadot/util";
 import { getPoolStakeMoreFee } from "./util/getPoolStakeMoreFee";
 import { amountToMachine } from "../../../../util/amountToMachine";
@@ -20,7 +20,7 @@ export async function poolStakeMore(
   id: string,
   formAmount: number | undefined,
   formErrors: StakeFormErrors,
-  context: StakingInitContextType,
+  context: StakingPoolContextType,
 ) {
 
   const { address, amount, claimable, decimal, genesisHash, logos, price, rate, sanitizedChainName, stakingRates, token, transferable } = context;

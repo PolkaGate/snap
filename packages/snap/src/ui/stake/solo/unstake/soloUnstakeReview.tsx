@@ -1,14 +1,14 @@
 import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../components/Row2";
-import { StakingInitContextType } from "../../types";
+import { StakingSoloContextType } from "../../types";
 import { SoloUnstakeExtraInfo } from "./component/SoloUnstakeExtraInfo";
 import { Account } from "../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloUnstakeReview(
   id: string,
-  context: StakingInitContextType
+  context: StakingSoloContextType
 ) {
 
   await snap.request({
@@ -24,10 +24,10 @@ export async function soloUnstakeReview(
 }
 
 const ui = (
-  context: StakingInitContextType
+  context: StakingSoloContextType
 ) => {
 
-  let { address, amount, decimal, genesisHash, token, price, claimable, fee, unbondingDuration } = context;
+  let { address, amount, decimal, genesisHash, token, price, fee, unbondingDuration } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
 
   return (

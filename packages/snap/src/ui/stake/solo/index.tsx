@@ -1,5 +1,5 @@
 import { Box, Container, Section } from "@metamask/snaps-sdk/jsx";
-import { StakingInitContextType } from "../types";
+import { StakingSoloContextType } from "../types";
 import { HexString } from "@polkadot/util/types";
 import getChainName from "../../../util/getChainName";
 import { toTitleCase } from "../../../utils";
@@ -16,7 +16,7 @@ import { FlowHeader } from "../../components/FlowHeader";
 
 export async function stakeSoloReview(
   id: string,
-  context: StakingInitContextType,
+  context: StakingSoloContextType,
   maybeGenesisHash: HexString | undefined,
   withUpdate?: boolean
 ) {
@@ -42,10 +42,10 @@ export async function stakeSoloReview(
         price,
         genesisHash,
         ...stakedToken,
-        transferable: stakedToken?.transferable?.toString(),
-        soloTotal: stakedToken?.soloTotal?.toString(),
         active: stakedToken?.solo?.active?.toString(),
         redeemable: stakedToken?.solo?.redeemable?.toString(),
+        soloTotal: stakedToken?.soloTotal?.toString(),
+        transferable: stakedToken?.transferable?.toString(),
       }
     },
   });

@@ -1,5 +1,5 @@
 import { Box, Container, Section } from "@metamask/snaps-sdk/jsx";
-import { StakingInitContextType } from "../types";
+import { StakingPoolContextType } from "../types";
 import { HexString } from "@polkadot/util/types";
 import getChainName from "../../../util/getChainName";
 import { toTitleCase } from "../../../utils";
@@ -19,7 +19,7 @@ import { FlowHeader } from "../../components/FlowHeader";
 
 export async function stakePoolReview(
   id: string,
-  context: StakingInitContextType,
+  context: StakingPoolContextType,
   maybeGenesisHash: HexString,
   withUpdate?: boolean
 ) {

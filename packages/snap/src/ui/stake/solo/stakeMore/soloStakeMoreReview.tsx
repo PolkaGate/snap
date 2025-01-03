@@ -1,7 +1,7 @@
 import { Box, Container, Image, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../components/Row2";
-import { StakingInitContextType } from "../../types";
+import { StakingSoloContextType } from "../../types";
 import { birdDown } from "../../../image/icons";
 import { SoloStakeMoreExtraInfo } from "./component/SoloStakeMoreExtraInfo";
 import { Account } from "../../components/Account";
@@ -9,7 +9,7 @@ import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloStakeMoreReview(
   id: string,
-  context: StakingInitContextType
+  context: StakingSoloContextType
 ) {
 
   await snap.request({
@@ -25,7 +25,7 @@ export async function soloStakeMoreReview(
 }
 
 const ui = (
-  context: StakingInitContextType
+  context: StakingSoloContextType
 ) => {
 
   let { address, amount, decimal, genesisHash, token, price, claimable, fee } = context;

@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getApi } from "../../../../util/getApi";
-import { StakingInitContextType } from "../../types";
+import { StakingPoolContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
 import { amountToMachine } from "../../../../util/amountToMachine";
 
-export async function poolStakeMoreConfirm(id: string, context: StakingInitContextType) {
+export async function poolStakeMoreConfirm(id: string, context: StakingPoolContextType) {
   const { amount, decimal, genesisHash } = context;
   const api = await getApi(genesisHash);
 

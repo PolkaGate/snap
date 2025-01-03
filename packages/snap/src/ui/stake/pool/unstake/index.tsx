@@ -5,7 +5,7 @@ import { Box, Container, Footer, Button, Section } from "@metamask/snaps-sdk/jsx
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../../../util";
 import { Row2 } from "../../components/Row2";
-import { StakeFormErrors, StakingInitContextType } from "../../types";
+import { StakeFormErrors, StakingPoolContextType } from "../../types";
 import { BN, BN_ZERO } from "@polkadot/util";
 import { amountToMachine } from "../../../../util/amountToMachine";
 import { UnstakeForm } from "../../components/UnstakeForm";
@@ -20,7 +20,7 @@ export async function poolUnstake(
   id: string,
   formAmount: number | undefined,
   formErrors: StakeFormErrors,
-  context: StakingInitContextType,
+  context: StakingPoolContextType,
 ) {
 
   const { address, active, amount, claimable, decimal, genesisHash, logos, poolId, price, token, transferable } = context;

@@ -2,7 +2,7 @@
 // Copyright 2023-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { StakingInitContextType } from "../../types";
+import { StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
 import { Confirmation } from "../../../send/Confirmation";
@@ -10,7 +10,7 @@ import { amountToMachine } from "../../../../util/amountToMachine";
 import { getSoloStakeMore } from "./util/getSoloStakeMore";
 import { OUTPUT_TYPE } from "../../../../constants";
 
-export async function soloStakeMoreConfirm(id: string, context: StakingInitContextType) {
+export async function soloStakeMoreConfirm(id: string, context: StakingSoloContextType) {
   const { address, amount, decimal, genesisHash } = context;
 
   const amountAsBN = amountToMachine(amount, decimal)

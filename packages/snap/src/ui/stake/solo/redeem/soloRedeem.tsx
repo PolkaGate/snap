@@ -5,7 +5,7 @@ import { Box, Container, Section, Text, Footer, Button, Heading, Image } from "@
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../components/Row2";
-import { StakingInitContextType } from "../../types";
+import { StakingSoloContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getRedeemSolo } from "./util/getRedeemSolo";
@@ -15,7 +15,7 @@ import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloRedeem(
   id: string,
-  context: StakingInitContextType,
+  context: StakingSoloContextType,
 ) {
 
   let { address, genesisHash } = context;
@@ -35,7 +35,7 @@ export async function soloRedeem(
 }
 
 const ui = (
-  context: StakingInitContextType,
+  context: StakingSoloContextType,
   fee: Balance
 ) => {
 

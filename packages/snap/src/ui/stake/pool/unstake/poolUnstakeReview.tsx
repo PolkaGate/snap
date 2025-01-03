@@ -1,14 +1,14 @@
 import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../components/Row2";
-import { StakingInitContextType } from "../../types";
+import { StakingPoolContextType } from "../../types";
 import { PoolUnstakeExtraInfo } from "./component/PoolUnstakeExtraInfo";
 import { Account } from "../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolUnstakeReview(
   id: string,
-  context: StakingInitContextType
+  context: StakingPoolContextType
 ) {
 
   await snap.request({
@@ -24,7 +24,7 @@ export async function poolUnstakeReview(
 }
 
 const ui = (
-  context: StakingInitContextType
+  context: StakingPoolContextType
 ) => {
 
   let { address, amount, decimal, genesisHash, token, price, claimable, fee, unbondingDuration } = context;
