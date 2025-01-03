@@ -1,4 +1,4 @@
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Balance } from '@polkadot/types/interfaces';
@@ -28,7 +28,7 @@ const Rest: SnapComponent<Props> = ({ docs, chainName, logo }) => {
         <Box direction='horizontal'>
           <Image src={logo} />
           <Text>
-          {`${chainName ?? ''}`}
+            {`${chainName ?? ''}`}
           </Text>
         </Box>
       </Box>

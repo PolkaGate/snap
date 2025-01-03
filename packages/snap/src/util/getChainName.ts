@@ -1,4 +1,4 @@
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { HexString } from '@polkadot/util/types';
@@ -30,9 +30,9 @@ export default async function getChainName(_genesisHash: HexString | undefined, 
   if (!chainName) {
     chainName = (await getChainFromMetadata(_genesisHash))?.name;
   }
-  
+
   console.info('chainName is:', chainName);
-  
+
   if (sanitized) {
     return sanitizeChainName(chainName)?.toLocaleLowerCase() as string;
   }

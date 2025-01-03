@@ -1,5 +1,5 @@
 
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { CallParamsType, StakingSoloContextType } from "../../types";
@@ -30,7 +30,7 @@ export async function soloStakeMoreConfirm(id: string, context: StakingSoloConte
       id,
       ui: (
         <Confirmation
-           action='stakeSoloReviewWithUpdate'
+          action='stakeSoloReviewWithUpdate'
           button='Done'
           chainName={chainName}
           txHash={String(txHash)}

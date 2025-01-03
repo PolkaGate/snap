@@ -1,5 +1,5 @@
 
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { CallParamsType, StakingPoolContextType } from "../../types";
@@ -11,7 +11,7 @@ import { OUTPUT_TYPE } from "../../../../constants";
 import { BN } from "@polkadot/util";
 
 export async function poolRedeemConfirm(id: string, context: StakingPoolContextType) {
-  
+
   const { address, active, genesisHash } = context;
   const { call, params } = await getRedeem(address, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
   const keyPair = await getKeyPair(genesisHash);

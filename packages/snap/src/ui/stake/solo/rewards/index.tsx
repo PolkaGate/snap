@@ -1,4 +1,4 @@
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { Box, Container, Footer, Button, Section } from "@metamask/snaps-sdk/jsx";
@@ -56,7 +56,7 @@ export async function rewardsDestination(
   });
 }
 
-const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNew: Payee | undefined, selectedRewardsDestinationOption: RewardsDestinationOptions ) => {
+const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNew: Payee | undefined, selectedRewardsDestinationOption: RewardsDestinationOptions) => {
 
   const { address, genesisHash, decimal, price, token } = context;
 

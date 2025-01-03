@@ -1,5 +1,5 @@
 
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { StakingSoloContextType } from "../../types";
@@ -23,7 +23,7 @@ export async function rewardsDestinationConfirm(id: string, context: StakingSolo
     params: {
       context: {
         ...(context || {}),
-        payee:{} // to reset payee on confirm which force to fetch payee again on stakeSoloReview
+        payee: {} // to reset payee on confirm which force to fetch payee again on stakeSoloReview
       },
       id,
       ui: (

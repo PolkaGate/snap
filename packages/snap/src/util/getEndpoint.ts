@@ -1,4 +1,4 @@
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { createWsEndpoints } from '@polkadot/apps-config';
@@ -17,16 +17,16 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
   let sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
 
   // FixMe: should be removed when its applied in polkadot apps config, or using polkagate package
-  if(sanitizedChainName === 'hydration'){
+  if (sanitizedChainName === 'hydration') {
     sanitizedChainName = 'hydradx'
   }
 
   const endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>
-      e.value && (!ignoreLightClient || !e.value.startsWith('light') ) && !e.value.includes('onfinality') &&
-     // Check if e.value matches the pattern 'wss://<any_number>'
-     !/^wss:\/\/\d+$/.test(e.value)
-     &&
+      e.value && (!ignoreLightClient || !e.value.startsWith('light')) && !e.value.includes('onfinality') &&
+      // Check if e.value matches the pattern 'wss://<any_number>'
+      !/^wss:\/\/\d+$/.test(e.value)
+      &&
       (
         String(e.info)?.toLowerCase() === sanitizedChainName ||
         String(e.text)?.toLowerCase()?.includes(sanitizedChainName || '')
@@ -35,7 +35,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
     : [];
 
   if (endpoints.length === 0) {
-   return; // we can use metadata for signing in such cases
+    return; // we can use metadata for signing in such cases
   }
 
   return (
