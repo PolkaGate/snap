@@ -34,7 +34,9 @@ export const StakeAndEarn: SnapComponent<Props> = ({ balancesAll, nonStakedChain
                   <Text>
                     <Bold> {toTitleCase(sanitizedChainName) || 'Unknown'}</Bold>
                   </Text>
-                  <Text color='muted'> {`Available: ${amountToHuman(balance?.transferable || 0, balance?.decimal || 10, 2, true)} ${balance?.token || 'Unit'}`}</Text>
+                  {!!balance?.transferable && !balance.transferable.isZero() &&
+                    <Text color='muted'> {`Available: ${amountToHuman(balance.transferable, balance?.decimal || 10, 2, true)} ${balance?.token || 'Unit'}`}</Text>
+                  }
                 </Box>
               </Box>
               <Box direction='horizontal' alignment='end' center>
