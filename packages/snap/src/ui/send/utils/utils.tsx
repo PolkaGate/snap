@@ -1,10 +1,10 @@
 import { HexString } from "@polkadot/util/types";
-import { amountToHuman } from "../../util/amountToHuman";
-import { amountToMachine } from "../../util/amountToMachine";
-import { getApi } from "../../util/getApi";
-import isValidAddress from "../../util/isValidAddress";
-import { SendFormState, SendFormErrors, SendFlowContext } from "./types";
-import { checkAndUpdateMetaData } from "../../rpc";
+import { amountToHuman } from "../../../util/amountToHuman";
+import { amountToMachine } from "../../../util/amountToMachine";
+import { getApi } from "../../../util/getApi";
+import isValidAddress from "../../../util/isValidAddress";
+import { SendFormState, SendFormErrors, SendContextType } from "../types";
+import { checkAndUpdateMetaData } from "../../../rpc";
 import { BN_ZERO } from "@polkadot/util";
 import { Balance } from "@polkadot/types/interfaces";
 
@@ -17,11 +17,11 @@ import { Balance } from "@polkadot/types/interfaces";
  */
 export function formValidation(
   formState?: SendFormState,
-  context?: SendFlowContext | null,
+  context?: SendContextType | null,
 ): SendFormErrors {
   const errors: Partial<SendFormErrors> = {};
 
-  if ( formState?.to?.length && !isValidAddress(formState.to)) {
+  if (formState?.to?.length && !isValidAddress(formState.to)) {
     errors.to = 'Invalid address';
   }
 

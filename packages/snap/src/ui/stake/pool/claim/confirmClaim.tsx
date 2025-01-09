@@ -5,7 +5,7 @@
 import { CallParamsType, StakingInitContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
-import { Confirmation } from "../../../send/Confirmation";
+import { Confirmation } from "../../../components/Confirmation";
 import { getClaim } from "./util/getClaim";
 import { OUTPUT_TYPE } from "../../../../constants";
 

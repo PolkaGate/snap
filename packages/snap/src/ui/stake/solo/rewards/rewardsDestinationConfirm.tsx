@@ -5,7 +5,7 @@
 import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
-import { Confirmation } from "../../../send/Confirmation";
+import { Confirmation } from "../../../components/Confirmation";
 import { GET_PAYEE_OUTPUT_TYPE, getPayee } from "./util/getPayee";
 
 export async function rewardsDestinationConfirm(id: string, context: StakingSoloContextType) {

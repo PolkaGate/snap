@@ -6,9 +6,9 @@ import {
   type SnapComponent,
 } from '@metamask/snaps-sdk/jsx';
 
-import { Balances } from '../../util';
-import { PriceValue } from '../../util/getPrices';
-import { amountToHuman } from '../../util/amountToHuman';
+import { Balances } from '../../../util';
+import { PriceValue } from '../../../util/getPrices';
+import { amountToHuman } from '../../../util/amountToHuman';
 
 /**
  * The props for the {@link AccountSelector} component.

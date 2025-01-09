@@ -7,7 +7,7 @@ import { getKeyPair } from "../../util";
 import { amountToMachine } from "../../util/amountToMachine";
 import { getApi } from "../../util/getApi";
 import getChainName from "../../util/getChainName";
-import { Confirmation } from "../send/Confirmation";
+import { Confirmation } from "../components/Confirmation";
 import { StakingInitContextType } from "./types";
 
 export async function confirmStake(id: string, context: StakingInitContextType) {

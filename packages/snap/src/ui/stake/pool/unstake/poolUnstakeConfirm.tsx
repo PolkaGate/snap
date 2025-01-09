@@ -5,7 +5,7 @@
 import { CallParamsType, StakingPoolContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
-import { Confirmation } from "../../../send/Confirmation";
+import { Confirmation } from "../../../components/Confirmation";
 import { amountToMachine } from "../../../../util/amountToMachine";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../../components/UnstakeForm";

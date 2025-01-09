@@ -5,7 +5,7 @@
 import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
-import { Confirmation } from "../../../send/Confirmation";
+import { Confirmation } from "../../../components/Confirmation";
 import { amountToMachine } from "../../../../util/amountToMachine";
 import { getSoloStakeMore } from "./util/getSoloStakeMore";
 import { OUTPUT_TYPE } from "../../../../constants";

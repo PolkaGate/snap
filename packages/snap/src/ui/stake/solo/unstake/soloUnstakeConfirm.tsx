@@ -5,7 +5,7 @@
 import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
-import { Confirmation } from "../../../send/Confirmation";
+import { Confirmation } from "../../../components/Confirmation";
 import { OUTPUT_TYPE } from "../../../../constants";
 import { getSoloUnstake } from "./util/getSoloUnstake";
 
@@ -16,8 +16,7 @@ export async function soloUnstakeConfirm(id: string, context: StakingSoloContext
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);
-
-  const chainName = await getChainName(genesisHash)
+  const chainName = await getChainName(genesisHash);
 
   await snap.request({
     method: 'snap_updateInterface',

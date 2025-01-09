@@ -61,7 +61,7 @@ export const TxContentUseApi: SnapComponent<Props> = ({ api, chainName, logo, or
       </Box>
       <Footer>
         <Button name="backToHome">Cancel</Button>
-        <Button name="confirmSend">Confirm</Button>
+        <Button name="sendConfirm">Confirm</Button>
       </Footer>
     </Container>
   )

@@ -5,7 +5,7 @@
 import { CallParamsType, StakingSoloContextType } from "../../types";
 import { getKeyPair } from "../../../../util";
 import getChainName from "../../../../util/getChainName";
-import { Confirmation } from "../../../send/Confirmation";
+import { Confirmation } from "../../../components/Confirmation";
 import { OUTPUT_TYPE } from "../../../../constants";
 import { getRedeemSolo } from "./util/getRedeemSolo";
 import { BN } from "@polkadot/util";

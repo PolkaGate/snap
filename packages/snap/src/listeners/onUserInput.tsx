@@ -15,8 +15,8 @@ import { receive } from '../ui/receive';
 import { balanceDetails } from '../ui/home/balanceDetails';
 import { send } from '../ui/send';
 import { PayoutSelectionFormState, SendFormState } from '../ui/send/types';
-import { formValidation } from '../ui/send/utils';
-import { approveSend } from '../ui/send/approveSend';
+import { formValidation } from '../ui/send/utils/utils';
+import { reviewSend } from '../ui/send/reviewSend';
 import { HexString } from '@polkadot/util/types';
 import { CustomizeChains } from '../ui/selectChains/CustomizeChains';
 import { SelectedChainsFormState } from '../ui/selectChains/types';
@@ -42,7 +42,7 @@ import { stakeMorePoolFormValidation } from '../ui/stake/pool/stakeMore/util/sta
 import { PoolUnstakeFormState } from '../ui/stake/pool/unstake/types';
 import { poolUnstakeReview } from '../ui/stake/pool/unstake/poolUnstakeReview';
 import { poolUnstakeConfirm } from '../ui/stake/pool/unstake/poolUnstakeConfirm';
-import { sendConfirmation } from '../ui/send/sendConfirmation';
+import { confirmSend } from '../ui/send/confirmSend';
 import { poolRedeem } from '../ui/stake/pool/redeem/poolRedeem';
 import { poolRedeemConfirm } from '../ui/stake/pool/redeem/poolRedeemConfirm';
 import { exportAccount } from '../ui/more/exportAccount';
@@ -67,8 +67,8 @@ import { changeValidators } from '../ui/stake/solo/validators/changeValidators';
 import { reviewChangeValidators } from '../ui/stake/solo/validators/reviewChangeValidators';
 import { confirmChangeValidators } from '../ui/stake/solo/validators/confirmChangeValidators';
 import { pendingRewards } from '../ui/stake/solo/pending_rewards';
-import { reviewPayout } from '../ui/stake/solo/pending_rewards/reviewpayout';
 import { confirmPayout } from '../ui/stake/solo/pending_rewards/confirmPayout';
+import { reviewPayout } from '../ui/stake/solo/pending_rewards/reviewPayout';
 
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
@@ -163,7 +163,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
           const clearAddress = event.name === 'clear';
           const displayClearIcon = !clearAddress && sendForm && Boolean(sendForm.to) && sendForm.to !== '';
 
-          await send(id, sendForm?.amount, formErrors, sendForm?.to, sendForm?.tokenSelector, displayClearIcon, clearAddress);
+          await send(id, context, sendForm?.amount, formErrors, sendForm?.to, sendForm?.tokenSelector, displayClearIcon, clearAddress);
           break;
         }
 
@@ -171,12 +171,12 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await showSpinner(id, 'Loading, please wait ...');
         const { tokenSelector, amount, to } = sendForm;
         const genesisHash = tokenSelector.split(',')[1] as HexString;
-        await approveSend(id, genesisHash, amount, to);
+        await reviewSend(id, genesisHash, amount, to, context);
         break;
 
-      case 'confirmSend':
+      case 'sendConfirm':
         await showSpinner(id, 'Working, please wait ...');
-        await sendConfirmation(id, context.payload);
+        await confirmSend(id, context);
         break;
 
       //===================================STAKING===================================//
