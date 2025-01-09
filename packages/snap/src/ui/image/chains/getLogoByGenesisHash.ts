@@ -1,6 +1,6 @@
 import { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
-import { assetHub, ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist, edgeware, equilibrium, frequency, integritee, parallel, pendulum, phala, polimec, polymesh, sora, vara, paseo } from ".";
+import { ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist, edgeware, equilibrium, frequency, integritee, parallel, pendulum, phala, polimec, polymesh, sora, vara, paseo, polkadotAssetHub, kusamaAssetHub, westendAssetHub, paseoAssetHub } from ".";
 import { KusamaSqr, PaseoSqr, PolkadotSqr, WestendSqr } from "../chainsSquare";
 
 export const getLogoByChainName = (chainName?: string, showSquare?: boolean): string => {
@@ -69,10 +69,17 @@ export const getLogoByChainName = (chainName?: string, showSquare?: boolean): st
         case 'zeitgeist':
             return zeitgeist;
         case 'polkadotassethub':
+            return polkadotAssetHub;
+
         case 'kusamaassethub':
+            return kusamaAssetHub;
+
         case 'westendassethub':
+            return westendAssetHub;
+
         case 'paseoassethub':
-            return assetHub;
+            return paseoAssetHub;
+            
         case 'vara':
             return vara;
 
@@ -81,7 +88,7 @@ export const getLogoByChainName = (chainName?: string, showSquare?: boolean): st
     }
 };
 
-export const getLogoByGenesisHash = async (genesisHash: HexString): Promise<string> => {
+export const getLogoByGenesisHash = async (genesisHash: HexString, showSquare?: boolean): Promise<string> => {
     const chainName = await getChainName(genesisHash);
-    return getLogoByChainName(chainName);
+    return getLogoByChainName(chainName, showSquare);
 };
