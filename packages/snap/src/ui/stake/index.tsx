@@ -11,27 +11,18 @@ import { getStakingRewards } from './utils/getStakingRewards';
 import { BN } from '@polkadot/util';
 import { getSnapState } from '../../rpc/stateManagement';
 import { FlowHeader } from '../components/FlowHeader';
+import { DEFAULT_CHAINS_GENESIS } from '../../constants';
+import { fetchStaking } from './utils/fetchStaking';
 
-async function fetchStaking(): Promise<Record<string, unknown>> {
-  const response = await fetch('https://raw.githubusercontent.com/PolkaGate/snap/refs/heads/main/packages/snap/staking.json');
-  if (!response.ok) {
-    throw new Error('Failed to fetch JSON file');
-  }
-
-  const info = await response.json();
-  return info;
-}
-
-export interface StakingIndexContextType {
-  balancesAll: Balances[],
-  stakingRates: Record<string, number>;
-  recommendedValidators: string[];
-}
+const STAKING_TEST_NETS_ENABLE_DEFAULT = false;
 
 export async function stakingIndex(id: string) {
   const { address, balancesAll, logos } = await handleBalancesAll();
 
-  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking') ?? true; 
+  const selectedChains = ((await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS) as HexString[];
+  const enabledStakingChains = STAKING_CHAINS.filter((stakingChain) => selectedChains.includes(stakingChain));
+
+  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking') ?? STAKING_TEST_NETS_ENABLE_DEFAULT;
 
   const stakedTokens = balancesAll
     .filter(({ genesisHash }) =>
@@ -43,7 +34,7 @@ export async function stakingIndex(id: string) {
   const rewardsInfo = await getStakingRewards(address, stakedTokens);
   const { rates: stakingRates, validators: recommendedValidators } = await fetchStaking();
 
-  const notStakedChains = STAKING_CHAINS
+  const notStakedChains = enabledStakingChains
     .filter((item) =>
       isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(item)
     ).filter((item) =>
@@ -65,7 +56,7 @@ export async function stakingIndex(id: string) {
         recommendedValidators,
         stakingRates,
         stakedTokens,
-        rewardsInfo,
+        rewardsInfo: rewardsInfo?.map((info) => { return { ...info, reward: String(info.reward) } }),
       }
     },
   });

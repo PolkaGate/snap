@@ -1,13 +1,12 @@
 import { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { BN, BN_ZERO } from "@polkadot/util";
+import { BN } from "@polkadot/util";
 import { Balance } from "@polkadot/types/interfaces";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
 import { OUTPUT_TYPE } from "../../../../../constants";
 import type { Option } from '@polkadot/types';
 import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 import { handleOutput } from "../../../../../util/handleOutput";
+import { CallParamsType } from "../../../types";
 
 export const getPoolUnstake = async (
   address: string,
@@ -15,7 +14,7 @@ export const getPoolUnstake = async (
   genesisHash: HexString,
   poolId: number,
   output?: OUTPUT_TYPE
-): Promise<{ call: SubmittableExtrinsicFunction<"promise", AnyTuple>; params: unknown[]; } | Balance> => {
+): Promise<CallParamsType | Balance> => {
 
   const api = await getApi(genesisHash);
   if (!api) {

@@ -11,27 +11,28 @@ interface Props {
 
 export const POOL_CLAIMABLE_DECIMAL = 5;
 
-export const ClaimRewards: SnapComponent<Props> = ({ amount, token, decimal, price }) => (
-  <Box>
-    {!!amount && !new BN(amount).isZero() &&
-      <Box>
+export const ClaimRewards: SnapComponent<Props> = ({ amount, token, decimal, price }) => {
+  const hasRewards = !!amount && !new BN(amount).isZero();
+  return (
+    <Box>
+      {hasRewards &&
         <Divider />
-        <Section>
-          <Box direction="horizontal" alignment="space-between" center>
-            <Box direction="vertical" alignment="start">
+      }
+      {hasRewards &&
+        <Section direction="horizontal" alignment="space-between">
+            {/* <Box direction="vertical" alignment="start"> */}
               <Text>
                 {`${amountToHuman(amount || 0, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
               </Text>
-              <Text color="muted">
+              {/* <Text color="muted">
                 ${`${(Number(amountToHuman(amount || 0, decimal)) * price).toFixed(2)}`}
               </Text>
-            </Box>
+            </Box> */}
             <Button name='claimRewards' variant='primary' type='button'>
               Claim rewards
             </Button>
-          </Box>
         </Section>
-      </Box>
-    }
-  </Box>
-)
+      }
+    </Box>
+  )
+}

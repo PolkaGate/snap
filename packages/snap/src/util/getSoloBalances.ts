@@ -5,23 +5,7 @@ import type { PalletStakingRewardDestination } from '@polkadot/types/lookup';
 import { BN, BN_ZERO } from '@polkadot/util';
 import { HexString } from '@polkadot/util/types';
 import { ApiPromise } from '@polkadot/api';
-
-export type SoloBalances = {
-  soloTotal?: Balance;
-  solo?: SoloBalance;
-  rewardsDestination?: string | null;
-};
-
-export interface SoloBalance {
-  total: string;
-  active: string;
-  unlocking: string;
-  redeemable: string;
-  toBeReleased?: {
-    amount: string;
-    date: number;
-  }[]
-}
+import { SoloBalance, SoloBalances } from '../ui/stake/types';
 
 /**
  * To get the balances including locked one of an address.
@@ -40,9 +24,10 @@ export async function getSoloBalances(api: ApiPromise, genesisHash: HexString, f
   let rewardsDestination;
 
   if (api.query.staking?.ledger) {
-    const [ledger, progress] = await Promise.all([
+    const [ledger, progress, nominators] = await Promise.all([
       api.query.staking.ledger(formatted),
-      api.derive.session.progress()
+      api.derive.session.progress(),
+      api.query['staking']['nominators'](formatted)
     ])
 
     if (ledger.isSome) {
@@ -53,7 +38,9 @@ export async function getSoloBalances(api: ApiPromise, genesisHash: HexString, f
         total: total.toString(),
         unlocking: '0',
         toBeReleased: [] as { amount: string; date: number; }[],
-        redeemable: '0'
+        redeemable: '0',
+        nominators: nominators.isSome && nominators.unwrap().targets
+
       };
 
       if (unlocking.length) {

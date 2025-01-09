@@ -3,19 +3,17 @@ import { StakingPoolContextType } from "../types";
 import { HexString } from "@polkadot/util/types";
 import getChainName from "../../../util/getChainName";
 import { toTitleCase } from "../../../utils";
-import { poolRewardsBreakDown } from "../components/StakedTokens";
 import { Balances } from "../../../util";
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../../util/handleBalancesAll";
-import { getPoolRewards } from "../utils/getStakingRewards";
-import { RewardsInfo } from "../../../util/types";
 import { YourPool } from "./components/YourPool";
 import { YourStake } from "./components/YourStake";
-import { Unstaking } from "./components/Unstaking";
-import { Redeemable } from "./components/Redeemable";
 import { Rewards } from "./components/Rewards";
 import { ActionRow } from "../../components/ActionRow";
-import { BN } from "@polkadot/util";
+import { BN, BN_ZERO } from "@polkadot/util";
 import { FlowHeader } from "../../components/FlowHeader";
+import { getPoolClaimedReward } from "../utils/getPoolClaimedRewards";
+import { Redeemable } from "../components/Redeemable";
+import { Unstaking } from "../components/Unstaking";
 
 export async function stakePoolReview(
   id: string,
@@ -28,13 +26,18 @@ export async function stakePoolReview(
   const genesisHash = maybeGenesisHash || context?.genesisHash;
 
   const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
-  const rewardsInfo = await getPoolRewards(address, stakedPoolBalances);
+
 
   const stakedToken = stakedPoolBalances.find((balance) => balance.genesisHash === genesisHash)
   const price = pricesInUsd.find((price) => price.genesisHash === stakedToken!.genesisHash)?.price?.value || 0;
   const sanitizedChainName = await getChainName(genesisHash, true);
 
-  const { poolTotalClaimed } = poolRewardsBreakDown(rewardsInfo, stakedToken);
+  let poolTotalClaimed = BN_ZERO;
+  if (withUpdate) {
+    poolTotalClaimed = await getPoolClaimedReward(sanitizedChainName!, address)
+  } else {
+    poolTotalClaimed = context.rewardsInfo.find((info) => info.genesisHash === genesisHash && info.subType === 'TotalClaimed')?.reward || BN_ZERO;
+  }
 
   await snap.request({
     method: 'snap_updateInterface',
@@ -60,10 +63,12 @@ const ui = (
   price: number,
   sanitizedChainName: string | undefined,
   stakedToken: Balances,
-  poolTotalClaimed: RewardsInfo | undefined,
+  poolTotalClaimed: BN
 ) => {
 
   const { token, decimal, poolId, poolName, pooled: { active, claimable, unlocking, redeemable, toBeReleased } } = stakedToken;
+  const hasRedeemable = !!redeemable && !new BN(redeemable).isZero();
+  const hasUnlocking = !!unlocking && !new BN(unlocking).isZero();
 
   return (
     <Container>
@@ -71,17 +76,19 @@ const ui = (
         <FlowHeader
           action='stakeIndex'
           label={`${toTitleCase(sanitizedChainName)} staking`}
-          isSubAction
           tooltipType='staking'
         />
-        <Redeemable
-          amount={redeemable}
-          decimal={decimal}
-          token={token}
-          price={price}
-        />
+        {hasRedeemable &&
+          <Redeemable
+            amount={redeemable}
+            decimal={decimal}
+            name='poolRedeem'
+            token={token}
+            price={price}
+          />
+        }
         <Rewards
-          amount={poolTotalClaimed?.reward}
+          amount={poolTotalClaimed}
           claimable={claimable}
           decimal={decimal}
           token={token}
@@ -93,13 +100,14 @@ const ui = (
           token={token}
           price={price}
         />
-        <Unstaking
-          amount={unlocking}
-          toBeReleased={toBeReleased}
-          decimal={decimal}
-          token={token}
-          price={price}
-        />
+        {hasUnlocking &&
+          <Unstaking
+            toBeReleased={toBeReleased}
+            decimal={decimal}
+            token={token}
+            price={price}
+          />
+        }
         <Section>
           <ActionRow
             label='Stake more'

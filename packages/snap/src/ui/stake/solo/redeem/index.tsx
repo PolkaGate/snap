@@ -10,7 +10,7 @@ import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getRedeemSolo } from "./util/getRedeemSolo";
 import { Account } from "../../components/Account";
-import { SOLO_REDEEMABLE_DECIMAL } from "../components/Redeemable";
+import { SOLO_REDEEMABLE_DECIMAL } from "../../components/Redeemable";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloRedeem(
@@ -51,8 +51,6 @@ const ui = (
           action='stakeDetailsSolo'
           label='Redeem'
           showHome
-          isSubAction
-          tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">

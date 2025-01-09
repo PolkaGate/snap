@@ -2,9 +2,7 @@ import { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
 import { BN_ZERO } from "@polkadot/util";
 import { Balance } from "@polkadot/types/interfaces";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
-import { Payee } from "../../../types";
+import { CallParamsType, Payee } from "../../../types";
 
 export enum GET_PAYEE_OUTPUT_TYPE {
   FEE_AND_PAYEE,
@@ -16,7 +14,7 @@ export const getPayee = async (
   genesisHash: HexString,
   output?: GET_PAYEE_OUTPUT_TYPE,
   newPayee?: Payee,
-): Promise<{ call: SubmittableExtrinsicFunction<"promise", AnyTuple>; params: unknown[]; } | { fee: Balance, payee: Payee }> => {
+): Promise<CallParamsType| { fee: Balance, payee: Payee }> => {
 
   const api = await getApi(genesisHash);
   if (!api) {

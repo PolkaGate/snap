@@ -5,15 +5,15 @@ import { getPoolTotalRewards } from "./getPoolClaimedRewards";
 import { getSoloRewards } from "./getSoloTotalReward";
 
 
-export async function getPoolRewards(address: string, stakedTokens: Balances[]): Promise<RewardsInfo[] | null> {
+export async function getPoolRewards(address: string, stakedTokens: Balances[],  withUpdate?: boolean): Promise<RewardsInfo[] | null> {
   if (!address) {
-    console.error('address is null in getting get Staking Rewards ');
+    console.error('address is null in getting get pool Staking Rewards ');
 
     return null;
   }
 
-  const claimables = await getClaimableRewards(address, stakedTokens);
-  const poolTotalRewards = await getPoolTotalRewards(address, stakedTokens);
+  const claimables = await getClaimableRewards(address, stakedTokens,  withUpdate);
+  const poolTotalRewards = await getPoolTotalRewards(address, stakedTokens,  withUpdate);
 
   return claimables.concat(poolTotalRewards)
 }

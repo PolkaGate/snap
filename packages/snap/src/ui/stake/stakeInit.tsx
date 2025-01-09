@@ -11,15 +11,11 @@ import { PoolSelectorFormState, StakeFormErrors, StakeTypeFormState, StakingData
 import { ellipsis } from "./components/PoolSelector";
 import { isEmptyObject } from "../../utils";
 import { FlowHeader } from "../components/FlowHeader";
+import { areArraysEqual } from "../../util/areArraysEqual";
 
 interface NewSelectionType {
   selectPoolForm: PoolSelectorFormState | undefined;
   selectedValidators: HexString[] | undefined;
-}
-
-function areArraysEqual(arr1: string[], arr2: string[]) {
-  if (arr1.length !== arr2.length) return false;
-  return arr1.every((value, index) => value === arr2[index]);
 }
 
 export async function stakeInit(

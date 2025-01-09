@@ -1,6 +1,5 @@
 import { Image, Box, Button, Container, Footer, Heading, Section, Text, Divider, Bold } from "@metamask/snaps-sdk/jsx";
 import { HexString } from "@polkadot/util/types";
-import { StakingIndexContextType } from ".";
 import getChainName, { sanitizeChainName } from "../../util/getChainName";
 import { amountToHuman } from "../../util/amountToHuman";
 import { alertBell, coinStack, reward, timer } from "../image/icons";
@@ -8,7 +7,7 @@ import { getSnapState } from "../../rpc/stateManagement";
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../util/handleBalancesAll";
 import { Balances } from "../../util";
 import { getStakingInfo } from "./utils/getStakingInfo";
-import { StakingInfoType } from "./types";
+import { StakingIndexContextType, StakingInfoType } from "./types";
 
 export async function stakingInfo(id: string, genesisHash: HexString, context: StakingIndexContextType) {
 

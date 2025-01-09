@@ -14,7 +14,7 @@ import { showMore } from '../ui/more';
 import { receive } from '../ui/receive';
 import { balanceDetails } from '../ui/home/balanceDetails';
 import { send } from '../ui/send';
-import { SendFormState } from '../ui/send/types';
+import { PayoutSelectionFormState, SendFormState } from '../ui/send/types';
 import { formValidation } from '../ui/send/utils';
 import { approveSend } from '../ui/send/approveSend';
 import { HexString } from '@polkadot/util/types';
@@ -30,7 +30,7 @@ import { stakeFirstTimeReview } from '../ui/stake/stakeFirstTimeReview';
 import { stakeType } from '../ui/stake/stakeType';
 import { selectValidators } from '../ui/stake/selectValidators';
 import { confirmStake } from '../ui/stake/confirmStake';
-import { stakePoolReview } from '../ui/stake/pool/stakePoolReview';
+import { stakePoolReview } from '../ui/stake/pool';
 import { claim } from '../ui/stake/pool/claim/claim';
 import { confirmClaim } from '../ui/stake/pool/claim/confirmClaim';
 import { poolStakeMore } from '../ui/stake/pool/stakeMore/poolStakeMore';
@@ -48,9 +48,9 @@ import { poolRedeemConfirm } from '../ui/stake/pool/redeem/poolRedeemConfirm';
 import { exportAccount } from '../ui/more/exportAccount';
 import { showJsonContent } from '../ui/more/showJsonContent';
 import { stakeSoloReview } from '../ui/stake/solo';
-import { soloRedeem } from '../ui/stake/solo/redeem/soloRedeem';
+import { soloRedeem } from '../ui/stake/solo/redeem';
 import { soloRedeemConfirm } from '../ui/stake/solo/redeem/soloRedeemConfirm';
-import { soloStakeMore } from '../ui/stake/solo/stakeMore/soloStakeMore';
+import { soloStakeMore } from '../ui/stake/solo/stakeMore';
 import { soloStakeMoreReview } from '../ui/stake/solo/stakeMore/soloStakeMoreReview';
 import { soloStakeMoreConfirm } from '../ui/stake/solo/stakeMore/soloStakeMoreConfirm';
 import { StakeMoreSoloFormState, stakeMoreSoloFormValidation } from '../ui/stake/solo/stakeMore/util/stakeMoreSoloFormValidation';
@@ -62,6 +62,13 @@ import { rewardsDestination } from '../ui/stake/solo/rewards';
 import { rewardsDestinationReview } from '../ui/stake/solo/rewards/rewardsDestinationReview';
 import { rewardsDestinationConfirm } from '../ui/stake/solo/rewards/rewardsDestinationConfirm';
 import { SoloUnstakeFormState } from '../ui/stake/solo/unstake/types';
+import { yourValidators } from '../ui/stake/solo/validators';
+import { changeValidators } from '../ui/stake/solo/validators/changeValidators';
+import { reviewChangeValidators } from '../ui/stake/solo/validators/reviewChangeValidators';
+import { confirmChangeValidators } from '../ui/stake/solo/validators/confirmChangeValidators';
+import { pendingRewards } from '../ui/stake/solo/pending_rewards';
+import { reviewPayout } from '../ui/stake/solo/pending_rewards/reviewpayout';
+import { confirmPayout } from '../ui/stake/solo/pending_rewards/confirmPayout';
 
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
@@ -211,20 +218,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         }
         await stakeType(id, context, stakeTypeForm);
         break;
-
-      case 'selectValidators':
-        await showSpinner(id, 'Loading, please wait ...');
-      case 'selectedValidator':
-        const validatorSelectionForm = state.validatorSelectionForm as StakeTypeFormState;
-        await selectValidators(id, context, validatorSelectionForm);
-        break;
-
-      case 'selectValidatorsShow':
-        {
-          const validatorSelectionForm = state.validatorSelectionForm as StakeTypeFormState;
-          await selectValidators(id, context, validatorSelectionForm, true);
-          break;
-        }
 
       case 'stakeFirstTimeReview':
         await showSpinner(id, 'Loading, please wait ...');
@@ -399,6 +392,78 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
       case 'rewardsDestinationConfirm':
         await showSpinner(id, 'Working, please wait ...', true);
         await rewardsDestinationConfirm(id, context);
+        break;
+
+      /** ---------------------------- Validators--------------------------------- */
+      case 'changeValidatorsByMySelf':
+      case 'selectValidators':
+        await showSpinner(id, 'Loading, please wait ...');
+      case 'selectedValidator':
+        const selectedValidators = eventName === 'changeValidatorsByMySelf'
+          ? context.nominators
+          : state.validatorSelectionForm && Object.entries(state.validatorSelectionForm).filter(([, value]) => value).map(([key]) => key.split(',')[1])
+        await selectValidators(id, context, selectedValidators);
+        break;
+
+      case 'selectValidatorsShow':
+        await selectValidators(id, context, context.selectedValidators, true);
+        break;
+
+      case 'changeValidatorsByRecommended':
+        await showSpinner(id, 'Loading, please wait ...');
+        await selectValidators(id, context, context.recommendedValidatorsOnThisChain, true);
+        break;
+
+      case 'yourValidators':
+        await showSpinner(id, 'Loading, please wait ...');
+        await yourValidators(id, context);
+        break;
+
+      case 'changeValidators':
+        await showSpinner(id, 'Loading, please wait ...');
+        await changeValidators(id, context);
+        break;
+
+      case 'changeValidatorsReview':
+        await showSpinner(id, 'Loading, please wait ...');
+        await reviewChangeValidators(id, context);
+        break;
+
+      case 'changeValidatorsConfirm':
+        await showSpinner(id, 'Loading, please wait ...');
+        await confirmChangeValidators(id, context);
+        break;
+
+      /** ---------------------------- Rewards Solo--------------------------------- */
+
+      case 'pendingRewards':
+        await showSpinner(id, 'Loading, please wait ...');
+      case 'selectAllToPayOut':
+      case 'selectedPendingReward':
+
+        let selectedPayouts = [] as string[];
+        if (['selectAllToPayOut', 'selectedPendingReward'].includes(eventName)) {
+          const payoutSelectionForm = state.payoutSelectionForm as PayoutSelectionFormState;
+
+          selectedPayouts =
+            eventName === 'selectAllToPayOut'
+              ? (state.selectAllToPayOutForm as PayoutSelectionFormState).selectAllToPayOut
+                ? Object.entries(payoutSelectionForm).map(([key]) => key.substring(key.indexOf(',') + 1)) // select all
+                : [] // deselect all
+              : Object.entries(payoutSelectionForm).filter(([, value]) => value).map(([key]) => key.substring(key.indexOf(',') + 1))
+        }
+
+        await pendingRewards(id, context, selectedPayouts);
+        break;
+
+      case 'payoutReview':
+        await showSpinner(id, 'Loading, please wait ...');
+        await reviewPayout(id, context);
+        break;
+
+      case 'payoutConfirm':
+        await showSpinner(id, 'Working, please wait ...');
+        await confirmPayout(id, context);
         break;
 
       //===================================OTHERS===================================//

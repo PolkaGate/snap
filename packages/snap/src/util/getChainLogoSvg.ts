@@ -1,7 +1,7 @@
 // Copyright 2019-2023 @polkadot/extension-polkagate authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { createWsEndpoints } from '@polkadot/apps-config';
+import { createWsEndpoints } from '@polkagate/apps-config';
 
 const endpoints = createWsEndpoints(() => '');
 

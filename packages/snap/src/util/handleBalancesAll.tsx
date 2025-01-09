@@ -11,15 +11,7 @@ import { getNativeTokenPrice } from './getNativeTokenPrice';
 import { DEFAULT_CHAIN_NAME, DEFAULT_CHAINS_GENESIS, PRICE_VALIDITY_PERIOD } from '../constants';
 import { updateTokenPrices } from './getCurrentChainTokenPrice';
 import { isHexToBn } from '../utils';
-
-export function areArraysEqual(arr1: string[], arr2: string[]): boolean {
-  if (arr1.length !== arr2.length) return false;
-
-  const sortedArr1 = [...arr1].sort();
-  const sortedArr2 = [...arr2].sort();
-
-  return sortedArr1.every((value, index) => value === sortedArr2[index]);
-}
+import { areArraysEqual } from './areArraysEqual';
 
 export enum BALANCE_FETCH_TYPE {
   RECENTLY_FETCHED, // default
@@ -78,7 +70,6 @@ export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
     const balancesAllPromises = selectedOptions.map(({ value }) => getBalances(value as HexString, address))
     balancesAll = await Promise.all(balancesAllPromises);
 
-    console.log('balances:', balancesAll)
     await updateSnapState('balancesAll', { date: Date.now(), data: JSON.stringify(balancesAll) });
   }
 

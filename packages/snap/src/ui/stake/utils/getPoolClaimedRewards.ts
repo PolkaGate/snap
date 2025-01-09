@@ -6,6 +6,8 @@ import { Balances } from '../../../util';
 import { RewardsInfo, StakingType, SubStakingType } from '../../../util/types';
 import getChainName, { sanitizeChainName } from '../../../util/getChainName';
 import postData from './getSoloTotalReward';
+import { getSnapState, updateSnapState } from '../../../rpc/stateManagement';
+import { REWARDS_SAVED_INFO_VALIDITY_PERIOD } from '../const';
 
 interface AccountDisplay {
   address: string;
@@ -92,7 +94,24 @@ export async function getPoolClaimedReward(chainName: string, address: string): 
   }
 }
 
-export async function getPoolTotalRewards(address: string, stakedTokens: Balances[]): Promise<RewardsInfo[]> {
+const NAME_IN_STORAGE = 'poolTotalRewards'
+
+export async function getPoolTotalRewards(address: string, stakedTokens: Balances[], withUpdate?: boolean): Promise<RewardsInfo[]> {
+  if (!withUpdate) {
+    const maybeSavedRewards = await getSnapState(NAME_IN_STORAGE);
+    if (maybeSavedRewards && Date.now() - maybeSavedRewards.date < REWARDS_SAVED_INFO_VALIDITY_PERIOD) {
+      // TODO: check if any chains r changed
+      console.log('pool total claimed rewards info is serving from storage!')
+
+      return maybeSavedRewards.rewards.map((r) => {
+        return {
+          ...r,
+          reward: new BN(r.reward)
+        }
+      });
+    }
+  }
+
   const chainNames = await Promise.all(
     stakedTokens.map(({ genesisHash }) => getChainName(genesisHash))
   );
@@ -110,6 +129,20 @@ export async function getPoolTotalRewards(address: string, stakedTokens: Balance
     genesisHash,
     reward: new BN(rewards[index])
   }));
+
+  // save rewards in snap state
+  const toSaveRewards = result.map((r) => {
+    return {
+      ...r,
+      reward: r.reward.toString()
+    };
+  });
+
+  await updateSnapState(NAME_IN_STORAGE,
+    {
+      rewards: toSaveRewards,
+      date: Date.now()
+    });
 
   return result;
 }

@@ -2,6 +2,8 @@ import { BN } from "@polkadot/util";
 import { Balances } from "../../../util";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import { RewardsInfo } from "../../../util/types";
+import { getSnapState, updateSnapState } from "../../../rpc/stateManagement";
+import { REWARDS_SAVED_INFO_VALIDITY_PERIOD } from "../const";
 
 export default async function postData(url: string, data = {}) {
   // Default options are marked with *
@@ -50,6 +52,10 @@ export async function getSoloReward(chainName: string | null, address: string | 
             console.log(`Fetching message ${data.message}`);
             resolve('0');
           }
+        })
+        .catch((error) => {
+          console.error('Error in postData:', error);
+          resolve('0');
         });
     } catch (error) {
       console.log('something went wrong while getting get Staking Rewards ');
@@ -58,7 +64,22 @@ export async function getSoloReward(chainName: string | null, address: string | 
   });
 }
 
+const NAME_IN_STORAGE = 'soloTotalRewards'
+
 export async function getSoloRewards(stakedTokens: Balances[]): Promise<RewardsInfo[]> {
+  const maybeSavedRewards = await getSnapState(NAME_IN_STORAGE);
+  if (maybeSavedRewards && Date.now() - maybeSavedRewards.date < REWARDS_SAVED_INFO_VALIDITY_PERIOD) {
+    // TODO: check if any chains r changed
+    console.log('pool total claimed rewards info is serving from storage!')
+
+    return maybeSavedRewards.rewards.map((r) => {
+      return {
+        ...r,
+        reward: new BN(r.reward)
+      }
+    });
+  }
+
   const rewardsDestination = stakedTokens.map(({ rewardsDestination }) => rewardsDestination);
   const chainNames = await Promise.all(
     stakedTokens.map(({ genesisHash }) => getChainName(genesisHash))
@@ -72,10 +93,24 @@ export async function getSoloRewards(stakedTokens: Balances[]): Promise<RewardsI
 
   const result = stakedTokens.map(({ genesisHash }, index) =>
   ({
-    type:'Solo' as 'Solo' | 'Pool',
+    type: 'Solo' as 'Solo' | 'Pool',
     genesisHash,
     reward: new BN(rewards[index])
   }));
+
+  // save rewards in snap state
+  const toSaveRewards = result.map((rewards) => {
+    return {
+      ...rewards,
+      reward: rewards.reward.toString()
+    };
+  });
+
+  await updateSnapState(NAME_IN_STORAGE,
+    {
+      rewards: toSaveRewards,
+      date: Date.now()
+    });
 
   return result;
 }

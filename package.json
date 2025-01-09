@@ -70,6 +70,8 @@
     "@polkadot/ui-keyring": "^3.6.6",
     "@polkadot/util": "^12.6.2",
     "chromedriver": "latest",
+    "clipboard-copy": "^4.0.1",
+    "lodash": "^4.17.21",
     "qrcode": "^1.5.4",
     "webdriverio": "latest"
   }

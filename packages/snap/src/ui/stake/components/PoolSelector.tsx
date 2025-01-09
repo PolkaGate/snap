@@ -12,8 +12,8 @@ import * as style from '@dicebear/avatars-identicon-sprites';
 
 import { amountToHuman } from '../../../util/amountToHuman';
 import { PoolInfo } from '../utils/getPools';
-import { WentWrong } from './WentWrong';
 import { StakingInitContextType } from '../types';
+import { WentWrong } from '../../components/WentWrong';
 
 export type Props = {
   poolsInfo: PoolInfo[] | undefined,
@@ -56,7 +56,6 @@ export const PoolSelector: SnapComponent<Props> = ({
               const staked = bondedPool.points;
               const ellipsisPoolName = metadata && metadata.length > MAX_POOL_NAME_TO_SHOW ? ellipsis(metadata) : metadata;
 
-
               const icon = createAvatar(style, {
                 seed: String(poolId),
                 size: 25
@@ -68,7 +67,7 @@ export const PoolSelector: SnapComponent<Props> = ({
                     image={icon}
                     title={String(ellipsisPoolName)}
                     description={`${amountToHuman(staked, decimal, 1, true)} ${token}`}
-                    value='.'
+                    value='​ '
                     extra={String(members)}
                   />
                 </SelectorOption>

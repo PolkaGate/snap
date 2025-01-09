@@ -1,8 +1,8 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { createWsEndpoints } from '@polkadot/apps-config';
-import getChainName, { sanitizeChainName } from './getChainName';
+import { createWsEndpoints } from '@polkagate/apps-config';
+import getChainName from './getChainName';
 import { HexString } from '@polkadot/util/types';
 
 export default async function getEndpoint(_genesisHash: HexString | undefined, ignoreLightClient = true): Promise<string | undefined> {
@@ -13,8 +13,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
     return undefined;
   }
   const allEndpoints = createWsEndpoints(() => '');
-  const chainName = await getChainName(_genesisHash);
-  let sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
+  let sanitizedChainName = await getChainName(_genesisHash, true);
 
   // FixMe: should be removed when its applied in polkadot apps config, or using polkagate package
   if (sanitizedChainName === 'hydration') {
@@ -39,6 +38,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
   }
 
   return (
+    endpoints[4]?.value ||
     endpoints[3]?.value ||
     endpoints[2]?.value ||
     endpoints[1]?.value ||

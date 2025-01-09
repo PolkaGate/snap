@@ -1,8 +1,6 @@
 import { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
 import { Balance } from "@polkadot/types/interfaces";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
 import { OUTPUT_TYPE } from "../../../../../constants";
 import { amountToHuman } from "../../../../../util/amountToHuman";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../components/UnstakeForm";
@@ -10,6 +8,7 @@ import type { Option, u32 } from '@polkadot/types';
 import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 import { handleOutput } from "../../../../../util/handleOutput";
 import { amountToMachine } from "../../../../../util/amountToMachine";
+import { CallParamsType } from "../../../types";
 
 
 export const getSoloUnstake = async (
@@ -17,7 +16,7 @@ export const getSoloUnstake = async (
   userInputAmount: string,
   genesisHash: HexString,
   output?: OUTPUT_TYPE
-): Promise<{ call: SubmittableExtrinsicFunction<"promise", AnyTuple>; params: unknown[]; } | Balance> => {
+): Promise<CallParamsType| Balance> => {
 
   const api = await getApi(genesisHash);
   if (!api) {

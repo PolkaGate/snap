@@ -14,7 +14,7 @@ interface Props {
 export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalance, totalBalance, totalBalanceChanges }) => {
 
   const signOfChanges = totalBalanceChanges > 0 ? '+' : totalBalanceChanges < 0 ? '-' : '';
-  const colorOfChanges = totalBalanceChanges > 0 ? 'success' : totalBalanceChanges < 0 ? 'error' : 'default';
+  const colorOfChanges = totalBalanceChanges > 0 ? 'success' : totalBalanceChanges < 0 ? 'error' : 'muted';
   const locked = totalBalance - availableBalance;
 
   const decimalToFixForTotal = totalBalance < 100000 ? 2 : 0;
@@ -53,12 +53,14 @@ export const TotalBalance: SnapComponent<Props> = ({ availableBalance, hideBalan
             }
           </Button>
         </Box>
-        <Text alignment='start' color={colorOfChanges}>
-          {hideBalance
-            ? '••••••••'
-            : `${signOfChanges}$${Math.abs(totalBalanceChanges).toFixed(decimalToFixForBalanceChange)} • 24h`
-          }
-        </Text>
+        {!!totalBalanceChanges &&
+          <Text alignment='start' color={colorOfChanges}>
+            {hideBalance
+              ? '••••••••'
+              : `${signOfChanges}$${Math.abs(totalBalanceChanges).toFixed(decimalToFixForBalanceChange)} • 24h`
+            }
+          </Text>
+        }
       </Box>
     </Box>
   )

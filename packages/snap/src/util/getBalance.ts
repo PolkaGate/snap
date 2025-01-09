@@ -6,7 +6,8 @@ import { getFormatted } from './getFormatted';
 import { BN_ZERO } from '@polkadot/util';
 import { HexString } from '@polkadot/util/types';
 import { getPooledBalance, PoolBalances } from './getPooledBalance';
-import { getSoloBalances, SoloBalance } from './getSoloBalances';
+import { getSoloBalances } from './getSoloBalances';
+import { SoloBalance } from '../ui/stake/types';
 
 export type Balances = {
   total: Balance;

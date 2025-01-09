@@ -11,6 +11,11 @@ export type SendFormState = {
   tokenSelector: string;
 };
 
+export type PayoutSelectionFormState = {
+  [selectAllToPayOut: string]: boolean;
+}
+export type SelectAllToPayOutFormState = Record<string, boolean>;
+
 /**
  * The form errors.
  *
@@ -30,6 +35,6 @@ export type SendFormErrors = {
  * @property decimal - The decimal of selected token
  */
 export type SendFlowContext = {
-  decimal:number;
+  decimal: number;
   transferable: string
 };

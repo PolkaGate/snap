@@ -6,7 +6,6 @@ import { Chain } from '@polkadot/extension-chains/types';
 import { sanitizeChainName } from './util/getChainName';
 import { HexString } from '@polkadot/util/types';
 import { KUSAMA_PEOPLE_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH } from './constants';
-import { POLKADOT_GENESIS_HASH } from './ui/stake/const';
 
 const testnets: Network[] = [
   {
@@ -37,7 +36,7 @@ const testnets: Network[] = [
     isIgnored: false,
     isTestnet: true,
     network: "paseo",
-    prefix: 42,
+    prefix: 0,
     slip44: 0,
     standardAccount: "*25519",
     symbols: ["PAS"],
@@ -108,7 +107,7 @@ const assetHubs: Network[] = [
     isIgnored: false,
     isTestnet: false,
     network: "paseo-asset-hub",
-    prefix: 42, // Adjust if necessary
+    prefix: 0,
     slip44: 0,  // Update as required
     standardAccount: "*25519",
     symbols: ["PAS"],
@@ -171,8 +170,8 @@ const peopleChains = [
     "isIgnored": false,
     "isTestnet": true,
     "network": "paseoPeople",
-    "prefix": 42,
-    "slip44": 354,
+    "prefix": 0,
+    "slip44": 0,
     "symbols": ["PAS"],
     "standardAccount": "*25519",
     "website": "https://polkadot.network"

@@ -41,10 +41,10 @@ export interface Identities {
 
 const SAVED_VALIDITY_PERIOD = 2 * 60 * 60 * 1000;
 
-export async function getValidatorsIdentities(genesisHash: HexString, accountIds: string[]): Promise<Identities[] | null> {
+export async function getValidatorsIdentities(genesisHash: HexString, accountIds: string[], storageName = 'validatorsIdentities'): Promise<Identities[] | null> {
   try {
 
-    const nameInStorage = `validatorsIdentities_${genesisHash}`;
+    const nameInStorage = `${storageName}_${genesisHash}`;
     const savedResult = await getSnapState(nameInStorage);
     if (savedResult) {
       const { result, date } = savedResult;
@@ -54,8 +54,6 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     }
 
     const peopleChainGenesis = PEOPLE_CHAINS[genesisHash] as HexString;
-    console.log('peopleChainGenesis:', peopleChainGenesis)
-
     const api = await getApi(peopleChainGenesis);
 
     if (!api) {
@@ -65,7 +63,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     let accountsInfo = [];
     let accountSubInfo = [];
     let mayHaveSubId = [];
-    const page = 50;
+    const page = accountIds.length < 50 ? accountIds.length : 50;
     let totalFetched = 0;
 
     // get identity of validators if they have
@@ -80,7 +78,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
 
       const parsedInfo = info
         .map((i, index) => {
-          const id = i.isSome ? i.unwrap()[0] : undefined;
+          const id = i.isSome && i.unwrapOr(undefined);
 
           return id?.info
             ? {
@@ -157,7 +155,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
       totalFetched += page;
     }
 
-    await updateSnapState(nameInStorage, { result: accountsInfo, date: Date.now() });
+    accountsInfo.length && await updateSnapState(nameInStorage, { result: accountsInfo, date: Date.now() });
 
     return accountsInfo;
 

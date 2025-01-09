@@ -12,7 +12,7 @@ export async function getApi(genesisHash: HexString): Promise<ApiPromise | null>
   try {
     console.info(`Preparing API for ${genesisHash}`)
 
-    const endpoint = await getEndpoint(genesisHash);
+    const endpoint = await getEndpoint(genesisHash, true);
     if (!endpoint) {
       console.error(`No endpoint with genesisHash: '${genesisHash}'.`);
 

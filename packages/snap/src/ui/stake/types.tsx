@@ -12,6 +12,7 @@ import { HexString } from "@polkadot/util/types";
 import type { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
 import { RewardsInfo } from "../../util/types";
 import { Balances } from "../../util";
+import { Balance } from "@polkadot/types/interfaces";
 
 export type StakeFormState = {
   stakeAmount: number;
@@ -110,6 +111,12 @@ export interface AllValidators {
   eraIndex: string;
 }
 
+export interface StakingIndexContextType {
+  balancesAll: Balances[],
+  stakingRates: Record<string, number>;
+  recommendedValidators: string[];
+}
+
 export interface StakingInitContextType {
   address: string;
   amount: string | undefined,
@@ -129,7 +136,7 @@ export interface StakingInitContextType {
   rewardsInfo: RewardsInfo[];
   stakedTokens: Balances[];
   sanitizedChainName: string;
-  selectedValidators?: HexString[];
+  selectedValidators?: string[];
   stakingData: StakingDataType | undefined;
   stakingRates: Record<string, number>;
   stakingInfo: StakingInfoType;
@@ -147,13 +154,36 @@ export interface StakingPoolContextType extends StakingInitContextType {
 export interface PayeeAccount { Account: string }
 export type Payee = 'Staked' | 'Controller' | 'Stash' | PayeeAccount;
 
+
+export type SoloBalances = {
+  soloTotal?: Balance;
+  solo?: SoloBalance;
+  rewardsDestination?: string | null;
+};
+
+export interface SoloBalance {
+  total: string;
+  active: string;
+  unlocking: string;
+  redeemable: string;
+  nominators?: HexString[];
+  toBeReleased?: {
+    amount: string;
+    date: number;
+  }[]
+}
+
 export interface StakingSoloContextType extends StakingInitContextType {
   active?: string;
   minNominatorBond?: string;
   unbondingDuration?: number;
+  recommendedValidatorsOnThisChain: string[];
   minimumActiveStake?: string;
   logos: { genesisHash: HexString, logo: string }[];
   payee?: { initial: Payee, maybeNew: Payee };
+  solo?: SoloBalance | undefined,
+  selectedPayouts?: string[] | undefined;
+  selectedAmountToPayout?: string;
 }
 
 export interface CallParamsType {

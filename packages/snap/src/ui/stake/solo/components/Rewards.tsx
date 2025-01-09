@@ -19,10 +19,10 @@ export const Rewards: SnapComponent<Props> = (({ amount, decimal, price, token }
           Rewards
         </Text>
         <Heading size="md">
-          {`${amountToHuman(amount || 0, decimal, 3, true)} ${token}`}
+          {`${amountToHuman(amount || '0', decimal, 3, true)} ${token}`}
         </Heading>
         <Text color="muted">
-          ${`${(Number(amountToHuman(amount || 0, decimal)) * price).toFixed(2)}`}
+          ${`${(Number(amountToHuman(amount || '0', decimal)) * price).toFixed(2)}`}
         </Text>
       </Box>
       <Image src={solo} />

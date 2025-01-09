@@ -1,18 +1,18 @@
-import { Box, Button, Container, Footer, Text, Divider, Tooltip, Icon, Checkbox, Form, Avatar } from '@metamask/snaps-sdk/jsx';
-import { WentWrong } from './components/WentWrong';
+import { Box, Button, Container, Footer, Text, Divider, Form } from '@metamask/snaps-sdk/jsx';
 import { getValidators } from './utils/getValidators';
 import { getValidatorsIdentities, Identities } from './utils/getValidatorIdentities';
-import { ellipsis } from './components/PoolSelector';
 import { StakingInitContextType, ValidatorInfo } from './types';
 import { FlowHeader } from '../components/FlowHeader';
+import { ShowValidator } from './ShowValidator';
+import { WentWrong } from '../components/WentWrong';
 
 export async function selectValidators(
   id: string,
   context: StakingInitContextType,
-  validatorSelectionForm?: Record<string, boolean>,
+  validatorSelectionForm?: string[],
   showMode?: boolean
 ) {
-  const { genesisHash } = context;
+  const { genesisHash, sanitizedChainName } = context;
   const _validators = await getValidators(genesisHash);
   const allValidators = _validators.current.concat(_validators.waiting);
 
@@ -20,8 +20,8 @@ export async function selectValidators(
   const identities = await getValidatorsIdentities(genesisHash, validatorsIds);
 
   const selectedValidators = !validatorSelectionForm
-    ? context.recommendedValidators[context.sanitizedChainName]
-    : Object.entries(validatorSelectionForm).filter(([, value]) => value).map(([key]) => key.split(',')[1]);
+    ? context.recommendedValidators[sanitizedChainName]
+    : validatorSelectionForm;
 
   await snap.request({
     method: 'snap_updateInterface',
@@ -44,11 +44,13 @@ const ui = (
   showMode?: boolean
 ) => {
 
-  const { recommendedValidators, sanitizedChainName } = context;
+  const { action, recommendedValidators, sanitizedChainName } = context;
   const maxRecommendedValidators = recommendedValidators[sanitizedChainName].length;
   const validatorsToList = showMode
     ? allValidators.filter(({ accountId }) => selectedValidators.includes(accountId.toString()))
     : allValidators;
+
+  const isChangeValidators = action === 'changeValidators';
 
   return (
     <Container>
@@ -57,7 +59,6 @@ const ui = (
           action='stakeInit'
           label='Select validators'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         {!allValidators
@@ -80,36 +81,14 @@ const ui = (
                   const maybeIdentity = identities?.find((item) => item.accountId === String(accountId))?.identity;
 
                   return (
-                    <Box direction='horizontal' alignment='space-between' center>
-                      <Box direction='horizontal' alignment='start' center>
-                        {!showMode &&
-                          <Checkbox name={`selectedValidator,${accountId}`} checked={isSelected} />
-                        }
-                        {maybeIdentity
-                          ? <Box direction='horizontal' alignment='start' center>
-                            <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
-                            <Text alignment='start'>
-                              {ellipsis(maybeIdentity.display)}
-                            </Text>
-                          </Box>
-                          : //<Address address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} /> //this can be used instead, when avatar size is available
-                          <Box direction='horizontal' alignment='start' center>
-                            <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
-                            <Text alignment='start'>
-                              {ellipsis(String(accountId), 20)}
-                            </Text>
-                          </Box>
-                        }
-                      </Box>
-                      <Box direction='horizontal' alignment='end' center>
-                        <Text alignment='end'>
-                          {String(Number(validatorPrefs.commission) / (10 ** 7) < 1 ? 0 : Number(validatorPrefs.commission) / (10 ** 7))}%
-                        </Text>
-                        <Tooltip content={`Members: ${exposure?.others?.length || 0}`}>
-                          <Icon name="info" color='muted' />
-                        </Tooltip>
-                      </Box>
-                    </Box>
+                    <ShowValidator
+                      accountId={accountId}
+                      commission={validatorPrefs.commission}
+                      identity={maybeIdentity}
+                      isSelected={isSelected}
+                      nominatorsCount={exposure?.others?.length}
+                      showCheckBox={!showMode}
+                    />
                   )
                 })}
               </Form>
@@ -118,7 +97,15 @@ const ui = (
         }
       </Box>
       <Footer>
-        <Button name={showMode ? 'stakeInitWithSelectedValidators' : 'selectValidatorsShow'}>
+        <Button
+          name={
+            showMode
+              ? isChangeValidators
+                ? 'changeValidatorsReview'
+                : 'stakeInitWithSelectedValidators'
+              : 'selectValidatorsShow'
+          }
+        >
           {showMode ? 'Continue' : `Show selected: ${selectedValidators?.length} (max ${maxRecommendedValidators})`}
         </Button>
       </Footer>

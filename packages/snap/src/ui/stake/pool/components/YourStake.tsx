@@ -1,8 +1,8 @@
-import { Box, Section, Text, Heading, Image, SnapComponent } from "@metamask/snaps-sdk/jsx";
+import { Box, Section, Text, Heading, SnapComponent } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { BN } from "@polkadot/util";
-import { activeIcon, inActiveIcon } from "../../../image/icons";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../../components/UnstakeForm";
+import { ActiveStatus } from "./ActiveStatus";
 
 interface Props {
   amount: string | undefined;
@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price }) => {
-  const isActive = !!amount && !new BN(amount).isZero();
 
   return (
     <Box>
@@ -21,12 +20,7 @@ export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price 
           <Text color="muted">
             Your stake
           </Text>
-          <Box direction="horizontal" alignment="end" center>
-            <Image src={isActive ? activeIcon : inActiveIcon} />
-            <Text color={isActive ? "success" : 'error'}>
-              {isActive ? 'ACTIVE' : 'INACTIVE'}
-            </Text>
-          </Box>
+          <ActiveStatus amount={amount} />
         </Box>
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
