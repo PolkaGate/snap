@@ -5,7 +5,7 @@ import { createWsEndpoints } from '@polkagate/apps-config';
 import getChainName from './getChainName';
 import { HexString } from '@polkadot/util/types';
 
-export default async function getEndpoint(_genesisHash: HexString | undefined, ignoreLightClient = true): Promise<string | undefined> {
+export default async function getEndpoint(_genesisHash: HexString | undefined, ignoreLightClient = true, multiple?: boolean): Promise<string | string[] | undefined> {
   console.info(`Getting ENDPOINT for ${_genesisHash}`)
 
   if (!_genesisHash) {
@@ -35,6 +35,10 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
 
   if (endpoints.length === 0) {
     return; // we can use metadata for signing in such cases
+  }
+
+  if (multiple) {
+    return endpoints.map(({ value }) => value);
   }
 
   return (

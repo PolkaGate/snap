@@ -12,23 +12,23 @@ export async function getApi(genesisHash: HexString): Promise<ApiPromise | null>
   try {
     console.info(`Preparing API for ${genesisHash}`)
 
-    const endpoint = await getEndpoint(genesisHash, true);
-    if (!endpoint) {
+    const endpoints = await getEndpoint(genesisHash, true, true) as string[];
+    if (!endpoints?.length) {
       console.error(`No endpoint with genesisHash: '${genesisHash}'.`);
 
       return null;
     }
-    console.info(`Selected Endpoint on ${genesisHash} is ${endpoint} `)
+    console.info(`Selected Endpoints on ${genesisHash} is ${endpoints} `)
 
-    const adjustedUrl = endpoint.replace('wss://', 'https://'); // since Metamask snap does not support web sockets at the moment we use https instead
-    const httpProvider = new HttpProvider(adjustedUrl);
+    const adjustedUrls = endpoints.map((value) => value.replace('wss://', 'https://'));  // Replace 'wss://' with 'https://' as MetaMask Snap does not support WebSockets at the moment
+    const httpProviders = adjustedUrls.map((url) => new HttpProvider(url));
 
-    const api = await ApiPromise.create({ provider: httpProvider });
+    const api = await Promise.race(httpProviders.map((httpProvider) => ApiPromise.create({ provider: httpProvider })));
 
     return api;
-    
-  } catch {
-    console.error(`Something went wrong while getting api for ${genesisHash}`)
+
+  } catch(error) {
+    console.error(`Something went wrong while getting api for ${genesisHash}`, error)
     return null;
   }
 }
