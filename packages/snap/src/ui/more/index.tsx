@@ -1,4 +1,4 @@
-import { Box, Button, SnapComponent, Divider, Link, Heading, Icon, Section, IconName, Footer, Container } from "@metamask/snaps-sdk/jsx";
+import { Box, Button, SnapComponent, Link, Icon, Section, IconName, Footer, Container } from "@metamask/snaps-sdk/jsx";
 import { MoreHeader } from "./MoreHeader";
 import { ActionRow } from "../components/ActionRow";
 
@@ -34,7 +34,7 @@ const ui = () => {
           />
         </Section>
         <Section>
-          <LinkItem icon={'book'} link='https://docs.polkagate.xyz' label={'View Documents'} />
+          <LinkItem icon={'book'} link='https://docs.polkagate.xyz/polkagate/metamask-snap-user-guide/installing-polkagate-snap' label={'View Documents'} />
         </Section>
         <Section>
           <LinkItem icon={'twitter'} link='https://x.com/@polkagate' label={'Follow Us on X'} />
@@ -54,7 +54,7 @@ const ui = () => {
 
 
 type LinkProps = {
-  icon: IconName;
+  icon: `${IconName}`;
   link: string;
   label: string;
 }
