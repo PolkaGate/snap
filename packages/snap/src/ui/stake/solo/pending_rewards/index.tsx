@@ -72,7 +72,7 @@ const ui = (
         }
       </Box>
       <Footer>
-        <Button name='payoutReview'>
+        <Button name='payoutReview' disabled={!selectedAmount || selectedAmount?.isZero()}>
           Continue
         </Button>
       </Footer>
