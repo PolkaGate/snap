@@ -5,7 +5,7 @@ import { Box, Container, Section, Footer, Button } from "@metamask/snaps-sdk/jsx
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../components/Row2";
 import { StakingSoloContextType } from "../../types";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function rewardsDestinationReview(

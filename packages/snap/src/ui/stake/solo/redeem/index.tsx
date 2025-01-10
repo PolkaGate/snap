@@ -9,7 +9,7 @@ import { StakingSoloContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getRedeemSolo } from "./util/getRedeemSolo";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { SOLO_REDEEMABLE_DECIMAL } from "../../components/Redeemable";
 import { FlowHeader } from "../../../components/FlowHeader";
 

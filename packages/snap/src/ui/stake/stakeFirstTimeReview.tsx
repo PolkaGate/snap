@@ -4,7 +4,7 @@ import { Balance } from "@polkadot/types/interfaces";
 import { getStakingFee } from "./utils/getStakingFee";
 import { Row2 } from "./components/Row2";
 import { StakingInitContextType } from "./types";
-import { Account } from "./components/Account";
+import { Account } from "../components/Account";
 import { FlowHeader } from "../components/FlowHeader";
 
 export async function stakeFirstTimeReview(

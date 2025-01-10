@@ -9,7 +9,7 @@ import { StakingInitContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getClaim } from "./util/getClaim";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { POOL_CLAIMABLE_DECIMAL } from "../components/ClaimRewards";
 import { FlowHeader } from "../../../components/FlowHeader";
 

@@ -9,7 +9,7 @@ import { StakingPoolContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getRedeem } from "./util/getRedeem";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolRedeem(

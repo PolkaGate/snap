@@ -1,5 +1,5 @@
 import { Box, Text, SnapComponent, Address } from "@metamask/snaps-sdk/jsx";
-import { getFormatted } from "../../../util/getFormatted";
+import { getFormatted } from "../../util/getFormatted";
 import { HexString } from "@polkadot/util/types";
 
 interface Props {

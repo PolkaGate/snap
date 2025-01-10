@@ -3,7 +3,7 @@ import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../components/Row2";
 import { StakingSoloContextType } from "../../types";
 import { SoloUnstakeExtraInfo } from "./component/SoloUnstakeExtraInfo";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloUnstakeReview(

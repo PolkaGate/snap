@@ -4,7 +4,7 @@ import { Row2 } from "../../components/Row2";
 import { StakingSoloContextType } from "../../types";
 import { birdDown } from "../../../image/icons";
 import { SoloStakeMoreExtraInfo } from "./component/SoloStakeMoreExtraInfo";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function soloStakeMoreReview(

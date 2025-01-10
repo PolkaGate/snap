@@ -3,7 +3,7 @@ import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../components/Row2";
 import { StakingPoolContextType } from "../../types";
 import { PoolUnstakeExtraInfo } from "./component/PoolUnstakeExtraInfo";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolUnstakeReview(

@@ -4,7 +4,7 @@ import { Row2 } from "../../components/Row2";
 import { StakingPoolContextType } from "../../types";
 import { birdDown } from "../../../image/icons";
 import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
-import { Account } from "../../components/Account";
+import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
 export async function poolStakeMoreReview(
