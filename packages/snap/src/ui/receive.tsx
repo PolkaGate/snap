@@ -37,7 +37,7 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
         <FlowHeader
           action='backToHome'
           label='Receive'
-          tooltipType="send"
+          showHome
         />
         <Text alignment="start" color='muted'>
           Select a network to view your address & QR code
