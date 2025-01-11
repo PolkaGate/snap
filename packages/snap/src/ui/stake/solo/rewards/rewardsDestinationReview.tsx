@@ -38,7 +38,6 @@ const ui = (context: StakingSoloContextType) => {
           action='rewardsDestination'
           label='Rewards destination'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         <Section>

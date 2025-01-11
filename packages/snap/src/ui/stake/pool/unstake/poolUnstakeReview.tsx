@@ -37,7 +37,6 @@ const ui = (
           action='poolUnstake'
           label='Unstake'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>

@@ -53,7 +53,6 @@ const ui = (
           action='stakeDetailsPool'
           label='Claim rewards'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>

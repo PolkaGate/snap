@@ -44,7 +44,6 @@ const ui = (
           action='stakeInit'
           label='Start staking'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>

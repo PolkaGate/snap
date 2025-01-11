@@ -50,7 +50,6 @@ const ui = (
           action='stakeDetailsPool'
           label='Redeem'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         <Box direction="vertical" alignment="center" center>

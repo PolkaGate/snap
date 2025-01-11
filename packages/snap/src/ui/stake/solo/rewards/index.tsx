@@ -74,7 +74,6 @@ const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNe
           action='stakeDetailsSolo'
           label='Rewards destination'
           showHome
-          isSubAction
           tooltipType='staking'
         />
         <Options
