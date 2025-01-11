@@ -95,7 +95,7 @@ const ui = (address: string) => {
 
 
 type LinkProps = {
-  icon: `${IconName}`;
+  icon: string;
   link: string;
   label: string;
 }
