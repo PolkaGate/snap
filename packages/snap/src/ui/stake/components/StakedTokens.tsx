@@ -8,10 +8,10 @@ import { poolSmall, soloSmall } from '../../image/icons';
 import { BN, BN_ZERO } from '@polkadot/util';
 import { ActiveStatus } from '../pool/components/ActiveStatus';
 
-export const poolRewardsBreakDown = (rewardsInfo: RewardsInfo[], stakedToken: Balances) => {
-  const poolRewards = rewardsInfo.filter(({ genesisHash, type }) => genesisHash === stakedToken.genesisHash && type === 'Pool');
-  const poolClaimable = poolRewards.find(({ subType }) => subType === 'Claimable');
-  const poolTotalClaimed = poolRewards.find(({ subType }) => subType === 'TotalClaimed');
+export const poolRewardsBreakDown = (rewardsInfo: RewardsInfo[] | null, stakedToken: Balances) => {
+  const poolRewards = rewardsInfo?.filter(({ genesisHash, type }) => genesisHash === stakedToken.genesisHash && type === 'Pool');
+  const poolClaimable = poolRewards?.find(({ subType }) => subType === 'Claimable');
+  const poolTotalClaimed = poolRewards?.find(({ subType }) => subType === 'TotalClaimed');
   const poolReward = (poolTotalClaimed?.reward || BN_ZERO).add(poolClaimable?.reward || BN_ZERO);
   const netPoolStaked = stakedToken.pooledBalance?.sub(poolClaimable?.reward || BN_ZERO);
 
@@ -180,7 +180,7 @@ export const StakedToken: SnapComponent<StakedTokenProps> = ({ hasStaked, logo, 
 
 interface Props {
   logos: { genesisHash: string; logo: string; }[];
-  rewardsInfo: RewardsInfo[];
+  rewardsInfo: RewardsInfo[] | null;
   stakedTokens: Balances[];
   stakingRates: Record<string, number>;
 }
@@ -205,7 +205,7 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
 
           const { poolReward } = poolRewardsBreakDown(rewardsInfo, stakedToken);
 
-          const soloRewardInfo = rewardsInfo.find(({ genesisHash, type }) => genesisHash === stakedToken.genesisHash && type === 'Solo')?.reward || BN_ZERO;
+          const soloRewardInfo = rewardsInfo?.find(({ genesisHash, type }) => genesisHash === stakedToken.genesisHash && type === 'Solo')?.reward || BN_ZERO;
 
           const hasDualStaking = !!netPoolStaked && !netPoolStaked.isZero() && !!soloTotal && !soloTotal.isZero();
 

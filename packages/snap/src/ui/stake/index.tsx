@@ -42,7 +42,7 @@ export async function stakingIndex(id: string) {
     );
 
   const nonStakedChainNames = (await Promise.all(notStakedChains.map((genesisHash) => getChainName(genesisHash as HexString))))
-  const nonStakedChainInfo = notStakedChains.map((genesisHash, index) => ({ genesisHash, name: nonStakedChainNames[index] })).filter(({ name }) => !!name);
+  const nonStakedChainInfo = notStakedChains.map((genesisHash, index) => ({ genesisHash, name: nonStakedChainNames[index] || 'Unknown' })).filter(({ name }) => !!name);
 
 
   await snap.request({
@@ -67,7 +67,7 @@ const ui = (
   isTestNetStakingEnabled: boolean | undefined,
   logos: { genesisHash: string; logo: string; }[],
   nonStakedChainInfo: { genesisHash: HexString, name: string }[],
-  rewardsInfo: RewardsInfo[],
+  rewardsInfo: RewardsInfo[] | null,
   stakedTokens: Balances[],
   stakingRates: Record<string, number>
 ) => {
