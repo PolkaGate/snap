@@ -1,6 +1,6 @@
 
 import { Text, Box, Button, Container, Field, Footer, Form, Input, Section } from '@metamask/snaps-sdk/jsx';
-import { MoreHeader } from './MoreHeader';
+import { SettingsHeader } from './SettingsHeader';
 
 /**
  * This will show the alert to get password to export account as JSON file.
@@ -22,8 +22,8 @@ const ui = (maybePassword?: string) => {
   return (
     <Container>
       <Box direction='vertical' alignment='start'>
-        <MoreHeader
-          action='more'
+        <SettingsHeader
+          action='settings'
           label='Export account'
           isSubAction
           showHome

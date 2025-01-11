@@ -11,9 +11,9 @@ type Props = {
 /**
  * A component that shows the more flow header.
  *
- * @returns The MoreFlowHeader component.
+ * @returns The Settings FlowHeader component.
  */
-export const MoreHeader: SnapComponent<Props> = ({ action, label, isSubAction, showHome }) => (
+export const SettingsHeader: SnapComponent<Props> = ({ action, label, isSubAction, showHome }) => (
   <Box direction="horizontal" alignment="space-between" center>
     <Button name={action}>
       <Icon name={isSubAction ? "arrow-2-left" : "arrow-left"} color="primary" size="md" />

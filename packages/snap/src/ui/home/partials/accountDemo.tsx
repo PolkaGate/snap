@@ -57,7 +57,7 @@ export const accountDemo = (
             <CTA icon='qr-code' name='receive' label='Receive' />
             <CTA icon='stake' name='stakeIndex' label='Stake' />
             <CTA icon='people' name='vote' label='Vote' />
-            <CTA icon='setting' name='more' label='Setting' />
+            <CTA icon='setting' name='settings' label='Setting' />
           </Box>
         </Section>
       </Section>

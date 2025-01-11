@@ -10,7 +10,7 @@ import {
   stakingIndex
 } from '../ui';
 import { updateSnapState } from '../rpc/stateManagement';
-import { showMore } from '../ui/more';
+import { settings } from '../ui/settings';
 import { receive } from '../ui/receive';
 import { balanceDetails } from '../ui/home/balanceDetails';
 import { send } from '../ui/send';
@@ -45,8 +45,8 @@ import { poolUnstakeConfirm } from '../ui/stake/pool/unstake/poolUnstakeConfirm'
 import { confirmSend } from '../ui/send/confirmSend';
 import { poolRedeem } from '../ui/stake/pool/redeem/poolRedeem';
 import { poolRedeemConfirm } from '../ui/stake/pool/redeem/poolRedeemConfirm';
-import { exportAccount } from '../ui/more/exportAccount';
-import { showJsonContent } from '../ui/more/showJsonContent';
+import { exportAccount } from '../ui/settings/exportAccount';
+import { showJsonContent } from '../ui/settings/showJsonContent';
 import { stakeSoloReview } from '../ui/stake/solo';
 import { soloRedeem } from '../ui/stake/solo/redeem';
 import { soloRedeemConfirm } from '../ui/stake/solo/redeem/soloRedeemConfirm';
@@ -471,8 +471,8 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await voting(id);
         break;
 
-      case 'more':
-        await showMore(id);
+      case 'settings':
+        await settings(id);
         break;
 
       case 'export':

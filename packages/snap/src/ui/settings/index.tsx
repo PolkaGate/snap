@@ -1,5 +1,5 @@
 import { Box, Button, SnapComponent, Link, Icon, Section, IconName, Footer, Container, Text, Image } from "@metamask/snaps-sdk/jsx";
-import { MoreHeader } from "./MoreHeader";
+import { SettingsHeader } from "./SettingsHeader";
 import { ActionRow } from "../components/ActionRow";
 import { book, currency, email, github, language, twitter, web, youtube } from "../image/icons";
 import { getKeyPair } from "../../util";
@@ -9,7 +9,7 @@ import { getKeyPair } from "../../util";
  *
  * @param id - The id of UI interface to be updated.
  */
-export async function showMore(id: string) {
+export async function settings(id: string) {
 
   const { address } = await getKeyPair();
 
@@ -27,7 +27,7 @@ const ui = (address: string) => {
   return (
     <Container>
       <Box direction="vertical" alignment="start">
-        <MoreHeader
+        <SettingsHeader
           action='backToHomeWithoutUpdate'
           label='Settings'
         />
