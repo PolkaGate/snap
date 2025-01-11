@@ -1,7 +1,8 @@
 import { BN } from "@polkadot/util";
 import { amountToHuman } from "../../../../../util/amountToHuman";
-import { StakeFormErrors, StakingInitContextType } from "../../../types";
+import { StakeFormErrors, StakingPoolContextType } from "../../../types";
 import { PoolUnstakeFormState } from "../types";
+import { amountToMachine } from "../../../../../util/amountToMachine";
 
 /**
  * Validate the unstake stake pool form.
@@ -12,7 +13,7 @@ import { PoolUnstakeFormState } from "../types";
  */
 export function unstakePoolFormValidation(
   formState?: PoolUnstakeFormState,
-  context?: StakingInitContextType | null,
+  context?: StakingPoolContextType | null,
 ): StakeFormErrors {
 
   const errors: Partial<StakeFormErrors> = {};
@@ -21,7 +22,8 @@ export function unstakePoolFormValidation(
   if (amount && Number(amount) && context) {
 
     const { decimal, claimable, pooledBalance, minJoinBond, token } = context;
-    const netStaked = new BN(pooledBalance).sub(new BN(claimable || 0));
+    const netStaked = new BN(pooledBalance || 0).sub(new BN(claimable || 0));
+    const remaining = netStaked.sub(amountToMachine(String(amount), decimal));
 
     if (
       Number(amount) >
@@ -29,11 +31,8 @@ export function unstakePoolFormValidation(
     ) {
       errors.amount = 'More than staked amount!';
 
-    } else if (
-      Number(amount) <
-      Number(amountToHuman(new BN(minJoinBond), decimal))
-    ) {
-      errors.amount = `Remaining stake cannot be less than the minimum(${amountToHuman(new BN(minJoinBond), decimal)} ${token})!`;
+    } else if (remaining.lt(new BN(minJoinBond || 0))) {
+      errors.amount = `Remaining stake cannot be less than the minimum(${amountToHuman(new BN(minJoinBond || 0), decimal)} ${token})!`;
     }
   }
 
