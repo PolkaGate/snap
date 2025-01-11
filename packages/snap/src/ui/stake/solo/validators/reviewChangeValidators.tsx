@@ -49,6 +49,7 @@ const ui = (
         <FlowHeader
           action='yourValidators'
           label='Change validators'
+          tooltipType="staking"
         />
         <Section>
           <Account

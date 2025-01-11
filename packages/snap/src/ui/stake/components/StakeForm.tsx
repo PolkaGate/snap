@@ -6,26 +6,16 @@ import { StakeFormErrors } from "../types";
 export interface Props {
   amount: string | undefined,
   decimal: number,
-  formErrors:StakeFormErrors,
+  formErrors: StakeFormErrors,
   logo: string,
   name?: string,
   placeHolder?: string,
-  token: string,
-  transferable: number,
   price: number,
+  token: string,
+  transferable: string,
 }
 
-export const StakeForm: SnapComponent<Props> = ({
-  amount,
-  decimal,
-  formErrors,
-  logo,
-  name,
-  placeHolder,
-  token,
-  transferable,
-  price,
-}) => {
+export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, logo, name, placeHolder, token, transferable, price, }) => {
 
   return (
     <Form name='stakeForm'>
@@ -43,7 +33,7 @@ export const StakeForm: SnapComponent<Props> = ({
       </Field>
       <Row2
         label='Available'
-        value={`${amountToHuman(String(transferable), decimal, 4, true)} ${token}`}
+        value={`${amountToHuman(transferable, decimal, 4, true)} ${token}`}
       />
     </Form>
   );

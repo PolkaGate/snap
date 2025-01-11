@@ -6,16 +6,16 @@ import { amountToHuman } from "../../../../../util/amountToHuman";
 import { InfoRow } from "../../../components/InfoRow";
 
 interface Props {
-  claimable: string;
+  claimable: string | undefined;
   decimal: number;
   token: string;
-  unbondingDuration: number;
+  unbondingDuration: number | undefined;
 }
 
 export const PoolUnstakeExtraInfo: SnapComponent<Props> = ({ claimable, decimal, token, unbondingDuration }) => (
   <Box>
     <InfoRow
-      text={`Unstaking requires a ~${String(unbondingDuration)}-day waiting period.`}
+      text={`Unstaking requires a ~${String(unbondingDuration || 'unknown')}-day waiting period.`}
     />
     <InfoRow
       text='Tokens earn no rewards during the unstaking period.'

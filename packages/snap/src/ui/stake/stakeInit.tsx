@@ -27,8 +27,10 @@ export async function stakeInit(
   stakeTypeForm: StakeTypeFormState
 ) {
 
-  const { address, amount, decimal, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, token, transferable } = context;
+  const { address, amount, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, transferable } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
+  const decimal =stakingInfo.decimal;
+  let token = stakingInfo.token;
 
   const minimumActiveStake = stakingInfo?.minimumActiveStake
   const minimumActiveStakeInHuman = Number(amountToHuman(minimumActiveStake, decimal) || 0);
@@ -49,14 +51,10 @@ export async function stakeInit(
   const _logo = logo || await getLogoByGenesisHash(genesisHash);
 
   let _transferable = transferable;
-  let _token = token;
-  let _decimal = decimal;
 
-  if (!(_transferable || _decimal)) {
+  if (!(_transferable)) {
     const balances = await getBalances(genesisHash, _address)
-    _transferable = balances.transferable.toNumber();
-    _token = balances.token;
-    _decimal = balances.decimal;
+    _transferable = balances.transferable.toString();
   }
 
   let _price = price;
@@ -94,18 +92,18 @@ export async function stakeInit(
         ...(context || {}),
         address: _address,
         amount: _amount,
-        decimal: _decimal!,
+        decimal,
         genesisHash,
         logo: _logo,
         price: _price!,
         rate: _rate!,
         transferable: _transferable!,
-        token: _token!,
+        token,
         stakingData,
         DEFAULT_STAKING_DATA
       },
       id,
-      ui: ui(_amount, _decimal, formErrors, _logo, _token, _transferable, _price, stakingType, _rate, stakingData, isRecommended, DEFAULT_STAKING_DATA),
+      ui: ui(_amount, decimal, formErrors, _logo, token, _transferable, _price, stakingType, _rate, stakingData, isRecommended, DEFAULT_STAKING_DATA),
     },
   });
 }
@@ -116,7 +114,7 @@ const ui = (
   formErrors: StakeFormErrors,
   logo: string,
   token: string,
-  transferable: number,
+  transferable: string,
   price: number,
   stakingType: string,
   rate: number | undefined,

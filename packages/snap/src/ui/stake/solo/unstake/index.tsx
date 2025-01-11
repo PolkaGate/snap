@@ -36,7 +36,7 @@ export async function soloUnstake(
 
   if (!(_transferable || _decimal)) {
     const balances = await getBalances(genesisHash, _address)
-    _transferable = balances.transferable.toNumber();
+    _transferable = balances.transferable.toString();
     _token = balances.token;
     _decimal = balances.decimal;
   }
@@ -50,7 +50,7 @@ export async function soloUnstake(
       context: {
         ...(context || {}),
         address: _address,
-        ...stakingInfo,
+        ...(stakingInfo || {}),
         amount: _amount,
         decimal: _decimal!,
         genesisHash,
@@ -61,7 +61,7 @@ export async function soloUnstake(
         token: _token!,
       },
       id,
-      ui: ui(_amount, _decimal, formErrors, _logo, netStaked, _token, price, fee, stakingInfo.unbondingDuration),
+      ui: ui(_amount, _decimal, formErrors, _logo, netStaked, _token, price, fee, stakingInfo?.unbondingDuration),
     },
   });
 }
@@ -75,7 +75,7 @@ const ui = (
   token: string,
   price: number,
   fee: string | Balance,
-  unbondingDuration: number,
+  unbondingDuration: number | undefined,
 ) => {
 
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
@@ -107,9 +107,10 @@ const ui = (
             extra={`$${feeInUsd.toFixed(2)}`}
           />
         </Section>
-        <SoloUnstakeExtraInfo
-          unbondingDuration={unbondingDuration}
-        />
+        {!!unbondingDuration &&
+          <SoloUnstakeExtraInfo
+            unbondingDuration={unbondingDuration}
+          />}
       </Box>
       <Footer>
         <Button name='soloUnstakeReview' disabled={!Number(amount) || !isEmptyObject(formErrors)}>

@@ -18,7 +18,7 @@ export async function stakingInfo(id: string, genesisHash: HexString, context: S
   const chainName = await getChainName(genesisHash);
   const stakingInfo = await getStakingInfo(genesisHash);
 
-  if (!stakingInfo) {
+  if (!stakingInfo || !chainName) {
     throw new Error('Failed to fetch online info, please check internet connection!')
   }
 

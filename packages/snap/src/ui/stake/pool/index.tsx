@@ -54,6 +54,7 @@ export async function stakePoolReview(
         claimable: stakedToken?.pooled?.claimable?.toString(),
         redeemable: stakedToken?.pooled?.redeemable?.toString(),
         active: stakedToken?.pooled?.active?.toString(),
+        unlocking: stakedToken?.pooled?.unlocking?.toString(),
       }
     },
   });

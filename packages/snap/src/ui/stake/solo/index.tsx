@@ -44,6 +44,7 @@ export async function stakeSoloReview(
         ...stakedToken,
         sanitizedChainName,
         active: stakedToken?.solo?.active?.toString(),
+        unlocking: stakedToken?.solo?.unlocking?.toString(),
         redeemable: stakedToken?.solo?.redeemable?.toString(),
         soloTotal: stakedToken?.soloTotal?.toString(),
         transferable: stakedToken?.transferable?.toString(),

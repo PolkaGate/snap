@@ -28,7 +28,7 @@ export async function poolUnstake(
 
   const netStaked = new BN(active || 0);
   const _address = address || (await getKeyPair(undefined, genesisHash)).address;
-  const _logo = logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
+  const _logo = context.logo || logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
 
   let _transferable = transferable;
   let _token = token;
@@ -41,7 +41,7 @@ export async function poolUnstake(
     _decimal = balances.decimal;
   }
 
-  const fee = context.fee || await getPoolUnstake(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, poolId);
+  const fee = context.fee || await getPoolUnstake(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, poolId!);
   const stakingInfo = context.stakingInfo || await getStakingInfo(genesisHash);
 
   await snap.request({
@@ -50,7 +50,7 @@ export async function poolUnstake(
       context: {
         ...(context || {}),
         address: _address,
-        ...stakingInfo,
+        ...(stakingInfo || {}),
         amount: _amount,
         decimal: _decimal!,
         genesisHash,
@@ -61,7 +61,7 @@ export async function poolUnstake(
         token: _token!,
       },
       id,
-      ui: ui(_amount, claimable, _decimal, formErrors, _logo, netStaked, _token, price, fee, stakingInfo.unbondingDuration),
+      ui: ui(_amount, claimable, _decimal, formErrors, _logo, netStaked, _token, price, fee, stakingInfo?.unbondingDuration),
     },
   });
 }
@@ -76,7 +76,7 @@ const ui = (
   token: string,
   price: number,
   fee: string | Balance,
-  unbondingDuration: number,
+  unbondingDuration: number | undefined,
 ) => {
 
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;

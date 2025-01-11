@@ -112,14 +112,16 @@ export interface AllValidators {
 }
 
 export interface StakingIndexContextType {
-  balancesAll: Balances[],
+  balancesAll: Balances[];
+  sanitizedChainName: string | undefined;
+  stakingInfo: StakingInfoType;
   stakingRates: Record<string, number>;
   recommendedValidators: string[];
 }
 
 export interface StakingInitContextType {
   address: string;
-  amount: string | undefined,
+  amount: string | undefined;
   call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
   claimable?: string;
   pooledBalance?: string;
@@ -139,7 +141,7 @@ export interface StakingInitContextType {
   selectedValidators?: string[];
   stakingData: StakingDataType | undefined;
   stakingRates: Record<string, number>;
-  stakingInfo: StakingInfoType;
+  stakingInfo?: StakingInfoType;
   token: string;
   transferable: string;
   validators?: AllValidators;
@@ -147,6 +149,7 @@ export interface StakingInitContextType {
 
 export interface StakingPoolContextType extends StakingInitContextType {
   active?: string;
+  unlocking?: string;
   logos: { genesisHash: HexString, logo: string }[];
   poolId?: number;
 }
@@ -175,6 +178,7 @@ export interface SoloBalance {
 
 export interface StakingSoloContextType extends StakingInitContextType {
   active?: string;
+  unlocking?: string;
   minNominatorBond?: string;
   unbondingDuration?: number;
   recommendedValidatorsOnThisChain: string[];

@@ -1,4 +1,4 @@
-import { Box, Section, Text, SnapComponent, Icon } from '@metamask/snaps-sdk/jsx';
+import { Box, Section, Text, SnapComponent, Icon, Tooltip } from '@metamask/snaps-sdk/jsx';
 import { amountToHuman } from '../../../util/amountToHuman';
 
 interface Props {
@@ -31,7 +31,9 @@ export const Unstaking: SnapComponent<Props> = ({ toBeReleased, decimal, token }
             <Text color='muted'>
               {new Date(date).toLocaleDateString(undefined, DATE_OPTIONS)}
             </Text>
-            <Icon name='clock' color='muted' />
+            <Tooltip content='Date the amount becomes redeemable'>
+              <Icon name='clock' color='muted' />
+            </Tooltip>
           </Box>
         </Box>
       ))}

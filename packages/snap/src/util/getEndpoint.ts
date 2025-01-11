@@ -20,7 +20,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
     sanitizedChainName = 'hydradx'
   }
 
-  const endpoints = sanitizedChainName
+  let endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>
       e.value && (!ignoreLightClient || !e.value.startsWith('light')) && !e.value.includes('onfinality') &&
       // Check if e.value matches the pattern 'wss://<any_number>'
@@ -35,6 +35,14 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
 
   if (endpoints.length === 0) {
     return; // we can use metadata for signing in such cases
+  }
+
+  // remove this after apps-config fixing
+  if (sanitizedChainName === 'paseo') {
+    const excludeKeywords = ['ajuna', 'bajun', 'integritee'];
+
+    endpoints = endpoints.filter(({ value }) =>
+      !excludeKeywords.some(keyword => value.includes(keyword)));
   }
 
   if (multiple) {

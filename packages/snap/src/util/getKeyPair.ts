@@ -15,7 +15,7 @@ export const getKeyPair = async (
   genesisHash?: HexString,
 ): Promise<KeyringPair> => {
 
-  console.info(`Getting keypair for ${genesisHash}`);
+  console.info(`Getting keypair for ${chainName || genesisHash}`);
 
   let prefix: number | undefined;
   prefix = getChain(genesisHash ?? chainName)?.prefix;
