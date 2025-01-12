@@ -1,8 +1,8 @@
-import { Box, Button, SnapComponent, Link, Icon, Section, IconName, Footer, Container, Text, Image } from "@metamask/snaps-sdk/jsx";
-import { SettingsHeader } from "./SettingsHeader";
+import { Box, Button, SnapComponent, Link, Icon, Section, Footer, Container, Text, Image } from "@metamask/snaps-sdk/jsx";
 import { ActionRow } from "../components/ActionRow";
-import { book, currency, email, github, language, twitter, web, youtube } from "../image/icons";
+import { book, currency, email, github, language, telegram, twitter, web, youtube } from "../image/icons";
 import { getKeyPair } from "../../util";
+import { SettingsHeader } from "./SettingsHeader";
 
 /**
  * This shows the more page
@@ -72,6 +72,7 @@ const ui = (address: string) => {
         </Text>
         <Section>
           <LinkItem icon={twitter} link='https://x.com/@polkagate' label={'X'} />
+          <LinkItem icon={telegram} link='https://t.me/polkagate' label={'Telegram'} />
           <LinkItem icon={youtube} link='https://youtube.com/@polkagate' label={'YouTube'} />
         </Section>
 
