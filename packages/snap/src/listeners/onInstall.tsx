@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { OnInstallHandler } from '@metamask/snaps-sdk';
-import { Box, Heading, Divider, Text, Bold, Link, Icon, Section, SnapComponent } from "@metamask/snaps-sdk/jsx";
+import { Box, Heading, Text, Bold, Link, Icon, Section, SnapComponent, Image, Row } from "@metamask/snaps-sdk/jsx";
 
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
 import { setSnapState } from '../rpc/stateManagement';
-import { UpdateInfo } from './onUpdate';
+import { home } from '../ui/image/screenshots';
+import { polkadotMedium } from '../ui/image/chains';
 
 /**
- * Handle installation of the snap. This handler is called when the snap is
- * installed.
+ *  This handler is called when the snap is installed.
  */
 export const onInstall: OnInstallHandler = async () => {
   setSnapState({ currentGenesisHash: POLKADOT_GENESIS }).catch(console.error);
@@ -24,25 +24,39 @@ export const onInstall: OnInstallHandler = async () => {
   });
 };
 
-
 const WelcomeScreen: SnapComponent = () => {
-  console.info(`Let's show welcome screen ...`)
-
   return (
-    <Box >
-      <Heading>Welcome to Polkadot eco.! ✋</Heading>
-      <Divider />
-      <Text color='muted'>
-        Explore features like managing balances, staking, voting in governance, and more—all from the <Link href="metamask://snap/npm:@polkagate/snap/home">PolkaGate Snap Home</Link>.
-      </Text>
-      <Section>
-        <Text>To visit Home, open MetaMask, go to</Text>
-        <Box direction='horizontal' alignment='start'>
-          <Icon size='md' name='more-vertical' />
-          <Bold>Menu → Snaps</Bold>
+    <Box direction='vertical'>
+
+      <Box direction='horizontal' alignment='space-between'>
+        <Box direction='vertical' >
+          <Heading size='md'>Welcome to Polkadot eco.!</Heading>
+          <Text color='muted'>
+            <Bold>To View the </Bold><Link href="metamask://snap/npm:@polkagate/snap/home">Home</Link> <Bold> Screen:</Bold>
+          </Text>
         </Box>
-        <Text>Then click on PolkaGate logo.</Text>
+        <Image src={polkadotMedium} />
+      </Box>
+
+
+      <Section>
+        <Text>
+          1.	Open MetaMask.
+        </Text>
+        <Text>
+          2.	Navigate to the <Bold>Menu</Bold> and select <Bold>Snaps</Bold>.
+        </Text>
+        <Text>
+          3.	Click on the <Bold>PolkaGate logo</Bold>.
+        </Text>
       </Section>
+
+
+      <Text color='muted'>
+        Scroll down to see the full screenshot of the Home screen for reference.
+      </Text>
+
+      <Image src={home} />
     </Box>
   );
 };
