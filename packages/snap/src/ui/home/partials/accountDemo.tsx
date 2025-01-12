@@ -6,7 +6,6 @@ import type { Balances } from '../../../util/getBalance';
 import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } from '@metamask/snaps-sdk/jsx';
 
 import { BalanceInfo } from '../../components';
-import { amountToHuman } from '../../../util/amountToHuman';
 import { PriceValue } from '../../../util/getPrices';
 import { TotalBalance } from './TotalBalance';
 
@@ -33,23 +32,15 @@ export const accountDemo = (
   showDetails?: boolean
 ) => {
 
-  const totalBalance = balancesAll.reduce((acc, { total, decimal }, index) => acc + Number(amountToHuman(total, decimal)) * prices[index].price.value, 0)
-  const availableBalance = balancesAll.reduce((acc, { transferable, decimal }, index) => acc + Number(amountToHuman(transferable, decimal)) * prices[index].price.value, 0)
   const nonZeroBalances = balancesAll.filter(({ total }) => !total.isZero());
-  const totalBalanceChanges = balancesAll.reduce((acc, { total, decimal }, index) => {
-    const value = Number(amountToHuman(total, decimal)) * prices[index].price.value;
-    return acc + value * prices[index].price.change / 100
-  }, 0)
-
 
   return (
     <Box>
       <Section>
         <TotalBalance
           hideBalance={hideBalance}
-          totalBalance={totalBalance}
-          availableBalance={availableBalance}
-          totalBalanceChanges={totalBalanceChanges}
+          balancesAll={balancesAll}
+          prices={prices}
         />
         <Section alignment='space-around' direction='horizontal'>
           <CTA icon='send-1' name='send' label='Send' />
