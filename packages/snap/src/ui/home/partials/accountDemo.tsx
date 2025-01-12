@@ -51,14 +51,12 @@ export const accountDemo = (
           availableBalance={availableBalance}
           totalBalanceChanges={totalBalanceChanges}
         />
-        <Section>
-          <Box alignment='space-around' direction='horizontal'>
-            <CTA icon='send-1' name='send' label='Send' />
-            <CTA icon='qr-code' name='receive' label='Receive' />
-            <CTA icon='stake' name='stakeIndex' label='Stake' />
-            <CTA icon='people' name='vote' label='Vote' />
-            <CTA icon='setting' name='settings' label='Setting' />
-          </Box>
+        <Section alignment='space-around' direction='horizontal'>
+          <CTA icon='send-1' name='send' label='Send' />
+          <CTA icon='qr-code' name='receive' label='Receive' />
+          <CTA icon='stake' name='stakeIndex' label='Stake' />
+          <CTA icon='people' name='vote' label='Vote' />
+          <CTA icon='setting' name='settings' label='Setting' />
         </Section>
       </Section>
       <Box alignment='space-between' direction='horizontal'>
