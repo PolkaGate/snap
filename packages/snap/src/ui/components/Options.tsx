@@ -27,7 +27,6 @@ type OptionProps = {
   name: string;
   text: string;
   description?: string;
-
   selected: string;
 }
 
@@ -35,20 +34,21 @@ export const OptionButton: SnapComponent<OptionProps> = ({ description, form, na
   const isSelected = selected === name;
 
   return (
-    <Section>
-      <Box direction='horizontal' alignment='start' center>
+    <Section direction='horizontal' alignment='start'>
+      <Box direction='vertical' alignment='start'>
         <Button name={`${form},${name}`}>
           <Image src={isSelected ? check : unCheck} />
         </Button>
-        <Box direction='vertical' alignment='start'>
-          <Text alignment='start'>
-            {text}
-          </Text>
-          {!!description &&
-            <Text alignment='start' color='muted'>
-              {description}
-            </Text>}
-        </Box>
+      </Box>
+
+      <Box direction='vertical'>
+        <Text alignment='start'>
+          {text}
+        </Text>
+        {!!description &&
+          <Text alignment='start' color='muted'>
+            {description}
+          </Text>}
       </Box>
     </Section>
   )
