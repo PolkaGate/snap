@@ -29,12 +29,13 @@ export async function stakeInit(
 
   const { address, amount, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, transferable } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
-  const decimal =stakingInfo.decimal;
-  let token = stakingInfo.token;
+
+  const decimal = stakingInfo!.decimal;
+  const token = stakingInfo!.token;
 
   const minimumActiveStake = stakingInfo?.minimumActiveStake
   const minimumActiveStakeInHuman = Number(amountToHuman(minimumActiveStake, decimal) || 0);
-  const stakingType = stakeTypeForm?.stakingTypeOptions || Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo';
+  const stakingType = stakeTypeForm?.stakingTypeOptions || (Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo');
 
   const DEFAULT_STAKING_DATA = {
     type: stakingType,

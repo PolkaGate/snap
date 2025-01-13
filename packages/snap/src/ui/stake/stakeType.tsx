@@ -22,20 +22,16 @@ export async function stakeType(
         ...(context || {})
       },
       id,
-      ui: ui(context, stakeFormType, poolsInfo),
+      ui: ui(context, poolsInfo, selectedOption),
     },
   });
 }
 
 const ui = (
   context: StakingInitContextType,
-  stakeFormType: StakeTypeFormState,
-  poolsInfo: PoolInfo[] | undefined
+  poolsInfo: PoolInfo[] | undefined, 
+  selectedOption: "Solo" | "Pool" | undefined
 ) => {
-
-  const { stakingData } = context;
-
-  const selectedOption = stakeFormType?.stakingTypeOptions || stakingData?.type;
 
   return (
     <Container>
@@ -43,8 +39,6 @@ const ui = (
         <FlowHeader
           action='stakeInit'
           label='Staking type'
-          showHome
-          isSubAction
           tooltipType='staking'
         />
         <Box alignment="center" center>
