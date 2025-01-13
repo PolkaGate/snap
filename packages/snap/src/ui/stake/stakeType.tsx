@@ -1,35 +1,36 @@
-import { Box, Container, Footer, Button, RadioGroup, Radio, Field, Form } from "@metamask/snaps-sdk/jsx";
-import { StakeTypeFormState, StakingInitContextType } from "./types";
+import { Box, Container, Footer, Button } from "@metamask/snaps-sdk/jsx";
+import { StakingInitContextType, StakingType } from "./types";
 import getPools, { PoolInfo } from "./utils/getPools";
-import { PoolOptions } from "./components/PoolOptions";
-import { SoloOptions } from "./components/SoloOptions";
+import { PoolOption } from "./components/PoolOption";
+import { SoloOption } from "./components/SoloOption";
 import { FlowHeader } from "../components/FlowHeader";
 
 export async function stakeType(
   id: string,
   context: StakingInitContextType,
-  stakeFormType: StakeTypeFormState
+  selectedOption: StakingType
 ) {
 
   const { genesisHash, stakingData } = context;
-  const selectedOption = stakeFormType?.stakingTypeOptions || stakingData?.type;
-  const poolsInfo = selectedOption === 'Pool' ? await getPools(genesisHash) : [];
+  const stakingType = selectedOption || stakingData?.type;
+  const poolsInfo = stakingType === 'Pool' ? await getPools(genesisHash) : [];
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       context: {
-        ...(context || {})
+        ...(context || {}),
+        stakingType
       },
       id,
-      ui: ui(context, poolsInfo, selectedOption),
+      ui: ui(context, poolsInfo, stakingType),
     },
   });
 }
 
 const ui = (
   context: StakingInitContextType,
-  poolsInfo: PoolInfo[] | undefined, 
+  poolsInfo: PoolInfo[] | undefined,
   selectedOption: "Solo" | "Pool" | undefined
 ) => {
 
@@ -41,25 +42,15 @@ const ui = (
           label='Staking type'
           tooltipType='staking'
         />
-        <Box alignment="center" center>
-          <Form name="stakeTypeForm">
-            <Field>
-              <RadioGroup name="stakingTypeOptions" value={selectedOption}>
-                <Radio value="Pool">Pool staking</Radio>
-                <Radio value="Solo">Solo staking</Radio>
-              </RadioGroup>
-            </Field>
-          </Form>
-        </Box>
-        {selectedOption === 'Pool'
-          ? <PoolOptions
-            context={context}
-            poolsInfo={poolsInfo}
-          />
-          : <SoloOptions
-            context={context}
-          />
-        }
+        <PoolOption
+          isSelected={selectedOption === 'Pool'}
+          context={context}
+          poolsInfo={poolsInfo}
+        />
+        <SoloOption
+          isSelected={selectedOption === 'Solo'}
+          context={context}
+        />
       </Box>
       <Footer>
         <Button name='stakeInit'>

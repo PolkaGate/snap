@@ -119,24 +119,27 @@ export interface StakingIndexContextType {
   recommendedValidators: string[];
 }
 
+export type StakingType= 'Pool' | 'Solo' | undefined;
+
 export interface StakingInitContextType {
   address: string;
   amount: string | undefined;
   call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
   claimable?: string;
-  pooledBalance?: string;
-  redeemable?: string;
   decimal: number;
+  fee?: string;
   genesisHash: HexString;
   logo: string;
-  fee?: string;
   params?: unknown[];
+  pooledBalance?: string;
   price: number;
   rate: number;
   recommendedValidators: HexString[];
+  redeemable?: string;
   restakeRewards?: boolean;
   rewardsInfo: RewardsInfo[];
   stakedTokens: Balances[];
+  stakingType: StakingType;
   sanitizedChainName: string;
   selectedValidators?: string[];
   stakingData: StakingDataType | undefined;

@@ -203,25 +203,24 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await showSpinner(id, 'Loading, please wait ...');
       case 'stakeAmount':
         {
-          const stakeTypeForm = state.stakeTypeForm as StakeTypeFormState;
-
           const formErrors = stakePoolFormValidation(stakeForm, context);
           const selectPoolForm = state.selectPoolForm as PoolSelectorFormState;
           const newSelection = {
             selectPoolForm,
             selectedValidators: eventName === 'stakeInitWithSelectedValidators' ? context.selectedValidators : undefined
           }
-          await stakeInit(id, stakeForm?.stakeAmount, formErrors, context, newSelection, stakeTypeForm);
+          await stakeInit(id, stakeForm?.stakeAmount, formErrors, context, newSelection);
           break;
         }
       case 'stakingType':
         await showSpinner(id, 'Loading, please wait ...');
       case 'stakingTypeOptions':
-        const stakeTypeForm = state.stakeTypeForm as StakeTypeFormState;
-        if (stakeTypeForm?.stakingTypeOptions === 'Pool') {
+        const [__, stakingTypeOption] = event.name.split(',');
+
+        if (stakingTypeOption=== 'Pool') {
           await showSpinner(id, 'Loading, please wait ...');
         }
-        await stakeType(id, context, stakeTypeForm);
+        await stakeType(id, context, stakingTypeOption);
         break;
 
       case 'stakeFirstTimeReview':

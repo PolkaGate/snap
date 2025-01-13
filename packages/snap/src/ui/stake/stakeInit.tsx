@@ -7,11 +7,11 @@ import { getSnapState } from "../../rpc/stateManagement";
 import { StakeForm } from "./components/StakeForm";
 import { POLKAGATE_POOL_IDS } from "./const";
 import { Row2 } from "./components/Row2";
-import { PoolSelectorFormState, StakeFormErrors, StakeTypeFormState, StakingDataType, StakingInitContextType } from "./types";
-import { ellipsis } from "./components/PoolSelector";
+import { PoolSelectorFormState, StakeFormErrors, StakingDataType, StakingInitContextType } from "./types";
 import { isEmptyObject } from "../../utils";
 import { FlowHeader } from "../components/FlowHeader";
 import { areArraysEqual } from "../../util/areArraysEqual";
+import { ellipsis } from "./utils/ellipsis";
 
 interface NewSelectionType {
   selectPoolForm: PoolSelectorFormState | undefined;
@@ -23,11 +23,10 @@ export async function stakeInit(
   formAmount: number | undefined,
   formErrors: StakeFormErrors,
   context: StakingInitContextType,
-  newSelection: NewSelectionType,
-  stakeTypeForm: StakeTypeFormState
+  newSelection: NewSelectionType
 ) {
 
-  const { address, amount, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, transferable } = context;
+  const { address, amount, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, stakingType, transferable } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
 
   const decimal = stakingInfo!.decimal;
@@ -35,10 +34,10 @@ export async function stakeInit(
 
   const minimumActiveStake = stakingInfo?.minimumActiveStake
   const minimumActiveStakeInHuman = Number(amountToHuman(minimumActiveStake, decimal) || 0);
-  const stakingType = stakeTypeForm?.stakingTypeOptions || (Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo');
+  const _stakingType = stakingType || (Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo');
 
   const DEFAULT_STAKING_DATA = {
-    type: stakingType,
+    type: _stakingType,
     pool: {
       id: POLKAGATE_POOL_IDS[genesisHash],
       name: '❤️ PolkaGate | https://polkagate.xyz'
@@ -74,12 +73,15 @@ export async function stakeInit(
   const { selectPoolForm, selectedValidators } = newSelection;
 
   if (selectPoolForm || selectedValidators) {
+
     if (selectPoolForm) {
       const [id, name] = selectPoolForm.poolSelector.split(',');
-      maybeSelectedStakingData = { type: 'Pool', pool: { id: Number(id), name } }
+      maybeSelectedStakingData = { ...DEFAULT_STAKING_DATA, type: 'Pool', pool: { id: Number(id), name } }
       isRecommended = Number(id) === DEFAULT_STAKING_DATA.pool.id;
+
     } else {
-      maybeSelectedStakingData = { type: 'Solo', solo: { validators: selectedValidators } }
+
+      maybeSelectedStakingData = { ...DEFAULT_STAKING_DATA, type: 'Solo', solo: { validators: selectedValidators } }
       isRecommended = areArraysEqual(selectedValidators, DEFAULT_STAKING_DATA.solo.validators)
     }
   }
@@ -104,7 +106,7 @@ export async function stakeInit(
         DEFAULT_STAKING_DATA
       },
       id,
-      ui: ui(_amount, decimal, formErrors, _logo, token, _transferable, _price, stakingType, _rate, stakingData, isRecommended, DEFAULT_STAKING_DATA),
+      ui: ui(_amount, decimal, formErrors, _logo, token, _transferable, _price, _stakingType, _rate, stakingData, isRecommended, DEFAULT_STAKING_DATA),
     },
   });
 }
@@ -155,7 +157,7 @@ const ui = (
                     {
                       isRecommended
                         ? 'Recommended'
-                        : stakingData.pool
+                        : stakingType === 'Pool'
                           ? ellipsis(stakingData.pool?.name || 'Unknown')
                           : `Validators: ${stakingData.solo?.validators?.length} of ${DEFAULT_STAKING_DATA.solo.validators.length}`
                     }

@@ -1,8 +1,8 @@
 import { Box, Text, Tooltip, Icon, Checkbox, Avatar, SnapComponent } from '@metamask/snaps-sdk/jsx';
 import { Identity } from './utils/getValidatorIdentities';
-import { ellipsis } from './components/PoolSelector';
 import { BN } from '@polkadot/util';
 import { AccountId } from '@polkadot/types/interfaces';
+import { ellipsis } from './utils/ellipsis';
 
 interface Props {
   accountId: AccountId;
@@ -25,7 +25,7 @@ export const ShowValidator: SnapComponent<Props> = ({ accountId, commission, ide
             <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
             <Tooltip content={`${accountId}`}>
               <Text alignment='start'>
-                {ellipsis(identity.display)}
+                {ellipsis(identity.display, 16)}
               </Text>
             </Tooltip>
           </Box>
@@ -34,7 +34,7 @@ export const ShowValidator: SnapComponent<Props> = ({ accountId, commission, ide
             <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
             <Tooltip content={`${accountId}`}>
               <Text alignment='start'>
-                {ellipsis(String(accountId), 20)}
+                {ellipsis(String(accountId), 16)}
               </Text>
             </Tooltip>
           </Box>

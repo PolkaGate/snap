@@ -14,6 +14,7 @@ import { amountToHuman } from '../../../util/amountToHuman';
 import { PoolInfo } from '../utils/getPools';
 import { StakingInitContextType } from '../types';
 import { WentWrong } from '../../components/WentWrong';
+import { ellipsis } from '../utils/ellipsis';
 
 export type Props = {
   poolsInfo: PoolInfo[] | undefined,
@@ -22,13 +23,6 @@ export type Props = {
 };
 
 const MAX_POOL_NAME_TO_SHOW = 25;
-
-export const ellipsis = (name: string, limit = MAX_POOL_NAME_TO_SHOW) => {
-  const maybeDots = name.length > limit ? '...' : '';
-
-  return name.slice(0, limit) + maybeDots;
-}
-
 
 export const PoolSelector: SnapComponent<Props> = ({
   poolsInfo,
@@ -54,7 +48,7 @@ export const PoolSelector: SnapComponent<Props> = ({
 
               const members = bondedPool.memberCounter;
               const staked = bondedPool.points;
-              const ellipsisPoolName = metadata && metadata.length > MAX_POOL_NAME_TO_SHOW ? ellipsis(metadata) : metadata;
+              const ellipsisPoolName = metadata ? ellipsis(metadata, MAX_POOL_NAME_TO_SHOW) : 'Unknown';
 
               const icon = createAvatar(style, {
                 seed: String(poolId),
