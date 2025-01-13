@@ -19,10 +19,10 @@ export async function stakePoolReview(
   id: string,
   context: StakingPoolContextType,
   maybeGenesisHash: HexString,
-  withUpdate?: boolean
+  fetchType?: BALANCE_FETCH_TYPE
 ) {
 
-  const { address, balancesAll, pricesInUsd } = await handleBalancesAll(withUpdate ? BALANCE_FETCH_TYPE.FORCE_UPDATE : BALANCE_FETCH_TYPE.SAVED_ONLY);
+  const { address, balancesAll, pricesInUsd } = await handleBalancesAll(fetchType);
   const genesisHash = maybeGenesisHash || context?.genesisHash;
 
   const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);

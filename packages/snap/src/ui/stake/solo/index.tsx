@@ -19,10 +19,10 @@ export async function stakeSoloReview(
   id: string,
   context: StakingSoloContextType,
   maybeGenesisHash: HexString | undefined,
-  withUpdate?: boolean
+  fetchType?: BALANCE_FETCH_TYPE
 ) {
 
-  const { balancesAll, pricesInUsd } = await handleBalancesAll(withUpdate ? BALANCE_FETCH_TYPE.FORCE_UPDATE : BALANCE_FETCH_TYPE.SAVED_ONLY);
+  const { balancesAll, pricesInUsd } = await handleBalancesAll(fetchType);
   const genesisHash = maybeGenesisHash || context?.genesisHash;
 
   const stakedBalances = balancesAll.filter(({ soloTotal, genesisHash: _gh }) => soloTotal && _gh === genesisHash);

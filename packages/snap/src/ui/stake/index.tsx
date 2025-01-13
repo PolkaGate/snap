@@ -1,5 +1,5 @@
 import { Box, Button, Container, Footer, Checkbox, Form } from '@metamask/snaps-sdk/jsx';
-import { handleBalancesAll } from '../../util/handleBalancesAll';
+import { BALANCE_FETCH_TYPE, handleBalancesAll } from '../../util/handleBalancesAll';
 import { Balances } from '../../util';
 import { STAKING_CHAINS, STAKING_TEST_CHAINS } from './const';
 import getChainName from '../../util/getChainName';
@@ -16,8 +16,8 @@ import { fetchStaking } from './utils/fetchStaking';
 
 const STAKING_TEST_NETS_ENABLE_DEFAULT = false;
 
-export async function stakingIndex(id: string) {
-  const { address, balancesAll, logos } = await handleBalancesAll();
+export async function stakingIndex(id: string, fetchType?: BALANCE_FETCH_TYPE) {
+  const { address, balancesAll, logos } = await handleBalancesAll(fetchType);
 
   const selectedChains = ((await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS) as HexString[];
   const enabledStakingChains = STAKING_CHAINS.filter((stakingChain) => selectedChains.includes(stakingChain));

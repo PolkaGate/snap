@@ -188,6 +188,11 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await stakingIndex(id);
         break;
 
+      case 'stakeIndexWithUpdate':
+        await showSpinner(id, 'Loading, please wait ...');
+        await stakingIndex(id, BALANCE_FETCH_TYPE.FORCE_UPDATE);
+        break;
+
       case 'stakingInfo':
         await showSpinner(id, 'Loading, please wait ...');
         await stakingInfo(id, maybeGenesisHash!, context);
@@ -237,7 +242,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
 
       case 'stakePoolReviewWithUpdate':
         await showSpinner(id, 'Updating, please wait ...');
-        await stakePoolReview(id, context, maybeGenesisHash, true);
+        await stakePoolReview(id, context, maybeGenesisHash, BALANCE_FETCH_TYPE.FORCE_UPDATE);
         break;
 
       // SOLO 
@@ -248,7 +253,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
 
       case 'stakeSoloReviewWithUpdate':
         await showSpinner(id, 'Updating, please wait ...');
-        await stakeSoloReview(id, context, maybeGenesisHash, true);
+        await stakeSoloReview(id, context, maybeGenesisHash, BALANCE_FETCH_TYPE.FORCE_UPDATE);
         break;
 
       /** ----------------------------claim--------------------------------- */

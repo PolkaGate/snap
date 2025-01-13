@@ -12,7 +12,7 @@ export async function soloRedeemConfirm(id: string, context: StakingSoloContextT
   const { address, active, genesisHash, unlocking } = context;
 
   const { call, params } = await getRedeemSolo(address, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
-  const returnPage = new BN(active || 0).isZero() && new BN(unlocking || 0).isZero() ? 'stakeIndex' : 'stakeSoloReviewWithUpdate';
+  const returnPage = new BN(active || 0).isZero() && new BN(unlocking || 0).isZero() ? 'stakeIndexWithUpdate' : 'stakeSoloReviewWithUpdate';
 
   await showConfirm(returnPage, id, context, call, params)
 };
