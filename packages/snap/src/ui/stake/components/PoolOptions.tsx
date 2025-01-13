@@ -27,13 +27,15 @@ export const PoolOptions: SnapComponent<Props> = ({
             Pool staking
           </Heading>
           <Image src={pool} />
-          </Box>
+        </Box>
         <Row2
+          alignment="start"
           label="Minimum stake"
           value={`${minJoinBondInHuman || 1} ${token}`}
           valueColor="muted"
         />
         <Row2
+          alignment="start"
           label="Rewards"
           value='Claim manually'
           valueColor="muted"

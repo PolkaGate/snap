@@ -26,11 +26,13 @@ export const SoloOptions: SnapComponent<Props> = ({
           <Image src={solo} />
         </Box>
         <Row2
+          alignment="start"
           label="Minimum stake"
           value={`${minimumActiveStakeInHuman} ${token}`}
           valueColor="muted"
         />
         <Row2
+          alignment="start"
           label="Rewards"
           value='Paid automatically'
           valueColor="muted"
@@ -44,22 +46,22 @@ export const SoloOptions: SnapComponent<Props> = ({
       </Section>
       <Section>
         <Box direction="horizontal" alignment="space-between" center>
-          <Box direction="horizontal" alignment="start" center>
+          <Box direction="vertical" alignment="start">
+            <Text>
+              Validators
+            </Text>
+            <Text color='success'>
+              Recommended
+            </Text>
+          </Box>
+          <Box direction="horizontal" alignment="end" center>
             <Text color="muted">
               {String(stakingData?.solo.validators.length || 0)}
             </Text>
-            <Box direction="vertical" alignment="start">
-              <Text>
-                Validators
-              </Text>
-              <Text color='success'>
-                recommended
-              </Text>
-            </Box>
+            <Button name='selectValidators' variant='primary'>
+              <Icon name='arrow-right' color='muted' size='md' />
+            </Button>
           </Box>
-          <Button name='selectValidators' variant='primary'>
-            <Icon name='arrow-right' color='muted' size='md' />
-          </Button>
         </Box>
       </Section>
     </Box>

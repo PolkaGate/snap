@@ -8,6 +8,7 @@ type Props = {
   labelColor?: TextColors;
   extraColor?: TextColors;
   valueColor?: TextColors;
+  alignment?: "space-between" | "start" | "center" | "end" | "space-around" | undefined
 }
 
 /**
@@ -15,10 +16,10 @@ type Props = {
  *
  * @returns The Row 2 component.
  */
-export const Row2: SnapComponent<Props> = ({ label, extra, value, labelColor='muted',  extraColor='muted',  valueColor='default' }) => (
-  <Box alignment="space-between" direction="horizontal" center>
+export const Row2: SnapComponent<Props> = ({ alignment, label, extra, value, labelColor = 'muted', extraColor = 'muted', valueColor = 'default' }) => (
+  <Box alignment={alignment || "space-between"} direction="horizontal" center>
     <Text color={labelColor}>
-      {label}
+      {label}{alignment === 'start' ? ':' : ''}
     </Text>
     <Box alignment="end" direction="horizontal" center>
       {!!extra &&
