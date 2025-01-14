@@ -3,6 +3,7 @@ import { amountToHuman } from "../../../../util/amountToHuman";
 import { pool } from "../../../image/icons";
 import { ClaimRewards } from "./ClaimRewards";
 import { BN } from "@polkadot/util";
+import { updateSvgDimensions } from "../../../../util/updateSvgDimensions";
 
 interface Props {
   amount?: BN;
@@ -26,7 +27,7 @@ export const Rewards: SnapComponent<Props> = (({ amount, decimal, price, token, 
           ${`${(Number(amountToHuman(amount || 0, decimal)) * price).toFixed(2)}`}
         </Text>
       </Box>
-      <Image src={pool} />
+      <Image src={updateSvgDimensions(pool, 80)} />
     </Box>
     <ClaimRewards
       decimal={decimal}

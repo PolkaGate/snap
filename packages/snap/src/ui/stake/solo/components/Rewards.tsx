@@ -2,6 +2,7 @@ import { Box, Section, Text, Heading, Image, SnapComponent } from "@metamask/sna
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { solo } from "../../../image/icons";
 import { BN } from "@polkadot/util";
+import { updateSvgDimensions } from "../../../../util/updateSvgDimensions";
 
 interface Props {
   amount?: BN;
@@ -25,7 +26,7 @@ export const Rewards: SnapComponent<Props> = (({ amount, decimal, price, token }
           ${`${(Number(amountToHuman(amount || '0', decimal)) * price).toFixed(2)}`}
         </Text>
       </Box>
-      <Image src={solo} />
+      <Image src={updateSvgDimensions(solo, 80)} />
     </Box>
   </Section>
 )
