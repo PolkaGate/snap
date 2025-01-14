@@ -33,7 +33,7 @@ export async function stakePoolReview(
   const sanitizedChainName = await getChainName(genesisHash, true);
 
   let poolTotalClaimed = BN_ZERO;
-  if (withUpdate) {
+  if (fetchType === BALANCE_FETCH_TYPE.FORCE_UPDATE) {
     poolTotalClaimed = await getPoolClaimedReward(sanitizedChainName!, address)
   } else {
     poolTotalClaimed = context.rewardsInfo.find((info) => info.genesisHash === genesisHash && info.subType === 'TotalClaimed')?.reward || BN_ZERO;
