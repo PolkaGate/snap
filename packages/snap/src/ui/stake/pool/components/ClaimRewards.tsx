@@ -1,4 +1,4 @@
-import { Box, Section, Text, Button, SnapComponent, Divider } from "@metamask/snaps-sdk/jsx";
+import { Box, Text, Button, SnapComponent, Divider } from "@metamask/snaps-sdk/jsx";
 import { BN } from "@polkadot/util";
 import { amountToHuman } from "../../../../util/amountToHuman";
 
@@ -19,19 +19,14 @@ export const ClaimRewards: SnapComponent<Props> = ({ amount, token, decimal, pri
         <Divider />
       }
       {hasRewards &&
-        <Section direction="horizontal" alignment="space-between">
-            {/* <Box direction="vertical" alignment="start"> */}
-              <Text>
-                {`${amountToHuman(amount || 0, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
-              </Text>
-              {/* <Text color="muted">
-                ${`${(Number(amountToHuman(amount || 0, decimal)) * price).toFixed(2)}`}
-              </Text>
-            </Box> */}
-            <Button name='claimRewards' variant='primary' type='button'>
-              Claim rewards
-            </Button>
-        </Section>
+        <Box direction="horizontal" alignment="space-around">
+          <Text>
+            {`${amountToHuman(amount || 0, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
+          </Text>
+          <Button name='claimRewards' variant='primary' type='button'>
+            Claim rewards
+          </Button>
+        </Box>
       }
     </Box>
   )
