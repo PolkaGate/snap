@@ -2,7 +2,7 @@ import { Box, Button, SnapComponent, Link, Icon, Section, Footer, Container, Tex
 import { ActionRow } from "../components/ActionRow";
 import { book, currency, email, github, language, telegram, twitter, web, youtube } from "../image/icons";
 import { getKeyPair } from "../../util";
-import { SettingsHeader } from "./SettingsHeader";
+import { FlowHeader } from "../components/FlowHeader";
 
 /**
  * This shows the more page
@@ -27,9 +27,10 @@ const ui = (address: string) => {
   return (
     <Container>
       <Box direction="vertical" alignment="start">
-        <SettingsHeader
+        <FlowHeader
           action='backToHomeWithoutUpdate'
           label='Settings'
+          tooltip='To unlock the full range of features, download the PolkaGate Extension today!'
         />
 
         <Text color='muted' >
