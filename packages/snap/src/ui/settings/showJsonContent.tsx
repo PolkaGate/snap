@@ -1,7 +1,7 @@
 
-import { Text, Box, Button, Container, Divider, Field, Footer, Form, Heading, Icon, Input, Section, Copyable } from '@metamask/snaps-sdk/jsx';
+import { Text, Box, Button, Container, Footer, Section, Copyable } from '@metamask/snaps-sdk/jsx';
 import { getJsonKeyPair } from '../../util';
-import { SettingsHeader } from './SettingsHeader';
+import { FlowHeader } from '../components/FlowHeader';
 
 /**
 
@@ -32,10 +32,9 @@ const jsonContentUi = (json: string) => {
   return (
     <Container>
       <Box direction='vertical' alignment='start'>
-        <SettingsHeader
+        <FlowHeader
           action='settings'
           label='Export account'
-          isSubAction
           showHome
         />
         <Text alignment='start' color='muted'>
