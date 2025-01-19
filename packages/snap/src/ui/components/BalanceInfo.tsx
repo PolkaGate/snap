@@ -28,8 +28,8 @@ export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, label, valu
     <Box>
       {show &&
         <Box alignment='space-between' direction='horizontal'>
-          <Box alignment='start' direction='horizontal' center>
-            <Icon size='md' name={iconName} color='muted' />
+          <Box alignment='start' direction='horizontal'>
+            <Icon name={iconName} color='muted' />
             <Text color='muted'>{label} </Text>
           </Box>
           <Text color='muted'>{value}</Text>
