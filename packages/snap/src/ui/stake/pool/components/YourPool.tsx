@@ -24,7 +24,7 @@ export const YourPool: SnapComponent<Props> = ({ poolId, poolName }) => {
             <Box direction="horizontal" alignment="start">
               <Image src={icon} />
               <Text >
-                {`${poolName})`}
+                {`${poolName}`}
               </Text>
             </Box>
           </Box>
