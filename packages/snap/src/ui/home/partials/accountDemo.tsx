@@ -74,11 +74,8 @@ export const accountDemo = (
           const logo = logos.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.logo as string;
           const price = prices.find(({ genesisHash }) => genesisHash === balances.genesisHash)?.price.value as number; // needs that prices be token-based when supporting multi asset chains
 
-          return (
-            <Section>
-              <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} hideBalance={hideBalance} />
-            </Section>
-          )
+          return <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} hideBalance={hideBalance} />
+
         })
         : <Section>
           <Text alignment='center'> No tokens on the selected networks!</Text>
