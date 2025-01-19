@@ -6,7 +6,6 @@ import type { Balances } from '../../util/getBalance';
 import { Box, Card, Divider, Text, SnapComponent, Icon, IconName, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from '../../util/amountToHuman';
 import { BN } from '@polkadot/util';
-import { updateSvgDimensions } from '../../util/updateSvgDimensions';
 
 type Props = {
   balances: Balances;
@@ -47,7 +46,7 @@ export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showD
   return (
     <Section>
       <Card
-        image={updateSvgDimensions(logo, 40)}
+        image={logo}
         title={token}
         description={`$${price}`}
         value={
