@@ -26,8 +26,9 @@ const convertId = (id) => ({
 
 export interface Identity {
   display: string;
+  displayParent?: string;
   email: string;
-  judgement: unknown;
+  judgements: unknown;
   legal: string;
   riot: string;
   twitter: string;
@@ -136,7 +137,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
             api.query.identity.identityOf(i.parentAddress)
           ));
 
-      const parsedInfo = parentInfo.map((i, index) => {
+      const parsedParentInfo = parentInfo.map((i, index) => {
         const id = i.isSome ? i.unwrap()[0] : undefined;
 
         return id?.info
@@ -151,7 +152,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
           : undefined;
       }).filter((i) => !!i);
 
-      accountsInfo = accountsInfo.concat(parsedInfo);
+      accountsInfo = accountsInfo.concat(parsedParentInfo);
       totalFetched += page;
     }
 
@@ -161,7 +162,6 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
 
   } catch (error) {
     console.log('something went wrong while getting validators id, err:', error);
-
     return null;
   }
 }

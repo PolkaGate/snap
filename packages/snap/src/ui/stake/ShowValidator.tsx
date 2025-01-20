@@ -25,7 +25,7 @@ export const ShowValidator: SnapComponent<Props> = ({ accountId, commission, ide
             <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
             <Tooltip content={`${accountId}`}>
               <Text alignment='start'>
-                {ellipsis(identity.display, 16)}
+                {ellipsis((identity.displayParent ? `${identity.displayParent}/` : '') + identity.display, 16)}
               </Text>
             </Tooltip>
           </Box>

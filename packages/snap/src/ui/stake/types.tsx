@@ -119,9 +119,10 @@ export interface StakingIndexContextType {
   recommendedValidators: string[];
 }
 
-export type StakingType= 'Pool' | 'Solo' | undefined;
+export type StakingType = 'Pool' | 'Solo' | undefined;
 
 export interface StakingInitContextType {
+  action?: string;
   address: string;
   amount: string | undefined;
   call?: SubmittableExtrinsicFunction<"promise", AnyTuple>;
