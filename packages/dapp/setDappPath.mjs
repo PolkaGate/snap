@@ -1,5 +1,5 @@
-const fs = require('fs');
-const packageJson = require('./package.json');
+import fs from 'fs';
+import packageJson from './package.json' assert { type: 'json' };
 
 const isProduction = process.env.NODE_ENV === 'production';
 packageJson.dependencies['@polkagate/extension-dapp'] = isProduction
