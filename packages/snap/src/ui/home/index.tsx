@@ -11,7 +11,7 @@ import { accountDemo } from './partials/accountDemo';
  * @param id - The id of current UI interface.
  * @param genesisHash - Chain genesisHash.
  */
-export async function home(id: string, balanceFetchType?: BALANCE_FETCH_TYPE) {
+export async function home(id: string, balanceFetchType = BALANCE_FETCH_TYPE.RECENTLY_FETCHED, showDetails?:boolean) {
   const { balancesAll, logos, pricesInUsd } = await handleBalancesAll(balanceFetchType)
   const hideBalance = await getSnapState('hideBalance');
 
@@ -19,7 +19,8 @@ export async function home(id: string, balanceFetchType?: BALANCE_FETCH_TYPE) {
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(hideBalance, balancesAll, logos, pricesInUsd),
+      ui: accountDemo(hideBalance, balancesAll, logos, pricesInUsd, showDetails),
+      context: { show: !!showDetails }
     },
   });
 }

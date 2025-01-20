@@ -8,6 +8,7 @@ import { Box, Heading, Section, Icon, Text, Button, SnapComponent, IconName } fr
 import { BalanceInfo } from '../../components';
 import { PriceValue } from '../../../util/getPrices';
 import { TotalBalance } from './TotalBalance';
+import { NoTokensSection } from './NoTokensSection';
 
 type CTAProps = {
   icon: `${IconName}`;
@@ -22,7 +23,7 @@ const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
     </Button >
     <Text alignment='center' color='muted'> {label}</Text>
   </Box>
-)
+);
 
 export const accountDemo = (
   hideBalance: boolean | undefined,
@@ -77,13 +78,7 @@ export const accountDemo = (
           return <BalanceInfo balances={balances} price={price} logo={logo} showDetail={showDetails} hideBalance={hideBalance} />
 
         })
-        : <Section>
-          <Text alignment='center'> No tokens on the selected networks!</Text>
-          <Box direction='horizontal' alignment='center'>
-            <Text alignment='center' color='muted'>Select your preferred networks using the icon above.</Text>
-            <Icon size='md' color='muted' name='customize' />
-          </Box>
-        </Section>
+        : <NoTokensSection />
       }
     </Box>
   );

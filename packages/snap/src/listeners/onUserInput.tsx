@@ -12,7 +12,6 @@ import {
 import { updateSnapState } from '../rpc/stateManagement';
 import { settings } from '../ui/settings';
 import { receive } from '../ui/receive';
-import { balanceDetails } from '../ui/home/balanceDetails';
 import { send } from '../ui/send';
 import { PayoutSelectionFormState, SendFormState } from '../ui/send/types';
 import { formValidation } from '../ui/send/utils/utils';
@@ -21,7 +20,7 @@ import { HexString } from '@polkadot/util/types';
 import { CustomizeChains } from '../ui/selectChains/CustomizeChains';
 import { SelectedChainsFormState } from '../ui/selectChains/types';
 import { BALANCE_FETCH_TYPE } from '../util/handleBalancesAll';
-import { PoolSelectorFormState, StakeFormState, StakeMoreFormState, StakeTypeFormState } from '../ui/stake/types';
+import { PoolSelectorFormState, StakeFormState, StakeMoreFormState } from '../ui/stake/types';
 import { stakeInit } from '../ui/stake/stakeInit';
 import { DEFAULT_CHAINS_GENESIS } from '../constants';
 import { stakePoolFormValidation } from '../ui/stake/utils/stakePoolFormValidation';
@@ -93,16 +92,13 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
     switch (eventName) {
       //===================================HOME===================================//
       case 'balanceDetails':
-        await balanceDetails(id, context?.show === undefined ? true : !context.show);
+        await home(id, BALANCE_FETCH_TYPE.RECENTLY_FETCHED, context?.show === undefined ? true : !context.show);
         break;
 
       case 'hideBalance':
-        await updateSnapState('hideBalance', true);
-        await home(id);
-        break;
-
       case 'showBalance':
-        await updateSnapState('hideBalance', false);
+        const shouldHide = eventName === 'hideBalance';
+        await updateSnapState('hideBalance', shouldHide);
         await home(id);
         break;
 
@@ -113,7 +109,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
 
       case 'refreshBalances':
       case 'backToHomeWithUpdate':
-
         await showSpinner(id, 'Updating, please wait ...');
         await home(id, BALANCE_FETCH_TYPE.FORCE_UPDATE);
         break;
@@ -217,7 +212,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
       case 'stakingTypeOptions':
         const [__, stakingTypeOption] = event.name.split(',');
 
-        if (stakingTypeOption=== 'Pool') {
+        if (stakingTypeOption === 'Pool') {
           await showSpinner(id, 'Loading, please wait ...');
         }
         await stakeType(id, context, stakingTypeOption);
