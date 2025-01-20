@@ -47,7 +47,7 @@ const ui = (
     <Container>
       <Box>
         <FlowHeader
-          action='stakeDetailsPool'
+          action='stakePoolIndex'
           label='Redeem'
           showHome
           tooltipType='staking'

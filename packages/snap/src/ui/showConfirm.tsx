@@ -2,6 +2,7 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { HexString } from "@polkadot/util/types";
 import { getKeyPair } from "../util";
 import getChainName from "../util/getChainName";
 import { Confirmation } from "./components/Confirmation";
@@ -17,7 +18,7 @@ export async function showConfirm(
   params: unknown[]
 ) {
 
-  const { genesisHash } = context;
+  const  genesisHash  = context.genesisHash as HexString;
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);

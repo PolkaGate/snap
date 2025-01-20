@@ -11,5 +11,5 @@ export async function rewardsDestinationConfirm(id: string, context: StakingSolo
 
   const { call, params } = await getPayee(address, genesisHash, GET_PAYEE_OUTPUT_TYPE.CALL_PARAMS, payee?.maybeNew) as CallParamsType;
 
-  await showConfirm('stakeSoloReviewWithUpdate', id, { ...context ,  payee: {}}, call, params)
+  await showConfirm('stakeSoloIndexWithUpdate', id, { ...context ,  payee: {}}, call, params)
 };

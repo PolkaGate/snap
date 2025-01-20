@@ -13,7 +13,7 @@ export async function poolRedeemConfirm(id: string, context: StakingPoolContextT
   const { address, active, genesisHash, unlocking } = context;
   const { call, params } = await getRedeem(address, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
-  const returnPage = new BN(active || 0).isZero() &&  new BN(unlocking || 0).isZero() ? 'stakeIndexWithUpdate' : 'stakePoolReviewWithUpdate';
+  const returnPage = new BN(active || 0).isZero() &&  new BN(unlocking || 0).isZero() ? 'stakeIndexWithUpdate' : 'stakePoolIndexWithUpdate';
 
   await showConfirm(returnPage, id,  context,    call,    params)
 };

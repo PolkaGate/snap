@@ -3,12 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BN } from "@polkadot/util";
-import { getKeyPair } from "../../util";
 import { amountToMachine } from "../../util/amountToMachine";
 import { getApi } from "../../util/getApi";
-import getChainName from "../../util/getChainName";
-import { Confirmation } from "../components/Confirmation";
 import { StakingInitContextType } from "./types";
+import { showConfirm } from "../showConfirm";
 
 export async function confirmStake(id: string, context: StakingInitContextType) {
   const { genesisHash, amount, decimal, stakingData } = context;
@@ -22,43 +20,24 @@ export async function confirmStake(id: string, context: StakingInitContextType) 
 
   let params;
   let call;
+  let returnPage = 'stakeSoloIndexWithUpdate';
 
-  if (stakingData.type === 'Pool') {
-    const poolId = new BN(stakingData.pool.id);
+  if (stakingData?.type === 'Pool') {
+    const poolId = new BN(stakingData.pool!.id);
     params = [amountAsBN, poolId];
     call = api.tx['nominationPools']['join']; // can add auto compound tx fee as well
+    returnPage = 'stakePoolIndexWithUpdate';
 
   } else {
     const bonded = api.tx['staking']['bond'];
     const bondParams = [amountAsBN, 'Staked'];
     const nominated = api.tx['staking']['nominate'];
 
-    const ids = stakingData.solo.validators;
+    const ids = stakingData!.solo!.validators;
     call = api.tx['utility']['batchAll'];
 
     params = [[bonded(...bondParams), nominated(ids)]];
   }
 
-  const keyPair = await getKeyPair(genesisHash);
-  const txHash = await call(...(params || [])).signAndSend(keyPair);
-
-  const chainName = await getChainName(genesisHash)
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      context: {
-        ...(context || {}),
-      },
-      id,
-      ui: (
-        <Confirmation
-          action='stakeSoloReviewWithUpdate'
-          button='Done'
-          chainName={chainName}
-          txHash={String(txHash)}
-        />
-      )
-    },
-  });
+  await showConfirm(returnPage, id, context, call, params)
 };

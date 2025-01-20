@@ -52,7 +52,7 @@ const ui = (
   return (
     <Box>
       <SelectedValidatorsFlowHeader
-        action='stakeDetailsSolo'
+        action='stakeSoloIndex'
         label='Your validators'
       />
       <Box direction='horizontal' alignment="start" center>

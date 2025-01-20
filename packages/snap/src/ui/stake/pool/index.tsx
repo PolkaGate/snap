@@ -15,7 +15,7 @@ import { getPoolClaimedReward } from "../utils/getPoolClaimedRewards";
 import { Redeemable } from "../components/Redeemable";
 import { Unstaking } from "../components/Unstaking";
 
-export async function stakePoolReview(
+export async function stakePoolIndex(
   id: string,
   context: StakingPoolContextType,
   maybeGenesisHash: HexString,

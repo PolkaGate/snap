@@ -3,6 +3,7 @@ import { amountToHuman } from "../../../util/amountToHuman";
 import { Row2 } from "./Row2";
 import { BN } from "@polkadot/util";
 import { StakeFormErrors } from "../types";
+import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
 
 export interface Props {
   amount: string | undefined,
@@ -15,8 +16,6 @@ export interface Props {
   staked: BN,
   price: number,
 }
-
-export const STAKED_AMOUNT_DECIMAL_POINT = 4;
 
 export const UnstakeForm: SnapComponent<Props> = ({
   amount,

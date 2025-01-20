@@ -7,7 +7,7 @@ type Props = {
   tooltip?: string;
   showHome?: boolean;
   isSubAction?: boolean;
-  tooltipType: 'staking' | 'send';
+  tooltipType?: 'staking' | 'send';
 }
 
 /**

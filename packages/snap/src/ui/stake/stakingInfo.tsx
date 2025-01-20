@@ -8,12 +8,14 @@ import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../util/handleBalances
 import { Balances } from "../../util";
 import { getStakingInfo } from "./utils/getStakingInfo";
 import { StakingIndexContextType, StakingInfoType } from "./types";
+import { STAKED_AMOUNT_DECIMAL_POINT } from "./const";
+
+const DEFAULT_MIN_JOIN_BOND = '1';//token
 
 export async function stakingInfo(id: string, genesisHash: HexString, context: StakingIndexContextType) {
 
   const { balancesAll } = await handleBalancesAll(BALANCE_FETCH_TYPE.SAVED_ONLY);
   const balances = balancesAll.find((balance) => balance.genesisHash === genesisHash)
-
 
   const chainName = await getChainName(genesisHash);
   const stakingInfo = await getStakingInfo(genesisHash);
@@ -56,7 +58,7 @@ const ui = (
   const { decimal, minJoinBond, token, eraDuration, unbondingDuration } = stakingInfo;
   const available = amountToHuman(balances?.transferable, decimal, 2);
   const availableValue = (Number(available) * price).toFixed(2);
-  const min = amountToHuman(minJoinBond, decimal, 2, true);
+  const min = amountToHuman(minJoinBond, decimal, STAKED_AMOUNT_DECIMAL_POINT, true) || DEFAULT_MIN_JOIN_BOND;
 
   return (
     <Container>

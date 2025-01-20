@@ -14,5 +14,5 @@ export async function soloStakeMoreConfirm(id: string, context: StakingSoloConte
   const amountAsBN = amountToMachine(amount, decimal)
   const { call, params } = await getSoloStakeMore(address, amountAsBN, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
-  await showConfirm('stakeSoloReviewWithUpdate', id, context, call, params)
+  await showConfirm('stakeSoloIndexWithUpdate', id, context, call, params)
 };

@@ -85,7 +85,7 @@ const ui = (
     <Container>
       <Box>
         <FlowHeader
-          action='stakeDetailsPool'
+          action='stakePoolIndex'
           label='Unstake'
           showHome
           tooltipType='staking'

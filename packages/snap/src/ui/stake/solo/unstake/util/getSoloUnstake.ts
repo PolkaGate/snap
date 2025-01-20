@@ -3,12 +3,12 @@ import { getApi } from "../../../../../util/getApi";
 import { Balance } from "@polkadot/types/interfaces";
 import { OUTPUT_TYPE } from "../../../../../constants";
 import { amountToHuman } from "../../../../../util/amountToHuman";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../components/UnstakeForm";
 import type { Option, u32 } from '@polkadot/types';
 import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 import { handleOutput } from "../../../../../util/handleOutput";
 import { amountToMachine } from "../../../../../util/amountToMachine";
 import { CallParamsType } from "../../../types";
+import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
 
 
 export const getSoloUnstake = async (

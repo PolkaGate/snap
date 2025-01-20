@@ -37,6 +37,9 @@
     "@metamask/eslint-config-jest": "^14.0.0",
     "@metamask/eslint-config-nodejs": "^14.0.0",
     "@metamask/eslint-config-typescript": "^14.0.0",
+    "@metamask/snaps-cli": "^6.5.4",
+    "@metamask/snaps-jest": "^8.5.0",
+    "@types/react-dom": "18.2.4",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
@@ -63,6 +66,7 @@
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/key-tree": "^9.1.2",
+    "@metamask/snaps-sdk": "^6.13.0",
     "@polkadot/api": "^11.3.1",
     "@polkadot/extension-chains": "^0.47.6",
     "@polkadot/keyring": "^12.6.2",

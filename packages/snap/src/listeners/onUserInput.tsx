@@ -30,7 +30,7 @@ import { stakeFirstTimeReview } from '../ui/stake/stakeFirstTimeReview';
 import { stakeType } from '../ui/stake/stakeType';
 import { selectValidators } from '../ui/stake/selectValidators';
 import { confirmStake } from '../ui/stake/confirmStake';
-import { stakePoolReview } from '../ui/stake/pool';
+import { stakePoolIndex } from '../ui/stake/pool';
 import { claim } from '../ui/stake/pool/claim/claim';
 import { confirmClaim } from '../ui/stake/pool/claim/confirmClaim';
 import { poolStakeMore } from '../ui/stake/pool/stakeMore/poolStakeMore';
@@ -47,7 +47,7 @@ import { poolRedeem } from '../ui/stake/pool/redeem/poolRedeem';
 import { poolRedeemConfirm } from '../ui/stake/pool/redeem/poolRedeemConfirm';
 import { exportAccount } from '../ui/settings/exportAccount';
 import { showJsonContent } from '../ui/settings/showJsonContent';
-import { stakeSoloReview } from '../ui/stake/solo';
+import { stakeSoloIndex } from '../ui/stake/solo';
 import { soloRedeem } from '../ui/stake/solo/redeem';
 import { soloRedeemConfirm } from '../ui/stake/solo/redeem/soloRedeemConfirm';
 import { soloStakeMore } from '../ui/stake/solo/stakeMore';
@@ -84,10 +84,10 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
   if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
 
     let eventName = event.name;
-    let maybeGenesisHash: HexString;
+    let maybeGenesisHash: HexString | undefined = undefined;
 
     if (eventName?.includes(',')) {
-      [eventName, maybeGenesisHash] = eventName.split(',');
+      [eventName, maybeGenesisHash] = eventName.split(',') as [string, HexString];
     }
 
     switch (eventName) {
@@ -234,25 +234,25 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         break;
 
       // POOL 
-      case 'stakeDetailsPool':
+      case 'stakePoolIndex':
         await showSpinner(id, 'Loading, please wait ...');
-        await stakePoolReview(id, context, maybeGenesisHash);
+        await stakePoolIndex(id, context, maybeGenesisHash);
         break;
 
-      case 'stakePoolReviewWithUpdate':
+      case 'stakePoolIndexWithUpdate':
         await showSpinner(id, 'Updating, please wait ...');
-        await stakePoolReview(id, context, maybeGenesisHash, BALANCE_FETCH_TYPE.FORCE_UPDATE);
+        await stakePoolIndex(id, context, maybeGenesisHash, BALANCE_FETCH_TYPE.FORCE_UPDATE);
         break;
 
       // SOLO 
-      case 'stakeDetailsSolo':
+      case 'stakeSoloIndex':
         await showSpinner(id, 'Loading, please wait ...');
-        await stakeSoloReview(id, context, maybeGenesisHash);
+        await stakeSoloIndex(id, context, maybeGenesisHash);
         break;
 
-      case 'stakeSoloReviewWithUpdate':
+      case 'stakeSoloIndexWithUpdate':
         await showSpinner(id, 'Updating, please wait ...');
-        await stakeSoloReview(id, context, maybeGenesisHash, BALANCE_FETCH_TYPE.FORCE_UPDATE);
+        await stakeSoloIndex(id, context, maybeGenesisHash, BALANCE_FETCH_TYPE.FORCE_UPDATE);
         break;
 
       /** ----------------------------claim--------------------------------- */

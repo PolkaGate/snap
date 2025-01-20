@@ -170,7 +170,7 @@ const ui = (
             </Section>
             <Row2
               label='Estimated rewards'
-              extra={`${String(rate || 0)} %`}
+              extra={`${String(rate || 0)}%`}
               extraColor="success"
               value=' / year'
               valueColor='muted'

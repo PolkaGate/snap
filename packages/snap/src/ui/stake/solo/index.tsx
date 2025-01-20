@@ -15,7 +15,7 @@ import { FlowHeader } from "../../components/FlowHeader";
 import { YourStake } from "../pool/components/YourStake";
 import { WentWrong } from "../../components/WentWrong";
 
-export async function stakeSoloReview(
+export async function stakeSoloIndex(
   id: string,
   context: StakingSoloContextType,
   maybeGenesisHash: HexString | undefined,

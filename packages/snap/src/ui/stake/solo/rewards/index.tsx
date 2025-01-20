@@ -71,7 +71,7 @@ const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNe
     <Container>
       <Box>
         <FlowHeader
-          action='stakeDetailsSolo'
+          action='stakeSoloIndex'
           label='Rewards destination'
           showHome
           tooltipType='staking'

@@ -1,8 +1,7 @@
 import { Box, Section, Text, Heading, SnapComponent } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { BN } from "@polkadot/util";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../components/UnstakeForm";
 import { ActiveStatus } from "./ActiveStatus";
+import { STAKED_AMOUNT_DECIMAL_POINT } from "../../const";
 
 interface Props {
   amount: string | undefined;

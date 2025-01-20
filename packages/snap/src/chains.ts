@@ -27,57 +27,57 @@ const testnets: Network[] = [
   },
   {
     decimals: [12],
-    displayName: "Paseo",
+    displayName: 'Paseo',
     genesisHash: [
-      "0x77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f",
+      '0x77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f',
     ],
     hasLedgerSupport: false,
-    icon: "polkadot",
+    icon: 'polkadot',
     isIgnored: false,
     isTestnet: true,
-    network: "paseo",
+    network: 'paseo',
     prefix: 0,
     slip44: 0,
-    standardAccount: "*25519",
-    symbols: ["PAS"],
-    website: "https://polkadot.network",
+    standardAccount: '*25519',
+    symbols: ['PAS'],
+    website: 'https://polkadot.network',
   }
 ]
 
 const assetHubs: Network[] = [
   {
     decimals: [10],
-    displayName: "Polkadot Asset Hub",
+    displayName: 'Polkadot Asset Hub',
     genesisHash: [
-      "0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+      '0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f',
     ],
     hasLedgerSupport: true,
-    icon: "polkadot",
+    icon: 'polkadot',
     isIgnored: false,
     isTestnet: false,
-    network: "statemint",
+    network: 'statemint',
     prefix: 0,
     slip44: 354,
-    standardAccount: "*25519",
-    symbols: ["DOT"],
-    website: "https://polkadot.network",
+    standardAccount: '*25519',
+    symbols: ['DOT'],
+    website: 'https://polkadot.network',
   },
   {
     decimals: [12],
-    displayName: "Kusama Asset Hub",
+    displayName: 'Kusama Asset Hub',
     genesisHash: [
-      "0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a",
+      '0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a',
     ],
     hasLedgerSupport: true,
-    icon: "polkadot",
+    icon: 'polkadot',
     isIgnored: false,
     isTestnet: false,
-    network: "statemine",
+    network: 'statemine',
     prefix: 2,
     slip44: 434,
-    standardAccount: "*25519",
-    symbols: ["KSM"],
-    website: "https://kusama.network",
+    standardAccount: '*25519',
+    symbols: ['KSM'],
+    website: 'https://kusama.network',
   },
   {
     decimals: [12],
@@ -98,86 +98,85 @@ const assetHubs: Network[] = [
   },
   {
     decimals: [10],
-    displayName: "Paseo Asset Hub",
+    displayName: 'Paseo Asset Hub',
     genesisHash: [
-      "0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2",
+      '0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2',
     ],
     hasLedgerSupport: false,
-    icon: "polkadot",
+    icon: 'polkadot',
     isIgnored: false,
     isTestnet: false,
-    network: "paseo-asset-hub",
+    network: 'paseo-asset-hub',
     prefix: 0,
     slip44: 0,  // Update as required
-    standardAccount: "*25519",
-    symbols: ["PAS"],
-    website: "https://polkadot.network",
+    standardAccount: '*25519',
+    symbols: ['PAS'],
+    website: 'https://polkadot.network',
   },
 ];
 
-const peopleChains = [
+const peopleChains: Network[] = [
   {
-    "decimals": [12],
-    "displayName": "Westend People",
-    "genesisHash": [WESTEND_PEOPLE_GENESIS_HASH],
-    "hasLedgerSupport": false,
-    "icon": "polkadot",
-    "isIgnored": false,
-    "isTestnet": true,
-    "network": "westendPeople",
-    "prefix": 42,
-    "slip44": 354,
-    "symbols": ["WND"],
-    "standardAccount": "*25519",
-    "website": "https://polkadot.network"
+    decimals: [12],
+    displayName: 'Westend People',
+    genesisHash: [WESTEND_PEOPLE_GENESIS_HASH],
+    hasLedgerSupport: false,
+    icon: 'polkadot',
+    isIgnored: false,
+    isTestnet: true,
+    network: 'westendPeople',
+    prefix: 42,
+    slip44: 354,
+    symbols: ['WND'],
+    standardAccount: '*25519',
+    website: 'https://polkadot.network'
   },
   {
-    "decimals": [12],
-    "displayName": "Kusama People",
-    "genesisHash": [KUSAMA_PEOPLE_GENESIS_HASH],
-    "hasLedgerSupport": false,
-    "icon": "polkadot",
-    "isIgnored": false,
-    "isTestnet": false,
-    "network": "kusamaPeople",
-    "prefix": 2,
-    "slip44": 434,
-    "symbols": ["KSM"],
-    "standardAccount": "*25519",
-    "website": "https://kusama.network"
+    decimals: [12],
+    displayName: 'Kusama People',
+    genesisHash: [KUSAMA_PEOPLE_GENESIS_HASH],
+    hasLedgerSupport: false,
+    icon: 'polkadot',
+    isIgnored: false,
+    isTestnet: false,
+    network: 'kusamaPeople',
+    prefix: 2,
+    slip44: 434,
+    symbols: ['KSM'],
+    standardAccount: '*25519',
+    website: 'https://kusama.network'
   },
   {
-    "decimals": [10],
-    "displayName": "Polkadot People",
-    "genesisHash": [POLKADOT_PEOPLE_GENESIS_HASH],
-    "hasLedgerSupport": false,
-    "icon": "polkadot",
-    "isIgnored": false,
-    "isTestnet": false,
-    "network": "polkadotPeople",
-    "prefix": 0,
-    "slip44": 354,
-    "symbols": ["DOT"],
-    "standardAccount": "*25519",
-    "website": "https://polkadot.network"
+    decimals: [10],
+    displayName: 'Polkadot People',
+    genesisHash: [POLKADOT_PEOPLE_GENESIS_HASH],
+    hasLedgerSupport: false,
+    icon: 'polkadot',
+    isIgnored: false,
+    isTestnet: false,
+    network: 'polkadotPeople',
+    prefix: 0,
+    slip44: 354,
+    symbols: ['DOT'],
+    standardAccount: '*25519',
+    website: 'https://polkadot.network'
   },
   {
-    "decimals": [10],
-    "displayName": "Paseo People",
-    "genesisHash": [PASEO_PEOPLE_GENESIS_HASH],
-    "hasLedgerSupport": false,
-    "icon": "polkadot",
-    "isIgnored": false,
-    "isTestnet": true,
-    "network": "paseoPeople",
-    "prefix": 0,
-    "slip44": 0,
-    "symbols": ["PAS"],
-    "standardAccount": "*25519",
-    "website": "https://polkadot.network"
+    decimals: [10],
+    displayName: 'Paseo People',
+    genesisHash: [PASEO_PEOPLE_GENESIS_HASH],
+    hasLedgerSupport: false,
+    icon: 'polkadot',
+    isIgnored: false,
+    isTestnet: true,
+    network: 'paseoPeople',
+    prefix: 0,
+    slip44: 0,
+    symbols: ['PAS'],
+    standardAccount: '*25519',
+    website: 'https://polkadot.network'
   }
 ];
-
 selectableNetworks.push(...testnets, ...peopleChains, ...assetHubs);
 export const DISABLED_NETWORKS = ['3DP network', 'xx network', 'Polkadex Mainnet', 'Stafi', 'Peaq Network', 'Genshiro Network'];
 
@@ -240,7 +239,7 @@ export const getChainFromMetadata = async (genesis: HexString): Promise<Chain | 
 };
 
 export async function getGenesisHash(chainName: string): Promise<HexString | null> {
-  const mayBeGenesisHash = getChain(chainName)?.genesisHash?.[0] as string;
+  const mayBeGenesisHash = getChain(chainName)?.genesisHash?.[0];
   if (mayBeGenesisHash) {
     return mayBeGenesisHash;
   }
@@ -255,5 +254,5 @@ export async function getGenesisHash(chainName: string): Promise<HexString | nul
       sanitizeChainName(chain) === sanitizeChainName(chainName)
     ) || [];
 
-  return genesisHash ?? null;
+  return genesisHash as HexString | undefined ?? null;
 };

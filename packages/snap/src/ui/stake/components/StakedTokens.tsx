@@ -53,7 +53,7 @@ const ChainRow: SnapComponent<ChainRowProps> = ({ logo, netStaked, sanitizedChai
             </Text>
           </Box>
         }
-        <Button name={`stakeDetails${type},${genesisHash}`} variant='primary' >
+        <Button name={`stake${type}Index,${genesisHash}`} variant='primary' >
           <Icon name='arrow-right' color='primary' size='md' />
         </Button>
       </Box>

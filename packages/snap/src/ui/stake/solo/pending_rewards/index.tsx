@@ -56,7 +56,7 @@ const ui = (
     <Container>
       <Box>
         <FlowHeader
-          action='stakeDetailsSolo'
+          action='stakeSoloIndex'
           label='Pending rewards'
           showHome
         />

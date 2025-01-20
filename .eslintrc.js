@@ -8,12 +8,24 @@ module.exports = {
 
   overrides: [
     {
-      files: ['**/*.js'],
+      files: ['**/*.js', '**/*.cjs'],
       extends: ['@metamask/eslint-config-nodejs'],
+
+      parserOptions: {
+        ecmaVersion: 2020,
+      },
     },
 
     {
-      files: ["**/*.ts", "**/*.tsx"],
+      files: ['**/*.mjs'],
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+    },
+
+    {
+      files: ['**/*.ts', '**/*.tsx', '**/*.mts'],
       extends: ["@metamask/eslint-config-typescript"],
       rules: {
         // This allows importing the `Text` JSX component.
@@ -21,6 +33,17 @@ module.exports = {
           "error",
           {
             allow: ["Text"],
+          },
+        ],
+
+        // Without the `allowAny` option, this rule causes a lot of false
+        // positives.
+        '@typescript-eslint/restrict-template-expressions': [
+          'error',
+          {
+            allowAny: true,
+            allowBoolean: true,
+            allowNumber: true,
           },
         ],
       },
@@ -34,6 +57,8 @@ module.exports = {
           'error',
           { allow: ['describe', 'expect', 'it'] },
         ],
+        '@typescript-eslint/unbound-method': 'off',
+        'no-console': 'off',
       },
     }
   ],
@@ -45,5 +70,6 @@ module.exports = {
     '**/build',
     '**/public',
     '**/.cache',
+    'packages/**',
   ],
 };

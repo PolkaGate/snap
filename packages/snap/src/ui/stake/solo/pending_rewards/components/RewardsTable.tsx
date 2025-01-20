@@ -6,8 +6,8 @@ import { amountToHuman } from "../../../../../util/amountToHuman";
 import { StakingSoloContextType } from "../../../types";
 import { BN } from "@polkadot/util";
 import { PendingRewardsOutput } from "../util/getPendingRewards";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../components/UnstakeForm";
 import { eraToRemaining } from "../util/utils";
+import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
 
 interface Props {
   context: StakingSoloContextType,

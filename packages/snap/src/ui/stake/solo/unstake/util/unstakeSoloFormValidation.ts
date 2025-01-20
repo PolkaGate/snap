@@ -3,7 +3,7 @@ import { amountToHuman } from "../../../../../util/amountToHuman";
 import { StakeFormErrors, StakingSoloContextType } from "../../../types";
 import { SoloUnstakeFormState } from "../types";
 import { amountToMachine } from "../../../../../util/amountToMachine";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../components/UnstakeForm";
+import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
 
 /**
  * Validate the unstake form.

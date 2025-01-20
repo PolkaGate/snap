@@ -12,5 +12,5 @@ export async function soloUnstakeConfirm(id: string, context: StakingSoloContext
 
   const { call, params } = await getSoloUnstake(address, amount!, genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
-  await showConfirm('stakeSoloReviewWithUpdate', id, context, call, params)
+  await showConfirm('stakeSoloIndexWithUpdate', id, context, call, params)
 };

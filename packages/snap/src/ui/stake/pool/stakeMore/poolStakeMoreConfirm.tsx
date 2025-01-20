@@ -13,5 +13,5 @@ export async function poolStakeMoreConfirm(id: string, context: StakingPoolConte
 
   const { call, params } = await getPoolStakeMore(address, amountToMachine(amount, decimal), genesisHash, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
-  await showConfirm('stakePoolReviewWithUpdate', id, context, call, params)
+  await showConfirm('stakePoolIndexWithUpdate', id, context, call, params)
 };
