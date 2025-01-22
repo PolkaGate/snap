@@ -66,3 +66,15 @@ export function isEmptyObject(obj: Record<string, unknown>): boolean {
   return Object.keys(obj).length === 0;
 }
 
+export function commifyNumber(
+  number: number, 
+  options: { 
+    minimumFractionDigits?: number; 
+    maximumFractionDigits?: number; 
+  } = {}
+): string {
+  const { minimumFractionDigits = 0, maximumFractionDigits = 2 } = options;
+  
+  return number
+    .toLocaleString('en-US', { minimumFractionDigits, maximumFractionDigits });
+}
