@@ -90,9 +90,9 @@ export async function getPooledBalance(api: ApiPromise, address: string): Promis
       const points = new BN(unbondingPoint as string);
       const remainingEras = _era.sub(currentEra);
 
-      if (remainingEras.gt(BN_ZERO)) {
+      if (remainingEras.gtn(0)) {
         unlocking = unlocking.add(points);
-        const secToBeReleased = remainingEras.mul(eraLength).add(eraLength.sub(eraProgress)).muln(6);
+        const secToBeReleased = remainingEras.subn(1).mul(eraLength).add(eraLength.sub(eraProgress)).muln(6);
         toBeReleased.push({ amount: String(points), date: Date.now() + Number(secToBeReleased.muln(1000)) });
       } else {
         redeemable = redeemable.add(points);

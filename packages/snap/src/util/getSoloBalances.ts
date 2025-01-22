@@ -52,10 +52,10 @@ export async function getSoloBalances(api: ApiPromise, genesisHash: HexString, f
 
           const remainingEras = _era.sub(currentEra);
 
-          if (!remainingEras.isNeg() || remainingEras.gt(BN_ZERO)) {
+          if (!remainingEras.isNeg() || remainingEras.gtn(0)) {
             solo.unlocking = (new BN(solo.unlocking).add(_value)).toString();
 
-            const secToBeReleased = remainingEras.mul(eraLength).add(eraLength.sub(eraProgress)).muln(6);
+            const secToBeReleased = remainingEras.subn(1).mul(eraLength).add(eraLength.sub(eraProgress)).muln(6);
             solo.toBeReleased.push({
               amount: String(_value),
               date: Date.now() + Number(secToBeReleased.muln(1000))
