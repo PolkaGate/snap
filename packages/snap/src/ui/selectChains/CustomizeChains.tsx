@@ -33,7 +33,7 @@ const ui = (options: Options[], logoList: string[], selectedChains: HexString[])
             <Button name='refreshSelectedChains' variant='primary' >
               <Icon size='md' color='primary' name='eraser' />
             </Button >
-            <Text alignment='end' color='muted'>
+            <Text alignment='end' color='muted' size="sm">
               Reset
             </Text>
           </Box>
