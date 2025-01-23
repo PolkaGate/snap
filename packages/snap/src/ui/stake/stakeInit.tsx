@@ -1,4 +1,4 @@
-import { Box, Container, Section, Text, Footer, Button, Icon } from "@metamask/snaps-sdk/jsx";
+import { Box, Container, Section, Text, Footer, Button, Icon, Bold } from "@metamask/snaps-sdk/jsx";
 import { HexString } from "@polkadot/util/types";
 import { amountToHuman } from "../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../util";
@@ -12,6 +12,8 @@ import { isEmptyObject } from "../../utils";
 import { FlowHeader } from "../components/FlowHeader";
 import { areArraysEqual } from "../../util/areArraysEqual";
 import { ellipsis } from "./utils/ellipsis";
+import { BN } from "@polkadot/util";
+import { amountToMachine } from "../../util/amountToMachine";
 
 interface NewSelectionType {
   selectPoolForm: PoolSelectorFormState | undefined;
@@ -126,6 +128,7 @@ const ui = (
   DEFAULT_STAKING_DATA
 ) => {
 
+  const noEnoughTokenToProceed = new BN(transferable).lt(amountToMachine(amount, decimal))
 
   return (
     <Container>
@@ -149,11 +152,11 @@ const ui = (
           <Box direction="vertical">
             <Section>
               <Box alignment="space-between" direction="horizontal" center>
-                <Box direction="vertical" alignment="start">
-                  <Text>
-                    {stakingType} staking
+                <Box direction="vertical" alignment="start" >
+                  <Text size='sm'>
+                    <Bold> {stakingType} staking</Bold>
                   </Text>
-                  <Text color={isRecommended ? 'success' : 'muted'}>
+                  <Text color={isRecommended ? 'success' : 'muted'} size='sm'>
                     {
                       isRecommended
                         ? 'Recommended'
@@ -170,6 +173,8 @@ const ui = (
             </Section>
             <Row2
               label='Estimated rewards'
+              labelSize='sm'
+              valueSize='sm'
               extra={`${String(rate || 0)}%`}
               extraColor="success"
               value=' / year'
@@ -179,7 +184,7 @@ const ui = (
         }
       </Box>
       <Footer>
-        <Button name='stakeFirstTimeReview' disabled={!Number(amount) || !isEmptyObject(formErrors)}>
+        <Button name='stakeFirstTimeReview' disabled={!Number(amount) || noEnoughTokenToProceed || !isEmptyObject(formErrors)}>
           Continue
         </Button>
       </Footer>

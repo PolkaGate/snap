@@ -65,10 +65,10 @@ const ui = (
           ? <WentWrong label='Something went wrong while fetching ...' />
           : <Box>
             <Box direction='horizontal' alignment='space-between'>
-              <Text color='muted'>
+              <Text color='muted' size='sm'>
                 VALIDATORS: {String(showMode ? selectedValidators.length : allValidators.length)}
               </Text>
-              <Text color='muted'>
+              <Text color='muted' size='sm'>
                 COMMISSION
               </Text>
             </Box>

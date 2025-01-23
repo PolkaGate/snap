@@ -1,6 +1,5 @@
 import { Box, Image, Field, Text, Input, Form, SnapComponent, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../util/amountToHuman";
-import { Row2 } from "./Row2";
 import { BN } from "@polkadot/util";
 import { StakeFormErrors } from "../types";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
@@ -8,7 +7,7 @@ import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
 export interface Props {
   amount: string | undefined,
   decimal: number,
-  formErrors:StakeFormErrors,
+  formErrors: StakeFormErrors,
   logo: string,
   name?: string,
   placeHolder?: string,
@@ -31,7 +30,22 @@ export const UnstakeForm: SnapComponent<Props> = ({
 
   return (
     <Form name='unstakeForm'>
-      <Field label='Amount' error={formErrors?.amount}>
+      <Box alignment="space-between" direction="horizontal">
+        <Text color='muted' size='sm'>
+          Amount
+        </Text>
+        <Box alignment="end" direction="horizontal">
+          <Text color='muted' size='sm'>
+            Staked:
+          </Text>
+          <Text size='sm'>
+            {`${amountToHuman(String(staked), decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
+          </Text>
+        </Box>
+      </Box>
+
+
+      <Field error={formErrors?.amount}>
         <Box direction="horizontal" alignment="start" center>
           <Image src={logo} />
           <Heading size="sm">
@@ -43,10 +57,6 @@ export const UnstakeForm: SnapComponent<Props> = ({
           ${(Number(amount || 0) * price).toFixed(2)}
         </Text>
       </Field>
-      <Row2
-        label='Staked'
-        value={`${amountToHuman(String(staked), decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
-      />
     </Form>
   );
 };

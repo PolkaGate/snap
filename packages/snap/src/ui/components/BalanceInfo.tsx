@@ -31,7 +31,9 @@ export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, hideBalance
     <Box alignment='space-between' direction='horizontal'>
       <Box alignment='start' direction='horizontal'>
         <Icon name={iconName} color='muted' />
-        <Text color='muted'>{label} </Text>
+        <Text color='muted' size='sm'>
+          {label}
+        </Text>
       </Box>
       <Box alignment='end' direction='horizontal'>
         {!!tooltip &&
@@ -39,7 +41,7 @@ export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, hideBalance
             <Icon name='info' color='muted' />
           </Tooltip>
         }
-        <Text color='muted'>
+        <Text color='muted' size='sm'>
           {hideBalance ? MASKED_TEXT : value}
         </Text>
       </Box>

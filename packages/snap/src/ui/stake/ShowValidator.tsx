@@ -5,13 +5,15 @@ import { AccountId } from '@polkadot/types/interfaces';
 import { ellipsis } from './utils/ellipsis';
 
 interface Props {
-  accountId: AccountId;
+  accountId: AccountId | string;
   commission: BN;
   identity?: Identity;
   isSelected?: boolean;
   nominatorsCount: number | undefined;
   showCheckBox?: boolean;
 }
+
+const VALIDATOR_MAX_LENGTH = 20;
 
 export const ShowValidator: SnapComponent<Props> = ({ accountId, commission, identity, isSelected, nominatorsCount, showCheckBox }) => {
   return (
@@ -24,8 +26,8 @@ export const ShowValidator: SnapComponent<Props> = ({ accountId, commission, ide
           ? <Box direction='horizontal' alignment='start' center>
             <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
             <Tooltip content={`${accountId}`}>
-              <Text alignment='start'>
-                {ellipsis((identity.displayParent ? `${identity.displayParent}/` : '') + identity.display, 16)}
+              <Text alignment='start' size='sm'>
+                {ellipsis((identity.displayParent ? `${identity.displayParent}/` : '') + identity.display, VALIDATOR_MAX_LENGTH)}
               </Text>
             </Tooltip>
           </Box>
@@ -33,8 +35,8 @@ export const ShowValidator: SnapComponent<Props> = ({ accountId, commission, ide
           <Box direction='horizontal' alignment='start' center>
             <Avatar address={`polkadot:91b171bb158e2d3848fa23a9f1c25182:${accountId}`} size='sm' />
             <Tooltip content={`${accountId}`}>
-              <Text alignment='start'>
-                {ellipsis(String(accountId), 16)}
+              <Text alignment='start' size='sm'>
+                {ellipsis(String(accountId), VALIDATOR_MAX_LENGTH)}
               </Text>
             </Tooltip>
           </Box>

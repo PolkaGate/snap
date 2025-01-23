@@ -13,7 +13,7 @@ import { Balances } from "../../util";
 
 export async function send(
   id: string,
-  context:SendContextType,
+  context: SendContextType,
   amount: number | undefined,
   formErrors: SendFormErrors,
   recipient: string | undefined,
@@ -28,7 +28,7 @@ export async function send(
   const maybeSelectedToken = tokenGenesis && balancesAll.find(({ token, genesisHash }) => tokenGenesis[0] === token && tokenGenesis[1] === genesisHash);
   const selectedToken = maybeSelectedToken || nonZeroBalances[0];
   const noError = !formErrors || Object.keys(formErrors).length === 0;
-  const formIsFilledOut = amount && Number(amount) !== 0 && recipient;
+  const formIsFilledOut = !!amount && Number(amount) !== 0 && !!recipient;
 
   const fee = tokenGenesis && formIsFilledOut && noError && !clearAddress
     ? await getTransfer(address, amount, tokenGenesis[1] as HexString, recipient) as Balance
@@ -51,7 +51,7 @@ export async function send(
         amount,
         decimal: selectedToken.decimal,
         fee: fee ? fee?.toString() : undefined,
-        genesisHash : selectedToken.genesisHash,
+        genesisHash: selectedToken.genesisHash,
         price: selectedTokenPrice,
         recipient,
         token: selectedToken.token,

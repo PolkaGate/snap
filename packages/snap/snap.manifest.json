@@ -7,7 +7,7 @@
     "url": "https://github.com/polkagate/snap.git"
   },
   "source": {
-    "shasum": "pKlCKLm24+CsWnzVlgDziD8mi++Cm4thl45aIzl/MPU=",
+    "shasum": "rhbUBbM2am7A1HtWUiWgEw0tzBa0ffXkYHAyu610ZhU=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

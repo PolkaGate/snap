@@ -72,7 +72,7 @@ const StakedRow: SnapComponent<StakedRowProps> = ({ amount, decimal, token }) =>
     <Box direction='horizontal' alignment='space-between'>
       <Box direction='horizontal'>
         <Icon name='stake' color='muted' />
-        <Text color='muted'>
+        <Text color='muted' size='sm'>
           Staked
         </Text>
       </Box>
@@ -93,7 +93,7 @@ const RewardsRow: SnapComponent<RewardsRowProps> = ({ amount, decimal, token }) 
     <Box direction='horizontal' alignment='space-between'>
       <Box direction='horizontal'>
         <Icon name='graph' color='muted' />
-        <Text color='muted'>
+        <Text color='muted' size='sm'>
           Rewards
         </Text>
       </Box>
@@ -123,7 +123,7 @@ const RateRow: SnapComponent<RateRowProps> = ({ amount }) => {
         <Text color='success' alignment='end'>
           {`+${amount}%`}
         </Text>
-        <Text color='muted'>
+        <Text color='muted' size='sm'>
           / year
         </Text>
       </Box>

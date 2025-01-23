@@ -34,19 +34,23 @@ export const SoloOption: SnapComponent<Props> = ({
           <Row2
             alignment="start"
             label="Minimum stake"
+            labelSize="sm"
+            valueSize="sm"
             value={`${minimumActiveStakeInHuman} ${token}`}
             valueColor="muted"
           />
           <Row2
             alignment="start"
             label="Rewards"
+            labelSize="sm"
+            valueSize="sm"
             value='Paid automatically'
             valueColor="muted"
           />
-          {/* <Text color="muted">
+          {/* <Text color="muted" size='sm'>
           Reuse tokens in Governance
         </Text> */}
-          <Text color="muted">
+          <Text color="muted" size="sm">
             Advanced staking management
           </Text>
         </Box>
@@ -60,10 +64,10 @@ export const SoloOption: SnapComponent<Props> = ({
         <Section>
           <Box direction="horizontal" alignment="space-between" center>
             <Box direction="vertical" alignment="start">
-              <Text>
+              <Text size="sm">
                 Validators
               </Text>
-              <Text color='success'>
+              <Text color='success' size="sm">
                 Recommended
               </Text>
             </Box>

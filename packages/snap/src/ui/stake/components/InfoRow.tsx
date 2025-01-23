@@ -11,7 +11,7 @@ interface InoRowProps {
 export const InfoRow: SnapComponent<InoRowProps> = ({ text }) => (
   <Box direction="horizontal" alignment="start">
     <Image src={info} />
-    <Text color='muted'>
+    <Text color='muted' size="sm">
       {text}
     </Text>
   </Box>

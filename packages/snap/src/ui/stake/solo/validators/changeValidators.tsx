@@ -58,7 +58,7 @@ const ui = (
                 <Bold>  Stake with recommended validators</Bold>
               </Text>
             }
-            <Text color='muted'>
+            <Text color='muted' size="sm">
               PolkaGate selects top validators for security and profitability
             </Text>
           </Box>

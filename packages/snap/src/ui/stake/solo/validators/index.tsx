@@ -61,7 +61,7 @@ const ui = (
           <Bold>{`Elected (${elected.length})`}</Bold>
         </Text>
       </Box>
-      <Text color='muted'>
+      <Text color='muted' size="sm">
         Your active validator(s) with your stake assigned
       </Text>
       {activeValidatorsInfo.length
@@ -81,7 +81,7 @@ const ui = (
         </Text>
       }
 
-      <Text color='muted'>
+      <Text color='muted' size="sm">
         Validators without your stake assigned
       </Text>
       {electedNotActiveValidatorsInfo.length
@@ -107,7 +107,7 @@ const ui = (
           <Bold>{`Waiting (${waiting.length})`}</Bold>
         </Text>
       </Box>
-      <Text color='muted'>
+      <Text color='muted' size="sm">
         Validators not elected due to low stake or pending inclusion
       </Text>
       {waiting.length

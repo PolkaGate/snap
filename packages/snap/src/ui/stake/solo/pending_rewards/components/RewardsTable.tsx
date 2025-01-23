@@ -31,12 +31,12 @@ export const RewardsTable: SnapComponent<Props> = ({ context, unpaidRewards, sel
         <Box direction="horizontal" alignment="space-between">
           <Box direction="horizontal" alignment="start">
             <Checkbox name='selectAllToPayOut' checked={!!isAllSelected} />
-            <Text color='muted'>
+            <Text color='muted' size="sm">
               REWARD
             </Text>
           </Box>
 
-          <Text color='muted'>
+          <Text color='muted' size="sm">
             EXPIRES IN
           </Text>
         </Box>
@@ -76,7 +76,7 @@ export const RewardsTable: SnapComponent<Props> = ({ context, unpaidRewards, sel
       </Form>
 
       <Section alignment="start" direction="horizontal">
-        <Text color='muted'>
+        <Text color='muted' size="sm">
           SELECTED:
         </Text>
         <Text color='muted'>

@@ -24,10 +24,7 @@ export async function stakePoolIndex(
 
   const { address, balancesAll, pricesInUsd } = await handleBalancesAll(fetchType);
   const genesisHash = maybeGenesisHash || context?.genesisHash;
-
   const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
-
-
   const stakedToken = stakedPoolBalances.find((balance) => balance.genesisHash === genesisHash)
   const price = pricesInUsd.find((price) => price.genesisHash === stakedToken!.genesisHash)?.price?.value || 0;
   const sanitizedChainName = await getChainName(genesisHash, true);
@@ -43,7 +40,7 @@ export async function stakePoolIndex(
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(price, sanitizedChainName, stakedToken, poolTotalClaimed),
+      ui: ui(price, sanitizedChainName, stakedToken!, poolTotalClaimed),
       context: {
         ...(context || {}),
         price,
@@ -123,10 +120,11 @@ const ui = (
             disabled={!active || new BN(active).isZero()}
           />
         </Section>
-        <YourPool
-          poolId={poolId}
-          poolName={poolName}
-        />
+        {poolId !== undefined &&
+          <YourPool
+            poolId={poolId}
+            poolName={poolName}
+          />}
       </Box>
     </Container>
   );

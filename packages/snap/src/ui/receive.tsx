@@ -32,25 +32,18 @@ export async function receive(id: string, genesisHash?: HexString) {
 const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: string) => {
 
   return (
-    <Container>
-      <Box>
-        <FlowHeader
-          action='backToHome'
-          label='Receive'
-          showHome
-        />
-        <Text alignment="start" color='muted'>
-          Select a network to view your address & QR code
-        </Text>
-        <ChainSwitch genesisHash={genesisHash} logo={logo} />
-        <Copyable value={formatted} />
-        <Image src={qrCode} />
-      </Box>
-      <Footer>
-        <Button name='backToHomeWithoutUpdate' variant="destructive">
-          Back
-        </Button>
-      </Footer>
-    </Container>
+    <Box>
+      <FlowHeader
+        action='backToHome'
+        label='Receive'
+        showHome
+      />
+      <Text alignment="start" color='muted'>
+        Select a network to view your address & QR code
+      </Text>
+      <ChainSwitch genesisHash={genesisHash} logo={logo} />
+      <Copyable value={formatted} />
+      <Image src={qrCode} />
+    </Box>
   );
 };

@@ -46,7 +46,7 @@ export const OptionButton: SnapComponent<OptionProps> = ({ description, form, na
           {text}
         </Text>
         {!!description &&
-          <Text alignment='start' color='muted'>
+          <Text alignment='start' color='muted' size='sm'>
             {description}
           </Text>}
       </Box>
@@ -59,7 +59,7 @@ export const Options: SnapComponent<Props> = ({ description1, description2, form
 
   return (
     <Box direction='vertical'>
-      <Text alignment='start' color='muted'>
+      <Text alignment='start' color='muted' size='sm'>
         {title}
       </Text>
       <OptionButton

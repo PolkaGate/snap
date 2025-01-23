@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { OnInstallHandler } from '@metamask/snaps-sdk';
-import { Box, Heading, Text, Bold, Link, Icon, Section, SnapComponent, Image, Row } from "@metamask/snaps-sdk/jsx";
+import { Box, Heading, Text, Bold, Link, Section, SnapComponent, Image } from "@metamask/snaps-sdk/jsx";
 
 import { POLKADOT_GENESIS } from '@polkadot/apps-config';
 import { setSnapState } from '../rpc/stateManagement';
@@ -38,7 +38,6 @@ const WelcomeScreen: SnapComponent = () => {
         <Image src={polkadotMedium} />
       </Box>
 
-
       <Section>
         <Text>
           1.	Open MetaMask.
@@ -51,8 +50,7 @@ const WelcomeScreen: SnapComponent = () => {
         </Text>
       </Section>
 
-
-      <Text color='muted'>
+      <Text color='muted' size='sm'>
         Scroll down to see the full screenshot of the Home screen for reference.
       </Text>
 

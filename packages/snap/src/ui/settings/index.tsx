@@ -33,7 +33,7 @@ const ui = (address: string) => {
           tooltip='To unlock the full range of features, download the PolkaGate Extension today!'
         />
 
-        <Text color='muted' >
+        <Text color='muted' size="sm">
           WALLET
         </Text>
         <Section>
@@ -52,7 +52,7 @@ const ui = (address: string) => {
           </Box>
         </Section>
 
-        <Text color='muted' >
+        <Text color='muted' size="sm">
           PREFERENCES
         </Text>
         <Section>
@@ -60,7 +60,7 @@ const ui = (address: string) => {
           <Preference icon={language} label='Language' value='English' />
         </Section>
 
-        <Text color='muted' >
+        <Text color='muted' size="sm">
           SUPPORT & FEEDBACK
         </Text>
         <Section>
@@ -68,7 +68,7 @@ const ui = (address: string) => {
           <LinkItem icon={email} link='mailto:support@polkagate.xyz' label={'Contact Us'} />
         </Section>
 
-        <Text color='muted' >
+        <Text color='muted' size="sm">
           COMMUNITY
         </Text>
         <Section>
@@ -77,7 +77,7 @@ const ui = (address: string) => {
           <LinkItem icon={youtube} link='https://youtube.com/@polkagate' label={'YouTube'} />
         </Section>
 
-        <Text color='muted' >
+        <Text color='muted' size="sm">
           ABOUT
         </Text>
         <Section>

@@ -8,6 +8,7 @@ import { Account } from "../components/Account";
 import { FlowHeader } from "../components/FlowHeader";
 import { ellipsis } from "./utils/ellipsis";
 import { MAX_POOL_NAME_TO_SHOW } from "./const";
+import { BN } from "@polkadot/util";
 
 export async function stakeFirstTimeReview(
   id: string,
@@ -35,9 +36,10 @@ const ui = (
   context: StakingInitContextType,
 ) => {
 
-  let { address, amount, decimal, genesisHash, token, price, stakingData, DEFAULT_STAKING_DATA } = context;
+  let { address, amount, decimal, genesisHash, token, price, stakingData, transferable, DEFAULT_STAKING_DATA } = context;
 
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
+  const canPayFee = new BN(transferable).gt(new BN(fee));
 
   return (
     <Container>
@@ -63,6 +65,8 @@ const ui = (
           />
           <Row2
             label='Network fee'
+            labelColor={canPayFee ? 'muted' : 'error'}
+            valueColor={canPayFee ? 'default' : 'error'}
             value={`${amountToHuman(String(fee), decimal, 4, true)} ${token}`}
             extra={`$${feeInUsd.toFixed(2)}`}
           />
@@ -85,7 +89,7 @@ const ui = (
         </Section>
       </Box>
       <Footer>
-        <Button name='stakeConfirm'>
+        <Button name='stakeConfirm' disabled={!canPayFee}>
           Confirm
         </Button>
       </Footer>

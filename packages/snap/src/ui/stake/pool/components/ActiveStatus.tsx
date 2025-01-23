@@ -12,7 +12,7 @@ export const ActiveStatus: SnapComponent<Props> = ({ amount }) => {
   return (
     <Box direction="horizontal" alignment="end" center>
       <Image src={isActive ? activeIcon : inActiveIcon} />
-      <Text color={isActive ? "success" : 'error'}>
+      <Text color={isActive ? "success" : 'error'} size="sm">
         {isActive ? 'ACTIVE' : 'INACTIVE'}
       </Text>
     </Box>

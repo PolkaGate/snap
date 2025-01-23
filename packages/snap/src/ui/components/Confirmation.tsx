@@ -28,13 +28,13 @@ export const Confirmation: SnapComponent<Props> = ({ action, button, chainName, 
           <Image src={success} alt='success' />
         </Box>
         <Divider />
-        <Text alignment='start'>
+        <Text alignment='start' color='muted'>
           Transaction hash
         </Text>
         <Copyable value={txHash} />
         <Divider />
         <Box direction='horizontal' alignment='space-between'>
-          <Text>
+          <Text color='muted'>
             View on explorer
           </Text>
           <Link href={`https://${sanitizeChainName(chainName)}.subscan.io/extrinsic/${String(txHash)}`}>

@@ -10,8 +10,8 @@ import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";
 import { getClaim } from "./util/getClaim";
 import { Account } from "../../../components/Account";
-import { POOL_CLAIMABLE_DECIMAL } from "../components/ClaimRewards";
 import { FlowHeader } from "../../../components/FlowHeader";
+import { POOL_CLAIMABLE_DECIMAL } from "../components/Rewards";
 
 export async function claim(
   id: string,
@@ -44,7 +44,7 @@ const ui = (
 
   let { address, claimable, decimal, token, price, genesisHash } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
-  const amount = new BN(claimable);
+  const amount = new BN(claimable!);
 
   return (
     <Container>
@@ -80,7 +80,7 @@ const ui = (
               <Text>
                 Restake rewards
               </Text>
-              <Text color="muted">
+              <Text color="muted" size="sm">
                 Your tokens will return to stake
               </Text>
             </Box>

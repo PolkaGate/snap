@@ -20,7 +20,7 @@ export const PayoutAccount: SnapComponent<Props> = ({ address, genesisHash, show
     <Box direction='vertical' alignment='start'>
       {!!show &&
         <Box direction='vertical' alignment='start'>
-          <Text color="muted">
+          <Text color="muted" size="sm">
             Payout account
           </Text>
           <Section direction="horizontal" alignment="space-between">
