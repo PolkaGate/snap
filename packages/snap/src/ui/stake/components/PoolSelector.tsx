@@ -15,6 +15,7 @@ import { PoolInfo } from '../utils/getPools';
 import { StakingInitContextType } from '../types';
 import { WentWrong } from '../../components/WentWrong';
 import { ellipsis } from '../utils/ellipsis';
+import { MAX_POOL_NAME_TO_SHOW } from '../const';
 
 export type Props = {
   poolsInfo: PoolInfo[] | undefined,
@@ -22,7 +23,6 @@ export type Props = {
   context: StakingInitContextType
 };
 
-const MAX_POOL_NAME_TO_SHOW = 25;
 
 export const PoolSelector: SnapComponent<Props> = ({
   poolsInfo,

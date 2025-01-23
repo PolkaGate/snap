@@ -6,6 +6,8 @@ import { Row2 } from "./components/Row2";
 import { StakingInitContextType } from "./types";
 import { Account } from "../components/Account";
 import { FlowHeader } from "../components/FlowHeader";
+import { ellipsis } from "./utils/ellipsis";
+import { MAX_POOL_NAME_TO_SHOW } from "./const";
 
 export async function stakeFirstTimeReview(
   id: string,
@@ -73,7 +75,7 @@ const ui = (
           {stakingData.type === 'Pool'
             ? <Row2
               label='Pool'
-              value={`${stakingData.pool?.name}`}
+              value={ellipsis(stakingData?.pool?.name || 'Unknown', MAX_POOL_NAME_TO_SHOW)}
             />
             : <Row2
               label='Validators'

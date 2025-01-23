@@ -25,3 +25,4 @@ export const STAKING_CHAINS = [
 
 export const REWARDS_SAVED_INFO_VALIDITY_PERIOD = 15 * 60 * 1000;
 export const STAKED_AMOUNT_DECIMAL_POINT = 4;
+export const MAX_POOL_NAME_TO_SHOW = 25;
