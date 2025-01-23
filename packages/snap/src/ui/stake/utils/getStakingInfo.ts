@@ -70,7 +70,7 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
 
     return info;
   } catch (error) {
-    console.log('something went wrong while getStakingInfo. err: ' + error);
+   // something went wrong while getStakingInfo.
 
     return null;
   }

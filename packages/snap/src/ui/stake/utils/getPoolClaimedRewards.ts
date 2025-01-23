@@ -101,8 +101,6 @@ export async function getPoolTotalRewards(address: string, stakedTokens: Balance
     const maybeSavedRewards = await getSnapState(NAME_IN_STORAGE);
     if (maybeSavedRewards && Date.now() - maybeSavedRewards.date < REWARDS_SAVED_INFO_VALIDITY_PERIOD) {
       // TODO: check if any chains r changed
-      console.log('pool total claimed rewards info is serving from storage!')
-
       return maybeSavedRewards.rewards.map((r) => {
         return {
           ...r,

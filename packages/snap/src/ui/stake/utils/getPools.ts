@@ -72,10 +72,8 @@ export default async function getPools(genesisHash: HexString):Promise<PoolInfo[
 
   const lastPoolId = ((await api.query.nominationPools.lastPoolId())?.toNumber() || 0) as number;
 
-  console.log(`getPools: Getting ${lastPoolId} pools information.`);
-
   if (!lastPoolId) {
-    console.log(`getPools: no pools on this chain! Last pool id: ${lastPoolId}`);
+   // no pools on this chain!
 
     return;
   }
@@ -86,7 +84,6 @@ export default async function getPools(genesisHash: HexString):Promise<PoolInfo[
   let totalFetched = 0;
 
   while (lastPoolId > totalFetched) {
-    console.log(`Fetching pools info : ${totalFetched}/${lastPoolId}`);
     const queries = [];
 
     upperBond = totalFetched + page < lastPoolId ? totalFetched + page : lastPoolId;

@@ -69,7 +69,6 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
 
     // get identity of validators if they have
     while (accountIds.length > totalFetched) {
-      console.log(`Fetching validators identities : ${totalFetched}/${accountIds.length}`);
       const info = await Promise.all(
         accountIds
           .slice(totalFetched, totalFetched + page)
@@ -103,7 +102,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     totalFetched = 0;
 
     while (mayHaveSubId.length > totalFetched) {
-      console.log(`Fetching validators SUB identities : ${totalFetched}/${mayHaveSubId.length}`);
+    // Fetching validators SUB identities
       const subInfo = await Promise.all(
         mayHaveSubId.slice(totalFetched, totalFetched + page)
           .map((i) =>
@@ -130,7 +129,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     totalFetched = 0;
 
     while (accountSubInfo.length > totalFetched) {
-      console.log(`Fetching validators PARENT identities : ${totalFetched}/${accountSubInfo.length}`);
+    // Fetching validators PARENT identities
       const parentInfo = await Promise.all(
         accountSubInfo.slice(totalFetched, totalFetched + page)
           .map((i) =>
@@ -161,7 +160,7 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     return accountsInfo;
 
   } catch (error) {
-    console.log('something went wrong while getting validators id, err:', error);
+   // something went wrong while getting validators id
     return null;
   }
 }

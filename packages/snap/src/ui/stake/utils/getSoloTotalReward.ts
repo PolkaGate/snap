@@ -32,8 +32,6 @@ export async function getSoloReward(chainName: string | null, address: string | 
     return '0';
   }
 
-  console.log(`Getting Staking Reward from subscan  on ${chainName} for ${address} ... `);
-
   return new Promise((resolve) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -49,7 +47,6 @@ export async function getSoloReward(chainName: string | null, address: string | 
 
             resolve(reward);
           } else {
-            console.log(`Fetching message ${data.message}`);
             resolve('0');
           }
         })
@@ -58,7 +55,7 @@ export async function getSoloReward(chainName: string | null, address: string | 
           resolve('0');
         });
     } catch (error) {
-      console.log('something went wrong while getting get Staking Rewards ');
+     // something went wrong while getting get Staking Rewards
       resolve('0');
     }
   });
@@ -70,8 +67,6 @@ export async function getSoloRewards(stakedTokens: Balances[]): Promise<RewardsI
   const maybeSavedRewards = await getSnapState(NAME_IN_STORAGE);
   if (maybeSavedRewards && Date.now() - maybeSavedRewards.date < REWARDS_SAVED_INFO_VALIDITY_PERIOD) {
     // TODO: check if any chains r changed
-    console.log('pool total claimed rewards info is serving from storage!')
-
     return maybeSavedRewards.rewards.map((r) => {
       return {
         ...r,

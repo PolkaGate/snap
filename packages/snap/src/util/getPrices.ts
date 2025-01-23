@@ -51,7 +51,6 @@ export default async function getPrices(currencyCode = 'usd') {
     console.error('No price ids!');
     return;
   }
-  console.log('getting prices for:', priceIds.sort());
 
   const revisedPriceIds = priceIds.map((item) => (EXTRA_PRICE_IDS[item] || item));
   try {
@@ -72,7 +71,7 @@ export default async function getPrices(currencyCode = 'usd') {
 
     return price;
   } catch {
-    console.log('Something went wrong while getting prices! Try again later.')
+    // Something went wrong while getting prices! Try again later
   }
 }
 

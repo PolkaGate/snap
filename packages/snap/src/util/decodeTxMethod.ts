@@ -109,7 +109,7 @@ function decodeMethod(data: string, chain: Chain, specVersion: BN): Decoded {
         .replace(/`/gu, '');
       args = (method.toHuman() as { args: AnyJson }).args;
     } else {
-      console.log('Outdated metadata to decode', chain.specVersion.toString(), specVersion.toString());
+      // Outdated metadata to decode
     }
   } catch (error) {
     console.error(
