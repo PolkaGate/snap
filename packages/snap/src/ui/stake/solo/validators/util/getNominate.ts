@@ -1,9 +1,9 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balance } from "@polkadot/types/interfaces";
 import { OUTPUT_TYPE } from "../../../../../constants";
 import { handleOutput } from "../../../../../util/handleOutput";
-import { CallParamsType } from "../../../types";
+import type { CallParamsType } from "../../../types";
 
 const INTER_BLOCK_SPACE = 6; // sec
 
@@ -11,7 +11,7 @@ export const getNominate = async (
   address: string,
   genesisHash: HexString,
   selectedValidators: string[],
-  output?: OUTPUT_TYPE
+  output?: number
 ): Promise<CallParamsType | { fee: Balance, changeEffectiveAt: number }> => {
 
   const api = await getApi(genesisHash);
@@ -19,12 +19,10 @@ export const getNominate = async (
     throw new Error('cant connect to network, check your internet connection!');
   }
 
+  const call = api.tx['staking']['nominate'];
+  const params = [selectedValidators];
 
-
-  let call = api.tx['staking']['nominate'];
-  let params = [selectedValidators];
-
-  let result = await handleOutput(address, api, call, params, output);
+  const result = await handleOutput(address, api, call, params, output);
 
   let changeEffectiveAt;
   if (output === OUTPUT_TYPE.FEE) {

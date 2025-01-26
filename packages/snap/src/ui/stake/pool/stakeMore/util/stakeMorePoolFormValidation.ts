@@ -1,10 +1,9 @@
 import { amountToHuman } from "../../../../../util/amountToHuman";
-import { StakeMoreFormState } from "../../../types";
-import { StakeFormErrors, StakingInitContextType } from "../../../types";
+import type { StakeMoreFormState } from "../../../types";
+import type { StakeFormErrors, StakingInitContextType } from "../../../types";
 
 /**
  * Validate the stake more form.
- *
  * @param formState - The state of the staking more form.
  * @param context - The context of the interface.
  * @returns The form errors.

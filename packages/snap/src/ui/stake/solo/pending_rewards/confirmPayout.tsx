@@ -13,7 +13,7 @@ export async function confirmPayout(id: string, context: StakingSoloContextType)
   const { call, params } = await getPayout(address, genesisHash, selectedPayouts!, OUTPUT_TYPE.CALL_PARAMS) as CallParamsType;
 
   const _context = {
-    ...(context || {}),
+    ...(context ?? {}),
     selectedPayouts: []
   }
 

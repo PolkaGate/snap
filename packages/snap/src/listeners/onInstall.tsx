@@ -8,12 +8,13 @@ import { POLKADOT_GENESIS } from '@polkadot/apps-config';
 import { setSnapState } from '../rpc/stateManagement';
 import { home } from '../ui/image/screenshots';
 import { polkadotMedium } from '../ui/image/chains';
+import { noop } from '@polkadot/util/cjs/noop';
 
 /**
  *  This handler is called when the snap is installed.
  */
 export const onInstall: OnInstallHandler = async () => {
-  setSnapState({ currentGenesisHash: POLKADOT_GENESIS }).catch(console.error);
+  setSnapState({ currentGenesisHash: POLKADOT_GENESIS }).catch(noop);
 
   await snap.request({
     method: 'snap_dialog',

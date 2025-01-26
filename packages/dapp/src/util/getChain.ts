@@ -30,7 +30,6 @@ export const getChain = (genesisOrChainName: string): Network => {
   );
 
   if (chain) {
-    // console.info(`The chain for ${genesisOrChainName} is: `,chain )
     return chain;
   }
   throw new Error(`Chain '${genesisOrChainName}' is not recognized.`);

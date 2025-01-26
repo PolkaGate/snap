@@ -1,11 +1,10 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { amountToMachine } from "../../../util/amountToMachine";
 import { getApi } from "../../../util/getApi";
 import { checkAndUpdateMetaData } from "../../../rpc";
-import { BN_ONE, BN_ZERO } from "@polkadot/util";
-import { Balance } from "@polkadot/types/interfaces";
-import { StakingDataType } from "../types";
-
+import { BN_ONE, BN_ZERO, noop } from "@polkadot/util";
+import type { Balance } from "@polkadot/types/interfaces";
+import type { StakingDataType } from "../types";
 
 export const getStakingFee = async (
   address: string,
@@ -19,7 +18,7 @@ export const getStakingFee = async (
     throw new Error('cant connect to network, check your internet connection!');
   }
 
-  checkAndUpdateMetaData(api).catch(console.error);
+  checkAndUpdateMetaData(api).catch(noop);
 
   const decimal = api.registry.chainDecimals[0];
   const amountAsBN = amountToMachine(amount, decimal);
@@ -46,8 +45,8 @@ export const getStakingFee = async (
 
   if (call) {
     const { partialFee } = await call(...params).paymentInfo(address);
-    feeAsBalance = api.createType('Balance', partialFee || BN_ZERO);
+    feeAsBalance = api.createType('Balance', partialFee ?? BN_ZERO);
   }
 
-  return feeAsBalance as Balance;    
+  return feeAsBalance as Balance;
 }

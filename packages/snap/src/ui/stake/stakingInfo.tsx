@@ -1,48 +1,16 @@
 import { Image, Box, Button, Container, Footer, Heading, Section, Text, Divider, Bold } from "@metamask/snaps-sdk/jsx";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../util/getChainName";
 import { amountToHuman } from "../../util/amountToHuman";
 import { alertBell, coinStack, reward, timer } from "../image/icons";
 import { getSnapState } from "../../rpc/stateManagement";
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../util/handleBalancesAll";
-import { Balances } from "../../util";
+import type { Balances } from "../../util";
 import { getStakingInfo } from "./utils/getStakingInfo";
 import { StakingIndexContextType, StakingInfoType } from "./types";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "./const";
 
 const DEFAULT_MIN_JOIN_BOND = '1';//token
-
-export async function stakingInfo(id: string, genesisHash: HexString, context: StakingIndexContextType) {
-
-  const { balancesAll } = await handleBalancesAll(BALANCE_FETCH_TYPE.SAVED_ONLY);
-  const balances = balancesAll.find((balance) => balance.genesisHash === genesisHash)
-
-  const chainName = await getChainName(genesisHash);
-  const stakingInfo = await getStakingInfo(genesisHash);
-
-  if (!stakingInfo || !chainName) {
-    throw new Error('Failed to fetch online info, please check internet connection!')
-  }
-
-  const priceInfo = await getSnapState('priceInfo');
-  const sanitizedChainName = sanitizeChainName(chainName)?.toLocaleLowerCase();
-
-  const price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(balances, chainName, context, price, stakingInfo),
-      context: {
-        ...context,
-        genesisHash,
-        sanitizedChainName,
-        stakingInfo
-      }
-    },
-  });
-}
 
 const ui = (
   balances: Balances | undefined,
@@ -110,3 +78,35 @@ const ui = (
     </Container>
   );
 };
+
+export async function stakingInfo(id: string, genesisHash: HexString, context: StakingIndexContextType) {
+
+  const { balancesAll } = await handleBalancesAll(BALANCE_FETCH_TYPE.SAVED_ONLY);
+  const balances = balancesAll.find((balance) => balance.genesisHash === genesisHash)
+
+  const chainName = await getChainName(genesisHash);
+  const stakingInfo = await getStakingInfo(genesisHash);
+
+  if (!stakingInfo || !chainName) {
+    throw new Error('Failed to fetch online info, please check internet connection!')
+  }
+
+  const priceInfo = await getSnapState('priceInfo');
+  const sanitizedChainName = sanitizeChainName(chainName)?.toLocaleLowerCase();
+
+  const price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(balances, chainName, context, price, stakingInfo),
+      context: {
+        ...context,
+        genesisHash,
+        sanitizedChainName,
+        stakingInfo
+      }
+    },
+  });
+}

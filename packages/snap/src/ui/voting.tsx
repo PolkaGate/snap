@@ -1,16 +1,6 @@
 import { Box, Button, Container, Footer, Link, Section, Text } from "@metamask/snaps-sdk/jsx";
 import { FlowHeader } from "./components/FlowHeader";
 
-export async function voting(id: string) {
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui()
-    },
-  });
-}
-
 const ui = () => {
 
   return (
@@ -45,3 +35,13 @@ const ui = () => {
     </Container>
   );
 };
+
+export async function voting(id: string) {
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui()
+    },
+  });
+}

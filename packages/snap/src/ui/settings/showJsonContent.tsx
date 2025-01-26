@@ -3,30 +3,6 @@ import { Text, Box, Button, Container, Footer, Section, Copyable } from '@metama
 import { getJsonKeyPair } from '../../util';
 import { FlowHeader } from '../components/FlowHeader';
 
-/**
-
-/**
- * This will show the exported account content that can be copied in a file.
- *
- * @param id - The id of UI interface to be updated.
- * @param password - The password to encode the content.
- */
-export async function showJsonContent(id: string, password: string | null) {
-  if (!password) {
-    return;
-  }
-
-  const json = await getJsonKeyPair(password);
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: jsonContentUi(json)
-    },
-  });
-}
-
 const jsonContentUi = (json: string) => {
 
   return (
@@ -52,3 +28,26 @@ const jsonContentUi = (json: string) => {
     </Container>
   );
 };
+
+
+/**
+ * This will show the exported account content that can be copied in a file.
+ *
+ * @param id - The id of UI interface to be updated.
+ * @param password - The password to encode the content.
+ */
+export async function showJsonContent(id: string, password: string | null) {
+  if (!password) {
+    return;
+  }
+
+  const json = await getJsonKeyPair(password);
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: jsonContentUi(json)
+    },
+  });
+}

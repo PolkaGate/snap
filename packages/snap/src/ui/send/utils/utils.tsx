@@ -1,12 +1,12 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { amountToHuman } from "../../../util/amountToHuman";
 import { amountToMachine } from "../../../util/amountToMachine";
 import { getApi } from "../../../util/getApi";
 import isValidAddress from "../../../util/isValidAddress";
 import { SendFormState, SendFormErrors, SendContextType } from "../types";
 import { checkAndUpdateMetaData } from "../../../rpc";
-import { BN_ZERO } from "@polkadot/util";
-import { Balance } from "@polkadot/types/interfaces";
+import { BN_ZERO, noop } from "@polkadot/util";
+import type { Balance } from "@polkadot/types/interfaces";
 
 /**
  * Validate the send form.
@@ -47,7 +47,7 @@ export const getTransferFee = async (address: string, amount: number, genesisHas
   const amountAsBN = amountToMachine(String(amount), decimal);
   const params = [recipient, amountAsBN];
   const call = api.tx.balances.transferKeepAlive(...params);
-  checkAndUpdateMetaData(api).catch(console.error);
+  checkAndUpdateMetaData(api).catch(noop);
 
   const { partialFee } = await call.paymentInfo(address);
   const feeAsBalance = api.createType('Balance', partialFee || BN_ZERO);

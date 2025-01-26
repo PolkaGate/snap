@@ -1,18 +1,16 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { BN } from "@polkadot/util";
-import { Balance } from "@polkadot/types/interfaces";
-import { OUTPUT_TYPE } from "../../../../../constants";
+import type { BN } from "@polkadot/util";
+import type { Balance } from "@polkadot/types/interfaces";
 import { handleOutput } from "../../../../../util/handleOutput";
-import { CallParamsType } from "../../../types";
-
+import type { CallParamsType } from "../../../types";
 
 export const getSoloStakeMore = async (
   address: string,
   amount: BN,
   genesisHash: HexString,
-  output?: OUTPUT_TYPE
-): Promise<Balance | CallParamsType > => {
+  output?: number
+): Promise<Balance | CallParamsType> => {
 
   const api = await getApi(genesisHash);
   if (!api) {
@@ -20,7 +18,7 @@ export const getSoloStakeMore = async (
   }
 
   const params = [amount];
-  let call = api.tx['staking']['bondExtra'];
+  const call = api.tx['staking']['bondExtra'];
 
   return await handleOutput(address, api, call, params, output);
 }

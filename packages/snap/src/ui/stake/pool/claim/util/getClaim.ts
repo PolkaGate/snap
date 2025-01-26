@@ -1,8 +1,7 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { Balance } from "@polkadot/types/interfaces";
-import { OUTPUT_TYPE } from "../../../../../constants";
-import { CallParamsType } from "../../../types";
+import type { Balance } from "@polkadot/types/interfaces";
+import type { CallParamsType } from "../../../types";
 import { handleOutput } from "../../../../../util/handleOutput";
 
 
@@ -10,7 +9,7 @@ export const getClaim = async (
   address: string,
   genesisHash: HexString,
   restakeRewards: boolean | undefined,
-  output?: OUTPUT_TYPE
+  output?: number
 ): Promise<Balance | CallParamsType> => {
 
   const api = await getApi(genesisHash);

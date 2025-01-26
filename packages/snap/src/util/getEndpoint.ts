@@ -3,13 +3,21 @@
 
 import { createWsEndpoints } from '@polkagate/apps-config';
 import getChainName from './getChainName';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 
+/**
+ * Retrieves the WebSocket endpoint(s) for the given genesis hash.
+ * This function fetches the endpoints based on the chain's genesis hash, filters them based on conditions 
+ * such as whether light clients should be ignored, and optionally returns multiple endpoints or a single one.
+ * @param _genesisHash - The genesis hash of the chain for which the endpoint is to be retrieved.
+ * @param ignoreLightClient - Flag to indicate whether light client endpoints should be ignored.
+ * @param multiple - If true, an array of endpoints will be returned. If false or undefined, a single endpoint will be returned.
+ * @returns - Returns a single endpoint or an array of endpoints, or undefined if no valid endpoints are found.
+ * @throws - If the genesis hash is invalid or if no valid endpoints are found.
+ */
 export default async function getEndpoint(_genesisHash: HexString | undefined, ignoreLightClient = true, multiple?: boolean): Promise<string | string[] | undefined> {
-  console.info(`Getting ENDPOINT for ${_genesisHash}`)
 
   if (!_genesisHash) {
-    console.error('genesisHash should not be undefined');
     return undefined;
   }
   const allEndpoints = createWsEndpoints(() => '');
@@ -28,8 +36,7 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
       &&
       (
         String(e.info)?.toLowerCase() === sanitizedChainName ||
-        String(e.text)?.toLowerCase()?.includes(sanitizedChainName || '')
-      )
+        (e.text && typeof e.text === 'string' ? e.text : JSON.stringify(e.text))?.toLowerCase()?.includes(sanitizedChainName || '')      )
     )
     : [];
 
@@ -50,10 +57,10 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
   }
 
   return (
-    endpoints[4]?.value ||
-    endpoints[3]?.value ||
-    endpoints[2]?.value ||
-    endpoints[1]?.value ||
+    endpoints[4]?.value ??
+    endpoints[3]?.value ??
+    endpoints[2]?.value ??
+    endpoints[1]?.value ??
     endpoints[0]?.value
   );
 }

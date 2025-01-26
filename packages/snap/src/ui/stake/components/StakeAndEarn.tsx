@@ -1,8 +1,8 @@
 import { Box, Button, Image, Heading, Section, Text, Icon, Bold, SnapComponent } from '@metamask/snaps-sdk/jsx';
 import { amountToHuman } from '../../../util/amountToHuman';
-import { Balances } from '../../../util';
+import type { Balances } from '../../../util';
 import { sanitizeChainName } from '../../../util/getChainName';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import { getLogoByChainName } from '../../image/chains/getLogoByGenesisHash';
 import { toTitleCase } from '../../../utils';
 

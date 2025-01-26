@@ -2,21 +2,6 @@
 import { Text, Box, Button, Container, Field, Footer, Form, Input, Section } from '@metamask/snaps-sdk/jsx';
 import { FlowHeader } from '../components/FlowHeader';
 
-/**
- * This will show the alert to get password to export account as JSON file.
- *
- * @param id - The id of UI interface to be updated.
- */
-export async function exportAccount(id: string, maybePassword?: string) {
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(maybePassword)
-    },
-  });
-}
-
 const ui = (maybePassword?: string) => {
 
   return (
@@ -49,3 +34,13 @@ const ui = (maybePassword?: string) => {
     </Container>
   );
 };
+
+export async function exportAccount(id: string, maybePassword?: string) {
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(maybePassword)
+    },
+  });
+}

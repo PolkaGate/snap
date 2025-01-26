@@ -1,5 +1,5 @@
 import { Box, Container, Section, Text, Footer, Button, Icon, Bold } from "@metamask/snaps-sdk/jsx";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { amountToHuman } from "../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../util";
 import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
@@ -18,99 +18,6 @@ import { amountToMachine } from "../../util/amountToMachine";
 interface NewSelectionType {
   selectPoolForm: PoolSelectorFormState | undefined;
   selectedValidators: HexString[] | undefined;
-}
-
-export async function stakeInit(
-  id: string,
-  formAmount: number | undefined,
-  formErrors: StakeFormErrors,
-  context: StakingInitContextType,
-  newSelection: NewSelectionType
-) {
-
-  const { address, amount, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, stakingType, transferable } = context;
-  const _amount = formAmount !== undefined ? String(formAmount) : amount;
-
-  const decimal = stakingInfo!.decimal;
-  const token = stakingInfo!.token;
-
-  const minimumActiveStake = stakingInfo?.minimumActiveStake
-  const minimumActiveStakeInHuman = Number(amountToHuman(minimumActiveStake, decimal) || 0);
-  const _stakingType = stakingType || (Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo');
-
-  const DEFAULT_STAKING_DATA = {
-    type: _stakingType,
-    pool: {
-      id: POLKAGATE_POOL_IDS[genesisHash],
-      name: '❤️ PolkaGate | https://polkagate.xyz'
-    },
-    solo: {
-      validators: recommendedValidators[sanitizedChainName]
-    }
-  };
-
-  const _address = address || (await getKeyPair(undefined, genesisHash)).address;
-  const _logo = logo || await getLogoByGenesisHash(genesisHash);
-
-  let _transferable = transferable;
-
-  if (!(_transferable)) {
-    const balances = await getBalances(genesisHash, _address)
-    _transferable = balances.transferable.toString();
-  }
-
-  let _price = price;
-  let _rate = rate;
-
-  if (_price === undefined || !_rate) {
-    const priceInfo = await getSnapState('priceInfo');
-
-    _price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
-    _rate = stakingRates?.[sanitizedChainName || ''] || 0;
-  }
-
-  let isRecommended = true;
-
-  let maybeSelectedStakingData: StakingDataType | undefined = undefined;
-  const { selectPoolForm, selectedValidators } = newSelection;
-
-  if (selectPoolForm || selectedValidators) {
-
-    if (selectPoolForm) {
-      const [id, name] = selectPoolForm.poolSelector.split(',');
-      maybeSelectedStakingData = { ...DEFAULT_STAKING_DATA, type: 'Pool', pool: { id: Number(id), name } }
-      isRecommended = Number(id) === DEFAULT_STAKING_DATA.pool.id;
-
-    } else {
-
-      maybeSelectedStakingData = { ...DEFAULT_STAKING_DATA, type: 'Solo', solo: { validators: selectedValidators } }
-      isRecommended = areArraysEqual(selectedValidators, DEFAULT_STAKING_DATA.solo.validators)
-    }
-  }
-
-  const stakingData = maybeSelectedStakingData || DEFAULT_STAKING_DATA;
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      context: {
-        ...(context || {}),
-        address: _address,
-        amount: _amount,
-        decimal,
-        genesisHash,
-        logo: _logo,
-        price: _price!,
-        rate: _rate!,
-        transferable: _transferable!,
-        token,
-        stakingData,
-        DEFAULT_STAKING_DATA
-      },
-      id,
-      ui: ui(_amount, decimal, formErrors, _logo, token, _transferable, _price, _stakingType, _rate, stakingData, isRecommended, DEFAULT_STAKING_DATA),
-    },
-  });
 }
 
 const ui = (
@@ -191,3 +98,96 @@ const ui = (
     </Container >
   );
 };
+
+export async function stakeInit(
+  id: string,
+  formAmount: number | undefined,
+  formErrors: StakeFormErrors,
+  context: StakingInitContextType,
+  newSelection: NewSelectionType
+) {
+
+  const { address, amount, genesisHash, logo, price, recommendedValidators, rate, sanitizedChainName, stakingRates, stakingInfo, stakingType, transferable } = context;
+  const _amount = formAmount !== undefined ? String(formAmount) : amount;
+
+  const decimal = stakingInfo!.decimal;
+  const token = stakingInfo!.token;
+
+  const minimumActiveStake = stakingInfo?.minimumActiveStake
+  const minimumActiveStakeInHuman = Number(amountToHuman(minimumActiveStake, decimal) || 0);
+  const _stakingType = stakingType || (Number(_amount) < minimumActiveStakeInHuman ? 'Pool' : 'Solo');
+
+  const DEFAULT_STAKING_DATA = {
+    type: _stakingType,
+    pool: {
+      id: POLKAGATE_POOL_IDS[genesisHash],
+      name: '❤️ PolkaGate | https://polkagate.xyz'
+    },
+    solo: {
+      validators: recommendedValidators[sanitizedChainName]
+    }
+  };
+
+  const _address = address || (await getKeyPair(undefined, genesisHash)).address;
+  const _logo = logo || await getLogoByGenesisHash(genesisHash);
+
+  let _transferable = transferable;
+
+  if (!(_transferable)) {
+    const balances = await getBalances(genesisHash, _address)
+    _transferable = balances.transferable.toString();
+  }
+
+  let _price = price;
+  let _rate = rate;
+
+  if (_price === undefined || !_rate) {
+    const priceInfo = await getSnapState('priceInfo');
+
+    _price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
+    _rate = stakingRates?.[sanitizedChainName || ''] || 0;
+  }
+
+  let isRecommended = true;
+
+  let maybeSelectedStakingData: StakingDataType | undefined = undefined;
+  const { selectPoolForm, selectedValidators } = newSelection;
+
+  if (selectPoolForm || selectedValidators) {
+
+    if (selectPoolForm) {
+      const [id, name] = selectPoolForm.poolSelector.split(',');
+      maybeSelectedStakingData = { ...DEFAULT_STAKING_DATA, type: 'Pool', pool: { id: Number(id), name } }
+      isRecommended = Number(id) === DEFAULT_STAKING_DATA.pool.id;
+
+    } else {
+
+      maybeSelectedStakingData = { ...DEFAULT_STAKING_DATA, type: 'Solo', solo: { validators: selectedValidators } }
+      isRecommended = areArraysEqual(selectedValidators, DEFAULT_STAKING_DATA.solo.validators)
+    }
+  }
+
+  const stakingData = maybeSelectedStakingData || DEFAULT_STAKING_DATA;
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      context: {
+        ...(context ?? {}),
+        address: _address,
+        amount: _amount,
+        decimal,
+        genesisHash,
+        logo: _logo,
+        price: _price!,
+        rate: _rate!,
+        transferable: _transferable!,
+        token,
+        stakingData,
+        DEFAULT_STAKING_DATA
+      },
+      id,
+      ui: ui(_amount, decimal, formErrors, _logo, token, _transferable, _price, _stakingType, _rate, stakingData, isRecommended, DEFAULT_STAKING_DATA),
+    },
+  });
+}

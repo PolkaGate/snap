@@ -2,13 +2,13 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getKeyPair } from "../util";
 import getChainName from "../util/getChainName";
 import { Confirmation } from "./components/Confirmation";
 import { Json } from "@metamask/snaps-sdk";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
+import type { SubmittableExtrinsicFunction } from "@polkadot/api/types";
+import type { AnyTuple } from "@polkadot/types/types";
 
 export async function showConfirm(
   action: string,
@@ -18,7 +18,7 @@ export async function showConfirm(
   params: unknown[]
 ) {
 
-  const  genesisHash  = context.genesisHash as HexString;
+  const genesisHash = context.genesisHash as HexString;
 
   const keyPair = await getKeyPair(genesisHash);
   const txHash = await call(...(params || [])).signAndSend(keyPair);
@@ -28,7 +28,7 @@ export async function showConfirm(
     method: 'snap_updateInterface',
     params: {
       context: {
-        ...(context || {}),
+        ...(context ?? {}),
       },
       id,
       ui: (

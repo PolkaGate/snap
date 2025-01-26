@@ -18,7 +18,7 @@ export const txContentUseApi = (
   partialFee: Balance,
   decoded: Decoded,
   maybeReceiverIdentity: string | null,
-) => {
+): unknown => {
 
   const { args, callIndex } = api.createType('Call', payload.method);
   const { method, section } = api.registry.findMetaCall(callIndex);

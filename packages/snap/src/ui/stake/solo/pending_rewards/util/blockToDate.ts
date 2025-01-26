@@ -1,7 +1,14 @@
 // Copyright 2019-2025 @polkadot/extension-polkagate authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-export default function blockToDate (blockNumber?: number, currentBlock?: number, option?: Intl.DateTimeFormatOptions) {
+/**
+ * Converts a block number to a date, relative to the current block.
+ * @param blockNumber - The block number to convert.
+ * @param currentBlock - The current block number to calculate the difference.
+ * @param option - Optional options for formatting the date.
+ * @returns The formatted date or 'N/A' if input values are missing.
+ */
+export default function blockToDate (blockNumber?: number, currentBlock?: number, option?: Intl.DateTimeFormatOptions):string {
   if (!blockNumber || !currentBlock) {
     return 'N/A';
   }

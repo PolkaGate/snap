@@ -5,17 +5,6 @@ import { DialogResult } from '@metamask/snaps-sdk';
 import { metadata } from '../image/icons';
 import { Bold, Box, Heading, Image, Link, Section, Text } from '@metamask/snaps-sdk/jsx';
 
-export async function metadataAlert(): Promise<DialogResult> {
-
-  return await snap.request({
-    method: 'snap_dialog',
-    params: {
-      content: ui(),
-      type: 'alert',
-    },
-  });
-}
-
 const ui = () => (
   <Box>
     <Heading size='sm'>
@@ -31,4 +20,15 @@ const ui = () => (
       <Image src={metadata} />
     </Section>
   </Box>
-)
+);
+
+export async function metadataAlert(): Promise<DialogResult> {
+
+  return await snap.request({
+    method: 'snap_dialog',
+    params: {
+      content: ui(),
+      type: 'alert',
+    },
+  });
+}

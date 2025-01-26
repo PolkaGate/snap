@@ -2,7 +2,7 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { SendContextType } from "./types";
 import { amountToHuman } from "../../util/amountToHuman";
 import { FlowHeader } from "../components/FlowHeader";
@@ -11,22 +11,6 @@ import { Account } from "../components/Account";
 import { Row2 } from "../stake/components/Row2";
 import { Network } from "../components/Network";
 import getChainName from "../../util/getChainName";
-
-export async function reviewSend(id: string, genesisHash: HexString, amount: string, recipient: string, context: SendContextType) {
-  const chainName = await getChainName(genesisHash, true);
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(amount, chainName, context, genesisHash, recipient),
-      context: {
-        ...(context || {}),
-        genesisHash,
-      }
-    },
-  });
-};
 
 const ui = (
   amount: string,
@@ -85,4 +69,20 @@ const ui = (
       </Footer>
     </Container>
   )
+};
+
+export async function reviewSend(id: string, genesisHash: HexString, amount: string, recipient: string, context: SendContextType) {
+  const chainName = await getChainName(genesisHash, true);
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(amount, chainName, context, genesisHash, recipient),
+      context: {
+        ...(context ?? {}),
+        genesisHash,
+      }
+    },
+  });
 };

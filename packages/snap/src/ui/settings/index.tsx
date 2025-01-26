@@ -4,23 +4,40 @@ import { book, currency, email, github, language, telegram, twitter, web, youtub
 import { getKeyPair } from "../../util";
 import { FlowHeader } from "../components/FlowHeader";
 
-/**
- * This shows the more page
- *
- * @param id - The id of UI interface to be updated.
- */
-export async function settings(id: string) {
-
-  const { address } = await getKeyPair();
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(address)
-    },
-  });
+type LinkProps = {
+  icon: string;
+  link: string;
+  label: string;
 }
+
+const LinkItem: SnapComponent<LinkProps> = ({ icon, link, label }: LinkProps) => (
+  <Box direction="horizontal" alignment="start">
+    <Image src={icon} />
+    <Link href={link}>
+      {label}
+    </Link>
+  </Box>
+);
+
+interface PreferenceProps {
+  icon: string;
+  label: string;
+  value: string;
+}
+
+const Preference: SnapComponent<PreferenceProps> = ({ icon, label, value }) => (
+  <Box direction="horizontal" alignment="space-between">
+    <Box direction="horizontal" alignment="start" center>
+      <Image src={icon} />
+      <Text  >
+        {label}
+      </Text>
+    </Box>
+    <Text color="muted" >
+      {value}
+    </Text>
+  </Box>
+);
 
 const ui = (address: string) => {
 
@@ -95,38 +112,20 @@ const ui = (address: string) => {
   );
 };
 
+/**
+ * This shows the more page
+ *
+ * @param id - The id of UI interface to be updated.
+ */
+export async function settings(id: string) {
 
-type LinkProps = {
-  icon: string;
-  link: string;
-  label: string;
+  const { address } = await getKeyPair();
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(address)
+    },
+  });
 }
-
-
-const LinkItem: SnapComponent<LinkProps> = ({ icon, link, label }: LinkProps) => (
-  <Box direction="horizontal" alignment="start">
-    <Image src={icon} />
-    <Link href={link}>
-      {label}
-    </Link>
-  </Box>
-);
-
-interface PreferenceProps {
-  icon: string;
-  label: string;
-  value: string;
-}
-const Preference: SnapComponent<PreferenceProps> = ({ icon, label, value }) => (
-  <Box direction="horizontal" alignment="space-between">
-    <Box direction="horizontal" alignment="start" center>
-      <Image src={icon} />
-      <Text  >
-        {label}
-      </Text>
-    </Box>
-    <Text color="muted" >
-      {value}
-    </Text>
-  </Box>
-);

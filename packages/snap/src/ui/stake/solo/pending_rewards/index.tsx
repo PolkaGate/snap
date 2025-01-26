@@ -10,41 +10,6 @@ import { RewardsTable } from "./components/RewardsTable";
 import { PendingRewardsBanner } from "./components/PendingRewardsBanner";
 import { NoPendingRewards } from "./components/NoPendingRewards";
 
-export async function pendingRewards(
-  id: string,
-  context: StakingSoloContextType,
-  selectedPayouts: string[] | undefined
-) {
-
-  let { address, genesisHash, selectedPayouts: selectedPayoutsFromContext } = context;
-  const _selectedPayouts = selectedPayouts || selectedPayoutsFromContext;
-
-  const unpaidRewards = await getPendingRewards(address, genesisHash, !!selectedPayouts?.length);
-
-  let selectedAmount = BN_ZERO;
-  !!unpaidRewards?.info && Object.entries(unpaidRewards.info).map(([era, rewards]) => (
-    Object.entries(rewards).map(([validator, [page, amount]]) => {
-      const searchKey = `${validator},${Number(era)},${page}`;
-      if (selectedPayouts?.includes(searchKey)) {
-        selectedAmount = selectedAmount.add(amount);
-      }
-    })
-  ));
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(context, unpaidRewards, _selectedPayouts, selectedAmount),
-      context: {
-        ...(context || {}),
-        selectedPayouts: _selectedPayouts,
-        selectedAmountToPayout: selectedAmount.toString()
-      }
-    },
-  });
-}
-
 const ui = (
   context: StakingSoloContextType,
   unpaidRewards: PendingRewardsOutput | undefined,
@@ -79,3 +44,38 @@ const ui = (
     </Container >
   );
 };
+
+export async function pendingRewards(
+  id: string,
+  context: StakingSoloContextType,
+  selectedPayouts: string[] | undefined
+) {
+
+  let { address, genesisHash, selectedPayouts: selectedPayoutsFromContext } = context;
+  const _selectedPayouts = selectedPayouts || selectedPayoutsFromContext;
+
+  const unpaidRewards = await getPendingRewards(address, genesisHash, !!selectedPayouts?.length);
+
+  let selectedAmount = BN_ZERO;
+  !!unpaidRewards?.info && Object.entries(unpaidRewards.info).map(([era, rewards]) => (
+    Object.entries(rewards).map(([validator, [page, amount]]) => {
+      const searchKey = `${validator},${Number(era)},${page}`;
+      if (selectedPayouts?.includes(searchKey)) {
+        selectedAmount = selectedAmount.add(amount);
+      }
+    })
+  ));
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(context, unpaidRewards, _selectedPayouts, selectedAmount),
+      context: {
+        ...(context ?? {}),
+        selectedPayouts: _selectedPayouts,
+        selectedAmountToPayout: selectedAmount.toString()
+      }
+    },
+  });
+}

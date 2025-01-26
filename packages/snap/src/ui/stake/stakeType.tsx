@@ -5,29 +5,6 @@ import { PoolOption } from "./components/PoolOption";
 import { SoloOption } from "./components/SoloOption";
 import { FlowHeader } from "../components/FlowHeader";
 
-export async function stakeType(
-  id: string,
-  context: StakingInitContextType,
-  selectedOption: StakingType
-) {
-
-  const { genesisHash, stakingData } = context;
-  const stakingType = selectedOption || stakingData?.type;
-  const poolsInfo = stakingType === 'Pool' ? await getPools(genesisHash) : [];
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      context: {
-        ...(context || {}),
-        stakingType
-      },
-      id,
-      ui: ui(context, poolsInfo, stakingType),
-    },
-  });
-}
-
 const ui = (
   context: StakingInitContextType,
   poolsInfo: PoolInfo[] | undefined,
@@ -60,3 +37,26 @@ const ui = (
     </Container >
   );
 };
+
+export async function stakeType(
+  id: string,
+  context: StakingInitContextType,
+  selectedOption: StakingType
+) {
+
+  const { genesisHash, stakingData } = context;
+  const stakingType = selectedOption || stakingData?.type;
+  const poolsInfo = stakingType === 'Pool' ? await getPools(genesisHash) : [];
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      context: {
+        ...(context ?? {}),
+        stakingType
+      },
+      id,
+      ui: ui(context, poolsInfo, stakingType),
+    },
+  });
+}

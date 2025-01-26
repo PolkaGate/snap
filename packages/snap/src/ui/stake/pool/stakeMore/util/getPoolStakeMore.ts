@@ -1,9 +1,8 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { BN, BN_ZERO } from "@polkadot/util";
-import { Balance } from "@polkadot/types/interfaces";
-import { OUTPUT_TYPE } from "../../../../../constants";
-import { CallParamsType } from "../../../types";
+import type { BN } from "@polkadot/util";
+import type { Balance } from "@polkadot/types/interfaces";
+import type { CallParamsType } from "../../../types";
 import { handleOutput } from "../../../../../util/handleOutput";
 
 
@@ -11,7 +10,7 @@ export const getPoolStakeMore = async (
   address: string,
   amount: BN,
   genesisHash: HexString,
-  output?: OUTPUT_TYPE
+  output?: number
 ): Promise<Balance | CallParamsType> => {
 
   const api = await getApi(genesisHash);
@@ -19,8 +18,8 @@ export const getPoolStakeMore = async (
     throw new Error('cant connect to network, check your internet connection!');
   }
 
-  let params = [{ FreeBalance: amount.toString() }];
-  let call = api.tx['nominationPools']['bondExtra'];
+  const params = [{ FreeBalance: amount.toString() }];
+  const call = api.tx['nominationPools']['bondExtra'];
 
   return await handleOutput(address, api, call, params, output);
 }

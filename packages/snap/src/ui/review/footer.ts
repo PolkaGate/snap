@@ -9,16 +9,20 @@ import {
 } from '@metamask/snaps-sdk';
 import type { Balance } from '@polkadot/types/interfaces';
 
-export const sanitizeText = (text?: string) => {
-  // To replace text formatted like a link [A](B) with an something different like (A)(B)
-  return text?.replace(/\[(.*?)\]\((.*?)\)/g, '($1)($2)');
+/**
+ * Replaces text formatted like a link `[A](B)` with a different format `(A)(B)`.
+ * @param str - The input string that may contain link-like formatted text.
+ * @returns A sanitized string with the replaced format.
+ */
+export const sanitizeText = (str?: string): string | undefined => {
+  return str?.replace(/\[(.*?)\]\((.*?)\)/g, '($1)($2)');
 };
 
 export const txFooter = (
   docs: string,
   chainName: string | undefined,
   partialFee?: Balance,
-) => {
+): unknown => {
 
   const _rest = [
     divider(),

@@ -1,6 +1,6 @@
 import { Box, Container, Section, Footer, Button } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../components/Row2";
 import { StakingSoloContextType } from "../../types";
 import { Account } from "../../../components/Account";
@@ -8,26 +8,6 @@ import { FlowHeader } from "../../../components/FlowHeader";
 import { getNominate } from "./util/getNominate";
 import { InfoRow } from "../../components/InfoRow";
 import { OUTPUT_TYPE } from "../../../../constants";
-
-export async function reviewChangeValidators(
-  id: string,
-  context: StakingSoloContextType
-) {
-
-  let { address, genesisHash, selectedValidators } = context;
-  const { fee, changeEffectiveAt } = await getNominate(address, genesisHash, selectedValidators!, OUTPUT_TYPE.FEE) as { fee: Balance; changeEffectiveAt: number; };
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(fee, context, changeEffectiveAt),
-      context: {
-        ...(context || {})
-      }
-    },
-  });
-}
 
 const ui = (
   fee: Balance,
@@ -78,3 +58,20 @@ const ui = (
     </Container >
   );
 };
+
+export async function reviewChangeValidators(id: string, context: StakingSoloContextType) {
+
+  let { address, genesisHash, selectedValidators } = context;
+  const { fee, changeEffectiveAt } = await getNominate(address, genesisHash, selectedValidators!, OUTPUT_TYPE.FEE) as { fee: Balance; changeEffectiveAt: number; };
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(fee, context, changeEffectiveAt),
+      context: {
+        ...(context ?? {})
+      }
+    },
+  });
+}

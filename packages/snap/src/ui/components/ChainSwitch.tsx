@@ -3,7 +3,7 @@
 
 import { Box, Option, SnapComponent, Dropdown, Image } from "@metamask/snaps-sdk/jsx";
 import { getChainOptions } from "../../chains";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 
 type Props = {
   genesisHash: HexString

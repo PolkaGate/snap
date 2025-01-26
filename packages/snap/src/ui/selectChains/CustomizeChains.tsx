@@ -1,23 +1,9 @@
 import { Image, Box, Button, Container, Footer, Heading, Icon, Section, Text, Checkbox, Form } from "@metamask/snaps-sdk/jsx";
 import { getChainOptions, Options } from "../../chains";
 import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getSnapState } from "../../rpc/stateManagement";
 import { DEFAULT_CHAINS_GENESIS } from "../../constants";
-
-export async function CustomizeChains(id: string) {
-  const options = getChainOptions()
-  const logoList = await Promise.all(options.map(({ value }) => getLogoByGenesisHash(value as HexString)));
-  const selectedChains = (await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS;
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(options, logoList, selectedChains)
-    },
-  });
-}
 
 const ui = (options: Options[], logoList: string[], selectedChains: HexString[]) => {
 
@@ -64,3 +50,17 @@ const ui = (options: Options[], logoList: string[], selectedChains: HexString[])
     </Container >
   );
 };
+
+export async function CustomizeChains(id: string) {
+  const options = getChainOptions()
+  const logoList = await Promise.all(options.map(({ value }) => getLogoByGenesisHash(value as HexString)));
+  const selectedChains = (await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS;
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(options, logoList, selectedChains)
+    },
+  });
+}

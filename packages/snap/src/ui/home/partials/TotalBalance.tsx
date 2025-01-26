@@ -4,7 +4,7 @@
 
 import { Box, Heading, Icon, Text, Button, SnapComponent, Tooltip } from '@metamask/snaps-sdk/jsx';
 import { amountToHuman } from '../../../util/amountToHuman';
-import { Balances } from '../../../util';
+import type { Balances } from '../../../util';
 import { PriceValue } from '../../../util/getPrices';
 import { commifyNumber } from '../../../utils';
 

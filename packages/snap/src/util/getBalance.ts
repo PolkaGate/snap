@@ -4,10 +4,11 @@ import type { AccountData } from '@polkadot/types/interfaces/balances/types';
 import { getApi } from './getApi';
 import { getFormatted } from './getFormatted';
 import { BN_ZERO } from '@polkadot/util';
-import { HexString } from '@polkadot/util/types';
-import { getPooledBalance, PoolBalances } from './getPooledBalance';
+import type { HexString } from '@polkadot/util/types';
+import type { PoolBalances } from './getPooledBalance';
+import { getPooledBalance } from './getPooledBalance';
 import { getSoloBalances } from './getSoloBalances';
-import { SoloBalance } from '../ui/stake/types';
+import type { SoloBalance } from '../ui/stake/types';
 
 export type Balances = {
   total: Balance;
@@ -18,7 +19,7 @@ export type Balances = {
   pooledBalance?: Balance;
   pooled?: PoolBalances,
   poolId?: number;
-  solo?:SoloBalance;
+  solo?: SoloBalance;
   poolName?: string;
   decimal: number;
   genesisHash: HexString;
@@ -27,14 +28,11 @@ export type Balances = {
 
 /**
  * To get the balances including locked one of an address.
- *
  * @param genesisHash - The genesisHash of the chain will be used to find an endpoint to use.
  * @param address - An address to get its balances.
  * @returns The total, transferable, and locked balances.
  */
 export async function getBalances(genesisHash: HexString, address: string,): Promise<Balances> {
-  console.info(`getting balances for ${address} on ${genesisHash}`)
-
   const api = await getApi(genesisHash);
 
   const POOLED_BALANCES_DEFAULT = {
@@ -94,7 +92,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     };
   }
 
-  const { soloTotal, solo, rewardsDestination } = await getSoloBalances(api, genesisHash, formatted);
+  const { soloTotal, solo, rewardsDestination } = await getSoloBalances(api, formatted);
 
   let pooledBalance: Balance | undefined = undefined;
   let pooledBalanceDetails: PoolBalances | undefined = undefined;
@@ -114,17 +112,17 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
 
   const transferable = api.createType(
     'Balance',
-    balances.data.free.sub(balances.data.frozen || balances.data.miscFrozen),
+    balances.data.free.sub(balances.data.frozen ?? balances.data.miscFrozen),
   ) as unknown as Balance;
 
   const total = api.createType(
     'Balance',
-    balances.data.free.add(balances.data.reserved).add(pooledBalance || BN_ZERO),
+    balances.data.free.add(balances.data.reserved).add(pooledBalance ?? BN_ZERO),
   ) as unknown as Balance;
 
   const locked = api.createType(
     'Balance',
-    (balances.data.frozen || balances.data.miscFrozen),
+    (balances.data.frozen ?? balances.data.miscFrozen),
   ) as unknown as Balance;
 
   return {

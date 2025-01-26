@@ -1,7 +1,7 @@
 import { Box, Text, Tooltip, Icon, Checkbox, Avatar, SnapComponent } from '@metamask/snaps-sdk/jsx';
 import { Identity } from './utils/getValidatorIdentities';
 import { BN } from '@polkadot/util';
-import { AccountId } from '@polkadot/types/interfaces';
+import type { AccountId } from '@polkadot/types/interfaces';
 import { ellipsis } from './utils/ellipsis';
 
 interface Props {

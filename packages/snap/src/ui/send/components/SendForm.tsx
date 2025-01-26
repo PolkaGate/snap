@@ -14,7 +14,7 @@ import {
 import jazzicon1 from '../../image/jazzicon/jazzicon1.svg';
 import { TokenSelector } from './TokenSelector';
 import { PriceValue } from '../../../util/getPrices';
-import { Balances } from '../../../util';
+import type { Balances } from '../../../util';
 import { SendFormErrors } from '../types';
 
 export type SendFormProps = {

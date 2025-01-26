@@ -1,22 +1,22 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { SpStakingPagedExposureMetadata, PalletStakingValidatorPrefs, Option } from "@polkadot/types/interfaces";
-import { BN } from "@polkadot/util";
+import type { SpStakingPagedExposureMetadata, PalletStakingValidatorPrefs, Option } from "@polkadot/types/interfaces";
+import type { BN } from "@polkadot/util";
 import { getFormatted } from "../../../../../util/getFormatted";
 
-export interface ValidatorInfoClipped {
-  activeValidators: string[];
-  elected: ValidatorPrefOverview[];
-  waiting: ValidatorPrefOverview[];
-};
-
-interface ValidatorPrefOverview {
+type ValidatorPrefOverview = {
   address: string;
   prefs: PalletStakingValidatorPrefs;
   overviews: SpStakingPagedExposureMetadata | null;
 };
 
-export interface Other {
+export type ValidatorInfoClipped = {
+  activeValidators: string[];
+  elected: ValidatorPrefOverview[];
+  waiting: ValidatorPrefOverview[];
+};
+
+export type Other = {
   who: string;
   value: BN;
 }
@@ -34,13 +34,13 @@ export const getValidatorsInfo = async (
 
   const eraIndex = (await api.query.staking.currentEra()).toString();
 
-  const infoAsPromise = nominators.map(async (address) => {
+  const infoAsPromise = nominators.map(async (_address) => {
     const [prefs, overviews] = await Promise.all([
-      api.query.staking.validators(address),
-      api.query.staking.erasStakersOverview(eraIndex, address),
+      api.query.staking.validators(_address),
+      api.query.staking.erasStakersOverview(eraIndex, _address),
     ]);
 
-    return { address, prefs, overviews };
+    return { address: _address, prefs, overviews };
   });
 
   let validatorsInfo = await Promise.all(infoAsPromise);
@@ -53,22 +53,22 @@ export const getValidatorsInfo = async (
   })
 
   // separate waiting and elected validators
-  const [elected, waiting] = validatorsInfo.reduce(
-    ([elected, waiting], validator) => {
+  const [elected, waiting] = validatorsInfo.reduce<[typeof validatorsInfo[0][], typeof validatorsInfo[0][]]>(
+    ([_elected, _waiting], validator) => {
       if (validator.overviews?.nominatorCount) {
-        elected.push(validator);
+        _elected.push(validator);
       } else {
-        waiting.push(validator);
+        _waiting.push(validator);
       }
-      return [elected, waiting];
+      return [_elected, _waiting];
     },
     [[], []]
   );
 
   // get nominators for elected validators
-  const erasStakersPagedAsPromises = elected.map(({ address }) => api.query.staking.erasStakersPaged.entries(eraIndex, address));
+  const erasStakersPagedAsPromises = elected.map(async (ev) => api.query.staking.erasStakersPaged.entries(eraIndex, ev.address));
 
-  let validatorsPaged = await Promise.all(erasStakersPagedAsPromises);
+  const validatorsPaged = await Promise.all(erasStakersPagedAsPromises);
 
   const currentNominators: Record<string, Other[]> = {};
 
@@ -82,11 +82,9 @@ export const getValidatorsInfo = async (
     }
   });
 
-  
-  
-  let activeValidators: string[] = [];
+  const activeValidators: string[] = [];
   const formatted = getFormatted(genesisHash, address);
-  
+
   Object.entries(currentNominators).forEach(([validator, others]) => {
     const found = others.find(({ who }) => String(who) === formatted);
 

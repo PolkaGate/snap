@@ -5,9 +5,16 @@ import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { bnToBn } from '@polkadot/util';
 
 import { getDecoded } from '../../rpc';
-import { Chain } from '@polkadot/extension-chains/types';
-import { txContentUseMetadata } from './txContentUseMetadata';
+import type { Chain } from '@polkadot/extension-chains/types';
+import type { txContentUseMetadata } from './txContentUseMetadata';
 
+/**
+ * Reviews metadata and presents a confirmation dialog to the user.
+ * @param chain - The chain object representing the blockchain network.
+ * @param origin - The origin of the request (e.g., dApp or source).
+ * @param payload - The signer payload containing transaction details.
+ * @returns A boolean indicating the success of the operation, a string for additional responses, or null if no response was provided.
+ */
 export async function reviewUseMetadata(
   chain: Chain,
   origin: string,

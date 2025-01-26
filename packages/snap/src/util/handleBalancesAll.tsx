@@ -5,7 +5,7 @@
 import { getChainOptions } from '../chains';
 import { Balances, getBalances, getKeyPair } from '.';
 import { getLogoByGenesisHash } from '../ui/image/chains/getLogoByGenesisHash';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import { getSnapState, updateSnapState } from '../rpc/stateManagement';
 import { getNativeTokenPrice } from './getNativeTokenPrice';
 import { DEFAULT_CHAIN_NAME, DEFAULT_CHAINS_GENESIS, PRICE_VALIDITY_PERIOD } from '../constants';
@@ -22,7 +22,7 @@ export enum BALANCE_FETCH_TYPE {
 export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
   const options = getChainOptions();
   const snapState = await getSnapState();
-  const selectedChains = snapState?.selectedChains || DEFAULT_CHAINS_GENESIS;
+  const selectedChains = snapState?.selectedChains ?? DEFAULT_CHAINS_GENESIS;
 
   const selectedOptions = options.filter(({ value }) => selectedChains.includes(value));
 

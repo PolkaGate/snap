@@ -5,7 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import { web3FromSource } from '@polkagate/extension-dapp';
 import { Box, CircularProgress, Divider, Grid, InputAdornment, Link, Skeleton, TextField, Typography } from '@mui/material';
-import { ApiPromise } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import { TxResult, send } from './apis/send';
 import { amountToMachine } from './util/utils';
@@ -23,7 +23,7 @@ interface Props {
   token: string | undefined;
 
 }
-function TransferFund({ api, account, balances, currentChainName, formatted, isPolkaMaskInstalled, token }: Props):React.ReactElement<Props> {
+function TransferFund({ api, account, balances, currentChainName, formatted, isPolkaMaskInstalled, token }: Props): React.ReactElement<Props> {
   const [toAddress, setToAddress] = useState<string>();
   const [_signature, setSignature] = useState<string>();
   const [_result, setResult] = useState<TxResult>();
@@ -49,7 +49,7 @@ function TransferFund({ api, account, balances, currentChainName, formatted, isP
   const handleSendClick = async () => {
     setSignature(undefined);
     setResult(undefined);
-    
+
     try {
       if (!api || !account || !toAddress) {
         return;

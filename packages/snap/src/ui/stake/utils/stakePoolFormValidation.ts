@@ -1,9 +1,8 @@
 import { amountToHuman } from "../../../util/amountToHuman";
-import { StakeFormErrors, StakeFormState, StakingInitContextType } from "../types";
+import type { StakeFormErrors, StakeFormState, StakingInitContextType } from "../types";
 
 /**
  * Validate the stake initial form.
- *
  * @param formState - The state of the staking init form.
  * @param context - The context of the interface.
  * @returns The form errors.

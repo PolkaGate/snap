@@ -6,7 +6,7 @@ import { Payee, StakingSoloContextType } from "../../types";
 import { RewardsDestinationOptions } from "./types";
 import { Row2 } from "../../components/Row2";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balance } from "@polkadot/types/interfaces";
 import { PayoutAccount } from "./component/PayoutAccount";
 import { GET_PAYEE_OUTPUT_TYPE, getPayee } from "./util/getPayee";
 import { FlowHeader } from "../../../components/FlowHeader";
@@ -26,34 +26,6 @@ const makePayee = (value: string | undefined): Payee | undefined => {
   // }
 
   return undefined;
-}
-
-export async function rewardsDestination(
-  id: string,
-  context: StakingSoloContextType,
-  selectedRewardsDestinationOption: RewardsDestinationOptions,
-) {
-
-  const { address, genesisHash } = context;
-
-  const { payee, fee } = context?.payee?.initial && context?.fee
-    ? { payee: context.payee.initial, fee: context.fee }
-    : await getPayee(address, genesisHash, GET_PAYEE_OUTPUT_TYPE.FEE_AND_PAYEE);
-
-  const maybeNew = makePayee(selectedRewardsDestinationOption);
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      context: {
-        ...(context || {}),
-        payee: { maybeNew, initial: payee },
-        fee: fee,
-      },
-      id,
-      ui: ui(context, payee, fee, maybeNew, selectedRewardsDestinationOption),
-    },
-  });
 }
 
 const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNew: Payee | undefined, selectedRewardsDestinationOption: RewardsDestinationOptions) => {
@@ -110,3 +82,31 @@ const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNe
     </Container >
   );
 };
+
+export async function rewardsDestination(
+  id: string,
+  context: StakingSoloContextType,
+  selectedRewardsDestinationOption: RewardsDestinationOptions,
+) {
+
+  const { address, genesisHash } = context;
+
+  const { payee, fee } = context?.payee?.initial && context?.fee
+    ? { payee: context.payee.initial, fee: context.fee }
+    : await getPayee(address, genesisHash, GET_PAYEE_OUTPUT_TYPE.FEE_AND_PAYEE);
+
+  const maybeNew = makePayee(selectedRewardsDestinationOption);
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      context: {
+        ...(context ?? {}),
+        payee: { maybeNew, initial: payee },
+        fee: fee,
+      },
+      id,
+      ui: ui(context, payee, fee, maybeNew, selectedRewardsDestinationOption),
+    },
+  });
+}

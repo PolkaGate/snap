@@ -4,12 +4,12 @@ module.exports = {
     sourceType: 'module',
   },
 
-  extends: ['@metamask/eslint-config'],
+  extends: [require.resolve('@metamask/eslint-config')],
 
   overrides: [
     {
       files: ['**/*.js', '**/*.cjs'],
-      extends: ['@metamask/eslint-config-nodejs'],
+      extends: [require.resolve('@metamask/eslint-config-nodejs')],
 
       parserOptions: {
         ecmaVersion: 2020,
@@ -26,8 +26,15 @@ module.exports = {
 
     {
       files: ['**/*.ts', '**/*.tsx', '**/*.mts'],
-      extends: ["@metamask/eslint-config-typescript"],
+      extends: [require.resolve("@metamask/eslint-config-typescript")],
       rules: {
+        '@typescript-eslint/consistent-type-imports': [
+          'warn', // Change 'warn' to 'error' if you want it to be strictly enforced
+          {
+            prefer: 'type-imports',
+            disallowTypeAnnotations: false, // Allows flexibility in certain scenarios
+          },
+        ],
         // This allows importing the `Text` JSX component.
         "@typescript-eslint/no-shadow": [
           "error",
@@ -50,8 +57,8 @@ module.exports = {
     },
 
     {
-      files: ['**/*.test.ts',"**/*.test.tsx", '**/*.test.js'],
-      extends: ['@metamask/eslint-config-jest'],
+      files: ['**/*.test.ts', "**/*.test.tsx", '**/*.test.js'],
+      extends: [require.resolve('@metamask/eslint-config-jest')],
       rules: {
         '@typescript-eslint/no-shadow': [
           'error',

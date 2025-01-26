@@ -1,9 +1,9 @@
 import { Box, Container, Section } from "@metamask/snaps-sdk/jsx";
 import { StakingPoolContextType } from "../types";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import getChainName from "../../../util/getChainName";
 import { toTitleCase } from "../../../utils";
-import { Balances } from "../../../util";
+import type { Balances } from "../../../util";
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../../util/handleBalancesAll";
 import { YourPool } from "./components/YourPool";
 import { YourStake } from "./components/YourStake";
@@ -14,48 +14,6 @@ import { FlowHeader } from "../../components/FlowHeader";
 import { getPoolClaimedReward } from "../utils/getPoolClaimedRewards";
 import { Redeemable } from "../components/Redeemable";
 import { Unstaking } from "../components/Unstaking";
-
-export async function stakePoolIndex(
-  id: string,
-  context: StakingPoolContextType,
-  maybeGenesisHash: HexString,
-  fetchType?: BALANCE_FETCH_TYPE
-) {
-
-  const { address, balancesAll, pricesInUsd } = await handleBalancesAll(fetchType);
-  const genesisHash = maybeGenesisHash || context?.genesisHash;
-  const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
-  const stakedToken = stakedPoolBalances.find((balance) => balance.genesisHash === genesisHash)
-  const price = pricesInUsd.find((price) => price.genesisHash === stakedToken!.genesisHash)?.price?.value || 0;
-  const sanitizedChainName = await getChainName(genesisHash, true);
-
-  let poolTotalClaimed = BN_ZERO;
-  if (fetchType === BALANCE_FETCH_TYPE.FORCE_UPDATE) {
-    poolTotalClaimed = await getPoolClaimedReward(sanitizedChainName!, address)
-  } else {
-    poolTotalClaimed = context.rewardsInfo.find((info) => info.genesisHash === genesisHash && info.subType === 'TotalClaimed')?.reward || BN_ZERO;
-  }
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(price, sanitizedChainName, stakedToken!, poolTotalClaimed),
-      context: {
-        ...(context || {}),
-        price,
-        genesisHash,
-        ...stakedToken,
-        transferable: stakedToken?.transferable?.toString(),
-        pooledBalance: stakedToken?.pooledBalance?.toString(),
-        claimable: stakedToken?.pooled?.claimable?.toString(),
-        redeemable: stakedToken?.pooled?.redeemable?.toString(),
-        active: stakedToken?.pooled?.active?.toString(),
-        unlocking: stakedToken?.pooled?.unlocking?.toString(),
-      }
-    },
-  });
-}
 
 const ui = (
   price: number,
@@ -129,3 +87,45 @@ const ui = (
     </Container>
   );
 };
+
+export async function stakePoolIndex(
+  id: string,
+  context: StakingPoolContextType,
+  maybeGenesisHash: HexString,
+  fetchType?: BALANCE_FETCH_TYPE
+) {
+
+  const { address, balancesAll, pricesInUsd } = await handleBalancesAll(fetchType);
+  const genesisHash = maybeGenesisHash || context?.genesisHash;
+  const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
+  const stakedToken = stakedPoolBalances.find((balance) => balance.genesisHash === genesisHash)
+  const price = pricesInUsd.find((price) => price.genesisHash === stakedToken!.genesisHash)?.price?.value || 0;
+  const sanitizedChainName = await getChainName(genesisHash, true);
+
+  let poolTotalClaimed = BN_ZERO;
+  if (fetchType === BALANCE_FETCH_TYPE.FORCE_UPDATE) {
+    poolTotalClaimed = await getPoolClaimedReward(sanitizedChainName!, address)
+  } else {
+    poolTotalClaimed = context.rewardsInfo.find((info) => info.genesisHash === genesisHash && info.subType === 'TotalClaimed')?.reward || BN_ZERO;
+  }
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(price, sanitizedChainName, stakedToken!, poolTotalClaimed),
+      context: {
+        ...(context ?? {}),
+        price,
+        genesisHash,
+        ...stakedToken,
+        transferable: stakedToken?.transferable?.toString(),
+        pooledBalance: stakedToken?.pooledBalance?.toString(),
+        claimable: stakedToken?.pooled?.claimable?.toString(),
+        redeemable: stakedToken?.pooled?.redeemable?.toString(),
+        active: stakedToken?.pooled?.active?.toString(),
+        unlocking: stakedToken?.pooled?.unlocking?.toString(),
+      }
+    },
+  });
+}

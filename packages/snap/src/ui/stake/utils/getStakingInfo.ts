@@ -1,16 +1,15 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../util/getApi";
 import { getSnapState, updateSnapState } from "../../../rpc/stateManagement";
-import { StakingInfoType } from "../types";
+import type { StakingInfoType } from "../types";
+
+const STAKING_INFO_VALIDITY_PERIOD = 12 * 60 * 60 * 1000; //ms
 
 /**
- * get staking info mostly consts.
- *
+ * Get staking info mostly consts.
  * @param genesisHash - The chain genesisHash.
  * @returns The staking info including staking consts and minimumActiveStake.
  */
-
-const STAKING_INFO_VALIDITY_PERIOD = 12 * 60 * 60 * 1000; //ms
 export async function getStakingInfo(genesisHash: HexString): Promise<StakingInfoType | null> {
   const stateLabel = `stakingInfo_${genesisHash}`;
   const maybeSavedInfo = await getSnapState(stateLabel);
@@ -19,7 +18,6 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
     const { date, info } = maybeSavedInfo;
 
     if (Date.now() - date < STAKING_INFO_VALIDITY_PERIOD) {
-      console.info('stake info served from local state!')
       return info;
     }
   }
@@ -33,9 +31,9 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
     const at = await api.rpc.chain.getFinalizedHead();
     const apiAt = await api.at(at);
 
-    const maxNominations = apiAt.consts.staking.maxNominations?.toNumber() || 16;
+    const maxNominations = apiAt.consts.staking.maxNominations?.toNumber() ?? 16;
 
-    const maxNominatorRewardedPerValidator = (apiAt.consts.staking.maxNominatorRewardedPerValidator || apiAt.consts.staking.maxExposurePageSize).toNumber();
+    const maxNominatorRewardedPerValidator = (apiAt.consts.staking.maxNominatorRewardedPerValidator ?? apiAt.consts.staking.maxExposurePageSize).toNumber();
     const existentialDeposit = apiAt.consts.balances.existentialDeposit.toNumber();
     const bondingDuration = apiAt.consts.staking.bondingDuration.toNumber();
     const sessionsPerEra = apiAt.consts.staking.sessionsPerEra.toNumber();
@@ -54,7 +52,7 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
     const info = {
       bondingDuration,
       decimal,
-      eraIndex: Number(currentEraIndex?.toString() || '0'),
+      eraIndex: Number(currentEraIndex?.toString() ?? '0'),
       existentialDeposit,
       maxNominations,
       maxNominatorRewardedPerValidator,
@@ -69,8 +67,8 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
     await updateSnapState(stateLabel, { date: Date.now(), info })
 
     return info;
-  } catch (error) {
-   // something went wrong while getStakingInfo.
+  } catch {
+    // something went wrong while getStakingInfo.
 
     return null;
   }

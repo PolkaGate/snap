@@ -1,12 +1,22 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import { ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist, edgeware, equilibrium, frequency, integritee, parallel, pendulum, phala, polimec, polymesh, sora, vara, paseo, polkadotAssetHub, kusamaAssetHub, westendAssetHub, paseoAssetHub, polkadotPeople, westendPeople, kusamaPeople, paseoPeople } from ".";
 import { KusamaSqr, PaseoSqr, PolkadotSqr, WestendSqr } from "../chainsSquare";
 
+/**
+ * Fetches the logo URL based on the given chain name, with an optional square format option.
+ * @param chainName - The name of the chain for which the logo is to be fetched.
+ * @param showSquare - Optional flag to return a square logo version (default is false).
+ * @returns A string representing the URL of the logo for the given chain name.
+ */
 export const getLogoByChainName = (chainName?: string, showSquare?: boolean): string => {
-    const sanitizedChainName = sanitizeChainName(chainName);
+    const sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
 
-    switch (sanitizedChainName?.toLowerCase()) {
+    if (!sanitizedChainName) {
+        return globe
+    }
+
+    switch (sanitizedChainName) {
         case 'astar':
             return astar;
 
@@ -130,6 +140,12 @@ export const getLogoByChainName = (chainName?: string, showSquare?: boolean): st
     }
 };
 
+/**
+ * Fetches the logo for a given genesis hash, optionally adjusting for square format.
+ * @param genesisHash - The genesis hash of the chain.
+ * @param showSquare - Optional flag to determine whether to show a square logo (default is false).
+ * @returns A promise that resolves to the logo URL as a string.
+ */
 export const getLogoByGenesisHash = async (genesisHash: HexString, showSquare?: boolean): Promise<string> => {
     const chainName = await getChainName(genesisHash);
     return getLogoByChainName(chainName, showSquare);

@@ -3,7 +3,6 @@
 
 
 import { Box, Section, Text, SnapComponent, Image, Button } from '@metamask/snaps-sdk/jsx';
-
 import { check, unCheck } from '../image/option';
 
 type Props = {
@@ -16,11 +15,6 @@ type Props = {
   optionNames: Record<number, string>;
   selectedOption?: string;
 }
-
-// const OPTION_NAMES = {
-//   1: 'option1',
-//   2: 'option2',
-// }
 
 type OptionProps = {
   form: string;

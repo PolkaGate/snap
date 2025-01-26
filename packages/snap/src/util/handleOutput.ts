@@ -1,17 +1,24 @@
 import { BN_ZERO } from "@polkadot/util";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balance } from "@polkadot/types/interfaces";
 import { OUTPUT_TYPE } from "../constants";
-import { CallParamsType } from "../ui/stake/types";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
-import { ApiPromise } from "@polkadot/api";
+import type { CallParamsType } from "../ui/stake/types";
+import type { ApiPromise } from "@polkadot/api";
 
+/**
+ * Handles the output for a blockchain call, either returning the fee balance or the call parameters.
+ * @param address - The address to be used for the call.
+ * @param api - The API instance used to interact with the blockchain.
+ * @param call - The blockchain call function.
+ * @param params - The parameters to be passed to the call function.
+ * @param output - The type of output, either fee or call parameters.
+ * @returns A Promise that resolves to the fee balance or the call parameters.
+ */
 export const handleOutput = async (
   address: string,
   api: ApiPromise,
-  call: SubmittableExtrinsicFunction<"promise", AnyTuple>,
+  call:CallParamsType["call"],
   params: unknown[],
-  output?: OUTPUT_TYPE
+  output?: number
 ): Promise<Balance | CallParamsType> => {
 
   let feeAsBalance = api.createType('Balance', BN_ZERO);

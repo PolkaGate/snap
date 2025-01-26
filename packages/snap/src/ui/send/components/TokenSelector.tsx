@@ -6,7 +6,7 @@ import {
   type SnapComponent,
 } from '@metamask/snaps-sdk/jsx';
 
-import { Balances } from '../../../util';
+import type { Balances } from '../../../util';
 import { PriceValue } from '../../../util/getPrices';
 import { amountToHuman } from '../../../util/amountToHuman';
 

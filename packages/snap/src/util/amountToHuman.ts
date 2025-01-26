@@ -5,7 +5,6 @@ const FLOATING_POINT_DIGIT = 4;
 
 /**
  * Formats a number or string by fixing the floating-point digits.
- *
  * @param _number - The number to be formatted.
  * @param decimalDigit - The number of decimal digits to include.
  * @param commify - If true, adds commas for thousands separator.
@@ -38,7 +37,6 @@ export function fixFloatingPoint(
 
 /**
  * Converts an amount, which may be a BN, to human-readable format.
- *
  * @param amount - The amount to be formatted.
  * @param decimals - The number of decimal places for the chain.
  * @param decimalDigits - The number of decimal digits to include.
@@ -55,9 +53,7 @@ export function amountToHuman(
     return '';
   }
 
-  // eslint-disable-next-line no-param-reassign
   amount = String(amount).replace(/,/gu, '');
-
   const x = 10 ** decimals;
 
   return fixFloatingPoint(Number(amount) / x, decimalDigits, commify);

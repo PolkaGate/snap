@@ -7,14 +7,14 @@ import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { txBody } from './txBody';
 import { type Decoded } from '../../rpc';
 import { txHeader, txFooter } from './';
-import { Chain } from '@polkadot/extension-chains/types';
+import type { Chain } from '@polkadot/extension-chains/types';
 
 export const txContentUseMetadata = (
   chain: Chain,
   origin: string,
   payload: SignerPayloadJSON,
   decoded: Decoded,
-) => {
+): unknown => {
   const registry = chain.registry;
   registry.setSignedExtensions(payload.signedExtensions, chain.definition.userExtensions);
 

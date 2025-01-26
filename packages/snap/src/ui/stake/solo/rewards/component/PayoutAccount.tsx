@@ -4,7 +4,7 @@
 import { Box, Section, Text, Address, Image, SnapComponent } from "@metamask/snaps-sdk/jsx";
 import { getFormatted } from "../../../../../util/getFormatted";
 import { account } from "../../../../image/icons";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 
 
 interface Props {

@@ -17,63 +17,6 @@ import { isEmptyObject } from "../../../../utils";
 import { OUTPUT_TYPE } from "../../../../constants";
 import { FlowHeader } from "../../../components/FlowHeader";
 
-export async function soloStakeMore(
-  id: string,
-  formAmount: string | undefined,
-  formErrors: StakeFormErrors,
-  context: StakingSoloContextType,
-) {
-
-  const { address, amount, decimal, genesisHash, logos, price, rate, sanitizedChainName, stakingRates, token, transferable } = context;
-  const _amount = formAmount !== undefined ? String(formAmount) : amount;
-
-  const _address = address || (await getKeyPair(undefined, genesisHash)).address;
-  const _logo = logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
-
-  let _transferable = transferable;
-  let _token = token;
-  let _decimal = decimal;
-
-  if (!(_transferable || _decimal)) {
-    const balances = await getBalances(genesisHash, _address)
-    _transferable = balances.transferable.toNumber();
-    _token = balances.token;
-    _decimal = balances.decimal;
-  }
-
-  let _price = price;
-  let _rate = rate;
-
-  if (_price === undefined || !_rate) {
-    const priceInfo = await getSnapState('priceInfo');
-
-    _price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
-    _rate = stakingRates?.[sanitizedChainName || ''] || 0;
-  }
-
-  const fee = context.fee || await getSoloStakeMore(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, OUTPUT_TYPE.FEE);
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      context: {
-        ...(context || {}),
-        address: _address,
-        amount: _amount,
-        decimal: _decimal!,
-        genesisHash,
-        fee: String(fee),
-        logo: _logo,
-        price: _price!,
-        transferable: _transferable!,
-        token: _token!,
-      },
-      id,
-      ui: ui(_amount, _decimal, formErrors, _logo, _token, _transferable, _price, fee),
-    },
-  });
-}
-
 const ui = (
   amount: string | undefined,
   decimal: number,
@@ -127,3 +70,60 @@ const ui = (
     </Container >
   );
 };
+
+export async function soloStakeMore(
+  id: string,
+  formAmount: string | undefined,
+  formErrors: StakeFormErrors,
+  context: StakingSoloContextType,
+) {
+
+  const { address, amount, decimal, genesisHash, logos, price, rate, sanitizedChainName, stakingRates, token, transferable } = context;
+  const _amount = formAmount !== undefined ? String(formAmount) : amount;
+
+  const _address = address || (await getKeyPair(undefined, genesisHash)).address;
+  const _logo = logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
+
+  let _transferable = transferable;
+  let _token = token;
+  let _decimal = decimal;
+
+  if (!(_transferable || _decimal)) {
+    const balances = await getBalances(genesisHash, _address)
+    _transferable = balances.transferable.toNumber();
+    _token = balances.token;
+    _decimal = balances.decimal;
+  }
+
+  let _price = price;
+  let _rate = rate;
+
+  if (_price === undefined || !_rate) {
+    const priceInfo = await getSnapState('priceInfo');
+
+    _price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
+    _rate = stakingRates?.[sanitizedChainName || ''] || 0;
+  }
+
+  const fee = context.fee || await getSoloStakeMore(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, OUTPUT_TYPE.FEE);
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      context: {
+        ...(context ?? {}),
+        address: _address,
+        amount: _amount,
+        decimal: _decimal!,
+        genesisHash,
+        fee: String(fee),
+        logo: _logo,
+        price: _price!,
+        transferable: _transferable!,
+        token: _token!,
+      },
+      id,
+      ui: ui(_amount, _decimal, formErrors, _logo, _token, _transferable, _price, fee),
+    },
+  });
+}

@@ -10,30 +10,6 @@ import { FlowHeader } from "../../../components/FlowHeader";
 import { WentWrong } from "../../../components/WentWrong";
 import { recommended } from "../../../image/icons";
 
-export async function changeValidators(id: string, context: StakingSoloContextType) {
-  const { sanitizedChainName, solo: { nominators } } = context;
-
-  const { validators: recommendedValidators } = await fetchStaking();
-  const recommendedValidatorsOnThisChain = recommendedValidators[sanitizedChainName]
-  const isAlreadySelectedRecommended = areArraysEqual(nominators, recommendedValidatorsOnThisChain);
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      context: {
-        ...(context || {}),
-        recommendedValidatorsOnThisChain,
-        action: 'changeValidators'
-      },
-      ui: !recommendedValidators
-        ? <WentWrong label='Something went wrong. Check your internet connection and try again!' />
-        : ui(isAlreadySelectedRecommended, nominators, recommendedValidatorsOnThisChain),
-    },
-  });
-};
-
-
 const ui = (
   isAlreadySelectedRecommended: boolean,
   nominators: string[],
@@ -87,4 +63,27 @@ const ui = (
       </Section>
     </Box >
   );
+};
+
+export async function changeValidators(id: string, context: StakingSoloContextType) {
+  const { sanitizedChainName, solo: { nominators } } = context;
+
+  const { validators: recommendedValidators } = await fetchStaking();
+  const recommendedValidatorsOnThisChain = recommendedValidators[sanitizedChainName]
+  const isAlreadySelectedRecommended = areArraysEqual(nominators, recommendedValidatorsOnThisChain);
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      context: {
+        ...(context ?? {}),
+        recommendedValidatorsOnThisChain,
+        action: 'changeValidators'
+      },
+      ui: !recommendedValidators
+        ? <WentWrong label='Something went wrong. Check your internet connection and try again!' />
+        : ui(isAlreadySelectedRecommended, nominators, recommendedValidatorsOnThisChain),
+    },
+  });
 };

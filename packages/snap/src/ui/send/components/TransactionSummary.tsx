@@ -5,7 +5,7 @@ import {
   Value,
   type SnapComponent,
 } from '@metamask/snaps-sdk/jsx';
-import { Balance } from '@polkadot/types/interfaces';
+import type { Balance } from '@polkadot/types/interfaces';
 import { amountToHuman } from '../../../util/amountToHuman';
 
 

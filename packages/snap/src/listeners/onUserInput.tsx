@@ -16,7 +16,7 @@ import { send } from '../ui/send';
 import { PayoutSelectionFormState, SendFormState } from '../ui/send/types';
 import { formValidation } from '../ui/send/utils/utils';
 import { reviewSend } from '../ui/send/reviewSend';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import { CustomizeChains } from '../ui/selectChains/CustomizeChains';
 import { SelectedChainsFormState } from '../ui/selectChains/types';
 import { BALANCE_FETCH_TYPE } from '../util/handleBalancesAll';
@@ -60,7 +60,7 @@ import { unstakeSoloFormValidation } from '../ui/stake/solo/unstake/util/unstake
 import { rewardsDestination } from '../ui/stake/solo/rewards';
 import { rewardsDestinationReview } from '../ui/stake/solo/rewards/rewardsDestinationReview';
 import { rewardsDestinationConfirm } from '../ui/stake/solo/rewards/rewardsDestinationConfirm';
-import { SoloUnstakeFormState } from '../ui/stake/solo/unstake/types';
+import type { SoloUnstakeFormState } from '../ui/stake/solo/unstake/types';
 import { yourValidators } from '../ui/stake/solo/validators';
 import { changeValidators } from '../ui/stake/solo/validators/changeValidators';
 import { reviewChangeValidators } from '../ui/stake/solo/validators/reviewChangeValidators';

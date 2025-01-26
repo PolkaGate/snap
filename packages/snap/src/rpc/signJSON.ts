@@ -9,6 +9,7 @@ import { reviewUseMetadata } from '../ui/review/reviewUseMetadata';
 import { hasEndpoint } from '../util';
 import { metadataAlert } from '../ui/review/metadataAlert';
 import { updateSnapState } from './stateManagement';
+import { noop } from '@polkadot/util/cjs/noop';
 
 export const signJSON = async (
   origin: string,
@@ -20,16 +21,13 @@ export const signJSON = async (
 
     const hasEndpoints = await hasEndpoint(payload.genesisHash)
     if (hasEndpoints) {
-
-      console.info('signing with api ...')
-
       const api = await getApi(payload.genesisHash);
-      checkAndUpdateMetaData(api).catch(console.error);
+      checkAndUpdateMetaData(api).catch(noop);
       registry = api.registry
 
       // update current chain name for chains which have endpoint
       const currentChain = await api.rpc.system.chain();
-      updateSnapState('currentChain', currentChain ).catch(console.error);
+      updateSnapState('currentChain', currentChain ).catch(noop);
 
       isConfirmed = await reviewUseApi(api, origin, payload);
 
@@ -38,8 +36,6 @@ export const signJSON = async (
       const metadata = await getSavedMeta(payload.genesisHash) as any;
 
       if (metadata) {
-        console.info('signing with metadata ...')
-
         const chain = metadataExpand(metadata, false);
         registry = chain.registry;
         registry.setSignedExtensions(payload.signedExtensions);
@@ -70,10 +66,15 @@ export const signJSON = async (
     } else {
       throw new Error('Something went wrong while signing extrinsic.')
     }
-    // TODO: discover new methods for obtaining chain metadata offline!
 
-  } catch (error) {
-    console.info('Error while signing JSON:', error);
+  } catch {
+    await updateSnapState('alerts',
+      {
+        id: 'signJson',
+        severity: 'Error',
+        text: 'Something went wrong while signing json! Update metadata!'
+      }
+    ).catch(noop);
     return undefined;
   }
 };

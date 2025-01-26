@@ -6,7 +6,7 @@ import { getTransfer } from "./utils/getTransfer";
 import { OUTPUT_TYPE } from "../../constants";
 import { SendContextType } from "./types";
 import { showConfirm } from "../showConfirm";
-import { CallParamsType } from "../stake/types";
+import type { CallParamsType } from "../stake/types";
 
 export async function confirmSend(id: string, context: SendContextType) {
   const { address, amount, genesisHash, recipient } = context;

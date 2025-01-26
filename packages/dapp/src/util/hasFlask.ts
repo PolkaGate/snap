@@ -13,13 +13,9 @@ export async function hasFlask() {
   )?.includes('flask');
 
   if (provider && isFlask) {
-    console.log('MetaMask Flask successfully detected!');
- 
     // Now you can use Snaps!
     return true;
   } else {
-    console.error('Please install MetaMask Flask!');
-    
     return false;
   }
 }

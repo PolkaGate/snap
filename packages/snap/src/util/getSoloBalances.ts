@@ -2,22 +2,17 @@ import type { Balance } from '@polkadot/types/interfaces';
 import type { Option } from '@polkadot/types';
 import type { PalletStakingRewardDestination } from '@polkadot/types/lookup';
 
-import { BN, BN_ZERO } from '@polkadot/util';
-import { HexString } from '@polkadot/util/types';
-import { ApiPromise } from '@polkadot/api';
-import { SoloBalance, SoloBalances } from '../ui/stake/types';
+import { BN } from '@polkadot/util';
+import type { ApiPromise } from '@polkadot/api';
+import type { SoloBalance, SoloBalances } from '../ui/stake/types';
 
 /**
  * To get the balances including locked one of an address.
- *
- * @param genesisHash - The genesisHash of the chain will be used to find an endpoint to use.
+ * @param api - The api of the chain will be used to find an endpoint to use.
  * @param formatted - An formatted address to get its solo balances.
  * @returns The total, active, and unlocking balances.
  */
-export async function getSoloBalances(api: ApiPromise, genesisHash: HexString, formatted: string,): Promise<SoloBalances> {
-  console.info(`getting solo balances for ${formatted} on ${genesisHash}`)
-
-
+export async function getSoloBalances(api: ApiPromise, formatted: string,): Promise<SoloBalances> {
   let soloTotal;
   let solo = {} as SoloBalance;
 

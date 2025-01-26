@@ -1,9 +1,9 @@
 import { Box, Button, Container, Footer, Checkbox, Form } from '@metamask/snaps-sdk/jsx';
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from '../../util/handleBalancesAll';
-import { Balances } from '../../util';
+import type { Balances } from '../../util';
 import { STAKING_CHAINS, STAKING_TEST_CHAINS } from './const';
 import getChainName from '../../util/getChainName';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import { StakedTokens } from './components/StakedTokens';
 import { StakeAndEarn } from './components/StakeAndEarn';
 import { RewardsInfo } from '../../util/types';
@@ -15,52 +15,6 @@ import { DEFAULT_CHAINS_GENESIS } from '../../constants';
 import { fetchStaking } from './utils/fetchStaking';
 
 const STAKING_TEST_NETS_ENABLE_DEFAULT = false;
-
-export async function stakingIndex(id: string, fetchType?: BALANCE_FETCH_TYPE) {
-  const { address, balancesAll, logos } = await handleBalancesAll(fetchType);
-
-  const selectedChains = ((await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS) as HexString[];
-  const enabledStakingChains = STAKING_CHAINS.filter((stakingChain) => selectedChains.includes(stakingChain));
-
-  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking') ?? STAKING_TEST_NETS_ENABLE_DEFAULT;
-
-  const stakedTokens = balancesAll
-    .filter(({ genesisHash }) =>
-      isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(genesisHash)
-    ).filter(({ pooled, soloTotal }) =>
-      (!new BN(pooled?.total || 0).isZero() || (soloTotal && !soloTotal.isZero()))
-    );
-
-  const rewardsInfo = await getStakingRewards(address, stakedTokens);
-  const { rates: stakingRates, validators: recommendedValidators } = await fetchStaking();
-
-  const notStakedChains = enabledStakingChains
-    .filter((item) =>
-      isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(item)
-    ).filter((item) =>
-      !stakedTokens.find(({ genesisHash }) => item === String(genesisHash))
-    );
-
-  const nonStakedChainNames = (await Promise.all(notStakedChains.map((genesisHash) => getChainName(genesisHash as HexString))))
-  const nonStakedChainInfo = notStakedChains.map((genesisHash, index) => ({ genesisHash, name: nonStakedChainNames[index] || 'Unknown' })).filter(({ name }) => !!name);
-
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(balancesAll, isTestNetStakingEnabled, logos, nonStakedChainInfo, rewardsInfo, stakedTokens, stakingRates),
-      context: {
-        address,
-        logos,
-        recommendedValidators,
-        stakingRates,
-        stakedTokens,
-        rewardsInfo: rewardsInfo?.map((info) => { return { ...info, reward: String(info.reward) } }),
-      }
-    },
-  });
-}
 
 const ui = (
   balancesAll: Balances[],
@@ -111,3 +65,48 @@ const ui = (
     </Container>
   );
 };
+
+export async function stakingIndex(id: string, fetchType?: BALANCE_FETCH_TYPE) {
+  const { address, balancesAll, logos } = await handleBalancesAll(fetchType);
+
+  const selectedChains = ((await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS) as HexString[];
+  const enabledStakingChains = STAKING_CHAINS.filter((stakingChain) => selectedChains.includes(stakingChain));
+
+  const isTestNetStakingEnabled = await getSnapState('enableTestnetStaking') ?? STAKING_TEST_NETS_ENABLE_DEFAULT;
+
+  const stakedTokens = balancesAll
+    .filter(({ genesisHash }) =>
+      isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(genesisHash)
+    ).filter(({ pooled, soloTotal }) =>
+      (!new BN(pooled?.total || 0).isZero() || (soloTotal && !soloTotal.isZero()))
+    );
+
+  const rewardsInfo = await getStakingRewards(address, stakedTokens);
+  const { rates: stakingRates, validators: recommendedValidators } = await fetchStaking();
+
+  const notStakedChains = enabledStakingChains
+    .filter((item) =>
+      isTestNetStakingEnabled ? true : !STAKING_TEST_CHAINS.includes(item)
+    ).filter((item) =>
+      !stakedTokens.find(({ genesisHash }) => item === String(genesisHash))
+    );
+
+  const nonStakedChainNames = (await Promise.all(notStakedChains.map((genesisHash) => getChainName(genesisHash as HexString))))
+  const nonStakedChainInfo = notStakedChains.map((genesisHash, index) => ({ genesisHash, name: nonStakedChainNames[index] || 'Unknown' })).filter(({ name }) => !!name);
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(balancesAll, isTestNetStakingEnabled, logos, nonStakedChainInfo, rewardsInfo, stakedTokens, stakingRates),
+      context: {
+        address,
+        logos,
+        recommendedValidators,
+        stakingRates,
+        stakedTokens,
+        rewardsInfo: rewardsInfo?.map((info) => { return { ...info, reward: String(info.reward) } }),
+      }
+    },
+  });
+}

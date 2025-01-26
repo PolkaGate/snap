@@ -2,14 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getApi } from '../../../util/getApi';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 
 import { hexToString } from '@polkadot/util';
 import { PEOPLE_CHAINS } from '../../../constants';
 import { getSnapState, updateSnapState } from '../../../rpc/stateManagement';
+import type { Registration } from '@polkadot/types/interfaces';
 
+export type Identity = {
+  display: string;
+  displayParent?: string;
+  email: string;
+  judgements: unknown;
+  legal: string;
+  riot: string;
+  twitter: string;
+  web: string;
+}
 
-const convertId = (id) => ({
+const convertId = (id: Registration): Identity => ({
   display: hexToString(id.info.display.asRaw.toHex()),
   email: hexToString(id.info.email.asRaw.toHex()),
   // github: id.info.github && hexToString(id.info.github.asRaw.toHex()),
@@ -24,37 +35,35 @@ const convertId = (id) => ({
   web: hexToString(id.info.web.asRaw.toHex())
 });
 
-export interface Identity {
-  display: string;
-  displayParent?: string;
-  email: string;
-  judgements: unknown;
-  legal: string;
-  riot: string;
-  twitter: string;
-  web: string;
-}
-
-export interface Identities {
+export type Identities = {
   accountId: string,
   identity: Identity
 };
 
 const SAVED_VALIDITY_PERIOD = 2 * 60 * 60 * 1000;
 
-export async function getValidatorsIdentities(genesisHash: HexString, accountIds: string[], storageName = 'validatorsIdentities'): Promise<Identities[] | null> {
+/**
+ * Fetches the identities of validators from a specified blockchain network.
+ * The function first checks if the identities are cached; if not, it fetches them from the network and updates the cache.
+ * @param genesisHash - The genesis hash of the blockchain network to connect to.
+ * @param accountIds - An array of account IDs for which the identities need to be fetched.
+ * @param storageName - The name of the storage used to cache the identities (optional, defaults to 'VALIDATORS_IDENTITIES').
+ * @returns An array of `Identities` objects containing the validator identities, or `null` if an error occurs.
+ * @throws Will throw an error if the network connection fails or if fetching identities fails.
+ */
+export async function getValidatorsIdentities(genesisHash: HexString, accountIds: string[], storageName = 'VALIDATORS_IDENTITIES'): Promise<Identities[] | null> {
   try {
 
     const nameInStorage = `${storageName}_${genesisHash}`;
     const savedResult = await getSnapState(nameInStorage);
     if (savedResult) {
-      const { result, date } = savedResult;
+      const { result, date } = savedResult as { result: Identities[], date: number };
       if (Date.now() - date < SAVED_VALIDITY_PERIOD) {
         return result;
       }
     }
 
-    const peopleChainGenesis = PEOPLE_CHAINS[genesisHash] as HexString;
+    const peopleChainGenesis = PEOPLE_CHAINS[genesisHash];
     const api = await getApi(peopleChainGenesis);
 
     if (!api) {
@@ -72,13 +81,13 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
       const info = await Promise.all(
         accountIds
           .slice(totalFetched, totalFetched + page)
-          .map((i) =>
+          .map(async (i) =>
             api.query.identity.identityOf(i)
           ));
 
       const parsedInfo = info
         .map((i, index) => {
-          const id = i.isSome && i.unwrapOr(undefined);
+          const id = i.isSome ? i.unwrap() as Registration: undefined;
 
           return id?.info
             ? {
@@ -102,10 +111,10 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     totalFetched = 0;
 
     while (mayHaveSubId.length > totalFetched) {
-    // Fetching validators SUB identities
+      // Fetching validators SUB identities
       const subInfo = await Promise.all(
         mayHaveSubId.slice(totalFetched, totalFetched + page)
-          .map((i) =>
+          .map(async (i) =>
             api.query.identity.superOf(i)
           ));
 
@@ -129,15 +138,15 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
     totalFetched = 0;
 
     while (accountSubInfo.length > totalFetched) {
-    // Fetching validators PARENT identities
+      // Fetching validators PARENT identities
       const parentInfo = await Promise.all(
         accountSubInfo.slice(totalFetched, totalFetched + page)
-          .map((i) =>
+          .map(async (i) =>
             api.query.identity.identityOf(i.parentAddress)
           ));
 
       const parsedParentInfo = parentInfo.map((i, index) => {
-        const id = i.isSome ? i.unwrap()[0] : undefined;
+        const id = i.isSome ? i.unwrap()[0] as Registration : undefined;
 
         return id?.info
           ? {
@@ -159,8 +168,8 @@ export async function getValidatorsIdentities(genesisHash: HexString, accountIds
 
     return accountsInfo;
 
-  } catch (error) {
-   // something went wrong while getting validators id
+  } catch {
+    // something went wrong while getting validators id
     return null;
   }
 }

@@ -7,23 +7,6 @@ import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
-export async function poolStakeMoreReview(
-  id: string,
-  context: StakingPoolContextType
-) {
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(context),
-      context: {
-        ...(context || {})
-      }
-    },
-  });
-}
-
 const ui = (
   context: StakingPoolContextType
 ) => {
@@ -76,3 +59,20 @@ const ui = (
     </Container >
   );
 };
+
+export async function poolStakeMoreReview(
+  id: string,
+  context: StakingPoolContextType
+) {
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(context),
+      context: {
+        ...(context ?? {})
+      }
+    },
+  });
+}

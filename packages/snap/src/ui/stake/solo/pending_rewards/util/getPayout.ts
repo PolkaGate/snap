@@ -1,22 +1,16 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../../../util/getApi";
-import { Balance } from "@polkadot/types/interfaces";
-import { OUTPUT_TYPE } from "../../../../../constants";
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
+import type { Balance } from "@polkadot/types/interfaces";
 import { handleOutput } from "../../../../../util/handleOutput";
+import type { CallParamsType } from "../../../types";
 
 export const getPayout = async (
   address: string,
   genesisHash: HexString,
   selectedToPayout: string[], // validator,era,page
-  output?: OUTPUT_TYPE
+  output?: number
 ): Promise<
-  Balance |
-  {
-    call: SubmittableExtrinsicFunction<"promise", AnyTuple>;
-    params: unknown[];
-  }> => {
+  Balance | CallParamsType> => {
 
   const api = await getApi(genesisHash);
   if (!api) {

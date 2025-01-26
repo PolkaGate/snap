@@ -1,6 +1,11 @@
 import { decodeAddress, encodeAddress } from '@polkadot/keyring';
 import { hexToU8a, isHex } from '@polkadot/util';
 
+/**
+ * Validates whether a given address is a valid blockchain address.
+ * @param _address - The address to validate.
+ * @returns True if the address is valid; otherwise, false.
+ */
 export default function isValidAddress(_address: string | undefined): boolean {
   try {
     encodeAddress(
@@ -10,7 +15,7 @@ export default function isValidAddress(_address: string | undefined): boolean {
     );
 
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

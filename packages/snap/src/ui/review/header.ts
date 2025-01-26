@@ -13,8 +13,8 @@ import { formatCamelCase } from '../../util/formatCamelCase';
 export const txHeader = (
   method: string,
   origin: string,
-  section: any,
-) => {
+  section: unknown,
+): unknown => {
   const headingText = `Transaction Approval Request from ${origin}`;
 
   return [

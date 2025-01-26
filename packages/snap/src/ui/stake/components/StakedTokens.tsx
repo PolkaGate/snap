@@ -1,6 +1,6 @@
 import { Box, Button, Image, Section, Text, Icon, SnapComponent, Bold } from '@metamask/snaps-sdk/jsx';
 import { amountToHuman } from '../../../util/amountToHuman';
-import { Balances } from '../../../util';
+import type { Balances } from '../../../util';
 import { RewardsInfo } from '../../../util/types';
 import { sanitizeChainName } from '../../../util/getChainName';
 import { getChain } from '../../../chains';

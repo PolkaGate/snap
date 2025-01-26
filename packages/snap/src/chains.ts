@@ -2,9 +2,9 @@ import { selectableNetworks } from '@polkadot/networks';
 import type { Network } from '@polkadot/networks/types';
 import { getSavedMeta } from './rpc';
 import { metadataExpand } from '@polkadot/extension-chains';
-import { Chain } from '@polkadot/extension-chains/types';
+import type { Chain } from '@polkadot/extension-chains/types';
 import { sanitizeChainName } from './util/getChainName';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import { KUSAMA_PEOPLE_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH } from './constants';
 
 const testnets: Network[] = [
@@ -184,16 +184,14 @@ export const DISABLED_NETWORKS = ['3DP network', 'xx network', 'Polkadex Mainnet
 export const getChain = (keyWord: string): Network | null => {
   const chain = selectableNetworks.find(
     ({ genesisHash, network, displayName }) =>
-      genesisHash.includes(keyWord as any) ||
-      network === keyWord ||
+      genesisHash.includes(keyWord as any) ??
+      network === keyWord ??
       displayName === keyWord
   );
 
   if (chain) {
     return chain;
   }
-
-  console.info(`Chain '${keyWord}' is not recognized.`);
 
   return null;
 };
@@ -233,11 +231,14 @@ export const getChainFromMetadata = async (genesis: HexString): Promise<Chain | 
     return chain;
   }
 
-  console.info(`Chain '${genesis}' is not recognized.`);
-
   return null;
 };
 
+/**
+ * Gets the genesis hash for a given chain name.
+ * @param chainName The name of the chain.
+ * @returns The genesis hash or null if not found.
+ */
 export async function getGenesisHash(chainName: string): Promise<HexString | null> {
   const mayBeGenesisHash = getChain(chainName)?.genesisHash?.[0];
   if (mayBeGenesisHash) {
@@ -252,7 +253,7 @@ export async function getGenesisHash(chainName: string): Promise<HexString | nul
   const [genesisHash] = Object.entries(maybeMetadata)
     .find(([_hash, { chain }]) =>
       sanitizeChainName(chain) === sanitizeChainName(chainName)
-    ) || [];
+    ) ?? [];
 
   return genesisHash as HexString | undefined ?? null;
 };

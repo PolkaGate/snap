@@ -8,28 +8,6 @@ import { getValidatorsIdentities, Identities } from "../../utils/getValidatorIde
 import { ShowValidator } from "../../ShowValidator";
 import { SelectedValidatorsFlowHeader } from "./components/SelectedValidatorsFlowHeader";
 
-export async function yourValidators(
-  id: string,
-  context: StakingSoloContextType,
-) {
-
-  let { address, genesisHash, solo: { nominators } } = context;
-
-  const validatorsInfo = await getValidatorsInfo(address, genesisHash, nominators);
-  const identities = await getValidatorsIdentities(genesisHash, nominators, 'nominatedValidators');
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(identities, validatorsInfo),
-      context: {
-        ...(context || {}),
-      }
-    },
-  });
-}
-
 const ui = (
   identities: Identities[] | null,
   validatorsInfo: ValidatorInfoClipped
@@ -127,3 +105,21 @@ const ui = (
     </Box>
   );
 };
+
+export async function yourValidators(id: string, context: StakingSoloContextType) {
+  let { address, genesisHash, solo: { nominators } } = context;
+
+  const validatorsInfo = await getValidatorsInfo(address, genesisHash, nominators);
+  const identities = await getValidatorsIdentities(genesisHash, nominators, 'NOMINATED_VALIDATORS_IDENTITIES');
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(identities, validatorsInfo),
+      context: {
+        ...(context ?? {}),
+      }
+    },
+  });
+}

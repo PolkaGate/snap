@@ -7,12 +7,12 @@ import type {
 
 import getChainInfo from '../util/getChainInfo';
 import { rand } from '../util/rand';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import { getSnapState, setSnapState } from './stateManagement';
 
 let selfOrigin: string;
 
-const contentMetadata = (origin: string, metadata: MetadataDef) => {
+const contentMetadata = (origin: string, metadata: MetadataDef): unknown => {
   return panel([
     heading(`Update Request from ${origin}`),
     divider(),
@@ -41,15 +41,14 @@ async function showConfirmUpdateMetadata(
     },
   });
 
-  return userResponse;
+  return !!userResponse;
 }
 
 export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
   const persistedData = await getSnapState();
 
   return persistedData?.metadata
-    ? Object.values(persistedData.metadata)?.map(
-      ({ genesisHash, specVersion }: MetadataDef) => ({
+    ? Object.values(persistedData.metadata as Record<string, { genesisHash: string; specVersion: number }>)?.map(({ genesisHash, specVersion }) => ({
         genesisHash,
         specVersion,
       }),
@@ -65,8 +64,8 @@ export const getSavedMeta = async (genesisHash?: HexString): Promise<MetadataDef
     : (persistedData?.metadata as unknown as Record<string, MetadataDef>);
 };
 
-export const setMetadata = async (origin: string, data: MetadataDef) => {
-  const state = (await getSnapState()) || {};
+export const setMetadata = async (origin: string, data: MetadataDef): Promise<boolean> => {
+  const state = (await getSnapState()) ?? {};
   if (!state.metadata) {
     state.metadata = {};
   }
@@ -85,20 +84,20 @@ export const setMetadata = async (origin: string, data: MetadataDef) => {
   return Boolean(await setSnapState(state));
 };
 
-export const checkAndUpdateMetaData = async (api: ApiPromise) => {
+export const checkAndUpdateMetaData = async (api: ApiPromise): Promise<boolean | undefined> => {
   const list = await getMetadataList();
   const _genesisHash = api.genesisHash.toString();
 
   const maybeExistingMetadata = list.find(({ genesisHash }) => genesisHash === _genesisHash);
 
   if (maybeExistingMetadata?.specVersion === api.runtimeVersion.specVersion.toNumber()) {
-    return; // The saved metadata is already up-to-date, so no action is required.
+    return true; // The saved metadata is already up-to-date, so no action is required.
   }
 
   const metaData = await getChainInfo(api);
 
   if (metaData) {
     selfOrigin = `Polkagate-${rand()}`;
-    await setMetadata(selfOrigin, metaData);
+    return await setMetadata(selfOrigin, metaData);
   }
 };

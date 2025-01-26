@@ -2,27 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getApi } from '../../../util/getApi';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 
-import type { Option, StorageKey } from '@polkadot/types';
+import type { Option } from '@polkadot/types';
 import type { AccountId } from '@polkadot/types/interfaces';
-// @ts-ignore
 import type { PalletStakingValidatorPrefs } from '@polkadot/types/lookup';
-import type { AnyJson, AnyTuple, Codec } from '@polkadot/types/types';
+import type { AnyJson } from '@polkadot/types/types';
 
 import { BN_ZERO } from '@polkadot/util';
 import { getSnapState, updateSnapState } from '../../../rpc/stateManagement';
-import { AllValidators, ExposureOverview, Other, ValidatorInfo } from '../types';
+import type { AllValidators, ExposureOverview, Other, ValidatorInfo } from '../types';
 
 const SAVED_VALIDITY_PERIOD = 2 * 60 * 60 * 1000;
 
 export const getValidators = async (genesisHash: HexString): Promise<AllValidators> => {
-  const nameInStorage =`validators_${genesisHash}`;
+  const nameInStorage = `validators_${genesisHash}`;
   const savedResult = await getSnapState(nameInStorage);
   if (savedResult) {
-    const { result, date } = savedResult;
+    const { result, date } = savedResult as unknown as { result: AllValidators, date: number };
     if (Date.now() - date < SAVED_VALIDITY_PERIOD) {
-      return result;
+      return result as unknown as AllValidators;
     }
   }
 
@@ -34,8 +33,8 @@ export const getValidators = async (genesisHash: HexString): Promise<AllValidato
   const eraIndex = (await api.query.staking.currentEra()).toString();
 
   const [prefs, overview] = await Promise.all([
-    api.query['staking']['validators'].entries(),
-    api.query['staking']['erasStakersOverview'].entries(eraIndex)
+    api.query.staking.validators.entries(),
+    api.query.staking.erasStakersOverview.entries(eraIndex)
   ]);
 
   const validatorPrefs: Record<string, PalletStakingValidatorPrefs> = Object.fromEntries(
@@ -57,12 +56,12 @@ export const getValidators = async (genesisHash: HexString): Promise<AllValidato
 
   const PAGE_SIZE = 10;
   let totalFetched = 0;
-  let validatorsPaged = [] as [StorageKey<AnyTuple>, Codec][][];
+  let validatorsPaged: any[] = [];
 
   while (validatorKeys.length > totalFetched) {
     const validatorsPagedPartial = await Promise.all(
-      validatorKeys.slice(totalFetched, totalFetched + PAGE_SIZE).map((v) =>
-        api.query['staking']['erasStakersPaged'].entries(eraIndex, v)
+      validatorKeys.slice(totalFetched, totalFetched + PAGE_SIZE).map(async (v) =>
+        api.query.staking.erasStakersPaged.entries(eraIndex, v)
       )
     );
 
@@ -78,7 +77,7 @@ export const getValidators = async (genesisHash: HexString): Promise<AllValidato
 
       currentNominators[validatorAddress] = [];
 
-      pages.forEach(([, value]) => currentNominators[validatorAddress].push(...((value as Option<any>).unwrap()?.others || [])));
+      pages.forEach(([, value]) => currentNominators[validatorAddress].push(...((value as Option<any>).unwrap()?.others ?? [])));
     }
   });
 

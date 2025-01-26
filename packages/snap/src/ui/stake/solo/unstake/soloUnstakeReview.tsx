@@ -6,26 +6,7 @@ import { SoloUnstakeExtraInfo } from "./component/SoloUnstakeExtraInfo";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
-export async function soloUnstakeReview(
-  id: string,
-  context: StakingSoloContextType
-) {
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(context),
-      context: {
-        ...(context || {})
-      }
-    },
-  });
-}
-
-const ui = (
-  context: StakingSoloContextType
-) => {
+const ui = (context: StakingSoloContextType) => {
 
   let { address, amount, decimal, genesisHash, token, price, fee, unbondingDuration } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
@@ -70,3 +51,17 @@ const ui = (
     </Container >
   );
 };
+
+export async function soloUnstakeReview(id: string, context: StakingSoloContextType) {
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(context),
+      context: {
+        ...(context ?? {})
+      }
+    },
+  });
+}

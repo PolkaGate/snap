@@ -2,22 +2,23 @@
 // SPDX-License-Identifier: Apache-2.0
 
 
-import { Balances } from '../../../util';
+import type { Balances } from '../../../util';
 import { isHexToBn } from '../../../utils';
 import { getApi } from '../../../util/getApi';
-import { RewardsInfo, StakingType, SubStakingType } from '../../../util/types';
+import type { RewardsInfo, StakingType, SubStakingType } from '../../../util/types';
 import { BN, BN_ZERO } from '@polkadot/util';
 import { getSnapState, updateSnapState } from '../../../rpc/stateManagement';
 import { REWARDS_SAVED_INFO_VALIDITY_PERIOD } from '../const';
+import type { HexString } from '@polkadot/util/types';
 
-const NAME_IN_STORAGE = 'claimableRewards'
+const NAME_IN_STORAGE = 'CLAIMABLE_REWARDS'
 
 export const getClaimableRewards = async (address: string, stakedTokens: Balances[], withUpdate?: boolean): Promise<RewardsInfo[]> => {
 
   if (!withUpdate) {
-    const maybeSavedRewards = await getSnapState(NAME_IN_STORAGE);
+    const maybeSavedRewards = (await getSnapState(NAME_IN_STORAGE)) as { rewards: RewardsInfo[], date: number } | null;
     if (maybeSavedRewards && Date.now() - maybeSavedRewards.date < REWARDS_SAVED_INFO_VALIDITY_PERIOD) {
-      // TODO: check if any chains r changed
+      // more check: check if selected network has changed since last savings
       return maybeSavedRewards.rewards.map((r) => {
         return {
           ...r,
@@ -27,18 +28,18 @@ export const getClaimableRewards = async (address: string, stakedTokens: Balance
     }
   }
 
-  const apiPromises = stakedTokens.map(({ genesisHash }) => getApi(genesisHash));
+  const apiPromises = stakedTokens.map(async ({ genesisHash }) => getApi(genesisHash));
   const filteredApis = (await Promise.all(apiPromises)).filter(Boolean);
 
-  const rewardsPromises = filteredApis.map((api) => api!.call['nominationPoolsApi']['pendingRewards'](address))
+  const rewardsPromises = filteredApis.map(async (api) => api?.call.nominationPoolsApi.pendingRewards(address))
   const rewards = await Promise.all(rewardsPromises);
 
   const rewardsInfo = filteredApis.map((api, index) => {
     return {
       type: 'Pool' as StakingType,
       subType: 'Claimable' as SubStakingType,
-      genesisHash: api!.genesisHash.toHex(),
-      reward: isHexToBn(String(rewards[index])) || BN_ZERO
+      genesisHash: api?.genesisHash.toHex() as HexString,
+      reward: isHexToBn(String(rewards[index])) ?? BN_ZERO
     }
   });
 

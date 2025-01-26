@@ -1,14 +1,12 @@
-import type { Balance } from '@polkadot/types/interfaces';
 
-import { ApiPromise } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import { BN, BN_ONE, BN_ZERO, bnToU8a, stringToU8a, u8aConcat } from '@polkadot/util';
-import { HexString } from '@polkadot/util/types';
 
-export interface PoolAccounts {
+export type PoolAccounts ={
   rewardId: string;
   stashId: string;
 }
-export interface PoolBalances {
+export type PoolBalances ={
   total: string;
   active: string;
   claimable: string;
@@ -17,12 +15,19 @@ export interface PoolBalances {
   toBeReleased?: {
     amount: string;
     date: number;
-}[]
+  }[]
 }
 
 const EMPTY_H256 = new Uint8Array(32);
 const MOD_PREFIX = stringToU8a('modl');
 
+/**
+ * Creates an account ID for a given nomination pool using the provided parameters.
+ * @param api - The API instance to interact with the blockchain.
+ * @param poolId - The ID of the nomination pool. It can be a number, bigint, or BN.
+ * @param index - The index to uniquely identify the account.
+ * @returns A string representing the generated account ID.
+ */
 export function createAccount(api: ApiPromise, poolId: number | bigint | BN | null | undefined, index: number): string {
   return api.registry.createType(
     'AccountId32',
@@ -36,6 +41,12 @@ export function createAccount(api: ApiPromise, poolId: number | bigint | BN | nu
   ).toString();
 }
 
+/**
+ * Retrieves the accounts associated with a specific nomination pool.
+ * @param api - The API instance to interact with the blockchain.
+ * @param poolId - The ID of the nomination pool. It can be a number, bigint, or BN.
+ * @returns An object containing the reward and stash account IDs for the pool.
+ */
 function getPoolAccounts(api: ApiPromise, poolId: number | bigint | BN | null | undefined): PoolAccounts {
   return {
     rewardId: createAccount(api, poolId, 1),
@@ -43,16 +54,22 @@ function getPoolAccounts(api: ApiPromise, poolId: number | bigint | BN | null | 
   };
 }
 
-export interface PooledBalance {
+export type PooledBalance ={
   pooledBalance: BN;
   poolId?: number;
   metadata?: string;
   pooled?: PoolBalances
 }
 
+/**
+ * Retrieves the pooled balance for a specific address in the nomination pool.
+ * @param api - The API instance to interact with the blockchain.
+ * @param address - The address whose pooled balance is to be fetched.
+ * @returns An object containing the pooled balance details, including total, active, claimable, unlocking, redeemable, and the pool ID.
+ */
 export async function getPooledBalance(api: ApiPromise, address: string): Promise<PooledBalance> {
   const response = await api.query.nominationPools.poolMembers(address);
-  const member = response && response.unwrapOr(undefined);
+  const member = response?.unwrapOr(undefined);
 
   if (!member) {
     return { pooledBalance: BN_ZERO };

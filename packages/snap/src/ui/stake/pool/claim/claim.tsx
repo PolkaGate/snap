@@ -3,7 +3,7 @@
 
 import { Box, Container, Section, Text, Footer, Button, Heading, Checkbox, Form, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../components/Row2";
 import { StakingInitContextType } from "../../types";
 import { BN } from "@polkadot/util";
@@ -12,30 +12,6 @@ import { getClaim } from "./util/getClaim";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 import { POOL_CLAIMABLE_DECIMAL } from "../components/Rewards";
-
-export async function claim(
-  id: string,
-  context: StakingInitContextType,
-  restakeRewards?: boolean
-) {
-
-  let { address, genesisHash } = context;
-
-  const fee = context.fee || await getClaim(address, genesisHash, restakeRewards) as Balance;
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(context, fee),
-      context: {
-        ...(context || {}),
-        fee: String(fee),
-        restakeRewards
-      }
-    },
-  });
-}
 
 const ui = (
   context: StakingInitContextType,
@@ -101,3 +77,27 @@ const ui = (
     </Container >
   );
 };
+
+export async function claim(
+  id: string,
+  context: StakingInitContextType,
+  restakeRewards?: boolean
+) {
+
+  let { address, genesisHash } = context;
+
+  const fee = context.fee || await getClaim(address, genesisHash, restakeRewards) as Balance;
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(context, fee),
+      context: {
+        ...(context ?? {}),
+        fee: String(fee),
+        restakeRewards
+      }
+    },
+  });
+}

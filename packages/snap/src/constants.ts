@@ -1,5 +1,5 @@
 import { KUSAMA_GENESIS, PASEO_GENESIS, POLKADOT_GENESIS, WESTEND_GENESIS } from "@polkadot/apps-config";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 
 export const DEFAULT_NETWORK_PREFIX = 42; // 42 is for substrate
 export const DEFAULT_COIN_TYPE = 354; // 354 is for Polkadot
@@ -23,7 +23,7 @@ export const PEOPLE_CHAINS = {
     [PASEO_GENESIS]: PASEO_PEOPLE_GENESIS_HASH,
 }
 
-export enum OUTPUT_TYPE {
-    FEE,
-    CALL_PARAMS
+export const OUTPUT_TYPE = {
+    FEE: 1,
+    CALL_PARAMS: 2
 }

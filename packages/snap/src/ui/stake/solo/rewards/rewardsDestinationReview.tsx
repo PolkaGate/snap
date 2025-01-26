@@ -8,23 +8,6 @@ import { StakingSoloContextType } from "../../types";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 
-export async function rewardsDestinationReview(
-  id: string,
-  context: StakingSoloContextType
-) {
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(context),
-      context: {
-        ...(context || {})
-      }
-    },
-  });
-}
-
 const ui = (context: StakingSoloContextType) => {
 
   let { address, decimal, genesisHash, token, price, fee, payee } = context;
@@ -73,3 +56,20 @@ const ui = (context: StakingSoloContextType) => {
     </Container >
   );
 };
+
+export async function rewardsDestinationReview(
+  id: string,
+  context: StakingSoloContextType
+) {
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(context),
+      context: {
+        ...(context ?? {})
+      }
+    },
+  });
+}

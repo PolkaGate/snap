@@ -6,18 +6,26 @@ import type { OnHomePageHandler } from '@metamask/snaps-sdk';
 import { accountDemo } from '../ui';
 import { handleBalancesAll } from '../util/handleBalancesAll';
 import { getSnapState } from '../rpc/stateManagement';
-
+import { onError } from './onError';
 
 /**
  * Handle incoming home page requests from the MetaMask clients.
- *
  * @returns A static panel rendered with custom UI.
  */
 export const onHomePage: OnHomePageHandler = async () => {
   const { balancesAll, logos, pricesInUsd } = await handleBalancesAll()
-  const hideBalance = await getSnapState('hideBalance');
+  const hideBalance = await getSnapState('hideBalance') as unknown as boolean;
+
+  await onError();
+  
+  const interfaceId = await snap.request({
+    method: "snap_createInterface",
+    params: {
+      ui: accountDemo(hideBalance, balancesAll, logos, pricesInUsd),
+    },
+  });
 
   return {
-    content: accountDemo(hideBalance, balancesAll, logos, pricesInUsd),
+    id: interfaceId,
   };
 };

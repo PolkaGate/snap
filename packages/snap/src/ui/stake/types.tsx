@@ -5,14 +5,14 @@
  * @property accountSelector - The selected account.
  */
 
-import { SubmittableExtrinsicFunction } from "@polkadot/api/types";
-import { AnyTuple } from "@polkadot/types/types";
+import type { SubmittableExtrinsicFunction } from "@polkadot/api/types";
+import type { AnyTuple } from "@polkadot/types/types";
 import { BN } from "@polkadot/util";
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import type { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
 import { RewardsInfo } from "../../util/types";
-import { Balances } from "../../util";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balances } from "../../util";
+import type { Balance } from "@polkadot/types/interfaces";
 
 export type StakeFormState = {
   stakeAmount: number;
@@ -162,13 +162,6 @@ export interface StakingPoolContextType extends StakingInitContextType {
 export interface PayeeAccount { Account: string }
 export type Payee = 'Staked' | 'Controller' | 'Stash' | PayeeAccount;
 
-
-export type SoloBalances = {
-  soloTotal?: Balance;
-  solo?: SoloBalance;
-  rewardsDestination?: string | null;
-};
-
 export interface SoloBalance {
   total: string;
   active: string;
@@ -180,6 +173,12 @@ export interface SoloBalance {
     date: number;
   }[]
 }
+
+export type SoloBalances = {
+  soloTotal?: Balance;
+  solo?: SoloBalance;
+  rewardsDestination?: string | null;
+};
 
 export interface StakingSoloContextType extends StakingInitContextType {
   active?: string;

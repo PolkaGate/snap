@@ -23,21 +23,21 @@
     "@types/node": "^16.18.66",
     "@types/react": "^18.2.40",
     "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.0",
-    "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
+    "vite": "^6.0.11",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "preinstall": "NODE_ENV=production node ./setDappPath.mjs",
-    "dev": "NODE_ENV=development node ./setDappPath.mjs ",
-    "start": "PORT=8000 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "clean": "yarn cache clean --all"
+    "dev": "NODE_ENV=development node ./setDappPath.mjs",
+    "start": "vite",
+    "build": "vite build",
+    "clean": "yarn cache clean --all",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [

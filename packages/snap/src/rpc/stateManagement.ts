@@ -1,8 +1,9 @@
-import { HexString } from "@polkadot/util/types";
+import type { HexString } from "@polkadot/util/types";
 import type { MetadataDef } from '@polkadot/extension-inject/types';
-import { PricesType } from "../util/getPrices";
+import type { PricesType } from "../util/getPrices";
+import type { ManageStateResult } from "@metamask/snaps-sdk";
 
-interface State {
+type State = {
   balancesAll?: any;
   selectedChains?: string[];
   currentGenesisHash?: HexString;
@@ -14,16 +15,14 @@ interface State {
   }
 }
 
-type StateValues = State[keyof State];
-
-export const setSnapState = async (newState: State) => {
+export const setSnapState = async (newState: State):Promise<ManageStateResult> => {
   return await snap.request({
     method: 'snap_manageState',
     params: { operation: 'update', newState },
   });
 };
 
-export const getSnapState = async (label?: string) => {
+export const getSnapState = async (label?: string):Promise<ManageStateResult> => {
   const state = await snap.request({
     method: 'snap_manageState',
     params: { operation: 'get' },
@@ -32,14 +31,12 @@ export const getSnapState = async (label?: string) => {
   return label ? state?.[label] : state;
 }
 
-export const updateSnapState = async (field: keyof State | string, data: any) => {
-  const state = (await getSnapState()) || {};
+export const updateSnapState = async (field: keyof State | string, data: unknown): Promise<boolean> => {
+  const state = (await getSnapState()) ?? {};
 
   state[field] = JSON.parse(JSON.stringify(data));
 
   const response = await setSnapState(state);
-
-  console.info(`${field} updated in snap state with data:`, data);
 
   return Boolean(response);
 };

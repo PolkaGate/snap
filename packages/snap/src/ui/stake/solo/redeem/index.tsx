@@ -3,7 +3,7 @@
 
 import { Box, Container, Section, Text, Footer, Button, Heading, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { Balance } from "@polkadot/types/interfaces";
+import type { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../components/Row2";
 import { StakingSoloContextType } from "../../types";
 import { BN } from "@polkadot/util";
@@ -12,27 +12,6 @@ import { getRedeemSolo } from "./util/getRedeemSolo";
 import { Account } from "../../../components/Account";
 import { SOLO_REDEEMABLE_DECIMAL } from "../../components/Redeemable";
 import { FlowHeader } from "../../../components/FlowHeader";
-
-export async function soloRedeem(
-  id: string,
-  context: StakingSoloContextType,
-) {
-
-  let { address, genesisHash } = context;
-
-  const fee = await getRedeemSolo(address, genesisHash) as Balance;
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(context, fee),
-      context: {
-        ...(context || {}),
-      }
-    },
-  });
-}
 
 const ui = (
   context: StakingSoloContextType,
@@ -83,3 +62,24 @@ const ui = (
     </Container >
   );
 };
+
+export async function soloRedeem(
+  id: string,
+  context: StakingSoloContextType,
+) {
+
+  let { address, genesisHash } = context;
+
+  const fee = await getRedeemSolo(address, genesisHash) as Balance;
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(context, fee),
+      context: {
+        ...(context ?? {}),
+      }
+    },
+  });
+}

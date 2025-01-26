@@ -1,47 +1,46 @@
 // Copyright 2019-2025 @polkadot/extension-polkagate authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { StorageKey, u32, u64 } from '@polkadot/types';
-import type { AnyTuple, Codec } from '@polkadot/types/types';
+import type { u32, u64 } from '@polkadot/types';
 import type { DeriveSessionProgress } from '@polkadot/api-derive/types';
 
 import { BN, BN_ZERO } from '@polkadot/util';
 import { isHexToBn } from '../../../../../utils';
-import { ExposureOverview, Other } from '../../../types';
+import type { ExposureOverview, Other } from '../../../types';
 import { getApi } from '../../../../../util/getApi';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import getChainName from '../../../../../util/getChainName';
 import { getFormatted } from '../../../../../util/getFormatted';
-import { ApiPromise } from '@polkadot/api';
-import { Forcing } from '@polkadot/types/interfaces';
+import type { ApiPromise } from '@polkadot/api';
+import type { Forcing } from '@polkadot/types/interfaces';
 import { getSnapState, updateSnapState } from '../../../../../rpc/stateManagement';
 import _ from 'lodash'; // Use lodash for deep cloning
 
 export const toBN = (i: unknown): BN => isHexToBn(String(i));
 
-export interface ExposureValue {
+export type ExposureValue = {
   others: Other[];
   own: BN;
   total: BN;
 }
 
 // Record<era, EraUnclaimedPayouts>
-export interface Exposure {
+export type Exposure = {
   own: BN;
   total: BN;
 }
 
-export interface ExposureInfo {
+export type ExposureInfo = {
   exposedPage: number,
   myStaked: BN,
   total: BN,
   validatorAddress: string
 }
-export interface EraExposureInfo {
+export type EraExposureInfo = {
   eraIndex: number;
   exposureInfo: ExposureInfo[]
 }
-export interface EraValidaTorPair {
+export type EraValidaTorPair = {
   eraIndex: number;
   validatorAddress: string
 }
@@ -72,9 +71,9 @@ const isRewardsPaged = (chainName: string | undefined, era: number): boolean => 
   return startEra ? era >= startEra : false;
 };
 
-export const MAX_SUPPORTED_PAYOUT_ERAS = 7; // TODO: can increase to more if needed after enough tests
+export const MAX_SUPPORTED_PAYOUT_ERAS = 7; // check: can increase to more if needed after enough tests
 
-export interface PendingRewardsOutput {
+export type PendingRewardsOutput = {
   extra: {
     progress: DeriveSessionProgress;
     forcing: Forcing;
@@ -84,6 +83,13 @@ export interface PendingRewardsOutput {
   info: UnclaimedPayouts | undefined;
 }
 
+/**
+ * Fetches pending rewards for a given address and network.
+ * @param address - The address to fetch pending rewards for.
+ * @param genesisHash - The genesis hash of the network.
+ * @param returnSaved - Optional flag to return saved state from storage if available.
+ * @returns The pending rewards information, or undefined if no rewards are found.
+ */
 export default async function getPendingRewards(address: string, genesisHash: HexString, returnSaved?: boolean): Promise<PendingRewardsOutput | undefined> {
 
   const nameInStorage = `pendingRewards_${genesisHash}`;
@@ -136,13 +142,13 @@ export default async function getPendingRewards(address: string, genesisHash: He
 
   const endEra = activeEra ? activeEra - MAX_SUPPORTED_PAYOUT_ERAS - 1 : 1;
 
-  const fetchEraExposure = async (api: ApiPromise, eraIndex: number): Promise<EraExposureInfo | null | undefined> => {
-    if (!api) {
+  const fetchEraExposure = async (_api: ApiPromise, eraIndex: number): Promise<EraExposureInfo | null | undefined> => {
+    if (!_api) {
       return;
     }
 
     if (isRewardsPaged(chainName, eraIndex)) {
-      const overview: [StorageKey<AnyTuple>, Codec][] = await api.query.staking.erasStakersOverview.entries(eraIndex);
+      const overview = await _api.query.staking.erasStakersOverview.entries(eraIndex);
 
       const validatorsExposures = overview.reduce((prev: Record<string, Exposure>, [keys, value]) => {
         const validator = keys.toHuman()[1] as string;
@@ -152,9 +158,9 @@ export default async function getPendingRewards(address: string, genesisHash: He
       }, {});
 
       const validatorKeys = Object.keys(validatorsExposures);
-      const pagedResults: [StorageKey<AnyTuple>, Codec][][] = await Promise.all(
-        validatorKeys.map((v) =>
-          api.query.staking.erasStakersPaged.entries(eraIndex, v)
+      const pagedResults = await Promise.all(
+        validatorKeys.map(async (v) =>
+          _api.query.staking.erasStakersPaged.entries(eraIndex, v)
         )
       );
 
@@ -165,7 +171,7 @@ export default async function getPendingRewards(address: string, genesisHash: He
         const validatorAddress = validatorKeys[i];
 
         pagedResult.forEach(([, v], index) => {
-          const o = (v.unwrap()?.others || []) as Other[];
+          const o = (v.unwrap()?.others ?? []) as Other[];
           const found = o.find(({ who }) => who.toString() === formatted);
 
           if (found) {
@@ -188,7 +194,7 @@ export default async function getPendingRewards(address: string, genesisHash: He
     }
   };
 
-  const getAllExposures = async () => {
+  const getAllExposures = async (): Promise<EraExposureInfo[] | undefined> => {
     if (!api || !activeEra) {
       return;
     }
@@ -228,13 +234,13 @@ export default async function getPendingRewards(address: string, genesisHash: He
 
       const foundInfo = exposureInfo.find(({ validatorAddress }) => validatorAddress === _validatorAddress);
 
-      return foundInfo || null;
+      return foundInfo ?? null;
     }
 
     return null;
   };
 
-  const handleUnclaimedRewards = async (allExposures: EraExposureInfo[]) => {
+  const handleUnclaimedRewards = async (allExposures: EraExposureInfo[]): Promise<{ [x: string]: EraUnclaimedPayouts; } | undefined> => {
     if (!api) {
       return;
     }
@@ -253,7 +259,7 @@ export default async function getPendingRewards(address: string, genesisHash: He
 
     // History of claimed paged rewards by era and validator.
     const claimedRewards = await Promise.all(
-      eraValidatorsToCheck.map(({ eraIndex, validatorAddress }) =>
+      eraValidatorsToCheck.map(async ({ eraIndex, validatorAddress }) =>
         api.query.staking.claimedRewards<AnyApi>(eraIndex, validatorAddress)
       )
     );
@@ -262,7 +268,7 @@ export default async function getPendingRewards(address: string, genesisHash: He
     const unclaimedRewards: Record<number, string[]> = {};
 
     for (let i = 0; i < claimedRewards.length; i++) {
-      const pages = (claimedRewards[i].toHuman() || []) as string[];
+      const pages = (claimedRewards[i].toHuman() ?? []) as string[];
 
       const { eraIndex, validatorAddress } = eraValidatorsToCheck[i];
       const exposedPage = getExposedPage(eraIndex, validatorAddress, allExposures);
@@ -286,7 +292,7 @@ export default async function getPendingRewards(address: string, genesisHash: He
           Promise.all([
             api.query.staking.erasValidatorReward<AnyApi>(eraIndex),
             api.query.staking.erasRewardPoints<AnyApi>(eraIndex),
-            ...validators.map((validator: AnyJson) =>
+            ...validators.map(async (validator: AnyJson) =>
               api.query.staking.erasValidatorPrefs<AnyApi>(eraIndex, validator)
             )
           ])
@@ -306,13 +312,13 @@ export default async function getPendingRewards(address: string, genesisHash: He
 
       for (const eraValidatorPrefs of prefs) {
         const commission = toBN(eraValidatorPrefs.commission).divn(10 ** 7);
-        const validator = (unclaimedValidators?.[j] || '') as string;
+        const validator = (unclaimedValidators?.[j] ?? '') as string;
         const exposureInfo = getEraExposure(Number(eraIndex), validator, allExposures);
-        const myStaked = exposureInfo?.myStaked || BN_ZERO;
-        const total = exposureInfo?.total || BN_ZERO;
-        const exposedPage = exposureInfo?.exposedPage || 0;
+        const myStaked = exposureInfo?.myStaked ?? BN_ZERO;
+        const total = exposureInfo?.total ?? BN_ZERO;
+        const exposedPage = exposureInfo?.exposedPage ?? 0;
         const totalRewardPoints = erasRewardPoints.total;
-        const validatorRewardPoints = new BN(erasRewardPoints.toHuman().individual?.[validator]?.replace(/,/g, '') || 0);
+        const validatorRewardPoints = new BN(erasRewardPoints.toHuman().individual?.[validator]?.replace(/,/g, '') ?? 0);
         const available = toBN(eraTotalPayout).mul(validatorRewardPoints).div(totalRewardPoints);
         const valCut = commission.mul(available).divn(100);
 
@@ -338,7 +344,7 @@ export default async function getPendingRewards(address: string, genesisHash: He
   const allExposures = await getAllExposures();
 
   let historyDepth = api.query['staking']?.['historyDepth'] && await api.query['staking']['historyDepth']();
-  historyDepth = historyDepth || api.consts['staking']['historyDepth'];
+  historyDepth = historyDepth ?? api.consts['staking']['historyDepth'];
 
   const [progress, forcing, header] = await Promise.all([
     api.derive.session.progress(),

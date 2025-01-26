@@ -6,36 +6,6 @@ import { FlowHeader } from '../components/FlowHeader';
 import { ShowValidator } from './ShowValidator';
 import { WentWrong } from '../components/WentWrong';
 
-export async function selectValidators(
-  id: string,
-  context: StakingInitContextType,
-  validatorSelectionForm?: string[],
-  showMode?: boolean
-) {
-  const { genesisHash, sanitizedChainName } = context;
-  const _validators = await getValidators(genesisHash);
-  const allValidators = _validators.current.concat(_validators.waiting);
-
-  const validatorsIds = allValidators.map(({ accountId }) => accountId.toString());
-  const identities = await getValidatorsIdentities(genesisHash, validatorsIds);
-
-  const selectedValidators = !validatorSelectionForm
-    ? context.recommendedValidators[sanitizedChainName]
-    : validatorSelectionForm;
-
-  await snap.request({
-    method: 'snap_updateInterface',
-    params: {
-      id,
-      ui: ui(allValidators, context, identities, selectedValidators, showMode),
-      context: {
-        ...context,
-        selectedValidators
-      }
-    },
-  });
-}
-
 const ui = (
   allValidators: ValidatorInfo[],
   context: StakingInitContextType,
@@ -112,3 +82,33 @@ const ui = (
     </Container>
   );
 };
+
+export async function selectValidators(
+  id: string,
+  context: StakingInitContextType,
+  validatorSelectionForm?: string[],
+  showMode?: boolean
+) {
+  const { genesisHash, sanitizedChainName } = context;
+  const _validators = await getValidators(genesisHash);
+  const allValidators = _validators.current.concat(_validators.waiting);
+
+  const validatorsIds = allValidators.map(({ accountId }) => accountId.toString());
+  const identities = await getValidatorsIdentities(genesisHash, validatorsIds);
+
+  const selectedValidators = !validatorSelectionForm
+    ? context.recommendedValidators[sanitizedChainName]
+    : validatorSelectionForm;
+
+  await snap.request({
+    method: 'snap_updateInterface',
+    params: {
+      id,
+      ui: ui(allValidators, context, identities, selectedValidators, showMode),
+      context: {
+        ...context,
+        selectedValidators
+      }
+    },
+  });
+}

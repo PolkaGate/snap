@@ -8,11 +8,11 @@ import {
   row,
   text,
 } from '@metamask/snaps-sdk';
-import { SignerPayloadRaw, SignerResult } from '@polkadot/types/types';
+import type { SignerPayloadRaw, SignerResult } from '@polkadot/types/types';
 import { isAscii, u8aToString, u8aUnwrapBytes } from '@polkadot/util';
 import { getKeyPair } from '../util/getKeyPair';
 
-const contentSignRaw = (origin: string, hexString: string) => {
+const contentSignRaw = (origin: string, hexString: string):unknown => {
   const data = isAscii(hexString)
     ? u8aToString(u8aUnwrapBytes(hexString))
     : hexString;

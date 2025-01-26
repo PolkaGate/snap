@@ -1,52 +1,20 @@
 // Copyright 2019-2024 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { ApiPromise } from '@polkadot/api';
 import type { Codec } from '@polkadot/types/types';
-import type { BN } from '@polkadot/util';
 import { getApi } from '../../../util/getApi';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 import type { PalletNominationPoolsBondedPoolInner } from '@polkadot/types/lookup';
 
 
-export interface PoolInfo {
+export type PoolInfo = {
   poolId: number;
   bondedPool: PalletNominationPoolsBondedPoolInner | null;
   metadata: string | null;
 }
 
-export interface PoolAccounts {
-  rewardId: string;
-  stashId: string;
-}
-
-import { bnToU8a, stringToU8a, u8aConcat } from '@polkadot/util';
-
-const EMPTY_H256 = new Uint8Array(32);
-const MOD_PREFIX = stringToU8a('modl');
-
-export function createAccount (api: ApiPromise, poolId: number | bigint | BN | null | undefined, index: number): string {
-  return api.registry.createType(
-    'AccountId32',
-    u8aConcat(
-      MOD_PREFIX,
-      api.consts.nominationPools.palletId.toU8a(),
-      new Uint8Array([index]),
-      bnToU8a(poolId, { bitLength: 32 }),
-      EMPTY_H256
-    )
-  ).toString();
-}
-
-function getPoolAccounts (api: ApiPromise, poolId: number | bigint | BN | null | undefined): PoolAccounts {
-  return {
-    rewardId: createAccount(api, poolId, 1),
-    stashId: createAccount(api, poolId, 0)
-  };
-}
-
-const handleInfo = (info: [Codec, Codec][], lastBatchLength: number) =>
-  info.map((i, index) => {
+const handleInfo = (info: [Codec, Codec][], lastBatchLength: number): PoolInfo[] => {
+  return info.map((i, index) => {
     if (i[1].isSome) {
       const bondedPool = i[1].unwrap();
 
@@ -63,17 +31,24 @@ const handleInfo = (info: [Codec, Codec][], lastBatchLength: number) =>
       return undefined;
     }
   })?.filter((f) => f !== undefined);
+}
 
-export default async function getPools(genesisHash: HexString):Promise<PoolInfo[] | undefined> {
+/**
+ * Fetches information about nomination pools from the specified blockchain network.
+ * @param genesisHash - The genesis hash of the blockchain to connect to.
+ * @returns An array of `PoolInfo` objects containing details about each pool, or `undefined` if no pools are found.
+ * @throws An error if the API connection fails or the network is unreachable.
+ */
+export default async function getPools(genesisHash: HexString): Promise<PoolInfo[] | undefined> {
   const api = await getApi(genesisHash);
   if (!api) {
     throw new Error('cant connect to network, check your internet connection!');
   }
 
-  const lastPoolId = ((await api.query.nominationPools.lastPoolId())?.toNumber() || 0) as number;
+  const lastPoolId = ((await api.query.nominationPools.lastPoolId())?.toNumber() ?? 0) as number;
 
   if (!lastPoolId) {
-   // no pools on this chain!
+    // no pools on this chain!
 
     return;
   }
@@ -89,8 +64,6 @@ export default async function getPools(genesisHash: HexString):Promise<PoolInfo[
     upperBond = totalFetched + page < lastPoolId ? totalFetched + page : lastPoolId;
 
     for (let poolId = totalFetched + 1; poolId <= upperBond; poolId++) {
-      // const { stashId } = getPoolAccounts(api, poolId);
-
       queries.push(Promise.all([
         api.query.nominationPools.metadata(poolId),
         api.query['nominationPools']['bondedPools'](poolId),
@@ -104,8 +77,6 @@ export default async function getPools(genesisHash: HexString):Promise<PoolInfo[
     poolsInfo = poolsInfo.concat(info);
     totalFetched += page;
   }
-
-
 
   return poolsInfo;
 }
