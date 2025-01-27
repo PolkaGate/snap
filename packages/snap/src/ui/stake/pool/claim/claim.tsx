@@ -33,7 +33,7 @@ const ui = (
         />
         <Box direction="vertical" alignment="center" center>
           <Heading size="lg">
-            {`+${amountToHuman(amount, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
+            {`${amountToHuman(amount, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
           </Heading>
           <Text color="muted">
             ${(Number(amountToHuman(amount, decimal) || 0) * price).toFixed(2)}

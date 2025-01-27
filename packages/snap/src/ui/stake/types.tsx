@@ -154,6 +154,7 @@ export interface StakingInitContextType {
 export interface StakingPoolContextType extends StakingInitContextType {
   active?: string;
   unlocking?: string;
+  unbondingDuration?: number;
   logos: { genesisHash: HexString, logo: string }[];
   poolId?: number;
   minJoinBond?: string;
