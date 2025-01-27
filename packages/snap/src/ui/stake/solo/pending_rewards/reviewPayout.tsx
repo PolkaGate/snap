@@ -28,7 +28,7 @@ const ui = (
           <Heading size="lg">
             {`${amountToHuman(selectedAmountToPayout, decimal, SOLO_REDEEMABLE_DECIMAL, true)} ${token}`}
           </Heading>
-          <Text color="muted">
+          <Text color="alternative">
             ${(Number(amountToHuman(selectedAmountToPayout, decimal) || 0) * price).toFixed(2)}
           </Text>
         </Box>

@@ -41,7 +41,7 @@ export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, l
           </Heading>
         </Box>
         <Input name={name || 'stakeAmount'} type="number" placeholder={placeHolder} value={amount} />
-        <Text color="muted">
+        <Text color="alternative">
           ${(Number(amount || 0) * price).toFixed(2)}
         </Text>
       </Field>

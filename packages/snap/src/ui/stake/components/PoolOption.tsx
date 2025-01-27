@@ -37,18 +37,20 @@ export const PoolOption: SnapComponent<Props> = ({
           <Row2
             alignment="start"
             label="Minimum stake"
+            labelColor={isSelected ? 'alternative' : 'muted'}
             labelSize="sm"
             valueSize="sm"
             value={`${minJoinBondInHuman || 1} ${token}`}
-            valueColor="muted"
+            valueColor={isSelected ? 'alternative' : 'muted'}
           />
           <Row2
             alignment="start"
             label="Rewards"
+            labelColor={isSelected ? 'alternative' : 'muted'}
             labelSize="sm"
             valueSize="sm"
             value='Claim manually'
-            valueColor="muted"
+            valueColor={isSelected ? 'alternative' : 'muted'}
           />
         </Box>
         <Box direction="vertical" alignment="start">

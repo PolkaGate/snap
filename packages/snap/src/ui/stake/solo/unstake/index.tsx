@@ -110,7 +110,6 @@ export async function soloUnstake(
         genesisHash,
         fee: String(fee),
         logo: _logo,
-        price,
         transferable: _transferable!,
         token: _token!,
       },

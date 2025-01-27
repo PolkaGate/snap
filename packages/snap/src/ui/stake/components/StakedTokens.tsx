@@ -37,7 +37,7 @@ const ChainRow: SnapComponent<ChainRowProps> = ({ logo, netStaked, sanitizedChai
     <Box direction='horizontal' alignment='space-between'>
       <Box direction='horizontal' center>
         <Image src={logo || ''} />
-        <Text color='muted'>
+        <Text size='sm' color='alternative'>
           {sanitizedChainName.toUpperCase()}
         </Text>
       </Box>
@@ -48,7 +48,7 @@ const ChainRow: SnapComponent<ChainRowProps> = ({ logo, netStaked, sanitizedChai
         {hasDualStaking &&
           <Box direction='horizontal' alignment='end'>
             <Image src={type === 'Pool' ? poolSmall : soloSmall} />
-            <Text color='muted'>
+            <Text color='alternative'>
               {type.toUpperCase()}
             </Text>
           </Box>
@@ -123,7 +123,7 @@ const RateRow: SnapComponent<RateRowProps> = ({ amount }) => {
         <Text color='success' alignment='end'>
           {`+${amount}%`}
         </Text>
-        <Text color='muted' size='sm'>
+        <Text color='alternative' size='sm'>
           / year
         </Text>
       </Box>

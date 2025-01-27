@@ -34,23 +34,26 @@ export const SoloOption: SnapComponent<Props> = ({
           <Row2
             alignment="start"
             label="Minimum stake"
+            labelColor={isSelected ? 'alternative' : 'muted'}
             labelSize="sm"
             valueSize="sm"
             value={`${minimumActiveStakeInHuman} ${token}`}
-            valueColor="muted"
+            valueColor={isSelected ? 'alternative' : 'muted'}
+
           />
           <Row2
             alignment="start"
             label="Rewards"
+            labelColor={isSelected ? 'alternative' : 'muted'}
             labelSize="sm"
             valueSize="sm"
             value='Paid automatically'
-            valueColor="muted"
+            valueColor={isSelected ? 'alternative' : 'muted'}
           />
           {/* <Text color="muted" size='sm'>
           Reuse tokens in Governance
         </Text> */}
-          <Text color="muted" size="sm">
+          <Text color= {isSelected ? 'alternative' : 'muted'} size="sm">
             Advanced staking management
           </Text>
         </Box>
@@ -72,7 +75,7 @@ export const SoloOption: SnapComponent<Props> = ({
               </Text>
             </Box>
             <Box direction="horizontal" alignment="end" center>
-              <Text color="muted">
+              <Text color="alternative">
                 {String(stakingData?.solo?.validators?.length || 0)}
               </Text>
               <Button name='selectValidators' variant='primary'>

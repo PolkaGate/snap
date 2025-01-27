@@ -24,7 +24,7 @@ export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price 
         <Heading size="lg">
           {`${amountToHuman(amount, decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
         </Heading>
-        <Text color="muted">
+        <Text color="alternative">
           ${`${(Number(amountToHuman(amount, decimal)) * price).toFixed(2)}`}
         </Text>
       </Box>

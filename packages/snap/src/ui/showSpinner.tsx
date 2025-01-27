@@ -8,7 +8,7 @@ export const ui = (label?: string, disabled?: boolean) => {
   return (
     <Box direction="vertical" alignment="center" center>
       <Image src={isWorking ? working : clock} />
-      <Text alignment="center" color="muted">
+      <Text alignment="center" color="alternative">
         {label ?? 'Processing, Please Wait!'}
       </Text>
       <Spinner />

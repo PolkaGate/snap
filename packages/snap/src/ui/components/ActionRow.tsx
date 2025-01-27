@@ -20,7 +20,7 @@ export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled, t
     </Box>
     <Box direction="horizontal" alignment="end" center>
       {!!tag &&
-        <Text color="muted">
+        <Text color="alternative">
           {String(tag)}
         </Text>
       }

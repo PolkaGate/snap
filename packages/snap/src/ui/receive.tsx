@@ -20,7 +20,7 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
         label='Receive'
         showHome
       />
-      <Text alignment="start" color='muted'>
+      <Text alignment="start" color='alternative'>
         Select a network to view your address & QR code
       </Text>
       <ChainSwitch genesisHash={genesisHash} logo={logo} />

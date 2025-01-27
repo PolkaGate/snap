@@ -19,7 +19,7 @@ type Props = {
  *
  * @returns The Row 2 component.
  */
-export const Row2: SnapComponent<Props> = ({ alignment, label, labelColor = 'muted', extra, extraColor = 'muted', labelSize,valueSize,extraSize, value, valueColor = 'default' }) => (
+export const Row2: SnapComponent<Props> = ({ alignment, label, labelColor = 'muted', extra, extraColor = 'alternative', labelSize,valueSize,extraSize, value, valueColor = 'default' }) => (
   <Box alignment={alignment || "space-between"} direction="horizontal" center>
     <Text color={labelColor} size={labelSize}>
       {label}{alignment === 'start' ? ':' : ''}

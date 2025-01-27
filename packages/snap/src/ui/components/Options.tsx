@@ -40,7 +40,7 @@ export const OptionButton: SnapComponent<OptionProps> = ({ description, form, na
           {text}
         </Text>
         {!!description &&
-          <Text alignment='start' color='muted' size='sm'>
+          <Text alignment='start' color={isSelected ? 'alternative' : 'muted'} size='sm'>
             {description}
           </Text>}
       </Box>

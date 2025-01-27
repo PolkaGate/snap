@@ -4,7 +4,6 @@
 import { Box, Container, Footer, Button, Image, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../../../util";
-import { getSnapState } from "../../../../rpc/stateManagement";
 import { StakeForm } from "../../components/StakeForm";
 import { Row2 } from "../../../components/Row2";
 import { StakeFormErrors, StakingPoolContextType } from "../../types";
@@ -82,7 +81,7 @@ export async function poolStakeMore(
   context: StakingPoolContextType,
 ) {
 
-  const { address, amount, claimable, decimal, genesisHash, logos, price, rate, sanitizedChainName, stakingRates, token, transferable } = context;
+  const { address, amount, claimable, decimal, genesisHash, logos, price, token, transferable } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
 
   const _address = address || (await getKeyPair(undefined, genesisHash)).address;
@@ -99,16 +98,6 @@ export async function poolStakeMore(
     _decimal = balances.decimal;
   }
 
-  let _price = price;
-  let _rate = rate;
-
-  if (_price === undefined || !_rate) {
-    const priceInfo = await getSnapState('priceInfo');
-
-    _price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
-    _rate = stakingRates?.[sanitizedChainName || ''] || 0;
-  }
-
   const fee = context.fee || await getPoolStakeMore(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash);
 
   await snap.request({
@@ -122,12 +111,11 @@ export async function poolStakeMore(
         genesisHash,
         fee: String(fee),
         logo: _logo,
-        price: _price!,
         transferable: _transferable!,
-        token: _token!,
+        token: _token,
       },
       id,
-      ui: ui(_amount, claimable, _decimal, formErrors, _logo, _token, _transferable, _price, fee),
+      ui: ui(_amount, claimable, _decimal, formErrors, _logo, _token, _transferable, price, fee),
     },
   });
 }

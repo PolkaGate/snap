@@ -22,7 +22,7 @@ export const Rewards: SnapComponent<Props> = (({ amount, decimal, price, token }
         <Heading size="md">
           {`${amountToHuman(amount || '0', decimal, 3, true)} ${token}`}
         </Heading>
-        <Text color="muted">
+        <Text color="alternative">
           ${`${(Number(amountToHuman(amount || '0', decimal)) * price).toFixed(2)}`}
         </Text>
       </Box>

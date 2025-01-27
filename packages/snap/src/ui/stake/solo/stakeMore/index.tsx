@@ -78,7 +78,7 @@ export async function soloStakeMore(
   context: StakingSoloContextType,
 ) {
 
-  const { address, amount, decimal, genesisHash, logos, price, rate, sanitizedChainName, stakingRates, token, transferable } = context;
+  const { address, amount, decimal, genesisHash, logos, price, token, transferable } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
 
   const _address = address || (await getKeyPair(undefined, genesisHash)).address;
@@ -95,16 +95,6 @@ export async function soloStakeMore(
     _decimal = balances.decimal;
   }
 
-  let _price = price;
-  let _rate = rate;
-
-  if (_price === undefined || !_rate) {
-    const priceInfo = await getSnapState('priceInfo');
-
-    _price = priceInfo?.prices?.[sanitizedChainName]?.value || 0;
-    _rate = stakingRates?.[sanitizedChainName || ''] || 0;
-  }
-
   const fee = context.fee || await getSoloStakeMore(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, OUTPUT_TYPE.FEE);
 
   await snap.request({
@@ -118,12 +108,11 @@ export async function soloStakeMore(
         genesisHash,
         fee: String(fee),
         logo: _logo,
-        price: _price!,
         transferable: _transferable!,
         token: _token!,
       },
       id,
-      ui: ui(_amount, _decimal, formErrors, _logo, _token, _transferable, _price, fee),
+      ui: ui(_amount, _decimal, formErrors, _logo, _token, _transferable, price, fee),
     },
   });
 }

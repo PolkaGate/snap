@@ -32,7 +32,7 @@ const WelcomeScreen: SnapComponent = () => {
       <Box direction='horizontal' alignment='space-between'>
         <Box direction='vertical' >
           <Heading size='md'>Welcome to Polkadot eco.!</Heading>
-          <Text color='muted'>
+          <Text color='alternative'>
             <Bold>To View the </Bold><Link href="metamask://snap/npm:@polkagate/snap/home">Home</Link> <Bold> Screen:</Bold>
           </Text>
         </Box>
@@ -40,13 +40,13 @@ const WelcomeScreen: SnapComponent = () => {
       </Box>
 
       <Section>
-        <Text>
+        <Text color='alternative'>
           1.	Open MetaMask.
         </Text>
-        <Text>
+        <Text color='alternative'>
           2.	Navigate to the <Bold>Menu</Bold> and select <Bold>Snaps</Bold>.
         </Text>
-        <Text>
+        <Text color='alternative'>
           3.	Click on the <Bold>PolkaGate logo</Bold>.
         </Text>
       </Section>

@@ -3,7 +3,7 @@ import { getValidators } from './utils/getValidators';
 import { getValidatorsIdentities, Identities } from './utils/getValidatorIdentities';
 import { StakingInitContextType, ValidatorInfo } from './types';
 import { FlowHeader } from '../components/FlowHeader';
-import { ShowValidator } from './ShowValidator';
+import { ShowValidator } from './solo/components/ShowValidator';
 import { WentWrong } from '../components/WentWrong';
 
 const ui = (

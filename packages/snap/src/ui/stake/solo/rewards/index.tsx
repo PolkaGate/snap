@@ -28,7 +28,7 @@ const makePayee = (value: string | undefined): Payee | undefined => {
   return undefined;
 }
 
-const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNew: Payee | undefined, selectedRewardsDestinationOption: RewardsDestinationOptions) => {
+const ui = (context: StakingSoloContextType, payee: Payee, fee: Balance, maybeNew: Payee | undefined) => {
 
   const { address, genesisHash, decimal, price, token } = context;
 
@@ -106,7 +106,7 @@ export async function rewardsDestination(
         fee: fee,
       },
       id,
-      ui: ui(context, payee, fee, maybeNew, selectedRewardsDestinationOption),
+      ui: ui(context, payee, fee, maybeNew),
     },
   });
 }

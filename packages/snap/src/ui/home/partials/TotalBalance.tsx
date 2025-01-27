@@ -72,7 +72,7 @@ export const TotalBalance: SnapComponent<Props> = ({ hideBalance, balancesAll, p
           <Tooltip content='Locked balance'>
             <Icon name='lock' color='muted' />
           </Tooltip>
-          <Text alignment='end' color='muted'>
+          <Text alignment='end' color='alternative'>
             {hideBalance
               ? '••••••••'
               : `$${lockedCommified} USD`

@@ -37,28 +37,28 @@ const ui = (
         <Section>
           <Box direction="horizontal" alignment="start">
             <Image src={coinStack} />
-            <Text>
+            <Text color='alternative'>
               Stake anytime with as little as <Bold>{min} {token}</Bold> and start earning rewards actively within <Bold>{String(2 * eraDuration)}</Bold> hours!
             </Text>
           </Box>
           <Divider />
           <Box direction="horizontal" alignment="start">
             <Image src={timer} />
-            <Text>
+            <Text color='alternative'>
               Unstake anytime and redeem your funds after <Bold>{String(unbondingDuration)}</Bold> days. Note that rewards will not be earned during the unstaking period.
             </Text>
           </Box>
           <Divider />
           <Box direction="horizontal" alignment="start">
             <Image src={reward} />
-            <Text>
+            <Text color='alternative'>
               Rewards accumulate every <Bold>{String(eraDuration)}</Bold> hours.
             </Text>
           </Box>
           <Divider />
           <Box direction="horizontal" alignment="start">
             <Image src={alertBell} />
-            <Text>
+            <Text color='alternative'>
               Rewards and staking status vary over time. Be sure to monitor your stake periodically.
             </Text>
           </Box>

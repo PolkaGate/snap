@@ -55,7 +55,7 @@ const ui = (
           <Form name='testNetStaking'>
             <Box direction='horizontal' center>
               <Checkbox name="enableTestnetStaking" checked={isTestNetStakingEnabled} />
-              <Text color='muted'>
+              <Text color={isTestNetStakingEnabled ? 'alternative' : 'muted'}>
                 Show Test Networks
               </Text>
             </Box>

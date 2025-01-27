@@ -24,7 +24,7 @@ const ui = (context: StakingSoloContextType) => {
           <Heading size="lg">
             {`${amount} ${token}`}
           </Heading>
-          <Text color="muted">
+          <Text color="alternative">
             ${(Number(amount || 0) * price).toFixed(2)}
           </Text>
         </Box>

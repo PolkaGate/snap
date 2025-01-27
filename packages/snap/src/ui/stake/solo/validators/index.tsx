@@ -5,7 +5,7 @@ import { Box, Text, Bold, Icon } from "@metamask/snaps-sdk/jsx";
 import { StakingSoloContextType } from "../../types";
 import { getValidatorsInfo, ValidatorInfoClipped } from "./util/getValidatorsInfo";
 import { getValidatorsIdentities, Identities } from "../../utils/getValidatorIdentities";
-import { ShowValidator } from "../../ShowValidator";
+import { ShowValidator } from "../components/ShowValidator";
 import { SelectedValidatorsFlowHeader } from "./components/SelectedValidatorsFlowHeader";
 
 const ui = (

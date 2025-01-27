@@ -31,7 +31,7 @@ export const StakeAndEarn: SnapComponent<Props> = ({ balancesAll, nonStakedChain
               <Box direction='horizontal' alignment='start' center>
                 <Image src={logo} />
                 <Box direction='vertical' alignment='start'>
-                  <Text>
+                  <Text color='alternative'>
                     <Bold> {toTitleCase(sanitizedChainName) || 'Unknown'}</Bold>
                   </Text>
                   {!!balance?.transferable && !balance.transferable.isZero() &&
@@ -46,7 +46,7 @@ export const StakeAndEarn: SnapComponent<Props> = ({ balancesAll, nonStakedChain
                   <Text color='success' alignment='end'>
                     <Bold>{`+${rate}%`}</Bold>
                   </Text>
-                  <Text color='muted' alignment='end' size='sm'>
+                  <Text color='alternative' alignment='end' size='sm'>
                     per year
                   </Text>
                 </Box>
