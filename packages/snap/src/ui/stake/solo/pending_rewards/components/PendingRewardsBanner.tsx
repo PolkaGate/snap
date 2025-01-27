@@ -13,7 +13,7 @@ export const PendingRewardsBanner: SnapComponent = () => {
           <Text color='warning'>
             <Bold> Validators reward every 2–3 days</Bold>
           </Text>
-          <Text color='muted' size="sm">
+          <Text color='alternative' size="sm">
             You can claim them before they expire, but a fee applies
           </Text>
         </Box>

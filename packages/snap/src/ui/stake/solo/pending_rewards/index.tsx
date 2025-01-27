@@ -9,6 +9,7 @@ import getPendingRewards, { PendingRewardsOutput } from "./util/getPendingReward
 import { RewardsTable } from "./components/RewardsTable";
 import { PendingRewardsBanner } from "./components/PendingRewardsBanner";
 import { NoPendingRewards } from "./components/NoPendingRewards";
+import { isEmptyObject } from "../../../../utils";
 
 const ui = (
   context: StakingSoloContextType,
@@ -26,7 +27,7 @@ const ui = (
           showHome
         />
         <PendingRewardsBanner />
-        {unpaidRewards?.info
+        {unpaidRewards?.info && !isEmptyObject(unpaidRewards.info)
           ? <RewardsTable
             context={context}
             unpaidRewards={unpaidRewards}

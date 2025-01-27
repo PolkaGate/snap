@@ -79,7 +79,7 @@ export const RewardsTable: SnapComponent<Props> = ({ context, unpaidRewards, sel
         <Text color='muted' size="sm">
           SELECTED:
         </Text>
-        <Text color='muted'>
+        <Text color='alternative'>
           {`${amountToHuman(String(selectedAmount), decimal, 4, true)} ${token}`}
         </Text>
       </Section>
