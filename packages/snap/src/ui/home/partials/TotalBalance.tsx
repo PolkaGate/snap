@@ -75,7 +75,7 @@ export const TotalBalance: SnapComponent<Props> = ({ hideBalance, balancesAll, p
           <Text alignment='end' color='alternative'>
             {hideBalance
               ? '••••••••'
-              : `$${lockedCommified} USD`
+              : `$${lockedCommified}`
             }
           </Text>
         </Box>
