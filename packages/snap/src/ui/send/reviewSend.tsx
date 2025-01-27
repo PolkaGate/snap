@@ -11,6 +11,7 @@ import { Account } from "../components/Account";
 import { Row2 } from "../components/Row2";
 import { Network } from "../components/Network";
 import getChainName from "../../util/getChainName";
+import { Price } from "../components";
 
 const ui = (
   amount: string,
@@ -35,9 +36,10 @@ const ui = (
           <Heading size="lg">
             {`- ${amount} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amount || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            price={price}
+          />
         </Box>
         <Section>
           <Network

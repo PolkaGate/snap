@@ -3,6 +3,7 @@ import { amountToHuman } from "../../../util/amountToHuman";
 import { BN } from "@polkadot/util";
 import { StakeFormErrors } from "../types";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
+import { Price } from "../../components";
 
 export interface Props {
   amount: string | undefined,
@@ -53,9 +54,10 @@ export const UnstakeForm: SnapComponent<Props> = ({
           </Heading>
         </Box>
         <Input name={name || 'unstakeAmount'} type="number" placeholder={placeHolder || "Enter amount to unstake"} value={amount} />
-        <Text color="alternative">
-          ${(Number(amount || 0) * price).toFixed(2)}
-        </Text>
+        <Price
+          amount={amount}
+          price={price}
+        />
       </Field>
     </Form>
   );

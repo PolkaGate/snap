@@ -6,6 +6,7 @@ import { birdDown } from "../../../image/icons";
 import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
+import { Price } from "../../../components";
 
 const ui = (
   context: StakingPoolContextType
@@ -27,9 +28,10 @@ const ui = (
           <Heading size="lg">
             {`${amount} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amount || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

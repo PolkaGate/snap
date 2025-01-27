@@ -12,6 +12,7 @@ import { getClaim } from "./util/getClaim";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 import { POOL_CLAIMABLE_DECIMAL } from "../components/Rewards";
+import { Price } from "../../../components";
 
 const ui = (
   context: StakingInitContextType,
@@ -35,9 +36,11 @@ const ui = (
           <Heading size="lg">
             {`${amountToHuman(amount, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amountToHuman(amount, decimal) || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            decimal={decimal}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

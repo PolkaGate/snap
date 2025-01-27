@@ -6,6 +6,7 @@ import { birdDown } from "../../../image/icons";
 import { SoloStakeMoreExtraInfo } from "./component/SoloStakeMoreExtraInfo";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
+import { Price } from "../../../components";
 
 const ui = (context: StakingSoloContextType) => {
 
@@ -25,9 +26,10 @@ const ui = (context: StakingSoloContextType) => {
           <Heading size="lg">
             {`${amount} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amount || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

@@ -9,6 +9,7 @@ import { FlowHeader } from "../components/FlowHeader";
 import { ellipsis } from "./utils/ellipsis";
 import { MAX_POOL_NAME_TO_SHOW } from "./const";
 import { BN } from "@polkadot/util";
+import { Price } from "../components";
 
 const ui = (
   fee: Balance,
@@ -33,9 +34,10 @@ const ui = (
           <Heading size="lg">
             {`${amount} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amount || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

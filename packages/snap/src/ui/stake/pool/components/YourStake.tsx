@@ -2,6 +2,7 @@ import { Box, Section, Text, Heading, SnapComponent } from "@metamask/snaps-sdk/
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { ActiveStatus } from "./ActiveStatus";
 import { STAKED_AMOUNT_DECIMAL_POINT } from "../../const";
+import { Price } from "../../../components";
 
 interface Props {
   amount: string | undefined;
@@ -24,9 +25,11 @@ export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price 
         <Heading size="lg">
           {`${amountToHuman(amount, decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
         </Heading>
-        <Text color="alternative">
-          ${`${(Number(amountToHuman(amount, decimal)) * price).toFixed(2)}`}
-        </Text>
+        <Price
+          amount={amount}
+          decimal={decimal}
+          price={price}
+        />
       </Box>
     </Section>
   )

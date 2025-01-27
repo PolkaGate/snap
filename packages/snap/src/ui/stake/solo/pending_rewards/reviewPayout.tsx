@@ -9,6 +9,7 @@ import { OUTPUT_TYPE } from "../../../../constants";
 import { getPayout } from "./util/getPayout";
 import { birdDown } from "../../../image/icons";
 import { SOLO_REDEEMABLE_DECIMAL } from "../../components/Redeemable";
+import { Price } from "../../../components";
 
 const ui = (
   fee: Balance,
@@ -28,9 +29,11 @@ const ui = (
           <Heading size="lg">
             {`${amountToHuman(selectedAmountToPayout, decimal, SOLO_REDEEMABLE_DECIMAL, true)} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amountToHuman(selectedAmountToPayout, decimal) || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={selectedAmountToPayout}
+            decimal={decimal}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

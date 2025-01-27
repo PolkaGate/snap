@@ -11,6 +11,7 @@ import { birdDown } from "../../../image/icons";
 import { getRedeem } from "./util/getRedeem";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
+import { Price } from "../../../components";
 
 const ui = (
   context: StakingPoolContextType,
@@ -35,9 +36,11 @@ const ui = (
           <Heading size="lg">
             {`${amountToHuman(amount, decimal, 4, true)} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amountToHuman(amount, decimal) || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            decimal={decimal}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

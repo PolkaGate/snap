@@ -12,6 +12,7 @@ import { getRedeemSolo } from "./util/getRedeemSolo";
 import { Account } from "../../../components/Account";
 import { SOLO_REDEEMABLE_DECIMAL } from "../../components/Redeemable";
 import { FlowHeader } from "../../../components/FlowHeader";
+import { Price } from "../../../components";
 
 const ui = (
   context: StakingSoloContextType,
@@ -35,9 +36,11 @@ const ui = (
           <Heading size="lg">
             {`${amountToHuman(amount, decimal, SOLO_REDEEMABLE_DECIMAL, true)} ${token}`}
           </Heading>
-          <Text color="alternative">
-            ${(Number(amountToHuman(amount, decimal) || 0) * price).toFixed(2)}
-          </Text>
+          <Price
+            amount={amount}
+            decimal={decimal}
+            price={price}
+          />
         </Box>
         <Section>
           <Account

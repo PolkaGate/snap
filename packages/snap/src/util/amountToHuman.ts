@@ -49,7 +49,7 @@ export function amountToHuman(
   decimalDigits?: number,
   commify?: boolean,
 ): string {
-  if (!amount || !decimals) {
+  if (amount === undefined || decimals === undefined) {
     return '';
   }
 
