@@ -1,15 +1,16 @@
 import type { SignerResult } from '@polkadot/api/types';
 import type { SignerPayloadJSON } from '@polkadot/types/types';
 
-import { checkAndUpdateMetaData, getSavedMeta, reviewUseApi } from '.';
+import { checkAndUpdateMetaData, getSavedMeta } from '.';
 import { getApi } from '../util/getApi';
 import { getKeyPair } from '../util/getKeyPair';
 import { metadataExpand } from '@polkadot/extension-chains';
 import { reviewUseMetadata } from '../ui/review/reviewUseMetadata';
 import { hasEndpoint } from '../util';
-import { metadataAlert } from '../ui/review/metadataAlert';
+import { metadataAlert } from '../ui/popup';
 import { updateSnapState } from './stateManagement';
 import { noop } from '@polkadot/util/cjs/noop';
+import { reviewUseApi } from '../ui';
 
 export const signJSON = async (
   origin: string,
@@ -24,10 +25,6 @@ export const signJSON = async (
       const api = await getApi(payload.genesisHash);
       checkAndUpdateMetaData(api).catch(noop);
       registry = api.registry
-
-      // update current chain name for chains which have endpoint
-      const currentChain = await api.rpc.system.chain();
-      updateSnapState('currentChain', currentChain ).catch(noop);
 
       isConfirmed = await reviewUseApi(api, origin, payload);
 
@@ -71,7 +68,7 @@ export const signJSON = async (
     await updateSnapState('alerts',
       {
         id: 'signJson',
-        severity: 'Error',
+        severity: 'error',
         text: 'Something went wrong while signing json! Update metadata!'
       }
     ).catch(noop);

@@ -6,7 +6,7 @@ import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
 import { getSnapState } from "../../rpc/stateManagement";
 import { StakeForm } from "./components/StakeForm";
 import { POLKAGATE_POOL_IDS } from "./const";
-import { Row2 } from "./components/Row2";
+import { Row2 } from "../components/Row2";
 import { PoolSelectorFormState, StakeFormErrors, StakingDataType, StakingInitContextType } from "./types";
 import { isEmptyObject } from "../../utils";
 import { FlowHeader } from "../components/FlowHeader";

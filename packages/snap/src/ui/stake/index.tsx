@@ -1,4 +1,4 @@
-import { Box, Button, Container, Footer, Checkbox, Form } from '@metamask/snaps-sdk/jsx';
+import { Box, Button, Container, Footer, Checkbox, Form, Text } from '@metamask/snaps-sdk/jsx';
 import { BALANCE_FETCH_TYPE, handleBalancesAll } from '../../util/handleBalancesAll';
 import type { Balances } from '../../util';
 import { STAKING_CHAINS, STAKING_TEST_CHAINS } from './const';
@@ -53,7 +53,12 @@ const ui = (
         }
         <Box direction='horizontal' alignment='center'>
           <Form name='testNetStaking'>
-            <Checkbox name="enableTestnetStaking" label="Enable test networks" checked={isTestNetStakingEnabled} />
+            <Box direction='horizontal' center>
+              <Checkbox name="enableTestnetStaking" checked={isTestNetStakingEnabled} />
+              <Text color='muted'>
+                Show Test Networks
+              </Text>
+            </Box>
           </Form>
         </Box>
       </Box>

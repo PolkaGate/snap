@@ -3,3 +3,4 @@
 
 export * from './BalanceInfo';
 export * from './ChainSwitch';
+export * from './Row2';

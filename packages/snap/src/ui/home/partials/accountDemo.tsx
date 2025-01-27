@@ -21,7 +21,9 @@ const CTA: SnapComponent<CTAProps> = ({ name, icon, label }) => (
     <Button name={name} variant='primary' >
       <Icon size='md' color='primary' name={icon} />
     </Button >
-    <Text alignment='center' color='muted'> {label}</Text>
+    <Text alignment='center' size='sm'>
+      {label}
+    </Text>
   </Box>
 );
 

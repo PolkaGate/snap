@@ -23,7 +23,7 @@ type DetailRowProps = {
   tooltip?: string;
 }
 
-const MASKED_TEXT = '••••••••';
+const maskedText = (numDots = 9): string => '•'.repeat(numDots);
 
 export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, hideBalance, label, value, tooltip }: DetailRowProps) => {
 
@@ -42,7 +42,7 @@ export const DetailRow: SnapComponent<DetailRowProps> = ({ iconName, hideBalance
           </Tooltip>
         }
         <Text color='muted' size='sm'>
-          {hideBalance ? MASKED_TEXT : value}
+          {hideBalance ? maskedText(6) : value}
         </Text>
       </Box>
     </Box>
@@ -61,12 +61,12 @@ export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showD
         description={`$${price}`}
         value={
           hideBalance
-            ? MASKED_TEXT
+            ? maskedText()
             : `${amountToHuman(total, decimal)} ${token}`
         }
         extra={
           hideBalance
-            ? MASKED_TEXT
+            ? maskedText(6)
             : `$${totalPrice.toFixed(2)}`
         }
       />

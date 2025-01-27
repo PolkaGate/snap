@@ -1,4 +1,3 @@
-import { divider, heading, panel, text } from '@metamask/snaps-sdk';
 import type { ApiPromise } from '@polkadot/api';
 import type {
   InjectedMetadataKnown,
@@ -9,34 +8,18 @@ import getChainInfo from '../util/getChainInfo';
 import { rand } from '../util/rand';
 import type { HexString } from '@polkadot/util/types';
 import { getSnapState, setSnapState } from './stateManagement';
+import { MetadataUpdate } from '../ui/popup';
 
 let selfOrigin: string;
 
-const contentMetadata = (origin: string, metadata: MetadataDef): unknown => {
-  return panel([
-    heading(`Update Request from ${origin}`),
-    divider(),
-    text(`Chain: **${metadata.chain}**`),
-    divider(),
-    text(`Token: **${metadata.tokenSymbol}**`),
-    divider(),
-    text(`Decimals: **${metadata.tokenDecimals}**`),
-    divider(),
-    text(`Spec Version: **${metadata.specVersion}**`),
-    divider(),
-    text(`Genesis Hash: **${metadata.genesisHash}**`),
-  ]);
-};
-
-// eslint-disable-next-line jsdoc/require-jsdoc
-async function showConfirmUpdateMetadata(
-  origin: string,
-  data: MetadataDef,
-): Promise<string | boolean | null> {
+async function showConfirmUpdateMetadata(  origin: string,  data: MetadataDef): Promise<string | boolean | null> {
   const userResponse = await snap.request({
     method: 'snap_dialog',
     params: {
-      content: contentMetadata(origin, data),
+      content: <MetadataUpdate
+        origin={origin}
+        metadata={data}
+      />,
       type: 'confirmation',
     },
   });
@@ -49,9 +32,9 @@ export const getMetadataList = async (): Promise<InjectedMetadataKnown[]> => {
 
   return persistedData?.metadata
     ? Object.values(persistedData.metadata as Record<string, { genesisHash: string; specVersion: number }>)?.map(({ genesisHash, specVersion }) => ({
-        genesisHash,
-        specVersion,
-      }),
+      genesisHash,
+      specVersion,
+    }),
     )
     : [{ genesisHash: '0x' as `0x${string}`, specVersion: 0 }];
 };

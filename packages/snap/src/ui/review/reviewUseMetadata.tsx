@@ -4,9 +4,9 @@
 import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { bnToBn } from '@polkadot/util';
 
-import { getDecoded } from '../../rpc';
 import type { Chain } from '@polkadot/extension-chains/types';
-import type { txContentUseMetadata } from './txContentUseMetadata';
+import { TxContentUseMetadata } from '../popup';
+import { getDecoded } from '../../util/decodeTxMethod';
 
 /**
  * Reviews metadata and presents a confirmation dialog to the user.
@@ -31,15 +31,15 @@ export async function reviewUseMetadata(
   const userResponse = await snap.request({
     method: 'snap_dialog',
     params: {
-      content: txContentUseMetadata(
-        chain,
-        origin,
-        payload,
-        decoded,
-      ),
+      content: <TxContentUseMetadata
+        chain={chain}
+        origin={origin}
+        payload={payload}
+        decoded={decoded}
+      />,
       type: 'confirmation',
     },
   });
 
-  return userResponse;
+  return !!userResponse;
 }

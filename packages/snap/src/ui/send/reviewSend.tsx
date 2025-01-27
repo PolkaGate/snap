@@ -8,7 +8,7 @@ import { amountToHuman } from "../../util/amountToHuman";
 import { FlowHeader } from "../components/FlowHeader";
 import { Box, Button, Container, Footer, Heading, Section, Text } from "@metamask/snaps-sdk/jsx";
 import { Account } from "../components/Account";
-import { Row2 } from "../stake/components/Row2";
+import { Row2 } from "../components/Row2";
 import { Network } from "../components/Network";
 import getChainName from "../../util/getChainName";
 

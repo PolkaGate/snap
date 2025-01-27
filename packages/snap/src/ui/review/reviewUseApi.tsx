@@ -5,11 +5,11 @@ import type { ApiPromise } from '@polkadot/api';
 import type { SignerPayloadJSON } from '@polkadot/types/types';
 import { bnToBn } from '@polkadot/util';
 
-import { getDecoded } from '../../rpc';
 import { getIdentity } from '../../util/getIdentity';
-import { txContentUseApi } from './';
 import getChainName from '../../util/getChainName';
 import type { Balance } from '@polkadot/types/cjs/interfaces/types';
+import { TxContentUseApi } from '../popup';
+import { getDecoded } from '../../util/decodeTxMethod';
 
 /**
  * Show a review page while interacting with an API.
@@ -47,15 +47,15 @@ export async function reviewUseApi(
   const userResponse = await snap.request({
     method: 'snap_dialog',
     params: {
-      content: txContentUseApi(
-        api,
-        chainName,
-        origin,
-        payload,
-        feeAsBalance as unknown as Balance,
-        decoded,
-        maybeReceiverIdentity,
-      ),
+      content: <TxContentUseApi
+        api={api}
+        chainName={chainName}
+        origin={origin}
+        payload={payload}
+        partialFee={feeAsBalance as unknown as Balance}
+        decoded={decoded}
+        maybeReceiverIdentity={maybeReceiverIdentity}
+      />,
       type: 'confirmation',
     },
   });

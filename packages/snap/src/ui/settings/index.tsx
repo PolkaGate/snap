@@ -29,11 +29,11 @@ const Preference: SnapComponent<PreferenceProps> = ({ icon, label, value }) => (
   <Box direction="horizontal" alignment="space-between">
     <Box direction="horizontal" alignment="start" center>
       <Image src={icon} />
-      <Text  >
+      <Text color="muted" size='sm'>
         {label}
       </Text>
     </Box>
-    <Text color="muted" >
+    <Text>
       {value}
     </Text>
   </Box>

@@ -4,7 +4,7 @@
 import { Box, Container, Section, Text, Footer, Button, Heading, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import type { Balance } from "@polkadot/types/interfaces";
-import { Row2 } from "../../components/Row2";
+import { Row2 } from "../../../components/Row2";
 import { StakingPoolContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { birdDown } from "../../../image/icons";

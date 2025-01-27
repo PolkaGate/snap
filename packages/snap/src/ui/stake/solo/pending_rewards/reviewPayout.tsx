@@ -1,7 +1,7 @@
 import { Box, Container, Section, Footer, Button, Heading, Text, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import type { Balance } from "@polkadot/types/interfaces";
-import { Row2 } from "../../components/Row2";
+import { Row2 } from "../../../components/Row2";
 import { StakingSoloContextType } from "../../types";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";

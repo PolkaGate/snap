@@ -8,10 +8,10 @@ import { Bold, Box, Heading, Image, Link, Section, Text } from '@metamask/snaps-
 const ui = () => (
   <Box>
     <Heading size='sm'>
-      Metadata Not Found for This Chain
+      Metadata not found for this Network
     </Heading>
-    <Text color='muted'>
-      Import metadata into the extension to sign transactions originating from this chain.
+    <Text color='muted' size='sm'>
+      Import metadata into the extension to sign transactions originating from this network.
     </Text>
     <Section direction='vertical'>
       <Text>

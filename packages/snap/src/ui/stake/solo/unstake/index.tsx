@@ -4,7 +4,7 @@
 import { Box, Container, Footer, Button, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../../../util";
-import { Row2 } from "../../components/Row2";
+import { Row2 } from "../../../components/Row2";
 import { StakeFormErrors, StakingSoloContextType } from "../../types";
 import { BN } from "@polkadot/util";
 import { UnstakeForm } from "../../components/UnstakeForm";

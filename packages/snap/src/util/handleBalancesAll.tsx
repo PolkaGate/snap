@@ -9,7 +9,7 @@ import type { HexString } from '@polkadot/util/types';
 import { getSnapState, updateSnapState } from '../rpc/stateManagement';
 import { getNativeTokenPrice } from './getNativeTokenPrice';
 import { DEFAULT_CHAIN_NAME, DEFAULT_CHAINS_GENESIS, PRICE_VALIDITY_PERIOD } from '../constants';
-import { updateTokenPrices } from './getCurrentChainTokenPrice';
+import { updateTokenPrices } from './updateTokenPrices';
 import { isHexToBn } from '../utils';
 import { areArraysEqual } from './areArraysEqual';
 
@@ -26,9 +26,7 @@ export const handleBalancesAll = async (fetchType?: BALANCE_FETCH_TYPE) => {
 
   const selectedOptions = options.filter(({ value }) => selectedChains.includes(value));
 
-  const currentChainName = DEFAULT_CHAIN_NAME; // to reset chain on each new visit
-
-  const { address } = await getKeyPair(currentChainName);
+  const { address } = await getKeyPair(DEFAULT_CHAIN_NAME);
   let balancesAll: Balances[];
 
   let noChainsChange;

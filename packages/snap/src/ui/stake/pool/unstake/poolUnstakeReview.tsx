@@ -1,6 +1,6 @@
 import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { Row2 } from "../../components/Row2";
+import { Row2 } from "../../../components/Row2";
 import { StakingPoolContextType } from "../../types";
 import { PoolUnstakeExtraInfo } from "./component/PoolUnstakeExtraInfo";
 import { Account } from "../../../components/Account";

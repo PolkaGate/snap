@@ -4,7 +4,7 @@
 import { Box, Container, Footer, Button, Section } from "@metamask/snaps-sdk/jsx";
 import { Payee, StakingSoloContextType } from "../../types";
 import { RewardsDestinationOptions } from "./types";
-import { Row2 } from "../../components/Row2";
+import { Row2 } from "../../../components/Row2";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import type { Balance } from "@polkadot/types/interfaces";
 import { PayoutAccount } from "./component/PayoutAccount";

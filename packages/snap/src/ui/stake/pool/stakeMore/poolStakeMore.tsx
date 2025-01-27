@@ -6,7 +6,7 @@ import { amountToHuman } from "../../../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../../../util";
 import { getSnapState } from "../../../../rpc/stateManagement";
 import { StakeForm } from "../../components/StakeForm";
-import { Row2 } from "../../components/Row2";
+import { Row2 } from "../../../components/Row2";
 import { StakeFormErrors, StakingPoolContextType } from "../../types";
 import { BN, BN_ZERO } from "@polkadot/util";
 import { amountToMachine } from "../../../../util/amountToMachine";

@@ -1,6 +1,6 @@
 import { Box, Section, Text, Button, Image, Bold, SnapComponent, Icon } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../util/amountToHuman";
-import { Row2 } from "./Row2";
+import { Row2 } from "../../components/Row2";
 import { solo, soloBlue } from "../../image/icons";
 import { StakingInitContextType } from "../types";
 import { check, unCheck } from "../../image/option";
