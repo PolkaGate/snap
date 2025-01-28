@@ -28,9 +28,9 @@
   "dependencies": {
     "@dicebear/avatars": "latest",
     "@dicebear/avatars-identicon-sprites": "latest",
-    "@metamask/key-tree": "^10.0.1",
-    "@metamask/rpc-errors": "^7.0.1",
-    "@metamask/snaps-sdk": "^6.15.0",
+    "@metamask/key-tree": "^10.0.2",
+    "@metamask/rpc-errors": "^7.0.2",
+    "@metamask/snaps-sdk": "^6.16.0",
     "@polkadot/api": "^15.0.1",
     "@polkadot/apps-config": "^0.141.1",
     "@polkadot/extension-chains": "^0.56.2",

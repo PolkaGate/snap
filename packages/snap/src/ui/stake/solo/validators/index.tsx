@@ -1,12 +1,13 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { Box, Text, Bold, Icon } from "@metamask/snaps-sdk/jsx";
+import { Box, Text, Bold, Icon, Image } from "@metamask/snaps-sdk/jsx";
 import { StakingSoloContextType } from "../../types";
 import { getValidatorsInfo, ValidatorInfoClipped } from "./util/getValidatorsInfo";
 import { getValidatorsIdentities, Identities } from "../../utils/getValidatorIdentities";
 import { ShowValidator } from "../components/ShowValidator";
 import { SelectedValidatorsFlowHeader } from "./components/SelectedValidatorsFlowHeader";
+import { check2 } from "../../../image/icons";
 
 const ui = (
   identities: Identities[] | null,
@@ -34,7 +35,7 @@ const ui = (
         label='Your validators'
       />
       <Box direction='horizontal' alignment="start" center>
-        <Icon name='check' color='muted' size='md' />
+        <Image src={check2} />
         <Text>
           <Bold>{`Elected (${elected.length})`}</Bold>
         </Text>
