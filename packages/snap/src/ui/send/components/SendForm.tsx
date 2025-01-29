@@ -1,15 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Field,
-  Form,
-  Icon,
-  Image,
-  Input,
-  Text,
-  type SnapComponent,
-} from '@metamask/snaps-sdk/jsx';
+import { Avatar, Box, Button, Field, Form, Icon, Image, Input, Text, type SnapComponent } from '@metamask/snaps-sdk/jsx';
 
 import jazzicon1 from '../../image/jazzicon/jazzicon1.svg';
 import { TokenSelector } from './TokenSelector';
@@ -25,10 +14,10 @@ export type SendFormProps = {
     genesisHash: string;
     logo: string;
   }[];
-  nonZeroBalances: Balances[];
+  tokensToList: Balances[] | undefined;
   pricesInUsd: { genesisHash: string, price: PriceValue }[];
   recipient: string | undefined;
-  selectedToken: Balances;
+  selectedToken: Balances | undefined;
 };
 
 export const SendForm: SnapComponent<SendFormProps> = ({
@@ -36,19 +25,19 @@ export const SendForm: SnapComponent<SendFormProps> = ({
   displayClearIcon,
   formErrors,
   logos,
-  nonZeroBalances,
+  tokensToList,
   pricesInUsd,
   recipient,
   selectedToken
 }) => {
 
-  const _selectedToken = selectedToken || nonZeroBalances[0];
+  const _selectedToken = selectedToken || tokensToList?.[0];
 
   return (
     <Form name='sendForm'>
       <TokenSelector
         selectedToken={_selectedToken}
-        nonZeroBalances={nonZeroBalances}
+        tokensToList={tokensToList}
         logos={logos}
         pricesInUsd={pricesInUsd}
       />
@@ -63,7 +52,7 @@ export const SendForm: SnapComponent<SendFormProps> = ({
         />
         <Box direction='horizontal' center>
           <Text color='alternative'>
-            {_selectedToken.token}
+            {_selectedToken?.token || 'Unknown'}
           </Text>
         </Box>
       </Field>

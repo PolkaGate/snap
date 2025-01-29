@@ -12,13 +12,12 @@ import { amountToHuman } from '../../../util/amountToHuman';
 
 /**
  * The props for the {@link AccountSelector} component.
- *
  * @property selectedAccount - The currently selected account.
  * @property accounts - The available accounts.
  */
 export type TokenSelectorProps = {
-  nonZeroBalances: Balances[],
-  selectedToken: Balances,
+  tokensToList: Balances[] | undefined,
+  selectedToken: Balances | undefined,
   pricesInUsd: { genesisHash: string, price: PriceValue }[];
   logos: {
     genesisHash: string;
@@ -27,7 +26,7 @@ export type TokenSelectorProps = {
 };
 
 export const TokenSelector: SnapComponent<TokenSelectorProps> = ({
-  nonZeroBalances,
+  tokensToList,
   selectedToken,
   logos,
   pricesInUsd
@@ -38,9 +37,9 @@ export const TokenSelector: SnapComponent<TokenSelectorProps> = ({
       <Selector
         name="tokenSelector"
         title="Select token"
-        value={`${selectedToken.token},${selectedToken.genesisHash}`}
+        value={`${selectedToken?.token},${selectedToken?.genesisHash}`}
       >
-        {nonZeroBalances.map(({ decimal, token, genesisHash, transferable }) => {
+        {(tokensToList || []).map(({ decimal, token, genesisHash, transferable }) => {
           const icon = logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
           const price = pricesInUsd.find((item) => item.genesisHash === genesisHash)?.price.value || 0;
           const transferableInUsd = parseFloat(amountToHuman(transferable, decimal)) * price;
