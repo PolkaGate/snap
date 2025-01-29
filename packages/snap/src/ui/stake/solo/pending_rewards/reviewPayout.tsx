@@ -1,4 +1,4 @@
-import { Box, Container, Section, Footer, Button, Heading, Text, Image } from "@metamask/snaps-sdk/jsx";
+import { Box, Container, Section, Footer, Button, Heading, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import type { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../../components/Row2";

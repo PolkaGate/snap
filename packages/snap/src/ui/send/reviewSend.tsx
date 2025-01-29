@@ -6,7 +6,7 @@ import type { HexString } from "@polkadot/util/types";
 import { SendContextType } from "./types";
 import { amountToHuman } from "../../util/amountToHuman";
 import { FlowHeader } from "../components/FlowHeader";
-import { Box, Button, Container, Footer, Heading, Section, Text } from "@metamask/snaps-sdk/jsx";
+import { Box, Button, Container, Footer, Heading, Section } from "@metamask/snaps-sdk/jsx";
 import { Account } from "../components/Account";
 import { Row2 } from "../components/Row2";
 import { Network } from "../components/Network";

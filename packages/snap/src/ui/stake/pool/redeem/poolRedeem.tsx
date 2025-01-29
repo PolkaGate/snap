@@ -1,7 +1,7 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { Box, Container, Section, Text, Footer, Button, Heading, Image } from "@metamask/snaps-sdk/jsx";
+import { Box, Container, Section, Footer, Button, Heading, Image } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import type { Balance } from "@polkadot/types/interfaces";
 import { Row2 } from "../../../components/Row2";

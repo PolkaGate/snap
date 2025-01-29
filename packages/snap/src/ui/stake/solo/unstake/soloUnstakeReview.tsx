@@ -1,4 +1,4 @@
-import { Box, Container, Section, Text, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
+import { Box, Container, Section, Footer, Button, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../../components/Row2";
 import { StakingSoloContextType } from "../../types";

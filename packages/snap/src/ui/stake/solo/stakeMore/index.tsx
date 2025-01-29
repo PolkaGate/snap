@@ -4,7 +4,6 @@
 import { Box, Container, Footer, Button, Image, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../../../util";
-import { getSnapState } from "../../../../rpc/stateManagement";
 import { StakeForm } from "../../components/StakeForm";
 import { Row2 } from "../../../components/Row2";
 import { StakeFormErrors, StakingSoloContextType } from "../../types";
