@@ -6,3 +6,5 @@ export * from './listeners/onHomePage';
 export * from './listeners/onRpcRequest';
 export * from './listeners/onUserInput';
 export * from './listeners/onUpdate';
+export * from './listeners/onSignature';
+export * from './listeners/onTransaction';
