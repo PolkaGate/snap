@@ -1,4 +1,4 @@
-import { ApiPromise } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import { SignerPayloadJSON } from '@polkadot/types/types';
 
 export const buildPayload = async (
@@ -44,7 +44,7 @@ export const buildPayload = async (
         'CheckMetadataHash'
       ],
       runtimeVersion: api.runtimeVersion,
-      tip:0,
+      tip: 0,
       version: tx.version,
     };
 

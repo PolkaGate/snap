@@ -1,6 +1,6 @@
 import type { AccountId32 } from '@polkadot/types/interfaces/runtime';
 
-import { BN } from '@polkadot/util';
+import type { BN } from '@polkadot/util';
 
 const AYE_BITS = 0b10000000;
 const CON_MASK = 0b01111111;
@@ -35,10 +35,10 @@ export type Vote = {
   };
 };
 
-export const isAye = (vote: string) => (vote & AYE_BITS) === AYE_BITS;
-export const getConviction = (vote: string) => (vote & CON_MASK) === 0 ? 0.1 : (vote & CON_MASK);
+export const isAye = (vote: string): boolean => (vote & AYE_BITS) === AYE_BITS;
+export const getConviction = (vote: string): number => (vote & CON_MASK) === 0 ? 0.1 : (vote & CON_MASK);
 
-export const getVoteType = (vote: Vote | null | undefined) => {
+export const getVoteType = (vote: Vote | null | undefined): string | undefined => {
   if (vote) {
     if (vote.isStandard) {
       return isAye(vote.asStandard.vote) ? 'Aye' : 'Nay';

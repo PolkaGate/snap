@@ -5,7 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Key as KeyIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import { web3FromSource } from '@polkagate/extension-dapp';
 import { Divider, Grid, TextField, Typography } from '@mui/material';
-import { ApiPromise } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import { SignerPayloadRaw } from '@polkadot/types/types';
 import { verifySignature } from './util/verifySignature';
 

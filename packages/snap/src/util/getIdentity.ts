@@ -1,25 +1,35 @@
-import { ApiPromise } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import type { Registration } from '@polkadot/types/interfaces';
 import type { Option } from '@polkadot/types';
 
 import { hexToString } from '@polkadot/util';
+import { PEOPLE_CHAINS } from '../constants';
+import { getApi } from './getApi';
 
 /**
- * To get the display name of an account's on-chain identity.
- *
- * @param api - The api to connect to a remote node.
- * @param formatted - The address to fetch its on-chain identity.
+ * Retrieves the identity display name for a given formatted account address.
+ * This function checks if the provided account belongs to a supported people chain and, 
+ * if so, fetches and decodes the display name from the identity module. 
+ * If the account does not have an identity or if the chain is unsupported, it returns null.
+ * @param api - The API instance for the chain.
+ * @param formatted - The formatted account address for which the identity is to be fetched.
+ * @returns - Returns the identity's display name as a string, or null if not found or unsupported.
  */
-export async function getIdentity( // TODO: use People chain after polkadot upgrade
-  api: ApiPromise,
-  formatted: string,
-): Promise<string | null> {
+export async function getIdentity(api: ApiPromise, formatted: string): Promise<string | null> {
+  const genesisHash = api.genesisHash.toHex();
+  const peopleChainGenesis = PEOPLE_CHAINS[genesisHash];
 
-  if (!api.query?.identity) {
+  if (!peopleChainGenesis) {
     return null;
   }
 
-  const identity = (await api.query.identity.identityOf(
+  const _api = await getApi(peopleChainGenesis);
+
+  if (!_api) {
+    return null;
+  }
+
+  const identity = (await _api.query.identity.identityOf(
     formatted,
   )) as Option<Registration>;
 

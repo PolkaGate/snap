@@ -17,7 +17,7 @@ function TransferFund({ currentChainName, setChainName }: Props) {
   const handleChange = (event: SelectChangeEvent) => {
     setCurrentGenesisHash(event.target.value as string);
     const chain = getChain(event.target.value);
-    setChainName(sanitizeChainName(chain.displayName)?.toLowerCase() || currentChainName);
+    setChainName(sanitizeChainName(chain.displayName)?.toLowerCase() ?? currentChainName);
   };
 
   return (

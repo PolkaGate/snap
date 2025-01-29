@@ -2,7 +2,7 @@ import type { AccountId } from '@polkadot/types/interfaces';
 import type { HexString } from '@polkadot/util/types';
 import { SignerPayloadJSON } from '@polkadot/types/types';
 
-import { ApiPromise } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult } from '@polkadot/types/types';
 
@@ -54,7 +54,6 @@ export async function send(from: string | AccountId, api: ApiPromise, ptx: Submi
         }
 
         if (result.status.isFinalized || result.status.isInBlock) {
-          console.info('Tx. Status: ', result.status);
           const hash = result.status.isFinalized
             ? result.status.asFinalized
             : result.status.asInBlock;
@@ -64,8 +63,6 @@ export async function send(from: string | AccountId, api: ApiPromise, ptx: Submi
           const txHash = result.txHash.toString();
 
           const fee = undefined;
-
-          console.log(`Transaction success:${success}`);
 
           resolve({
             block: Number(blockNumber),
@@ -77,7 +74,6 @@ export async function send(from: string | AccountId, api: ApiPromise, ptx: Submi
         }
       })
       .catch((e) => {
-        console.info('catch error', e);
         resolve({
           block: 0,
           failureText: String(e),

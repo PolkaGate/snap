@@ -1,35 +1,26 @@
-import { BN, BN_TEN, BN_ZERO } from '@polkadot/util';
+import { BN, BN_ZERO } from '@polkadot/util';
 
 /**
- * Convert an amount to BN.
- *
- * @param amount - The amount to be converted to BN.
- * @param decimal - The chain decimal.
- * @returns The Bn equivalent of the amount.
+ * Convert an amount to BN based on the provided decimal precision.
+ * @param amount - The amount (as a string) to be converted.
+ * @param decimal - The decimal precision of the chain.
+ * @returns The BN equivalent of the amount in machine-readable format.
  */
-export function amountToMachine(
-  amount: string | undefined | null,
-  decimal: number | undefined,
-): BN {
-  if (!amount || !Number(amount) || !decimal) {
+export function amountToMachine(amount: string | undefined, decimal: number): BN {
+  if (!amount || !decimal || isNaN(Number(amount))) {
     return BN_ZERO;
   }
 
-  const dotIndex = amount.indexOf('.');
-  let newAmount = amount;
+  // Split the amount into the whole part and fractional part
+  const [wholePart, fractionalPart = ''] = amount.split('.');
 
-  if (dotIndex >= 0) {
-    const wholePart = amount.slice(0, dotIndex);
-    const fractionalPart = amount.slice(dotIndex + 1);
+  // Ensure the fractional part is correctly truncated or padded to the given decimal precision
+  let adjustedFraction = fractionalPart.slice(0, decimal); // Truncate if it's longer than the decimal
+  adjustedFraction = adjustedFraction.padEnd(decimal, '0'); // Pad with zeros if it's shorter
 
-    newAmount = wholePart + fractionalPart;
-    // eslint-disable-next-line no-param-reassign
-    decimal -= fractionalPart.length;
+  // Combine the whole part and the adjusted fractional part into a single numeric string
+  const numericValue = wholePart + adjustedFraction;
 
-    if (decimal < 0) {
-      throw new Error("decimal should be more than amount's decimals digits");
-    }
-  }
-
-  return new BN(newAmount).mul(BN_TEN.pow(new BN(decimal)));
+  // Convert the numeric string to BN
+  return new BN(numericValue);
 }

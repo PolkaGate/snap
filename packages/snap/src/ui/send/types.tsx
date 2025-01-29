@@ -1,3 +1,5 @@
+import type { HexString } from "@polkadot/util/types";
+
 /**
  * The state of the send form.
  *
@@ -11,6 +13,11 @@ export type SendFormState = {
   tokenSelector: string;
 };
 
+export type PayoutSelectionFormState = {
+  [selectAllToPayOut: string]: boolean;
+}
+export type SelectAllToPayOutFormState = Record<string, boolean>;
+
 /**
  * The form errors.
  *
@@ -22,14 +29,14 @@ export type SendFormErrors = {
   amount?: string;
 };
 
-
-/**
- * The context of the send flow interface.
- *
- * @property transferable - The available balance of the selected token.
- * @property decimal - The decimal of selected token
- */
-export type SendFlowContext = {
-  decimal:number;
-  transferable: string
-};
+export interface SendContextType {
+  amount: number | undefined,
+  address: string,
+  recipient: string | undefined,
+  decimal: number,
+  price: number,
+  genesisHash: HexString,
+  fee: string | undefined,
+  token: string,
+  transferable: string,
+}

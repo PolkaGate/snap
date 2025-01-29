@@ -3,21 +3,24 @@ import type { AccountData } from '@polkadot/types/interfaces/balances/types';
 
 import { getApi } from './getApi';
 import { getFormatted } from './getFormatted';
-import { ApiPromise } from '@polkadot/api';
-import { BN, BN_ONE, BN_ZERO, bnToU8a, stringToU8a, u8aConcat } from '@polkadot/util';
-import { HexString } from '@polkadot/util/types';
-
-export interface PoolAccounts {
-  rewardId: string;
-  stashId: string;
-}
+import { BN_ZERO } from '@polkadot/util';
+import type { HexString } from '@polkadot/util/types';
+import type { PoolBalances } from './getPooledBalance';
+import { getPooledBalance } from './getPooledBalance';
+import { getSoloBalances } from './getSoloBalances';
+import type { SoloBalance } from '../ui/stake/types';
 
 export type Balances = {
   total: Balance;
   transferable: Balance;
   locked: Balance;
   soloTotal?: Balance;
+  rewardsDestination?: string | null;
   pooledBalance?: Balance;
+  pooled?: PoolBalances,
+  poolId?: number;
+  solo?: SoloBalance;
+  poolName?: string;
   decimal: number;
   genesisHash: HexString;
   token: string;
@@ -25,136 +28,116 @@ export type Balances = {
 
 /**
  * To get the balances including locked one of an address.
- *
  * @param genesisHash - The genesisHash of the chain will be used to find an endpoint to use.
  * @param address - An address to get its balances.
  * @returns The total, transferable, and locked balances.
  */
 export async function getBalances(genesisHash: HexString, address: string,): Promise<Balances> {
-  console.info(`getting balances for ${address} on ${genesisHash}`)
-
   const api = await getApi(genesisHash);
+
+  const POOLED_BALANCES_DEFAULT = {
+    total: BN_ZERO,
+    active: BN_ZERO,
+    claimable: BN_ZERO,
+    unlocking: BN_ZERO,
+    redeemable: BN_ZERO
+  }
+
+  const SOLO_BALANCES_DEFAULT = {
+    total: BN_ZERO,
+    active: BN_ZERO,
+    unlocking: BN_ZERO,
+    redeemable: BN_ZERO
+  }
 
   if (!api) {
     // FixMe:
-    return { genesisHash, total: BN_ZERO, transferable: BN_ZERO, locked: BN_ZERO, soloTotal: BN_ZERO, pooledBalance: BN_ZERO, decimal: 10, token: 'Unit' };
+    return {
+      genesisHash,
+      total: BN_ZERO,
+      transferable: BN_ZERO,
+      locked: BN_ZERO,
+      soloTotal: BN_ZERO,
+      pooledBalance: BN_ZERO,
+      pooled: POOLED_BALANCES_DEFAULT,
+      solo: SOLO_BALANCES_DEFAULT,
+      decimal: 10,
+      token: 'Unit'
+    };
   }
 
   const decimal = api.registry.chainDecimals[0];
   const token = api.registry.chainTokens[0];
   const formatted = getFormatted(genesisHash, address);
-  console.info(`Formatted address for ${address} is ${formatted}`)
 
   const balances = (await api.query.system.account(formatted)) as unknown as {
     data: AccountData;
   };
 
   if (balances.data.free.isZero()) {
-    // no need to more check
+    // no need to more check!!
     const ZERO_BALANCE = api.createType('Balance', BN_ZERO) as unknown as Balance;
-    return { genesisHash, total: ZERO_BALANCE, transferable: ZERO_BALANCE, locked: ZERO_BALANCE, soloTotal: ZERO_BALANCE, pooledBalance: ZERO_BALANCE, decimal, token };
+
+    return {
+      genesisHash,
+      total: ZERO_BALANCE,
+      transferable: ZERO_BALANCE,
+      locked: ZERO_BALANCE,
+      soloTotal: ZERO_BALANCE,
+      pooledBalance: ZERO_BALANCE,
+      pooled: POOLED_BALANCES_DEFAULT,
+      solo: SOLO_BALANCES_DEFAULT,
+      decimal,
+      token
+    };
   }
 
-  let soloTotal;
-
-  if (api.query.staking?.ledger) {
-    const ledger = await api.query.staking.ledger(formatted);
-
-    if (ledger.isSome) {
-      soloTotal = api.createType(
-        'Balance',
-        ledger.unwrap().total
-      ) as unknown as Balance;
-    }
-  }
+  const { soloTotal, solo, rewardsDestination } = await getSoloBalances(api, formatted);
 
   let pooledBalance: Balance | undefined = undefined;
+  let pooledBalanceDetails: PoolBalances | undefined = undefined;
+  let maybePoolId;
+  let maybePoolName;
 
   if (api.query.nominationPools?.poolMembers) {
-    const mayBePooledBalance = await getPooledBalance(api, formatted);
+    const { pooledBalance: mayBePooledBalance, pooled, poolId, metadata } = await getPooledBalance(api, formatted);
 
     if (mayBePooledBalance) {
-      pooledBalance = api.createType(
-        'Balance',
-        mayBePooledBalance
-      ) as unknown as Balance;
+      pooledBalance = api.createType('Balance', mayBePooledBalance) as unknown as Balance;
+      maybePoolId = poolId;
+      maybePoolName = metadata;
+      pooledBalanceDetails = pooled;
     }
   }
 
   const transferable = api.createType(
     'Balance',
-    balances.data.free.sub(balances.data.frozen || balances.data.miscFrozen),
+    balances.data.free.sub(balances.data.frozen ?? balances.data.miscFrozen),
   ) as unknown as Balance;
 
   const total = api.createType(
     'Balance',
-    balances.data.free.add(balances.data.reserved).add(pooledBalance || BN_ZERO),
+    balances.data.free.add(balances.data.reserved).add(pooledBalance ?? BN_ZERO),
   ) as unknown as Balance;
 
   const locked = api.createType(
     'Balance',
-    (balances.data.frozen || balances.data.miscFrozen),
+    (balances.data.frozen ?? balances.data.miscFrozen),
   ) as unknown as Balance;
 
-  return { genesisHash, total, transferable, locked, soloTotal, pooledBalance, decimal, token };
-}
-
-
-const EMPTY_H256 = new Uint8Array(32);
-const MOD_PREFIX = stringToU8a('modl');
-
-export function createAccount(api: ApiPromise, poolId: number | bigint | BN | null | undefined, index: number): string {
-  return api.registry.createType(
-    'AccountId32',
-    u8aConcat(
-      MOD_PREFIX,
-      api.consts.nominationPools.palletId.toU8a(),
-      new Uint8Array([index]),
-      bnToU8a(poolId, { bitLength: 32 }),
-      EMPTY_H256
-    )
-  ).toString();
-}
-
-function getPoolAccounts(api: ApiPromise, poolId: number | bigint | BN | null | undefined): PoolAccounts {
   return {
-    rewardId: createAccount(api, poolId, 1),
-    stashId: createAccount(api, poolId, 0)
+    decimal,
+    genesisHash,
+    locked,
+    pooledBalance,
+    pooled: pooledBalanceDetails,
+    poolId: maybePoolId,
+    poolName: maybePoolName,
+    solo,
+    rewardsDestination,
+    soloTotal,
+    total,
+    transferable,
+    token
   };
-}
-
-
-async function getPooledBalance(api: ApiPromise, address: string): Promise<BN> {
-  const response = await api.query.nominationPools.poolMembers(address);
-  const member = response && response.unwrapOr(undefined);
-
-  if (!member) {
-    return BN_ZERO;
-  }
-
-  const poolId = member.poolId;
-  const accounts = poolId && getPoolAccounts(api, poolId);
-
-  if (!accounts) {
-    return BN_ZERO;
-  }
-
-  const [bondedPool, stashIdAccount, myClaimable] = await Promise.all([
-    api.query['nominationPools']['bondedPools'](poolId),
-    api.derive.staking.account(accounts.stashId),
-    api.call['nominationPoolsApi']['pendingRewards'](address)
-  ]);
-
-  const active = member.points.isZero()
-    ? BN_ZERO
-    : (new BN(String(member.points)).mul(new BN(String(stashIdAccount.stakingLedger.active)))).div(new BN(String(bondedPool.unwrap()?.points ?? BN_ONE)));
-
-  const rewards = myClaimable as unknown as BN;
-  let unlockingValue = BN_ZERO;
-
-  member?.unbondingEras?.forEach((value: BN) => {
-    unlockingValue = unlockingValue.add(value);
-  });
-
-  return active.add(rewards).add(unlockingValue);
 }

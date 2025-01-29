@@ -9,7 +9,6 @@ export async function getLatestPackageVersion(packageName: string): Promise<stri
     const latestVersion = responseData['dist-tags'].latest;
     return latestVersion;
   } catch (error:any) {
-    console.error('Error fetching package information:', error.message);
     throw error;
   }
 }

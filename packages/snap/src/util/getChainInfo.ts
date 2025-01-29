@@ -6,7 +6,7 @@ import { getSpecTypes } from '@polkadot/types-known';
 import { formatBalance, isNumber } from '@polkadot/util';
 import { base64Encode } from '@polkadot/util-crypto';
 import type { ApiPromise } from '@polkadot/api';
-import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defaults';
+import { defaults } from '@polkadot/util-crypto/address/defaults';
 
 import type { MetadataDef } from '@polkadot/extension-inject/types';
 import { getApiEndpoint } from './getApiEndpoint';
@@ -15,8 +15,9 @@ import { statics } from './statics';
 export const DEFAULT_DECIMALS = statics.registry.createType('u32', 12);
 export const DEFAULT_SS58 = statics.registry.createType(
   'u32',
-  addressDefaults.prefix,
+  defaults.prefix,
 );
+
 export type ChainType = 'substrate' | 'ethereum';
 
 export type ChainInfo = {
@@ -27,7 +28,6 @@ export type ChainInfo = {
 /**
  * Retrieves information about the connected chain, including metadata properties
  * and additional chain-specific details.
- *
  * @param api - The connected `ApiPromise` instance representing a remote node.
  * @returns A promise that resolves to a `ChainInfo` object or `null` if the API is not ready.
  */
@@ -54,10 +54,10 @@ export default async function getChainInfo(
         ss58Format: isNumber(api.registry.chainSS58)
           ? api.registry.chainSS58
           : DEFAULT_SS58.toNumber(),
-        tokenDecimals: (api.registry.chainDecimals || [
+        tokenDecimals: (api.registry.chainDecimals ?? [
           DEFAULT_DECIMALS.toNumber(),
         ])[0],
-        tokenSymbol: (api.registry.chainTokens ||
+        tokenSymbol: (api.registry.chainTokens ??
           formatBalance.getDefaults().unit)[0],
         types: getSpecTypes(
           api.registry,

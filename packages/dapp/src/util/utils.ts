@@ -1,9 +1,13 @@
 import { BN, BN_TEN, BN_ZERO } from '@polkadot/util';
 
-export function amountToMachine(
-  amount: string | undefined,
-  decimal: number | undefined,
-): BN {
+/**
+ * Converts a human-readable amount to a machine-readable BN.
+ * @param amount - The amount as a string, with optional decimals.
+ * @param decimal - The chain's decimal precision.
+ * @returns The machine-readable BN representation of the amount.
+ * @throws If the number of decimals in `amount` exceeds `decimal`.
+ */
+export function amountToMachine(amount: string | undefined, decimal: number | undefined): BN {
   if (!amount || !Number(amount) || !decimal) {
     return BN_ZERO;
   }

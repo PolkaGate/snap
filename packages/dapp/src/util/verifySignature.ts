@@ -9,6 +9,5 @@ export function verifySignature(address: string, message: string, signature: str
   // Verify the signature
   const { isValid } = signatureVerify(messageU8a, signatureU8a, address);
 
-  console.log(`Is the signature valid? ${isValid}`);
   return isValid;
 }

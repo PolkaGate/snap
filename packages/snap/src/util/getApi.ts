@@ -1,28 +1,27 @@
 import { ApiPromise, HttpProvider } from '@polkadot/api';
 
 import getEndpoint from './getEndpoint';
-import { HexString } from '@polkadot/util/types';
+import type { HexString } from '@polkadot/util/types';
 
 /**
- * To get the api for a chain.
- *
- * @param genesisHash - The genesisHash of the chain will be used to find an endpoint to use.
+ * Retrieves the API for the given blockchain genesis hash by creating an HTTP connection.
+ * @param genesisHash - The genesis hash of the blockchain to connect to.
+ * @returns A Promise that resolves to the ApiPromise instance, or null if the connection fails.
  */
 export async function getApi(genesisHash: HexString): Promise<ApiPromise | null> {
-  console.info(`Preparing API for ${genesisHash}`)
+  try {
+    const endpoints = await getEndpoint(genesisHash, true, true) as string[];
+    if (!endpoints?.length) {
+      return null;
+    }
+    const adjustedUrls = endpoints.map((value) => value.replace('wss://', 'https://'));  // Replace 'wss://' with 'https://' as MetaMask Snap does not support WebSockets at the moment
+    const httpProviders = adjustedUrls.map((url) => new HttpProvider(url));
 
-  const endpoint = await getEndpoint(genesisHash);
-  if (!endpoint) {
-    console.error(`No endpoint with genesisHash: '${genesisHash}'.`);
-    
+    const api = await Promise.race(httpProviders.map(async (httpProvider) => ApiPromise.create({ provider: httpProvider })));
+
+    return api;
+
+  } catch {
     return null;
   }
-  console.info(`Selected Endpoint on ${genesisHash} is ${endpoint} `)
-
-  const adjustedUrl = endpoint.replace('wss://', 'https://'); // since Metamask snap does not support web sockets at the moment we use https instead
-  const httpProvider = new HttpProvider(adjustedUrl);
-
-  const api = await ApiPromise.create({ provider: httpProvider });
-
-  return api;
 }

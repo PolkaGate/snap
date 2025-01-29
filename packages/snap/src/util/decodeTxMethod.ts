@@ -1,10 +1,10 @@
-// Copyright 2023-2024 @polkagate/snap authors & contributors
+// Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Chain } from '@polkadot/extension-chains/types';
 import type { MetadataDef } from '@polkadot/extension-inject/types';
 import type { ChainProperties, Call } from '@polkadot/types/interfaces';
-import { BN } from '@polkadot/util';
+import type { BN } from '@polkadot/util';
 import type { AnyJson } from '@polkadot/types/types';
 import { Metadata, TypeRegistry } from '@polkadot/types';
 import { base64Decode } from '@polkadot/util-crypto';
@@ -18,6 +18,11 @@ export type Decoded = {
 
 const expanded = new Map<string, Chain>();
 
+/**
+ * Expands metadata for a given blockchain chain definition, caching the result for future use.
+ * @param definition - The metadata definition for the chain to expand.
+ * @returns The expanded chain object with additional metadata and properties.
+ */
 function metadataExpand(definition: MetadataDef): Chain {
   const cached = expanded.get(definition.genesisHash);
 
@@ -82,6 +87,11 @@ function metadataExpand(definition: MetadataDef): Chain {
   return result;
 }
 
+/**
+ * Retrieves and expands metadata for a given genesis hash.
+ * @param genesisHash - The genesis hash of the chain to retrieve metadata for.
+ * @returns A Promise that resolves to the expanded chain object or null if metadata is not found.
+ */
 async function getMetadata(genesisHash?: string | null): Promise<Chain | null> {
   if (!genesisHash) {
     return null;
@@ -96,6 +106,13 @@ async function getMetadata(genesisHash?: string | null): Promise<Chain | null> {
   return null;
 }
 
+/**
+ * Decodes the method data based on the provided chain and spec version.
+ * @param data - The encoded method data to decode.
+ * @param chain - The chain object containing registry and spec version.
+ * @param specVersion - The specification version to validate before decoding.
+ * @returns An object containing the decoded arguments, method, and documentation.
+ */
 function decodeMethod(data: string, chain: Chain, specVersion: BN): Decoded {
   let args: AnyJson | null = null;
   let method: Call | null = null;
@@ -109,15 +126,10 @@ function decodeMethod(data: string, chain: Chain, specVersion: BN): Decoded {
         .replace(/`/gu, '');
       args = (method.toHuman() as { args: AnyJson }).args;
     } else {
-      console.log('Outdated metadata to decode', chain.specVersion.toString(), specVersion.toString());
+      // Outdated metadata to decode
     }
-  } catch (error) {
-    console.error(
-      'Error decoding method',
-      chain,
-      specVersion,
-      (error as Error).message,
-    );
+  } catch {
+    return { args, method, docs };
   }
 
   return { args, method, docs };
@@ -127,7 +139,7 @@ export const getDecoded = async (
   genesisHash: string,
   method: string,
   specVersion: BN,
-) => {
+): Promise<Decoded> => {
   const chain = await getMetadata(genesisHash);
 
   return chain?.hasMetadata
