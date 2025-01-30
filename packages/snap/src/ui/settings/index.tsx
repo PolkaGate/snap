@@ -59,8 +59,11 @@ const ui = (address: string) => {
             name='export'
             icon='export'
           />
-        </Section>
-        <Section>
+          <ActionRow
+            label='Register Account'
+            name='register'
+            icon='link'
+          />
           <Box direction="horizontal" alignment="start">
             <Icon color="muted" size='md' name='explore' />
             <Link href={`https://portfolio.subscan.io/account/${address}`}>
