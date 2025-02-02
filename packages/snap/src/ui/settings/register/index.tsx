@@ -22,7 +22,7 @@ const ui = (genesisHash: string, logo: string) => {
           showHome
         />
         <Text alignment='start' color='alternative'>
-          To seamlessly interact with Asset Hub smart contracts, select the chain and complete a one-time registration.
+          To seamlessly interact with Asset Hub smart contracts, select the network and complete a one-time registration.
         </Text>
         <Box direction="horizontal" alignment="center">
           <Image src={logo} />

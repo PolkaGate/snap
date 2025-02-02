@@ -27,6 +27,6 @@ export const onSignature: OnSignatureHandler = async ({
         ))} */}
       </Box>
     ),
-    severity: SeverityLevel.Critical,
+    // severity: SeverityLevel.Critical,
   };
 };
