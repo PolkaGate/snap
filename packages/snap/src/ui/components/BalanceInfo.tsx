@@ -84,7 +84,7 @@ export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showD
               iconName='lock'
               hideBalance={hideBalance}
               label='Locked'
-              tooltip='The amount locked in referenda.'
+              tooltip='The amount locked in staking or governance.'
               value={`${amountToHuman(locked, decimal)} ${token}`}
             />}
           {!!(soloTotal && !soloTotal.isZero()) &&

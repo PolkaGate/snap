@@ -19,7 +19,7 @@ export async function home(id: string, balanceFetchType = BALANCE_FETCH_TYPE.REC
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: accountDemo(hideBalance, balancesAll, logos, pricesInUsd, showDetails),
+      ui: accountDemo(!!hideBalance, balancesAll, logos, pricesInUsd, showDetails),
       context: { show: !!showDetails }
     },
   });
