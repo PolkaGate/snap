@@ -15,6 +15,16 @@ interface Props {
 
 export const DATE_OPTIONS = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' } as Intl.DateTimeFormatOptions;
 
+/**
+ * Renders an unstaking section displaying amounts scheduled for release.
+ * 
+ * @param toBeReleased - An array of unstaking entries, each containing an amount and release date.
+ * @param token - The token symbol.
+ * @param decimal - The number of decimal places for the token.
+ * @param price - The token price.
+ * @param type - The staking type, either 'pool' or 'solo'.
+ * @returns A JSX element representing the unstaking section.
+ */
 export const Unstaking: SnapComponent<Props> = ({ toBeReleased, decimal, token, type }) => {
 
   return (

@@ -16,6 +16,20 @@ export interface Props {
   available: string,
 }
 
+/**
+ * Renders a stake form component for staking tokens.
+ * 
+ * @param amount - The amount to stake.
+ * @param decimal - The number of decimal places for the token.
+ * @param formErrors - The form validation errors.
+ * @param logo - The token's logo URL.
+ * @param name - The input field name (optional).
+ * @param placeHolder - The placeholder text for the input field (optional).
+ * @param token - The token symbol.
+ * @param available - The available balance.
+ * @param price - The token price.
+ * @returns A JSX element representing the stake form.
+ */
 export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, logo, name, placeHolder, token, available, price, }) => {
 
   return (

@@ -17,6 +17,20 @@ export interface Props {
   price: number,
 }
 
+/**
+ * Renders an unstake form component for withdrawing staked tokens.
+ * 
+ * @param amount - The amount to unstake.
+ * @param decimal - The number of decimal places for the token.
+ * @param formErrors - The form validation errors.
+ * @param logo - The token's logo URL.
+ * @param name - The input field name (optional).
+ * @param placeHolder - The placeholder text for the input field (optional).
+ * @param token - The token symbol.
+ * @param staked - The total staked balance.
+ * @param price - The token price.
+ * @returns A JSX element representing the unstake form.
+ */
 export const UnstakeForm: SnapComponent<Props> = ({
   amount,
   decimal,

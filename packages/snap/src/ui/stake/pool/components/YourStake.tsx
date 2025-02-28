@@ -11,6 +11,15 @@ interface Props {
   price: number;
 }
 
+/**
+ * Renders a section displaying the user's staked amount and its value.
+ * 
+ * @param amount - The amount currently staked.
+ * @param token - The token symbol.
+ * @param decimal - The number of decimal places for the token.
+ * @param price - The token price.
+ * @returns A JSX element representing the user's stake section.
+ */
 export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price }) => {
 
   return (
