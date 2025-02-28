@@ -52,6 +52,11 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
       !excludeKeywords.some(keyword => value.includes(keyword)));
   }
 
+  // to fix polymesh test net issue which has the same info field as Mainnet!
+  if (sanitizedChainName === 'polymesh') {
+    endpoints = endpoints.filter(({ value }) => !value.includes('testnet'))
+  }
+
   if (multiple) {
     return endpoints.map(({ value }) => value);
   }
