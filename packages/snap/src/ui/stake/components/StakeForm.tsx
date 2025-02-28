@@ -1,7 +1,7 @@
 import { Box, Image, Field, Text, Input, Form, SnapComponent, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../util/amountToHuman";
 import { StakeFormErrors } from "../types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
+import { DEFAULT_DECIMAL_POINT } from "../const";
 import { Price } from "../../components";
 
 export interface Props {
@@ -13,10 +13,10 @@ export interface Props {
   placeHolder?: string,
   price: number,
   token: string,
-  transferable: string,
+  available: string,
 }
 
-export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, logo, name, placeHolder, token, transferable, price, }) => {
+export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, logo, name, placeHolder, token, available, price, }) => {
 
   return (
     <Form name='stakeForm'>
@@ -29,7 +29,7 @@ export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, l
             Available:
           </Text>
           <Text size='sm'>
-            {`${amountToHuman(transferable, decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
+            {`${amountToHuman(available, decimal, DEFAULT_DECIMAL_POINT, true)} ${token}`}
           </Text>
         </Box>
       </Box>

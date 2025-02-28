@@ -3,10 +3,10 @@ import { amountToHuman } from "../../../../util/amountToHuman";
 import { Row2 } from "../../../components/Row2";
 import { StakingSoloContextType } from "../../types";
 import { birdDown } from "../../../image/icons";
-import { SoloStakeMoreExtraInfo } from "./component/SoloStakeMoreExtraInfo";
 import { Account } from "../../../components/Account";
 import { FlowHeader } from "../../../components/FlowHeader";
 import { Price } from "../../../components";
+import { SoloStakeMoreExtraInfo } from "../stakeMore/component/SoloStakeMoreExtraInfo";
 
 const ui = (context: StakingSoloContextType) => {
 
@@ -17,8 +17,8 @@ const ui = (context: StakingSoloContextType) => {
     <Container>
       <Box>
         <FlowHeader
-          action='soloStakeMore'
-          label='Stake more'
+          action='soloRestake'
+          label='Re-Stake'
           showHome
           tooltipType='staking'
         />
@@ -48,7 +48,7 @@ const ui = (context: StakingSoloContextType) => {
         </Box>
       </Box>
       <Footer>
-        <Button name='soloStakeMoreConfirm'>
+        <Button name='soloRestakeConfirm'>
           Confirm
         </Button>
       </Footer>
@@ -56,7 +56,7 @@ const ui = (context: StakingSoloContextType) => {
   );
 };
 
-export async function soloStakeMoreReview(
+export async function reviewSoloRestake(
   id: string,
   context: StakingSoloContextType
 ) {

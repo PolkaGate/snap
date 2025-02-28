@@ -2,7 +2,7 @@ import { Box, Image, Field, Text, Input, Form, SnapComponent, Heading } from "@m
 import { amountToHuman } from "../../../util/amountToHuman";
 import { BN } from "@polkadot/util";
 import { StakeFormErrors } from "../types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
+import { DEFAULT_DECIMAL_POINT } from "../const";
 import { Price } from "../../components";
 
 export interface Props {
@@ -40,7 +40,7 @@ export const UnstakeForm: SnapComponent<Props> = ({
             Staked:
           </Text>
           <Text size='sm'>
-            {`${amountToHuman(String(staked), decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
+            {`${amountToHuman(String(staked), decimal, DEFAULT_DECIMAL_POINT, true)} ${token}`}
           </Text>
         </Box>
       </Box>

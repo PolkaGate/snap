@@ -9,6 +9,7 @@ import type { PoolBalances } from './getPooledBalance';
 import { getPooledBalance } from './getPooledBalance';
 import { getSoloBalances } from './getSoloBalances';
 import type { SoloBalance } from '../ui/stake/types';
+import { MIGRATED_NOMINATION_POOLS_CHAINS } from '../constants';
 
 export type Balances = {
   total: Balance;
@@ -110,20 +111,13 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     }
   }
 
-  const transferable = api.createType(
-    'Balance',
-    balances.data.free.sub(balances.data.frozen ?? balances.data.miscFrozen),
-  ) as unknown as Balance;
+  const frozenBalance = balances.data.frozen ?? balances.data.miscFrozen;
+  const transferable = api.createType('Balance', balances.data.free.sub(frozenBalance)) as unknown as Balance;
 
-  const total = api.createType(
-    'Balance',
-    balances.data.free.add(balances.data.reserved).add(pooledBalance ?? BN_ZERO),
-  ) as unknown as Balance;
+  const isPoolMigrated = MIGRATED_NOMINATION_POOLS_CHAINS.includes(genesisHash)
+  const total = api.createType('Balance', balances.data.free.add(balances.data.reserved).add(isPoolMigrated ? BN_ZERO : (pooledBalance ?? BN_ZERO))) as unknown as Balance;
 
-  const locked = api.createType(
-    'Balance',
-    (balances.data.frozen ?? balances.data.miscFrozen),
-  ) as unknown as Balance;
+  const locked = api.createType('Balance', (frozenBalance)) as unknown as Balance;
 
   return {
     decimal,

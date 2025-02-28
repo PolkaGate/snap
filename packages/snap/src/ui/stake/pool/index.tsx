@@ -62,6 +62,7 @@ const ui = (
             decimal={decimal}
             token={token}
             price={price}
+            type= 'pool'
           />
         }
         <Section>

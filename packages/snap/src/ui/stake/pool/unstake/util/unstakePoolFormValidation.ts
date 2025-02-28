@@ -3,7 +3,7 @@ import { amountToHuman } from "../../../../../util/amountToHuman";
 import type { StakeFormErrors, StakingPoolContextType } from "../../../types";
 import type { PoolUnstakeFormState } from "../types";
 import { amountToMachine } from "../../../../../util/amountToMachine";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
+import { DEFAULT_DECIMAL_POINT } from "../../../const";
 
 /**
  * Validate the unstake stake pool form.
@@ -25,13 +25,13 @@ export function unstakePoolFormValidation(
     const netStaked = new BN(pooledBalance ?? 0).sub(new BN(claimable ?? 0));
     const remaining = netStaked.sub(amountToMachine(String(amount), decimal));
 
-    const isUnstakingAll = Number(amountToHuman(netStaked, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(amount);
+    const isUnstakingAll = Number(amountToHuman(netStaked, decimal, DEFAULT_DECIMAL_POINT)) === Number(amount);
     if (isUnstakingAll) {
       return errors;
     }
 
     if (Number(amount) > Number(amountToHuman(netStaked, decimal))) {
-      
+
       errors.amount = 'More than staked amount!';
 
     } else if (remaining.lt(new BN(minJoinBond ?? 0))) {

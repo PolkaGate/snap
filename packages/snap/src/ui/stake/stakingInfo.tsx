@@ -8,7 +8,7 @@ import { BALANCE_FETCH_TYPE, handleBalancesAll } from "../../util/handleBalances
 import type { Balances } from "../../util";
 import { getStakingInfo } from "./utils/getStakingInfo";
 import { StakingIndexContextType, StakingInfoType } from "./types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "./const";
+import { DEFAULT_DECIMAL_POINT } from "./const";
 
 const DEFAULT_MIN_JOIN_BOND = '1';//token
 
@@ -26,7 +26,7 @@ const ui = (
   const { decimal, minJoinBond, token, eraDuration, unbondingDuration } = stakingInfo;
   const available = amountToHuman(balances?.transferable, decimal, 2);
   const availableValue = (Number(available) * price).toFixed(2);
-  const min = amountToHuman(minJoinBond, decimal, STAKED_AMOUNT_DECIMAL_POINT, true) || DEFAULT_MIN_JOIN_BOND;
+  const min = amountToHuman(minJoinBond, decimal, DEFAULT_DECIMAL_POINT, true) || DEFAULT_MIN_JOIN_BOND;
 
   return (
     <Container>

@@ -3,7 +3,7 @@ import { amountToHuman } from "../../../../../util/amountToHuman";
 import type { StakeFormErrors, StakingSoloContextType } from "../../../types";
 import type { SoloUnstakeFormState } from "../types";
 import { amountToMachine } from "../../../../../util/amountToMachine";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
+import { DEFAULT_DECIMAL_POINT } from "../../../const";
 
 /**
  * Validate the unstake form.
@@ -25,7 +25,7 @@ export function unstakeSoloFormValidation(
     const netStaked = new BN(active ?? 0);
     const remaining = netStaked.sub(amountToMachine(String(amount), decimal));
 
-    const isUnstakingAll = Number(amountToHuman(active, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(amount);
+    const isUnstakingAll = Number(amountToHuman(active, decimal, DEFAULT_DECIMAL_POINT)) === Number(amount);
     if (isUnstakingAll) {
       return errors;
     }
