@@ -1,6 +1,7 @@
-import { Box, Section, Text, SnapComponent, Icon, Tooltip, Button } from '@metamask/snaps-sdk/jsx';
+import { Box, Section, Text, SnapComponent, Icon, Tooltip } from '@metamask/snaps-sdk/jsx';
 import { amountToHuman } from '../../../util/amountToHuman';
 import { DEFAULT_DECIMAL_POINT } from '../const';
+import { ActionRow } from '../../components/ActionRow';
 
 interface Props {
   toBeReleased: {
@@ -33,10 +34,6 @@ export const Unstaking: SnapComponent<Props> = ({ toBeReleased, decimal, token, 
         <Text color='muted'>
           Unstaking
         </Text>
-        {type === 'solo' &&
-          <Button name='restake'>
-            <Icon name='close' color='primary' />
-          </Button>}
       </Box>
       {toBeReleased.map(({ amount, date }) => (
         <Box direction='horizontal' alignment='space-between'>
@@ -53,6 +50,12 @@ export const Unstaking: SnapComponent<Props> = ({ toBeReleased, decimal, token, 
           </Box>
         </Box>
       ))}
+      {type === 'solo' &&
+        <ActionRow
+          label='Re-stake'
+          icon='plus-minus'
+          name='restake'
+        />}
     </Section>
   )
 }
