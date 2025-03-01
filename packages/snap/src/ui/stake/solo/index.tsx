@@ -61,6 +61,7 @@ const ui = (
             decimal={decimal}
             token={token}
             price={price}
+            type= 'solo'
           />
         }
         <Section>

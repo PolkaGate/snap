@@ -7,7 +7,7 @@ import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 import { handleOutput } from "../../../../../util/handleOutput";
 import { amountToMachine } from "../../../../../util/amountToMachine";
 import type { CallParamsType } from "../../../types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
+import { DEFAULT_DECIMAL_POINT } from "../../../const";
 
 export const getSoloUnstake = async (
   address: string,
@@ -42,7 +42,7 @@ export const getSoloUnstake = async (
     params.push(withdrawUnbonded(spanCount));
   }
 
-  const isUnstakingAll = Number(amountToHuman(active, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(userInputAmount);
+  const isUnstakingAll = Number(amountToHuman(active, decimal, DEFAULT_DECIMAL_POINT)) === Number(userInputAmount);
 
   if (isUnstakingAll) {
     _amount = active;

@@ -52,7 +52,7 @@ const ui = (
           formErrors={formErrors}
           logo={logo}
           token={token}
-          transferable={transferable}
+          available={transferable}
           price={price}
         />
         {!!stakingType && !!amount &&

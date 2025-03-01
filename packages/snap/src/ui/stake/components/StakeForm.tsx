@@ -1,7 +1,7 @@
 import { Box, Image, Field, Text, Input, Form, SnapComponent, Heading } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../util/amountToHuman";
 import { StakeFormErrors } from "../types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
+import { DEFAULT_DECIMAL_POINT } from "../const";
 import { Price } from "../../components";
 
 export interface Props {
@@ -13,10 +13,24 @@ export interface Props {
   placeHolder?: string,
   price: number,
   token: string,
-  transferable: string,
+  available: string,
 }
 
-export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, logo, name, placeHolder, token, transferable, price, }) => {
+/**
+ * Renders a stake form component for staking tokens.
+ * 
+ * @param amount - The amount to stake.
+ * @param decimal - The number of decimal places for the token.
+ * @param formErrors - The form validation errors.
+ * @param logo - The token's logo URL.
+ * @param name - The input field name (optional).
+ * @param placeHolder - The placeholder text for the input field (optional).
+ * @param token - The token symbol.
+ * @param available - The available balance.
+ * @param price - The token price.
+ * @returns A JSX element representing the stake form.
+ */
+export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, logo, name, placeHolder, token, available, price, }) => {
 
   return (
     <Form name='stakeForm'>
@@ -29,7 +43,7 @@ export const StakeForm: SnapComponent<Props> = ({ amount, decimal, formErrors, l
             Available:
           </Text>
           <Text size='sm'>
-            {`${amountToHuman(transferable, decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
+            {`${amountToHuman(available, decimal, DEFAULT_DECIMAL_POINT, true)} ${token}`}
           </Text>
         </Box>
       </Box>

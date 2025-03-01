@@ -3,26 +3,26 @@
 
 import { Box, Container, Footer, Button, Image, Section } from "@metamask/snaps-sdk/jsx";
 import { amountToHuman } from "../../../../util/amountToHuman";
-import { getBalances, getKeyPair } from "../../../../util";
+import { getKeyPair } from "../../../../util";
 import { StakeForm } from "../../components/StakeForm";
 import { Row2 } from "../../../components/Row2";
-import { StakeFormErrors, StakingPoolContextType } from "../../types";
+import { StakeFormErrors, StakingSoloContextType } from "../../types";
 import { BN, BN_ZERO } from "@polkadot/util";
+import { getSoloRestake } from "./util/getSoloRestake";
 import { amountToMachine } from "../../../../util/amountToMachine";
 import { birdUp } from "../../../image/icons";
-import { PoolStakeMoreExtraInfo } from "./PoolStakeMoreExtraInfo";
 import { isEmptyObject } from "../../../../utils";
+import { OUTPUT_TYPE } from "../../../../constants";
 import { FlowHeader } from "../../../components/FlowHeader";
-import { getPoolStakeMore } from "./util/getPoolStakeMore";
+import { SoloStakeMoreExtraInfo } from "../stakeMore/component/SoloStakeMoreExtraInfo";
 
 const ui = (
   amount: string | undefined,
-  claimable: string | undefined,
   decimal: number,
   formErrors: StakeFormErrors,
   logo: string,
   token: string,
-  transferable: number,
+  unlocking: string,
   price: number,
   fee: BN,
 ) => {
@@ -33,8 +33,8 @@ const ui = (
     <Container>
       <Box>
         <FlowHeader
-          action='stakePoolIndex'
-          label='Stake more'
+          action='stakeSoloIndex'
+          label='Re-stake'
           showHome
           tooltipType='staking'
         />
@@ -43,10 +43,10 @@ const ui = (
           decimal={decimal}
           formErrors={formErrors}
           logo={logo}
-          name='stakeMoreAmount'
+          name='restakeAmountSolo'
           placeHolder="0"
           token={token}
-          available={transferable}
+          available={unlocking}
           price={price}
         />
         <Section>
@@ -56,17 +56,13 @@ const ui = (
             extra={`$${feeInUsd.toFixed(2)}`}
           />
         </Section>
-        <PoolStakeMoreExtraInfo
-          claimable={claimable}
-          decimal={decimal}
-          token={token}
-        />
+        <SoloStakeMoreExtraInfo />
         <Box direction="horizontal" alignment='start'>
           <Image src={birdUp} />
         </Box>
       </Box>
       <Footer>
-        <Button name='poolStakeMoreReview' disabled={!Number(amount) || !isEmptyObject(formErrors)}>
+        <Button name='soloRestakeReview' disabled={!Number(amount) || !isEmptyObject(formErrors)}>
           Continue
         </Button>
       </Footer>
@@ -74,31 +70,20 @@ const ui = (
   );
 };
 
-export async function poolStakeMore(
+export async function soloRestake(
   id: string,
-  formAmount: number | undefined,
+  formAmount: string | undefined,
   formErrors: StakeFormErrors,
-  context: StakingPoolContextType,
+  context: StakingSoloContextType,
 ) {
 
-  const { address, amount, claimable, decimal, genesisHash, logos, price, token, transferable } = context;
+  const { address, amount, decimal, genesisHash, logos, price, token, unlocking } = context;
   const _amount = formAmount !== undefined ? String(formAmount) : amount;
 
   const _address = address || (await getKeyPair(undefined, genesisHash)).address;
   const _logo = logos.find((logo) => logo.genesisHash === genesisHash)?.logo;
 
-  let _transferable = transferable;
-  let _token = token;
-  let _decimal = decimal;
-
-  if (!(_transferable || _decimal)) {
-    const balances = await getBalances(genesisHash, _address)
-    _transferable = balances.transferable.toNumber();
-    _token = balances.token;
-    _decimal = balances.decimal;
-  }
-
-  const fee = context.fee || await getPoolStakeMore(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash);
+  const fee = context.fee || await getSoloRestake(address, amountToMachine(amount, decimal) || BN_ZERO, genesisHash, OUTPUT_TYPE.FEE);
 
   await snap.request({
     method: 'snap_updateInterface',
@@ -107,15 +92,15 @@ export async function poolStakeMore(
         ...(context ?? {}),
         address: _address,
         amount: _amount,
-        decimal: _decimal!,
+        decimal,
         genesisHash,
         fee: String(fee),
         logo: _logo,
-        transferable: _transferable!,
-        token: _token,
+        unlocking,
+        token,
       },
       id,
-      ui: ui(_amount, claimable, _decimal, formErrors, _logo, _token, _transferable, price, fee),
+      ui: ui(_amount, decimal, formErrors, _logo, token, unlocking, price, fee),
     },
   });
 }

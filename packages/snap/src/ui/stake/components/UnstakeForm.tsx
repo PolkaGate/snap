@@ -2,7 +2,7 @@ import { Box, Image, Field, Text, Input, Form, SnapComponent, Heading } from "@m
 import { amountToHuman } from "../../../util/amountToHuman";
 import { BN } from "@polkadot/util";
 import { StakeFormErrors } from "../types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../const";
+import { DEFAULT_DECIMAL_POINT } from "../const";
 import { Price } from "../../components";
 
 export interface Props {
@@ -17,6 +17,20 @@ export interface Props {
   price: number,
 }
 
+/**
+ * Renders an unstake form component for withdrawing staked tokens.
+ * 
+ * @param amount - The amount to unstake.
+ * @param decimal - The number of decimal places for the token.
+ * @param formErrors - The form validation errors.
+ * @param logo - The token's logo URL.
+ * @param name - The input field name (optional).
+ * @param placeHolder - The placeholder text for the input field (optional).
+ * @param token - The token symbol.
+ * @param staked - The total staked balance.
+ * @param price - The token price.
+ * @returns A JSX element representing the unstake form.
+ */
 export const UnstakeForm: SnapComponent<Props> = ({
   amount,
   decimal,
@@ -40,7 +54,7 @@ export const UnstakeForm: SnapComponent<Props> = ({
             Staked:
           </Text>
           <Text size='sm'>
-            {`${amountToHuman(String(staked), decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
+            {`${amountToHuman(String(staked), decimal, DEFAULT_DECIMAL_POINT, true)} ${token}`}
           </Text>
         </Box>
       </Box>

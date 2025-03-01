@@ -7,7 +7,7 @@ import { StakingSoloContextType } from "../../../types";
 import { BN } from "@polkadot/util";
 import { PendingRewardsOutput } from "../util/getPendingRewards";
 import { eraToRemaining } from "../util/utils";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
+import { DEFAULT_DECIMAL_POINT } from "../../../const";
 
 interface Props {
   context: StakingSoloContextType,
@@ -56,7 +56,7 @@ export const RewardsTable: SnapComponent<Props> = ({ context, unpaidRewards, sel
                     <Box direction="horizontal" alignment="space-between">
                       <Checkbox name={`selectedPendingReward,${validator},${Number(era)},${page}`} checked={!!isSelected} />
                       <Text>
-                        {`${amountToHuman(amount, decimal, STAKED_AMOUNT_DECIMAL_POINT, true)} ${token}`}
+                        {`${amountToHuman(amount, decimal, DEFAULT_DECIMAL_POINT, true)} ${token}`}
                       </Text>
                     </Box>
                     <Box direction="horizontal" alignment="space-between">
