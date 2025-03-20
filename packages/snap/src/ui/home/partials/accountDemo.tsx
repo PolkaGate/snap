@@ -56,11 +56,9 @@ export const accountDemo = (
       <Box alignment='space-between' direction='horizontal'>
         <Heading>Tokens</Heading>
         <Box center direction='horizontal'>
-          {!!nonZeroBalances?.length &&
-            <Button name='refreshBalances' variant='primary' >
-              <Icon size='md' color='primary' name='refresh' />
-            </Button >
-          }
+          <Button name='refreshBalances' variant='primary' >
+            <Icon size='md' color='primary' name='refresh' />
+          </Button >
           {!!nonZeroBalances?.length &&
             <Button name='balanceDetails' variant='primary' >
               <Icon size='md' color='primary' name={showDetails ? 'arrow-up' : 'arrow-down'} />
