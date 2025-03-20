@@ -1,5 +1,5 @@
 import type { HexString } from '@polkadot/util/types';
-import type { PriceValue } from './getPrices';
+import { EXTRA_PRICE_IDS, type PriceValue } from './getPrices';
 import { getSnapState } from '../rpc/stateManagement';
 import getChainName, { sanitizeChainName } from './getChainName';
 import { PRICE_VALIDITY_PERIOD } from '../constants';
@@ -16,8 +16,9 @@ const DEFAULT_PRICE_VALUE = {
  */
 export async function getNativeTokenPrice(genesisHash: HexString): Promise<{ genesisHash: HexString, price: PriceValue }> {
   const chainName = await getChainName(genesisHash);
-  const priceId = sanitizeChainName(chainName)?.toLowerCase();
-
+  const maybePriceId = sanitizeChainName(chainName)?.toLowerCase();
+  const priceId = maybePriceId ? EXTRA_PRICE_IDS[maybePriceId] ?? maybePriceId : undefined;
+  
   if (!priceId) {
     return { genesisHash, price: DEFAULT_PRICE_VALUE };
   }
