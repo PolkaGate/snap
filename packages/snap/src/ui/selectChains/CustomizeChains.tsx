@@ -43,7 +43,7 @@ const ui = (options: Options[], logoList: string[], selectedChains: HexString[])
         </Form>
       </Box >
       <Footer>
-        <Button form='selectedChains' name='applySelectedChains' variant="destructive" type="submit">
+        <Button form='selectedChains' name='applySelectedChains' type="submit">
           Apply
         </Button>
       </Footer>

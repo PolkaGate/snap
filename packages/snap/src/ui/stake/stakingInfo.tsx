@@ -71,7 +71,7 @@ const ui = (
         <Button name='stakeIndex' variant="destructive">
           Back
         </Button>
-        <Button name='stakeInit' variant="destructive">
+        <Button name='stakeInit'>
           Start staking
         </Button>
       </Footer>
