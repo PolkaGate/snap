@@ -1,4 +1,4 @@
-import { KUSAMA_GENESIS, PASEO_GENESIS, POLKADOT_GENESIS, WESTEND_GENESIS } from "@polkadot/apps-config";
+import { KUSAMA_GENESIS, PASEO_GENESIS, POLKADOT_GENESIS, WESTEND_GENESIS } from "@polkagate/apps-config";
 import type { HexString } from "@polkadot/util/types";
 
 export const DEFAULT_NETWORK_PREFIX = 42; // 42 is for substrate
@@ -7,7 +7,7 @@ export const DEFAULT_CHAIN_NAME = 'polkadot'; // Since Westend shares the same a
 
 export const PRICE_VALIDITY_PERIOD = 10 * 60 * 1000; // 10 min
 
-export const DEFAULT_CHAINS_GENESIS = [POLKADOT_GENESIS, KUSAMA_GENESIS, WESTEND_GENESIS];
+export const DEFAULT_CHAINS_GENESIS = [POLKADOT_GENESIS, KUSAMA_GENESIS];
 
 export const RELAY_CHAINS_NAMES = ['Polkadot', 'Kusama', 'Westend', 'Paseo'];
 

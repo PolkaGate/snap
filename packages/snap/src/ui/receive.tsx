@@ -3,7 +3,7 @@
 
 import { Image, Box, Copyable, Text } from "@metamask/snaps-sdk/jsx";
 import { getKeyPair } from "../util";
-import { POLKADOT_GENESIS } from "@polkadot/apps-config";
+import { POLKADOT_GENESIS } from "@polkagate/apps-config";
 import { getFormatted } from "../util/getFormatted";
 import { ChainSwitch } from "./components";
 import { getLogoByGenesisHash } from "./image/chains/getLogoByGenesisHash";
