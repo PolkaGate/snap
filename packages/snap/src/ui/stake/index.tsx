@@ -63,7 +63,7 @@ const ui = (
         </Box>
       </Box>
       <Footer>
-        <Button name='backToHome' variant='destructive'>
+        <Button name='backToHome'>
           Back
         </Button>
       </Footer>
