@@ -9,7 +9,6 @@ import type { PoolBalances } from './getPooledBalance';
 import { getPooledBalance } from './getPooledBalance';
 import { getSoloBalances } from './getSoloBalances';
 import type { SoloBalance } from '../ui/stake/types';
-import { MIGRATED_NOMINATION_POOLS_CHAINS } from '../constants';
 import { isHexToBn } from '../utils';
 
 export type Balances = {
@@ -121,8 +120,7 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
 
   const transferable=  api.createType('Balance',balances.data.free ? (balances.data.free).sub(untouchable) : BN_ZERO) as unknown as Balance;
 
-  const isPoolMigrated = MIGRATED_NOMINATION_POOLS_CHAINS.includes(genesisHash)
-  const total = api.createType('Balance', balances.data.free.add(balances.data.reserved).add(isPoolMigrated ? BN_ZERO : (pooledBalance ?? BN_ZERO))) as unknown as Balance;
+  const total = api.createType('Balance', balances.data.free.add(balances.data.reserved)) as unknown as Balance;
   const locked = api.createType('Balance', (frozenBalance)) as unknown as Balance;
 
   return {
