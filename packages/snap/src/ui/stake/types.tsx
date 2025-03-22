@@ -164,13 +164,13 @@ export interface PayeeAccount { Account: string }
 export type Payee = 'Staked' | 'Controller' | 'Stash' | PayeeAccount;
 
 export interface SoloBalance {
-  total: string;
-  active: string;
-  unlocking: string;
-  redeemable: string;
+  total: string | BN | Balance;
+  active: string | BN | Balance;
+  unlocking: string | BN | Balance;
+  redeemable: string | BN | Balance;
   nominators?: HexString[];
   toBeReleased?: {
-    amount: string;
+    amount: string | BN | Balance;
     date: number;
   }[]
 }

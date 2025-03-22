@@ -1,19 +1,20 @@
 
 import type { ApiPromise } from '@polkadot/api';
+import { Balance } from '@polkadot/types/interfaces';
 import { BN, BN_ONE, BN_ZERO, bnToU8a, stringToU8a, u8aConcat } from '@polkadot/util';
 
-export type PoolAccounts ={
+export type PoolAccounts = {
   rewardId: string;
   stashId: string;
 }
-export type PoolBalances ={
-  total: string;
-  active: string;
-  claimable: string;
-  unlocking: string;
-  redeemable: string;
+export type PoolBalances = {
+  total: string | BN | Balance;
+  active: string | BN | Balance;
+  claimable: string | BN | Balance;
+  unlocking: string | BN | Balance;
+  redeemable: string | BN | Balance;
   toBeReleased?: {
-    amount: string;
+    amount: string | BN | Balance;
     date: number;
   }[]
 }
@@ -54,7 +55,7 @@ function getPoolAccounts(api: ApiPromise, poolId: number | bigint | BN | null | 
   };
 }
 
-export type PooledBalance ={
+export type PooledBalance = {
   pooledBalance: BN;
   poolId?: number;
   metadata?: string;
