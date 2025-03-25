@@ -168,7 +168,7 @@ export interface SoloBalance {
   active: string | BN | Balance;
   unlocking: string | BN | Balance;
   redeemable: string | BN | Balance;
-  nominators?: HexString[];
+  nominators?: HexString[] | undefined;
   toBeReleased?: {
     amount: string | BN | Balance;
     date: number;

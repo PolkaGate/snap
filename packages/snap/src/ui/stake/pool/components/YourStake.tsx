@@ -3,12 +3,14 @@ import { amountToHuman } from "../../../../util/amountToHuman";
 import { ActiveStatus } from "./ActiveStatus";
 import { DEFAULT_DECIMAL_POINT } from "../../const";
 import { Price } from "../../../components";
+import { BN } from "@polkadot/util";
 
 interface Props {
-  amount: string | undefined;
-  token: string;
+  amount: string | BN | undefined;
   decimal: number;
+  nominatorsCount?: number | undefined;
   price: number;
+  token: string;
 }
 
 /**
@@ -17,10 +19,13 @@ interface Props {
  * @param amount - The amount currently staked.
  * @param token - The token symbol.
  * @param decimal - The number of decimal places for the token.
+ * @param nominatorsCount - The number of nominators in solo staking.
  * @param price - The token price.
  * @returns A JSX element representing the user's stake section.
  */
-export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price }) => {
+export const YourStake: SnapComponent<Props> = ({ amount, decimal, nominatorsCount, token, price }) => {
+  const hasStake = !!amount && !(new BN(amount).isZero());
+  const isActive = nominatorsCount !== undefined ? (!!nominatorsCount && hasStake) : hasStake;
 
   return (
     <Section>
@@ -28,7 +33,7 @@ export const YourStake: SnapComponent<Props> = ({ amount, decimal, token, price 
         <Text color="muted">
           Your stake
         </Text>
-        <ActiveStatus amount={amount} />
+        <ActiveStatus isActive={isActive} />
       </Box>
       <Box direction="vertical" alignment="center" center>
         <Heading size="lg">

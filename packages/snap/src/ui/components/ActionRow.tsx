@@ -6,15 +6,16 @@ interface Props {
   label: string;
   name: string;
   tag?: number;
+  variant?: "destructive" | "primary" | undefined
 }
 
-export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled, tag }) => (
+export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled, tag, variant='primary' }) => (
   <Box direction="horizontal" alignment="space-between" center>
     <Box direction="horizontal" alignment="start" center>
-      <Button name={name} variant='primary' type='button' disabled={disabled}>
+      <Button name={name} variant={variant} type='button' disabled={disabled}>
         <Icon color="muted" size='md' name={icon} />
       </Button>
-      <Button name={name} variant='primary' type='button' disabled={disabled}>
+      <Button name={name} variant={variant} type='button' disabled={disabled}>
         {label}
       </Button>
     </Box>
@@ -24,7 +25,7 @@ export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled, t
           {String(tag)}
         </Text>
       }
-      <Button name={name} variant='primary' type='button' disabled={disabled}>
+      <Button name={name} variant={variant} type='button' disabled={disabled}>
         <Icon name='arrow-right' color='muted' size='md' />
       </Button>
     </Box>

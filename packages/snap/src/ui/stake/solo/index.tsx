@@ -50,6 +50,7 @@ const ui = (
           price={price}
         />
         <YourStake
+          nominatorsCount={nominators?.length ?? 0}
           amount={active}
           decimal={decimal}
           token={token}
@@ -91,6 +92,7 @@ const ui = (
           />
           <ActionRow
             label='Your validators'
+            variant={nominators?.length ? 'primary' : 'destructive'}
             tag={nominators?.length || 0}
             icon='security-tick'
             name='yourValidators'
