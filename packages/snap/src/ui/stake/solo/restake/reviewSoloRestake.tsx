@@ -17,7 +17,7 @@ const ui = (context: StakingSoloContextType) => {
     <Container>
       <Box>
         <FlowHeader
-          action='soloRestake'
+          action='restake'
           label='Re-Stake'
           showHome
           tooltipType='staking'
