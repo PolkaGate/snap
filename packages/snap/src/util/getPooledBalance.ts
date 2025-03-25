@@ -1,6 +1,6 @@
 
 import type { ApiPromise } from '@polkadot/api';
-import { Balance } from '@polkadot/types/interfaces';
+import type { Balance } from '@polkadot/types/interfaces';
 import { BN, BN_ONE, BN_ZERO, bnToU8a, stringToU8a, u8aConcat } from '@polkadot/util';
 
 export type PoolAccounts = {

@@ -3,7 +3,8 @@ import type { AccountData } from '@polkadot/types/interfaces/balances/types';
 
 import { getApi } from './getApi';
 import { getFormatted } from './getFormatted';
-import { BN, BN_ZERO, bnMax } from '@polkadot/util';
+import type { BN } from '@polkadot/util';
+import { BN_ZERO, bnMax } from '@polkadot/util';
 import type { HexString } from '@polkadot/util/types';
 import type { PoolBalances } from './getPooledBalance';
 import { getPooledBalance } from './getPooledBalance';
@@ -116,8 +117,8 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
     const frozenBalance = balances.data.frozen ?? balances.data.miscFrozen ?? BN_ZERO;
     const noFrozenReserved = frozenBalance.isZero() && balances.data.reserved?.isZero();
     const ED = isHexToBn(String(api.consts['balances']['existentialDeposit']));
-    const frozenReserveDiff = frozenBalance.sub(balances.data.reserved || BN_ZERO);
-    const maybeED = noFrozenReserved ? BN_ZERO : (ED || BN_ZERO);
+    const frozenReserveDiff = frozenBalance.sub(balances.data.reserved ?? BN_ZERO);
+    const maybeED = noFrozenReserved ? BN_ZERO : (ED ?? BN_ZERO);
     const untouchable = bnMax(maybeED, frozenReserveDiff);
 
     const transferable = api.createType('Balance', balances.data.free ? (balances.data.free).sub(untouchable) : BN_ZERO) as unknown as Balance;
@@ -141,7 +142,6 @@ export async function getBalances(genesisHash: HexString, address: string,): Pro
       token
     };
   } catch {
-    console.error('Something went wrong while getting balances!')
     return DEFAULT_RETURN;
   }
 }
