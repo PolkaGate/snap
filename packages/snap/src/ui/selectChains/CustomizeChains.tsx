@@ -7,6 +7,14 @@ import { DEFAULT_CHAINS_GENESIS } from "../../constants";
 
 const ui = (options: Options[], logoList: string[], selectedChains: HexString[]) => {
 
+  const sortedOptions = options.sort(({ value: a }, { value: b }) => {
+    const isCheckedA = selectedChains.includes(a as HexString);
+    const isCheckedB = selectedChains.includes(b as HexString);
+  
+    return Number(isCheckedB) - Number(isCheckedA);
+  });
+
+
   return (
     <Container>
       <Box direction="vertical" alignment="start">
@@ -25,7 +33,7 @@ const ui = (options: Options[], logoList: string[], selectedChains: HexString[])
           </Box>
         </Box>
         <Form name='selectedChains'>
-          {options.map(({ text, value }, index) => {
+          {sortedOptions.map(({ text, value }, index) => {
             return (
               <Section>
                 <Box direction='horizontal' alignment='space-between' center>
