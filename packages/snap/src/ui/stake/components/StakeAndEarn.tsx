@@ -3,7 +3,7 @@ import { amountToHuman } from '../../../util/amountToHuman';
 import type { Balances } from '../../../util';
 import { sanitizeChainName } from '../../../util/getChainName';
 import type { HexString } from '@polkadot/util/types';
-import { getLogoByChainName } from '../../image/chains/getLogoByGenesisHash';
+import { getLogoByChainName } from '../../image/chains/getLogo';
 import { toTitleCase } from '../../../utils';
 
 interface Props {

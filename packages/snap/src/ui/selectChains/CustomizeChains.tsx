@@ -1,11 +1,12 @@
 import { Image, Box, Button, Container, Footer, Heading, Icon, Section, Text, Checkbox, Form } from "@metamask/snaps-sdk/jsx";
 import { getChainOptions } from "../../chains";
-import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
+import { getLogoByChainName } from "../image/chains/getLogo";
 import type { HexString } from "@polkadot/util/types";
 import { getSnapState } from "../../rpc/stateManagement";
 import { DEFAULT_CHAINS_GENESIS } from "../../constants";
+import { isTestNet } from "../../utils";
 
-const ui = (chains: {  text: string; value: string;  logo: string;}[], selectedChains: HexString[]) => {
+const ui = (chains: { text: string; value: string; logo: string; }[], selectedChains: HexString[]) => {
 
   const sortedChains = chains.sort(({ value: a }, { value: b }) => {
     const isCheckedA = selectedChains.includes(a as HexString);
@@ -13,7 +14,6 @@ const ui = (chains: {  text: string; value: string;  logo: string;}[], selectedC
 
     return Number(isCheckedB) - Number(isCheckedA);
   });
-
 
   return (
     <Container>
@@ -33,7 +33,9 @@ const ui = (chains: {  text: string; value: string;  logo: string;}[], selectedC
           </Box>
         </Box>
         <Form name='selectedChains'>
-          {sortedChains.map(({ text, value, logo }, index) => {
+          {sortedChains.map(({ text, value, logo }, _index) => {
+            const isTest = isTestNet(value);
+
             return (
               <Section>
                 <Box direction='horizontal' alignment='space-between' center>
@@ -43,7 +45,14 @@ const ui = (chains: {  text: string; value: string;  logo: string;}[], selectedC
                       {text}
                     </Text>
                   </Box>
-                  <Checkbox name={`${value}`} variant="toggle" checked={selectedChains.includes(value as HexString)} />
+                  <Box direction='horizontal' alignment='end' >
+                    {isTest &&
+                      <Text alignment='start' color="warning" size='sm'>
+                        Test Network
+                      </Text>
+                    }
+                    <Checkbox name={`${value}`} variant="toggle" checked={selectedChains.includes(value as HexString)} />
+                  </Box>
                 </Box>
               </Section>
             )
@@ -61,8 +70,8 @@ const ui = (chains: {  text: string; value: string;  logo: string;}[], selectedC
 
 export async function CustomizeChains(id: string) {
   const options = getChainOptions()
-  const chains = await Promise.all(options.map(async({ text, value }) => {
-    return { text,value, logo: await getLogoByGenesisHash(value as HexString) }
+  const chains = await Promise.all(options.map(async ({ text, value }) => {
+    return { text, value, logo: await getLogoByChainName(text) }
   }));
 
   const selectedChains = (await getSnapState('selectedChains')) || DEFAULT_CHAINS_GENESIS;

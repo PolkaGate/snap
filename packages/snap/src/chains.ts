@@ -6,6 +6,7 @@ import type { Chain } from '@polkadot/extension-chains/types';
 import { sanitizeChainName } from './util/getChainName';
 import type { HexString } from '@polkadot/util/types';
 import { KUSAMA_PEOPLE_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH } from './constants';
+import { isMigratedHub, isMigratedRelay } from './util/migrateHubUtils';
 
 const testnets: Network[] = [
   {
@@ -213,13 +214,15 @@ export const getChainOptions = (): Options[] => {
   }
 
   return chains
-    .filter(({ genesisHash, displayName }) => genesisHash?.length && !DISABLED_NETWORKS.includes(displayName))
-    .map(({ displayName, genesisHash }) => (
-      {
+    .filter(({ genesisHash, displayName }) => genesisHash?.length && !DISABLED_NETWORKS.includes(displayName) && !isMigratedRelay(genesisHash[0]))
+    .map(({ displayName, genesisHash }) => {
+      const text = isMigratedHub(genesisHash[0]) ? displayName.replaceAll('Asset Hub',''): displayName;
+     
+      return {
         value: genesisHash[0],
-        text: displayName
+        text
       }
-    ))
+    })
 };
 
 export const getChainFromMetadata = async (genesis: HexString): Promise<Chain | null> => {

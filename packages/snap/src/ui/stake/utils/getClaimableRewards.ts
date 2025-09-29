@@ -31,7 +31,9 @@ export const getClaimableRewards = async (address: string, stakedTokens: Balance
   const apiPromises = stakedTokens.map(async ({ genesisHash }) => getApi(genesisHash));
   const filteredApis = (await Promise.all(apiPromises)).filter(Boolean);
 
-  const rewardsPromises = filteredApis.map(async (api) => api?.call.nominationPoolsApi.pendingRewards(address))
+  const rewardsPromises = filteredApis.map(async (api) =>
+    api?.call.nominationPoolsApi?.pendingRewards?.(address) ?? Promise.resolve(BN_ZERO)
+  );
   const rewards = await Promise.all(rewardsPromises);
 
   const rewardsInfo = filteredApis.map((api, index) => {

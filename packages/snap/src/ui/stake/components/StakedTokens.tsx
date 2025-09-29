@@ -197,7 +197,7 @@ export const StakedTokens: SnapComponent<Props> = ({ logos, rewardsInfo, stakedT
 
           const maybeChain = getChain(genesisHash);
           const chainName = maybeChain?.displayName || maybeChain?.network;
-          const sanitizedChainName = sanitizeChainName(chainName)?.toLocaleLowerCase() as string;
+          const sanitizedChainName = sanitizeChainName(chainName, true)?.toLocaleLowerCase() as string;
           const rate = stakingRates[sanitizedChainName];
 
           const netPoolStaked = new BN(pooled?.active || 0);
