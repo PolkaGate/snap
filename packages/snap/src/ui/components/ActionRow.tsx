@@ -15,7 +15,7 @@ export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled, t
       <Button name={name} variant={variant} type='button' disabled={disabled}>
         <Icon color="muted" size='md' name={icon} />
       </Button>
-      <Button name={name} variant={variant} type='button' disabled={disabled}>
+      <Button name={name} size='sm' variant={variant} type='button' disabled={disabled}>
         {label}
       </Button>
     </Box>
@@ -25,8 +25,8 @@ export const ActionRow: SnapComponent<Props> = ({ label, name, icon, disabled, t
           {String(tag)}
         </Text>
       }
-      <Button name={name} variant={variant} type='button' disabled={disabled}>
-        <Icon name='arrow-right' color='muted' size='md' />
+      <Button name={name} variant={variant} size='sm' type='button' disabled={disabled}>
+        <Icon name='arrow-right' color='muted' size='inherit' />
       </Button>
     </Box>
   </Box>

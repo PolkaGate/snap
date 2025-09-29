@@ -17,10 +17,10 @@ export const Rewards: SnapComponent<Props> = (({ amount, decimal, price, token }
   <Section>
     <Box direction="horizontal" alignment="space-between" center>
       <Box direction="vertical" alignment="start">
-        <Text color="muted">
+        <Text color="muted" size='sm'>
           Rewards
         </Text>
-        <Heading size="md">
+        <Heading size="sm">
           {`${amountToHuman(amount || '0', decimal, 3, true)} ${token}`}
         </Heading>
         <Price

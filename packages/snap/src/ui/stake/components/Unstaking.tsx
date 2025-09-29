@@ -30,11 +30,9 @@ export const Unstaking: SnapComponent<Props> = ({ toBeReleased, decimal, token, 
 
   return (
     <Section direction='vertical' alignment='center'>
-      <Box direction='horizontal' alignment='space-between'>
-        <Text color='muted'>
-          Unstaking
-        </Text>
-      </Box>
+      <Text alignment='start' size='sm' color='muted'>
+        Unstaking
+      </Text>
       {toBeReleased.map(({ amount, date }) => (
         <Box direction='horizontal' alignment='space-between'>
           <Text>
@@ -53,7 +51,7 @@ export const Unstaking: SnapComponent<Props> = ({ toBeReleased, decimal, token, 
       {type === 'solo' &&
         <ActionRow
           label='Re-stake'
-          icon='plus-minus'
+          icon='loading'
           name='restake'
         />}
     </Section>

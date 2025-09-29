@@ -19,7 +19,7 @@ export const Redeemable: SnapComponent<Props> = ({ amount, decimal,name, token }
     <Section direction='vertical' alignment='center'>
       <Box direction='horizontal' alignment='start' center>
         <Image src={ringingBell} />
-        <Text color='muted'>
+        <Text color='muted' size='sm'>
           Redeemable
         </Text>
       </Box>

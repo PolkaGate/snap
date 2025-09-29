@@ -30,7 +30,7 @@ export const YourStake: SnapComponent<Props> = ({ amount, decimal, nominatorsCou
   return (
     <Section>
       <Box direction="horizontal" alignment="space-between" center>
-        <Text color="muted">
+        <Text color="muted" size='sm'>
           Your stake
         </Text>
         <ActiveStatus isActive={isActive} />
@@ -43,6 +43,7 @@ export const YourStake: SnapComponent<Props> = ({ amount, decimal, nominatorsCou
           amount={amount}
           decimal={decimal}
           price={price}
+          size="md"
         />
       </Box>
     </Section>
