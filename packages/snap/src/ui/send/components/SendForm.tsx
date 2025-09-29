@@ -43,7 +43,7 @@ export const SendForm: SnapComponent<SendFormProps> = ({
       />
       <Field label='Send amount' error={formErrors?.amount}>
         <Box>
-          <Icon name='send-2' color='muted' />
+          <Icon name='wallet' color='muted' />
         </Box>
         <Input
           name='amount'

@@ -46,7 +46,7 @@ export const accountDemo = (
           prices={prices}
         />
         <Section alignment='space-around' direction='horizontal'>
-          <CTA icon='send-1' name='send' label='Send' />
+          <CTA icon='wallet' name='send' label='Send' />
           <CTA icon='qr-code' name='receive' label='Receive' />
           <CTA icon='stake' name='stakeIndex' label='Stake' />
           <CTA icon='people' name='vote' label='Vote' />
