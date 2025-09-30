@@ -22,21 +22,21 @@ export const Rewards: SnapComponent<Props> = ({ amount, decimal, price, token, c
     <Section>
       <Box direction="horizontal" alignment="space-between" center>
         <Box direction="vertical" alignment="start">
-          <Text color="muted">
+          <Text color="muted" size="sm" >
             Rewards all
           </Text>
-          <Heading size="md">
+          <Heading size="sm">
             {`${amountToHuman(amount || 0, decimal, 3, true)} ${token}`}
           </Heading>
           <Price
             amount={amount}
             decimal={decimal}
             price={price}
+            size="sm"
           />
         </Box>
         <Image src={updateSvgDimensions(pool, 80)} />
       </Box>
-
       {hasClaimable &&
         <Divider />
       }
@@ -45,12 +45,11 @@ export const Rewards: SnapComponent<Props> = ({ amount, decimal, price, token, c
           <Heading size="sm">
             {`${amountToHuman(claimable || 0, decimal, POOL_CLAIMABLE_DECIMAL, true)} ${token}`}
           </Heading>
-          <Button name='claimRewards' variant='primary' type='button'>
+          <Button size="md" name='claimRewards' variant='primary' type='button'>
             Claim rewards
           </Button>
         </Box>
       }
-
     </Section>
   )
 }

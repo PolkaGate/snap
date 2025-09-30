@@ -74,7 +74,7 @@ export const BalanceInfo: SnapComponent<Props> = ({ balances, price, logo, showD
         <Box>
           <Divider />
           <DetailRow
-            iconName='send-2'
+            iconName='money'
             hideBalance={hideBalance}
             label='Transferable'
             value={`${amountToHuman(transferable, decimal)} ${token}`}

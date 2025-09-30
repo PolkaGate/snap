@@ -1,0 +1,112 @@
+{
+  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "bugs": "https://github.com/polkadot-js/extension/issues",
+  "description": "Provides an interfaces around the injected globals for ease of access by dapp developers.",
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://github.com/polkadot-js/extension/tree/master/packages/extension-dapp#readme",
+  "license": "Apache-2.0",
+  "name": "@polkadot/extension-dapp",
+  "repository": {
+    "directory": "packages/extension-dapp",
+    "type": "git",
+    "url": "https://github.com/polkadot-js/extension.git"
+  },
+  "sideEffects": [
+    "./packageDetect.js",
+    "./cjs/packageDetect.js"
+  ],
+  "type": "module",
+  "version": "0.50.2-1-x",
+  "main": "./cjs/index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./cjs/package.json": "./cjs/package.json",
+    "./cjs/*": "./cjs/*.js",
+    ".": {
+      "types": "./index.d.ts",
+      "module": "./index.js",
+      "require": "./cjs/index.js",
+      "default": "./index.js"
+    },
+    "./bundle": {
+      "types": "./bundle.d.ts",
+      "module": "./bundle.js",
+      "require": "./cjs/bundle.js",
+      "default": "./bundle.js"
+    },
+    "./package.json": {
+      "require": "./cjs/package.json",
+      "default": "./package.json"
+    },
+    "./packageDetect": {
+      "types": "./packageDetect.d.ts",
+      "module": "./packageDetect.js",
+      "require": "./cjs/packageDetect.js",
+      "default": "./packageDetect.js"
+    },
+    "./packageInfo.js": {
+      "types": "./packageInfo.d.ts",
+      "module": "./packageInfo.js",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./packageInfo": {
+      "types": "./packageInfo.d.ts",
+      "module": "./packageInfo.js",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./snap": {
+      "types": "./snap/index.d.ts",
+      "module": "./snap/index.js",
+      "require": "./cjs/snap/index.js",
+      "default": "./snap/index.js"
+    },
+    "./snap/snapList": {
+      "types": "./snap/snapList.d.ts",
+      "module": "./snap/snapList.js",
+      "require": "./cjs/snap/snapList.js",
+      "default": "./snap/snapList.js"
+    },
+    "./snap/types": {
+      "types": "./snap/types.d.ts",
+      "module": "./snap/types.js",
+      "require": "./cjs/snap/types.js",
+      "default": "./snap/types.js"
+    },
+    "./snap/utils": {
+      "types": "./snap/utils.d.ts",
+      "module": "./snap/utils.js",
+      "require": "./cjs/snap/utils.js",
+      "default": "./snap/utils.js"
+    },
+    "./util": {
+      "types": "./util.d.ts",
+      "module": "./util.js",
+      "require": "./cjs/util.js",
+      "default": "./util.js"
+    },
+    "./wrapBytes": {
+      "types": "./wrapBytes.d.ts",
+      "module": "./wrapBytes.js",
+      "require": "./cjs/wrapBytes.js",
+      "default": "./wrapBytes.js"
+    }
+  },
+  "dependencies": {
+    "@metamask/utils": "^9.0.0",
+    "@polkadot/extension-inject": "0.50.1",
+    "@polkadot/types": "^12.2.1",
+    "@polkadot/util": "^13.0.2",
+    "@polkadot/util-crypto": "^13.0.2",
+    "tslib": "^2.6.2"
+  },
+  "peerDependencies": {
+    "@polkadot/api": "*",
+    "@polkadot/util": "*",
+    "@polkadot/util-crypto": "*"
+  }
+}

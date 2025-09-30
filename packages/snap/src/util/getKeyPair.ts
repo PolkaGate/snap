@@ -8,6 +8,7 @@ import { stringToU8a } from '@polkadot/util';
 import { getChain, getChainFromMetadata } from '../chains';
 import { DEFAULT_CHAIN_NAME, DEFAULT_COIN_TYPE, DEFAULT_NETWORK_PREFIX } from '../constants';
 import type { HexString } from '@polkadot/util/types';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 export const getKeyPair = async (
   chainName: string = DEFAULT_CHAIN_NAME,
@@ -20,6 +21,8 @@ export const getKeyPair = async (
   if (prefix === undefined && genesisHash) {
     prefix = (await getChainFromMetadata(genesisHash))?.ss58Format;
   }
+
+  await cryptoWaitReady();
 
   const BIP44CoinNode = (await snap.request({
     method: 'snap_getBip44Entropy',

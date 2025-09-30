@@ -120,7 +120,7 @@ export async function stakeSoloIndex(
 
   const stakedToken = stakedBalances.find((balance) => balance.genesisHash === genesisHash)
   const price = pricesInUsd.find((price) => price.genesisHash === genesisHash)?.price?.value || 0;
-  const sanitizedChainName = (await getChainName(genesisHash, true))?.toLowerCase();
+  const sanitizedChainName = (await getChainName(genesisHash, true, true))?.toLowerCase();
 
   await snap.request({
     method: 'snap_updateInterface',

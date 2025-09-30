@@ -1,7 +1,7 @@
 import type { SnapComponent } from '@metamask/snaps-sdk/jsx';
 import { Box, Button, Container, Copyable, Divider, Footer, Heading, Image, Link, Section, Text } from '@metamask/snaps-sdk/jsx';
 import { success } from '../image/icons';
-import { sanitizeChainName } from '../../util/getChainName';
+import { getSubscanChainName } from '../../util/migrateHubUtils';
 
 type Props = {
   chainName?: string;
@@ -15,44 +15,47 @@ type Props = {
  *
  * @returns The Confirmation component.
  */
-export const Confirmation: SnapComponent<Props> = ({ action, button, chainName, txHash }) => (
-  <Container>
-    <Box>
-      <Box alignment='center' center direction='horizontal'>
-        <Heading>
-          Transaction sent!
-        </Heading>
-      </Box>
-      <Section>
+export const Confirmation: SnapComponent<Props> = ({ action, button, chainName, txHash }) => {
+  const normalizedChainName = getSubscanChainName(chainName);
+  return (
+    <Container>
+      <Box>
         <Box alignment='center' center direction='horizontal'>
-          <Image src={success} alt='success' />
+          <Heading>
+            Transaction sent!
+          </Heading>
         </Box>
-        <Divider />
-        <Text alignment='start' color='muted'>
-          Transaction hash
-        </Text>
-        <Copyable value={txHash} />
-        <Divider />
-        <Box direction='horizontal' alignment='space-between'>
-          <Text color='muted'>
-            View on explorer
+        <Section>
+          <Box alignment='center' center direction='horizontal'>
+            <Image src={success} alt='success' />
+          </Box>
+          <Divider />
+          <Text alignment='start' color='muted'>
+            Transaction ID
           </Text>
-          <Link href={`https://${sanitizeChainName(chainName)}.subscan.io/extrinsic/${String(txHash)}`}>
-            subscan
-          </Link>
-        </Box>
-      </Section>
-    </Box>
-    <Footer>
-      {
-        button && action
-          ? <Button name={action} >
-            {button}
-          </Button>
-          : <Button name="backToHomeWithUpdate" >
-            Home
-          </Button>
-      }
-    </Footer>
-  </Container>
-);
+          <Copyable value={txHash} />
+          <Divider />
+          <Box direction='horizontal' alignment='space-between'>
+            <Text color='muted'>
+              View on explorer
+            </Text>
+            <Link href={`https://${normalizedChainName}.subscan.io/extrinsic/${String(txHash)}`}>
+              subscan
+            </Link>
+          </Box>
+        </Section>
+      </Box>
+      <Footer>
+        {
+          button && action
+            ? <Button name={action} >
+              {button}
+            </Button>
+            : <Button name="backToHomeWithUpdate" >
+              Home
+            </Button>
+        }
+      </Footer>
+    </Container>
+  )
+};

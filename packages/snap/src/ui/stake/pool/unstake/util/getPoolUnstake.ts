@@ -6,6 +6,7 @@ import type { Option } from '@polkadot/types';
 import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 import { handleOutput } from "../../../../../util/handleOutput";
 import type { CallParamsType } from "../../../types";
+import { getSpanCount } from "../../../utils/getSpanCount";
 
 export const getPoolUnstake = async (
   address: string,
@@ -22,11 +23,8 @@ export const getPoolUnstake = async (
 
   const stakingLedger = (await api.query.staking.ledger(address)) as Option<PalletStakingStakingLedger>;
   const unlockingLen = stakingLedger.isSome ? stakingLedger.unwrap().unlocking?.length : 0;
-
   const maxUnlockingChunks = api.consts.staking.maxUnlockingChunks.toNumber();
-
-  const optSpans = await api.query.staking.slashingSpans(address);
-  const spanCount = optSpans.isNone ? 0 : optSpans.unwrap().prior.length + 1;
+  const spanCount = await getSpanCount (api, address) 
 
   let call = api.tx.nominationPools.unbond;
   let params = [address, amount] as unknown[];

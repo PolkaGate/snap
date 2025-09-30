@@ -84,7 +84,7 @@ export async function stakingInfo(id: string, genesisHash: HexString, context: S
   const { balancesAll } = await handleBalancesAll(BALANCE_FETCH_TYPE.SAVED_ONLY);
   const balances = balancesAll.find((balance) => balance.genesisHash === genesisHash)
 
-  const chainName = await getChainName(genesisHash);
+  const chainName = await getChainName(genesisHash, true, true);
   const stakingInfo = await getStakingInfo(genesisHash);
 
   if (!stakingInfo || !chainName) {
