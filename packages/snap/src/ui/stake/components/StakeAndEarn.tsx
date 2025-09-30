@@ -20,7 +20,7 @@ export const StakeAndEarn: SnapComponent<Props> = ({ balancesAll, nonStakedChain
       <Heading>Stake and earn rewards </Heading>
       {nonStakedChainInfo.map(({ genesisHash, name }) => {
 
-        const sanitizedChainName = sanitizeChainName(name)?.toLocaleLowerCase() as string;
+        const sanitizedChainName = sanitizeChainName(name, true)?.toLocaleLowerCase() as string;
         const rate = stakingRates[sanitizedChainName];
         const logo = getLogoByChainName(sanitizedChainName, true)
         const balance = balancesAll.find((balance) => balance.genesisHash === genesisHash)
