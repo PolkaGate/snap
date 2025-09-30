@@ -100,8 +100,8 @@ export async function stakePoolIndex(
   const genesisHash = maybeGenesisHash || context?.genesisHash;
   const stakedPoolBalances = balancesAll.filter(({ pooled, genesisHash: _gh }) => pooled && _gh === genesisHash);
   const stakedToken = stakedPoolBalances.find((balance) => balance.genesisHash === genesisHash)
-  const price = pricesInUsd.find((price) => price.genesisHash === stakedToken!.genesisHash)?.price?.value || 0;
-  const sanitizedChainName = await getChainName(genesisHash, true);
+  const price = pricesInUsd.find((price) => price.genesisHash === stakedToken?.genesisHash)?.price?.value || 0;
+  const sanitizedChainName = await getChainName(genesisHash, true, true);
 
   let poolTotalClaimed = BN_ZERO;
   if (fetchType === BALANCE_FETCH_TYPE.FORCE_UPDATE) {
