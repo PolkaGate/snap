@@ -95,6 +95,11 @@ export function commifyNumber(
     .toLocaleString('en-US', { minimumFractionDigits, maximumFractionDigits });
 }
 
+/**
+ * Checks whether the given chain genesis hash belongs to a known Polkadot test network.
+ * @param genesisHash - The genesis hash of the chain to check.
+ * @returns `true` if the hash is one of the test nets, otherwise `false`.
+ */
 export function isTestNet(genesisHash: string | undefined): boolean {
-  return POLKADOT_TEST_NETS?.includes(genesisHash || '');
+  return POLKADOT_TEST_NETS?.includes(genesisHash ?? '');
 }
