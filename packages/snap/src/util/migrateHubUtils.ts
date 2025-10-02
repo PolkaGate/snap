@@ -5,6 +5,18 @@ import { KUSAMA_GENESIS, PASEO_GENESIS, POLKADOT_GENESIS, WESTEND_GENESIS } from
 
 import { KUSAMA_PEOPLE_GENESIS_HASH, NATIVE_TOKEN_ASSET_ID, NATIVE_TOKEN_ASSET_ID_ON_ASSETHUB, PASEO_ASSET_HUB_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, STAKING_CHAINS, STATEMINE_GENESIS_HASH, STATEMINT_GENESIS_HASH, WESTEND_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH, WESTMINT_GENESIS_HASH } from '../constants';
 
+/** 
+ * These two lines will need to be updated when adding Polkadot hub migration support.
+ */
+export const migratedRelayNames = ['kusama', 'paseo', 'westend'];
+export const migratedRelays = [KUSAMA_GENESIS, PASEO_GENESIS, WESTEND_GENESIS];
+
+type SystemChainsName = 'hub' | 'people' | 'assetHub';
+
+type RelayToSystemChainsType = Record<string, {
+  [K in SystemChainsName]?: string;
+}>;
+
 export const relayToSystemChains = {
   [KUSAMA_GENESIS]: {
     hub: STATEMINE_GENESIS_HASH,
@@ -24,30 +36,20 @@ export const relayToSystemChains = {
   }
 };
 
-export const migratedRelaysToSystemChains = {
-  [PASEO_GENESIS]: {
-    hub: PASEO_ASSET_HUB_GENESIS_HASH,
-    people: PASEO_PEOPLE_GENESIS_HASH
-  },
-  [WESTEND_GENESIS]: {
-    hub: WESTMINT_GENESIS_HASH,
-    people: WESTEND_PEOPLE_GENESIS_HASH
-  }
-};
+const migratedRelaysSet = new Set(migratedRelays);
 
-export const hubToRelay = {
-  [PASEO_ASSET_HUB_GENESIS_HASH]: PASEO_GENESIS,
-  [WESTMINT_GENESIS_HASH]: WESTEND_GENESIS_HASH
-};
+export const migratedRelaysToSystemChains: RelayToSystemChainsType = Object.fromEntries(
+  Object.entries(relayToSystemChains).filter(([relay]) =>
+    migratedRelaysSet.has(relay)
+  )
+);
 
-export const migratedRelays = [PASEO_GENESIS, WESTEND_GENESIS_HASH];
-export const migratedRelayNames = ['paseo', 'westend'];
-
-type SystemChainsName = 'hub' | 'people' | 'assetHub';
-
-type RelayToSystemChainsType = Record<string, {
-  [K in SystemChainsName]?: string;
-}>;
+export const hubToRelay: Record<string, string> = Object.fromEntries(
+  Object.entries(relayToSystemChains)
+    .filter(([relay]) => migratedRelaysSet.has(relay))
+    .map(([relay, systemChains]): [string, string] => [systemChains.hub, relay])
+    .filter(([hub]) => !!hub)
+);
 
 /**
  * Adjusts the provided genesis hash to its corresponding system chain genesis hash if applicable.
@@ -105,7 +107,7 @@ export function mapHubToRelay (genesisHash: string | undefined | null): string |
  * @returns True if the genesis hash is in the list of migrated relays; otherwise, false.
  */
 export function isMigratedRelay (genesisHash: string): boolean {
-  return migratedRelays.includes(genesisHash);
+  return migratedRelaysSet.has(genesisHash);
 }
 
 /**
