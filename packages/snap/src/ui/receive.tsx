@@ -3,13 +3,13 @@
 
 import { Image, Box, Copyable } from "@metamask/snaps-sdk/jsx";
 import { getKeyPair } from "../util";
-import { POLKADOT_GENESIS } from "@polkagate/apps-config";
 import { getFormatted } from "../util/getFormatted";
 import { ChainSwitch } from "./components";
 import { getLogoByGenesisHash } from "./image/chains/getLogo";
 import type { HexString } from "@polkadot/util/types";
 import QRCode from 'qrcode';
 import { FlowHeader } from "./components/FlowHeader";
+import { STATEMINT_GENESIS_HASH } from "../constants";
 
 const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: string) => {
 
@@ -30,7 +30,7 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
 export async function receive(id: string, genesisHash?: HexString) {
   const { address } = await getKeyPair();
 
-  const _genesisHash = genesisHash ?? POLKADOT_GENESIS;
+  const _genesisHash = genesisHash ?? STATEMINT_GENESIS_HASH;
   const formatted = getFormatted(_genesisHash, address);
   const logo = await getLogoByGenesisHash(_genesisHash, true);
 

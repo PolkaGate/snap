@@ -16,7 +16,7 @@ const DEFAULT_PRICE_VALUE = {
  */
 export async function getNativeTokenPrice(genesisHash: HexString): Promise<{ genesisHash: HexString, price: PriceValue }> {
   const chainName = await getChainName(genesisHash);
-  const maybePriceId = sanitizeChainName(chainName)?.toLowerCase();
+  const maybePriceId = sanitizeChainName(chainName, true)?.toLowerCase();
   const priceId = maybePriceId ? EXTRA_PRICE_IDS[maybePriceId] ?? maybePriceId : undefined;
   
   if (!priceId) {
