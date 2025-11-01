@@ -8,6 +8,7 @@ import getChainName, { sanitizeChainName } from '../../../util/getChainName';
 import postData from './getSoloTotalReward';
 import { getSnapState, updateSnapState } from '../../../rpc/stateManagement';
 import { REWARDS_SAVED_INFO_VALIDITY_PERIOD } from '../const';
+import { getSubscanChainName } from '../../../util/migrateHubUtils';
 
 export type SubscanClaimedRewardInfo = {
   amount: string,
@@ -32,7 +33,9 @@ export async function getPoolClaimedReward(chainName: string | null, address: st
       return BN_ZERO;
     }
 
-    const result = await postData(`https://${chainName}.api.subscan.io/api/scan/nomination_pool/rewards`, {
+    const normalizedChainName = getSubscanChainName(chainName);
+    
+    const result = await postData(`https://${normalizedChainName}.api.subscan.io/api/scan/nomination_pool/rewards`, {
       address,
       row: MAX_PAGE_SIZE
     });
