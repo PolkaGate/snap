@@ -4829,7 +4829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/slip44@npm:^4.3.0":
+"@metamask/slip44@npm:^4.4.0":
   version: 4.4.0
   resolution: "@metamask/slip44@npm:4.4.0"
   checksum: ce9a5ab46c09ffc9d3fd122e4a14e759c587e1378e08da0783d1d2c8156d8df84394b8fc09d4932690dd327614535d6110e7994796000c0e6669246138ae15a6
@@ -5409,16 +5409,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/snaps-sdk@npm:9.3.0":
-  version: 9.3.0
-  resolution: "@metamask/snaps-sdk@npm:9.3.0"
+"@metamask/snaps-sdk@npm:10.4.0":
+  version: 10.4.0
+  resolution: "@metamask/snaps-sdk@npm:10.4.0"
   dependencies:
     "@metamask/key-tree": ^10.1.1
-    "@metamask/providers": ^22.1.0
+    "@metamask/providers": ^22.1.1
     "@metamask/rpc-errors": ^7.0.3
     "@metamask/superstruct": ^3.2.1
-    "@metamask/utils": ^11.4.2
-  checksum: 0ddffc266c3802ab97724af94d07356ac8e55d91030d3f246e5f2c9154c61e8eae6f0b320cafd9bd8eca245d83c5603d0aae8c7426ed12496d512728970f4153
+    "@metamask/utils": ^11.9.0
+    luxon: ^3.5.0
+  checksum: 100d23439a0001c2d19e10f8f85b1230ce173921b7fec888b299d3413bade641aa822034f51b93d8e77873f694f06fa17bdb71a0b6d4584b23a6d8b9ea5cf766
   languageName: node
   linkType: hard
 
@@ -5532,9 +5533,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/snaps-utils@npm:^11.5.0":
-  version: 11.7.1
-  resolution: "@metamask/snaps-utils@npm:11.7.1"
+"@metamask/snaps-utils@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "@metamask/snaps-utils@npm:12.1.0"
   dependencies:
     "@babel/core": ^7.23.2
     "@babel/types": ^7.23.0
@@ -5542,9 +5543,9 @@ __metadata:
     "@metamask/messenger": ^0.3.0
     "@metamask/permission-controller": ^12.2.0
     "@metamask/rpc-errors": ^7.0.3
-    "@metamask/slip44": ^4.3.0
+    "@metamask/slip44": ^4.4.0
     "@metamask/snaps-registry": ^4.0.0
-    "@metamask/snaps-sdk": ^10.3.0
+    "@metamask/snaps-sdk": ^10.4.0
     "@metamask/superstruct": ^3.2.1
     "@metamask/utils": ^11.9.0
     "@scure/base": ^1.1.1
@@ -5552,14 +5553,14 @@ __metadata:
     cron-parser: ^4.5.0
     fast-deep-equal: ^3.1.3
     fast-json-stable-stringify: ^2.1.0
-    fast-xml-parser: ^4.4.1
+    fast-xml-parser: ^5.3.4
     luxon: ^3.5.0
     marked: ^12.0.1
     rfdc: ^1.3.0
     semver: ^7.5.4
     ses: ^1.14.0
     validate-npm-package-name: ^5.0.0
-  checksum: 5a0e0b38c6506010fca261970c58af46b73e4818a29f6ea3f55108e6a4d65acf4a83c98b660b65baba6af334476f5f08532552a418fab55c1ade8c3fc3b6c102
+  checksum: bd7298bf8add31f37440b6052e4e4f83b5d9fdb4a49837c68a62c087a8cfffda1cb5b6f04dd2b0e2a22c29dba337e88fb4e72e10649e047ca918883e9cd26dd8
   languageName: node
   linkType: hard
 
@@ -9803,7 +9804,7 @@ __metadata:
 
 "@polkagate/extension-dapp@file:../extension-dapp::locator=polkamask_dapp%40workspace%3Apackages%2Fdapp":
   version: 0.50.2-1-x
-  resolution: "@polkagate/extension-dapp@file:../extension-dapp#../extension-dapp::hash=205ae1&locator=polkamask_dapp%40workspace%3Apackages%2Fdapp"
+  resolution: "@polkagate/extension-dapp@file:../extension-dapp#../extension-dapp::hash=9551d9&locator=polkamask_dapp%40workspace%3Apackages%2Fdapp"
   dependencies:
     "@metamask/utils": ^9.0.0
     "@polkadot/extension-inject": 0.50.1
@@ -9815,7 +9816,7 @@ __metadata:
     "@polkadot/api": "*"
     "@polkadot/util": "*"
     "@polkadot/util-crypto": "*"
-  checksum: f200158812b3b76c7f9088a5dcaa501a726baae5cf306b2706106b486be82ad4568b435d678e0f58d7d046d73c5a7bb2f4efa510da0694f8684cce7c35f4e8e0
+  checksum: 926b3c74ed0ad670aec2c1344aec2f1df85ad37ed7f093077260a818500c8c9c38f2b210ae0364e49a8340923b0328de5a207d5235d4dbd75512a9ea167e95fb
   languageName: node
   linkType: hard
 
@@ -9837,7 +9838,7 @@ __metadata:
     "@metamask/rpc-errors": ^7.0.3
     "@metamask/snaps-cli": ^8.3.0
     "@metamask/snaps-jest": ^9.4.0
-    "@metamask/snaps-sdk": ^9.3.0
+    "@metamask/snaps-sdk": ^10.4.0
     "@metamask/utils": ^11.0.0
     "@polkadot/api": ^16.5.4
     "@polkadot/apps-config": ^0.141.1
@@ -17170,18 +17171,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-xml-parser@npm:^4.4.1":
-  version: 4.5.1
-  resolution: "fast-xml-parser@npm:4.5.1"
-  dependencies:
-    strnum: ^1.0.5
-  bin:
-    fxparser: src/cli/cli.js
-  checksum: aab32d7f08a95b20f9ecdc2d769531a9dc454faf12740873972f8169c04ab9335ac5df1029ebfe829a01ddbb0ec60572cb7769d6be2409e95a9be8fc6a86e92c
-  languageName: node
-  linkType: hard
-
-"fast-xml-parser@npm:^5.3.3":
+"fast-xml-parser@npm:^5.3.3, fast-xml-parser@npm:^5.3.4":
   version: 5.3.6
   resolution: "fast-xml-parser@npm:5.3.6"
   dependencies:
@@ -22052,7 +22042,7 @@ __metadata:
     "@metamask/eslint-config-typescript": ^14.0.0
     "@metamask/snaps-cli": ^6.5.4
     "@metamask/snaps-jest": ^8.5.0
-    "@metamask/snaps-utils": ^11.5.0
+    "@metamask/snaps-utils": ^12.1.0
     "@polkadot/api": ^12.4.2
     "@polkadot/extension-chains": "^0.62.1 "
     "@polkadot/keyring": ^13.5.6
@@ -24495,13 +24485,6 @@ __metadata:
   version: 2.0.1
   resolution: "strip-json-comments@npm:2.0.1"
   checksum: 1074ccb63270d32ca28edfb0a281c96b94dc679077828135141f27d52a5a398ef5e78bcf22809d23cadc2b81dfbe345eb5fd8699b385c8b1128907dec4a7d1e1
-  languageName: node
-  linkType: hard
-
-"strnum@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "strnum@npm:1.0.5"
-  checksum: 651b2031db5da1bf4a77fdd2f116a8ac8055157c5420f5569f64879133825915ad461513e7202a16d7fec63c54fd822410d0962f8ca12385c4334891b9ae6dd2
   languageName: node
   linkType: hard
 

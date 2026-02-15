@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@metamask/snaps-utils": "^11.5.0",
+    "@metamask/snaps-utils": "^12.1.0",
     "@polkadot/api": "^12.4.2",
     "@polkadot/extension-chains": "^0.62.1 ",
     "@polkadot/keyring": "^13.5.6",
@@ -86,7 +86,7 @@
   },
   "resolutions": {
     "eslint-plugin-react": "^7.32.0",
-    "@metamask/snaps-sdk": "9.3.0",
-    "@metamask/snaps-utils": "^11.5.0"
+    "@metamask/snaps-sdk": "10.4.0",
+    "@metamask/snaps-utils": "^12.1.0"
   }
 }
