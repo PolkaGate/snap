@@ -2,6 +2,9 @@ import { ApiPromise, HttpProvider } from '@polkadot/api';
 
 import getEndpoint from './getEndpoint';
 import type { HexString } from '@polkadot/util/types';
+import { callWithTimeout } from './callWithTimeout';
+
+const createAirPromise = async (httpProvider: HttpProvider): Promise<ApiPromise> => ApiPromise.create({ provider: httpProvider })
 
 /**
  * Retrieves the API for the given blockchain genesis hash by creating an HTTP connection.
@@ -17,11 +20,14 @@ export async function getApi(genesisHash: HexString): Promise<ApiPromise | null>
     const adjustedUrls = endpoints.map((value) => value.replace('wss://', 'https://'));  // Replace 'wss://' with 'https://' as MetaMask Snap does not support WebSockets at the moment
     const httpProviders = adjustedUrls.map((url) => new HttpProvider(url));
 
-    const api = await Promise.race(httpProviders.map(async (httpProvider) => ApiPromise.create({ provider: httpProvider })));
+    const api = await Promise.race(httpProviders.map(
+      async(httpProvider) => callWithTimeout(createAirPromise, [httpProvider], null)
+    ));
 
     return api;
 
   } catch {
+
     return null;
   }
 }

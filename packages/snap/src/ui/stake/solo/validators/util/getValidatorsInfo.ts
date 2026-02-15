@@ -4,7 +4,7 @@ import type { SpStakingPagedExposureMetadata, PalletStakingValidatorPrefs, Optio
 import type { BN } from "@polkadot/util";
 import { getFormatted } from "../../../../../util/getFormatted";
 
-type ValidatorPrefOverview = {
+export type ValidatorPrefOverview = {
   address: string;
   prefs: PalletStakingValidatorPrefs;
   overviews: SpStakingPagedExposureMetadata | null;

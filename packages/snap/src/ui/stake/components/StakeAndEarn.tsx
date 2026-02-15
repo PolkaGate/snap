@@ -3,7 +3,7 @@ import { amountToHuman } from '../../../util/amountToHuman';
 import type { Balances } from '../../../util';
 import { sanitizeChainName } from '../../../util/getChainName';
 import type { HexString } from '@polkadot/util/types';
-import { getLogoByChainName } from '../../image/chains/getLogoByGenesisHash';
+import { getLogoByChainName } from '../../image/chains/getLogo';
 import { toTitleCase } from '../../../utils';
 
 interface Props {
@@ -20,7 +20,7 @@ export const StakeAndEarn: SnapComponent<Props> = ({ balancesAll, nonStakedChain
       <Heading>Stake and earn rewards </Heading>
       {nonStakedChainInfo.map(({ genesisHash, name }) => {
 
-        const sanitizedChainName = sanitizeChainName(name)?.toLocaleLowerCase() as string;
+        const sanitizedChainName = sanitizeChainName(name, true)?.toLocaleLowerCase() as string;
         const rate = stakingRates[sanitizedChainName];
         const logo = getLogoByChainName(sanitizedChainName, true)
         const balance = balancesAll.find((balance) => balance.genesisHash === genesisHash)

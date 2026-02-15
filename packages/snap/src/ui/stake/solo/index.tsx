@@ -50,6 +50,7 @@ const ui = (
           price={price}
         />
         <YourStake
+          nominatorsCount={nominators?.length ?? 0}
           amount={active}
           decimal={decimal}
           token={token}
@@ -61,6 +62,7 @@ const ui = (
             decimal={decimal}
             token={token}
             price={price}
+            type= 'solo'
           />
         }
         <Section>
@@ -90,6 +92,7 @@ const ui = (
           />
           <ActionRow
             label='Your validators'
+            variant={nominators?.length ? 'primary' : 'destructive'}
             tag={nominators?.length || 0}
             icon='security-tick'
             name='yourValidators'
@@ -117,7 +120,7 @@ export async function stakeSoloIndex(
 
   const stakedToken = stakedBalances.find((balance) => balance.genesisHash === genesisHash)
   const price = pricesInUsd.find((price) => price.genesisHash === genesisHash)?.price?.value || 0;
-  const sanitizedChainName = (await getChainName(genesisHash, true))?.toLowerCase();
+  const sanitizedChainName = (await getChainName(genesisHash, true, true))?.toLowerCase();
 
   await snap.request({
     method: 'snap_updateInterface',

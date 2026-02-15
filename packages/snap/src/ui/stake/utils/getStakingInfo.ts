@@ -2,6 +2,7 @@ import type { HexString } from "@polkadot/util/types";
 import { getApi } from "../../../util/getApi";
 import { getSnapState, updateSnapState } from "../../../rpc/stateManagement";
 import type { StakingInfoType } from "../types";
+import { mapHubToRelay } from "../../../util/migrateHubUtils";
 
 const STAKING_INFO_VALIDITY_PERIOD = 12 * 60 * 60 * 1000; //ms
 
@@ -31,15 +32,11 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
     const at = await api.rpc.chain.getFinalizedHead();
     const apiAt = await api.at(at);
 
-    const maxNominations = apiAt.consts.staking.maxNominations?.toNumber() ?? 16;
-
     const maxNominatorRewardedPerValidator = (apiAt.consts.staking.maxNominatorRewardedPerValidator ?? apiAt.consts.staking.maxExposurePageSize).toNumber();
     const existentialDeposit = apiAt.consts.balances.existentialDeposit.toNumber();
     const bondingDuration = apiAt.consts.staking.bondingDuration.toNumber();
     const sessionsPerEra = apiAt.consts.staking.sessionsPerEra.toNumber();
-    const epochDuration = apiAt.consts.babe.epochDuration.toNumber();
-    const expectedBlockTime = api.consts.babe.expectedBlockTime.toNumber();
-    const epochDurationInHours = epochDuration * expectedBlockTime / 3600000; // 1000 milSec * 60sec * 60min
+   
     const [minNominatorBond, currentEraIndex, minimumActiveStake] = await Promise.all([
       apiAt.query.staking.minNominatorBond(),
       api.query.staking.currentEra(),
@@ -48,6 +45,22 @@ export async function getStakingInfo(genesisHash: HexString): Promise<StakingInf
 
     const token = api.registry.chainTokens[0];
     const decimal = api.registry.chainDecimals[0];
+
+    /** needs to get some info from relay chain if migrated */
+    const relayGenesisHash = mapHubToRelay(genesisHash);
+    const relayChainApi = await getApi(relayGenesisHash as HexString);
+    if (!relayChainApi) {
+      throw new Error('cant get relay api!');
+    }
+    const atRelay = await relayChainApi.rpc.chain.getFinalizedHead();
+    const apiAtRelay = await relayChainApi.at(atRelay);
+
+    const maxNominations = relayChainApi.consts['electionProviderMultiPhase']?.['minerMaxVotesPerVoter']?.toPrimitive() as number || 16;
+    const epochDuration = apiAtRelay.consts.babe.epochDuration.toNumber();
+    const expectedBlockTime = relayChainApi.consts.babe.expectedBlockTime.toNumber();
+    const epochDurationInHours = epochDuration * expectedBlockTime / 3600000; // 1000 milSec * 60sec * 60min
+
+
 
     const info = {
       bondingDuration,

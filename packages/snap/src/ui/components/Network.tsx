@@ -1,6 +1,7 @@
 import { Box, Text, SnapComponent, Image } from "@metamask/snaps-sdk/jsx";
-import { getLogoByChainName } from "../image/chains/getLogoByGenesisHash";
+import { getLogoByChainName } from "../image/chains/getLogo";
 import { toTitleCase } from "../../utils";
+import { sanitizeChainName } from "../../util/getChainName";
 
 interface Props {
   chainName: string;
@@ -13,6 +14,7 @@ export const Network: SnapComponent<Props> = ({
 }) => {
 
   const logo = getLogoByChainName(chainName)
+  const _chainName = toTitleCase(sanitizeChainName(chainName, true));
 
   return (
     <Box direction='horizontal' alignment='space-between'>
@@ -22,7 +24,7 @@ export const Network: SnapComponent<Props> = ({
       <Box direction='horizontal' alignment='end' center>
         <Image src={logo} />
         <Text>
-          {toTitleCase(chainName) || 'Unknown'}
+          {_chainName || 'Unknown'}
         </Text>
       </Box>
     </Box>

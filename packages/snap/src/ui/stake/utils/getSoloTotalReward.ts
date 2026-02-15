@@ -4,6 +4,7 @@ import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import type { RewardsInfo } from "../../../util/types";
 import { getSnapState, updateSnapState } from "../../../rpc/stateManagement";
 import { REWARDS_SAVED_INFO_VALIDITY_PERIOD } from "../const";
+import { getSubscanChainName } from "../../../util/migrateHubUtils";
 
 /**
  * Sends a POST request to the specified URL with the provided data.
@@ -41,9 +42,11 @@ export default async function postData(url: string, data = {}): Promise<any> {
     return '0';
   }
 
+  const normalizedChainName = getSubscanChainName(chainName);
+
   return new Promise((resolve) => {
     try {
-      postData('https://' + chainName + '.api.subscan.io/api/scan/staking_history',
+      postData('https://' + normalizedChainName + '.api.subscan.io/api/scan/staking_history',
         {
           address,
           page: 0,

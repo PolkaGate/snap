@@ -3,9 +3,22 @@
 
 import type { HexString } from '@polkadot/util/types';
 import { getChain, getChainFromMetadata } from '../chains';
+import { isMigratedHub } from './migrateHubUtils';
 
-export const sanitizeChainName = (chainName: string | undefined): string | null => {
-  return chainName
+/**
+ * Sanitizes a chain name by removing common suffixes and spaces, and optionally
+ * strips "AssetHub" if the chain has been migrated.
+ * @param chainName - The original chain name to sanitize.
+ * @param withMigrationCheck - Whether to remove "AssetHub" from the name if the chain is migrated.
+ * @returns The sanitized chain name, or `null` if `chainName` is undefined.
+ * @example
+ * sanitizeChainName('Polkadot Relay Chain'); // returns 'Polkadot'
+ * sanitizeChainName('Polkadot Asset Hub', true); // returns 'Polkadot' (if migrated)
+ */
+export const sanitizeChainName = (chainName: string | undefined, withMigrationCheck=false): string | null => {
+  const isMigrated = isMigratedHub(chainName);
+
+  const _name = chainName
     ? chainName
       .replace(' Relay Chain', '')
       .replace(' Network', '')
@@ -16,15 +29,22 @@ export const sanitizeChainName = (chainName: string | undefined): string | null 
       .replace(' Protocol', '')
       .replace(/\s/gu, '')
     : null;
+
+  return withMigrationCheck && _name && isMigrated
+    ? _name
+      .replace('assethub', '')
+      .replace('AssetHub', '')
+    : _name;
 }
 
 /**
  * Fetches the chain name for a given genesis hash, optionally sanitizing and converting it to lowercase.
  * @param _genesisHash - The genesis hash of the blockchain.
  * @param sanitizeAndLowerCase - A flag to indicate whether to sanitize and convert the name to lowercase (optional).
+ * @param withMigrationCheck - get chain names with migration consideration (optional).
  * @returns A Promise that resolves to the chain name as a string, or undefined if the genesis hash is invalid or no chain name is found.
  */
-export default async function getChainName(_genesisHash: HexString | undefined, sanitizeAndLowerCase?: boolean): Promise<string | undefined> {
+export default async function getChainName(_genesisHash: HexString | undefined, sanitizeAndLowerCase?: boolean, withMigrationCheck?: boolean): Promise<string | undefined> {
   if (!_genesisHash) {
     return undefined;
   }
@@ -37,7 +57,7 @@ export default async function getChainName(_genesisHash: HexString | undefined, 
   }
 
   if (sanitizeAndLowerCase) {
-    return sanitizeChainName(chainName)?.toLocaleLowerCase() as string;
+    return sanitizeChainName(chainName, withMigrationCheck)?.toLocaleLowerCase() as string;
   }
 
   return chainName;

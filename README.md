@@ -32,6 +32,17 @@ yarn run start
 
 After executing these commands, you can access a basic decentralized application (dApp) page for testing the snap at http://localhost:8000/. For more advanced dApp visit [apps.polkagate.xyz](https://apps.polkagate.xyz). Note, MetaMask Flask (MetaMask) needs to be installed to interact with the snap and dApp.
 
+## Running in Development Environment
+
+If you want to run the packages in a development environment (where the snap is not loaded from MetaMask’s whitelisted list on npm but directly from your local folder), use the following steps:
+
+```bash
+git clone https://github.com/PolkaGate/snap.git
+cd snap
+yarn install
+yarn dev && yarn start
+```
+
 ## Test
 To execute the unit tests for the snap, use the following command(s):
 

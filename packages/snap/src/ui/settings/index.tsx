@@ -104,7 +104,7 @@ const ui = (address: string) => {
 
       </Box>
       <Footer>
-        <Button name='backToHome' variant="destructive">
+        <Button name='backToHome'>
           Back
         </Button>
       </Footer>

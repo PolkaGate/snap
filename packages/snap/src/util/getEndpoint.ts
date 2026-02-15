@@ -30,13 +30,13 @@ export default async function getEndpoint(_genesisHash: HexString | undefined, i
 
   let endpoints = sanitizedChainName
     ? allEndpoints?.filter((e) =>
-      e.value && (!ignoreLightClient || !e.value.startsWith('light')) && !e.value.includes('onfinality') &&
-      // Check if e.value matches the pattern 'wss://<any_number>'
-      !/^wss:\/\/\d+$/.test(e.value)
-      &&
+      e.value && (!ignoreLightClient || !e.value.startsWith('light')) && // no light client
+      !e.value.includes('onfinality') && // it is rate limited
+      !/^wss:\/\/\d+$/.test(e.value) && // Check if e.value matches the pattern 'wss://<any_number>'
+      !String(e.text as string)?.toLowerCase().includes('testnet') && !String(e.info)?.toLowerCase().includes('testnet') && // filter parachain testnets
       (
         String(e.info)?.toLowerCase() === sanitizedChainName ||
-        (e.text && typeof e.text === 'string' ? e.text : JSON.stringify(e.text))?.toLowerCase()?.includes(sanitizedChainName || '')      )
+        (e.text && typeof e.text === 'string' ? e.text : JSON.stringify(e.text))?.toLowerCase()?.includes(sanitizedChainName || ''))
     )
     : [];
 

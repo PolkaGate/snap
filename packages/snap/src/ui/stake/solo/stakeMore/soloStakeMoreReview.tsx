@@ -10,7 +10,7 @@ import { Price } from "../../../components";
 
 const ui = (context: StakingSoloContextType) => {
 
-  let { address, amount, decimal, genesisHash, token, price, claimable, fee } = context;
+  let { address, amount, decimal, genesisHash, token, price, fee } = context;
   const feeInUsd = Number(amountToHuman(fee, decimal)) * price;
 
   return (
@@ -42,11 +42,7 @@ const ui = (context: StakingSoloContextType) => {
             extra={`$${feeInUsd.toFixed(2)}`}
           />
         </Section>
-        <SoloStakeMoreExtraInfo
-          claimable={claimable}
-          decimal={decimal}
-          token={token}
-        />
+        <SoloStakeMoreExtraInfo />
         <Box direction="horizontal" alignment='end'>
           <Image src={birdDown} />
         </Box>

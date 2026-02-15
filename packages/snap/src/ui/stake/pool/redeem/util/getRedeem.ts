@@ -3,6 +3,7 @@ import { getApi } from "../../../../../util/getApi";
 import type { Balance } from "@polkadot/types/interfaces";
 import type { CallParamsType } from "../../../types";
 import { handleOutput } from "../../../../../util/handleOutput";
+import { getSpanCount } from "../../../utils/getSpanCount";
 
 export const getRedeem = async (
   address: string,
@@ -17,8 +18,7 @@ export const getRedeem = async (
 
   const call = api.tx.nominationPools.withdrawUnbonded;
 
-  const optSpans = await api.query.staking.slashingSpans(address) as any;
-  const spanCount = optSpans.isNone ? 0 : optSpans.unwrap().prior.length + 1;
+  const spanCount = await getSpanCount (api, address) 
   const params = [address, spanCount];
 
   return await handleOutput(address, api, call, params, output);

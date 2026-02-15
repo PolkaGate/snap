@@ -46,7 +46,7 @@ export const accountDemo = (
           prices={prices}
         />
         <Section alignment='space-around' direction='horizontal'>
-          <CTA icon='send-1' name='send' label='Send' />
+          <CTA icon='wallet' name='send' label='Send' />
           <CTA icon='qr-code' name='receive' label='Receive' />
           <CTA icon='stake' name='stakeIndex' label='Stake' />
           <CTA icon='people' name='vote' label='Vote' />
@@ -56,11 +56,9 @@ export const accountDemo = (
       <Box alignment='space-between' direction='horizontal'>
         <Heading>Tokens</Heading>
         <Box center direction='horizontal'>
-          {!!nonZeroBalances?.length &&
-            <Button name='refreshBalances' variant='primary' >
-              <Icon size='md' color='primary' name='refresh' />
-            </Button >
-          }
+          <Button name='refreshBalances' variant='primary' >
+            <Icon size='md' color='primary' name='refresh' />
+          </Button >
           {!!nonZeroBalances?.length &&
             <Button name='balanceDetails' variant='primary' >
               <Icon size='md' color='primary' name={showDetails ? 'arrow-up' : 'arrow-down'} />

@@ -1,15 +1,15 @@
 // Copyright 2023-2025 @polkagate/snap authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { Image, Box, Copyable, Text } from "@metamask/snaps-sdk/jsx";
+import { Image, Box, Copyable } from "@metamask/snaps-sdk/jsx";
 import { getKeyPair } from "../util";
-import { POLKADOT_GENESIS } from "@polkadot/apps-config";
 import { getFormatted } from "../util/getFormatted";
 import { ChainSwitch } from "./components";
-import { getLogoByGenesisHash } from "./image/chains/getLogoByGenesisHash";
+import { getLogoByGenesisHash } from "./image/chains/getLogo";
 import type { HexString } from "@polkadot/util/types";
 import QRCode from 'qrcode';
 import { FlowHeader } from "./components/FlowHeader";
+import { STATEMINT_GENESIS_HASH } from "../constants";
 
 const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: string) => {
 
@@ -17,15 +17,12 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
     <Box>
       <FlowHeader
         action='backToHome'
-        label='Receive'
+        label='Choose network to view QR'
         showHome
       />
-      <Text alignment="start" color='alternative'>
-        Select a network to view your address & QR code
-      </Text>
       <ChainSwitch genesisHash={genesisHash} logo={logo} />
       <Copyable value={formatted} />
-      <Image src={qrCode} />
+      <Image src={qrCode} borderRadius="medium" />
     </Box>
   );
 };
@@ -33,7 +30,7 @@ const ui = (formatted: string, genesisHash: HexString, logo: string, qrCode: str
 export async function receive(id: string, genesisHash?: HexString) {
   const { address } = await getKeyPair();
 
-  const _genesisHash = genesisHash ?? POLKADOT_GENESIS;
+  const _genesisHash = genesisHash ?? STATEMINT_GENESIS_HASH;
   const formatted = getFormatted(_genesisHash, address);
   const logo = await getLogoByGenesisHash(_genesisHash, true);
 

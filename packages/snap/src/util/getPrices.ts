@@ -20,6 +20,7 @@ export type PricesType = {
  */
 export const EXTRA_PRICE_IDS: Record<string, string> = {
   nodle: 'nodle-network',
+  vara: 'vara-network',
   parallel: 'parallel-finance',
   pendulum: 'pendulum-chain'
 };
@@ -58,6 +59,7 @@ export default async function getPrices(currencyCode = 'usd'): Promise<{ currenc
   }
 
   const revisedPriceIds = priceIds.map((item) => (EXTRA_PRICE_IDS[item] ?? item));
+  
   try {
     const prices = await getReq(`https://api.coingecko.com/api/v3/simple/price?ids=${revisedPriceIds.join(',')}&vs_currencies=${currencyCode}&include_24hr_change=true`);
 

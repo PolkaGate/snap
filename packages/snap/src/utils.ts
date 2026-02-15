@@ -1,5 +1,6 @@
 import { assert } from '@metamask/utils';
 import { BN, hexToBn, isHex } from '@polkadot/util';
+import { POLKADOT_TEST_NETS } from './constants';
 
 /**
  * Get the current count from the Snap state.
@@ -35,7 +36,7 @@ export const isHexToBn = (i?: string): BN | undefined => i
  * @param input - The string to be converted to title case. If undefined or empty, returns undefined.
  * @returns The input string in title case, or undefined if the input is not provided.
  */
-export function toTitleCase(input: string | undefined): string | undefined {
+export function toTitleCase(input: string | undefined | null): string | undefined {
   if (!input) {
     return undefined;
   }
@@ -92,4 +93,13 @@ export function commifyNumber(
 
   return number
     .toLocaleString('en-US', { minimumFractionDigits, maximumFractionDigits });
+}
+
+/**
+ * Checks whether the given chain genesis hash belongs to a known Polkadot test network.
+ * @param genesisHash - The genesis hash of the chain to check.
+ * @returns `true` if the hash is one of the test nets, otherwise `false`.
+ */
+export function isTestNet(genesisHash: string | undefined): boolean {
+  return POLKADOT_TEST_NETS?.includes(genesisHash ?? '');
 }

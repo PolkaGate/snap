@@ -68,6 +68,10 @@ import { confirmChangeValidators } from '../ui/stake/solo/validators/confirmChan
 import { pendingRewards } from '../ui/stake/solo/pending_rewards';
 import { confirmPayout } from '../ui/stake/solo/pending_rewards/confirmPayout';
 import { reviewPayout } from '../ui/stake/solo/pending_rewards/reviewPayout';
+import { soloRestake } from '../ui/stake/solo/restake';
+import { RestakeSoloFormState, restakeSoloFormValidation } from '../ui/stake/solo/restake/util/restakeSoloFormValidation';
+import { reviewSoloRestake } from '../ui/stake/solo/restake/reviewSoloRestake';
+import { confirmSoloRestake } from '../ui/stake/solo/restake/confirmSoloRestake';
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -463,6 +467,27 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         await confirmPayout(id, context);
         break;
 
+      /** ---------------------------- re-stake--------------------------------- */
+      // SOLO
+      case 'restake':
+        await showSpinner(id, 'Loading, please wait ...');
+      case 'restakeAmountSolo':
+        {
+          const restakeForm = state.stakeForm as RestakeSoloFormState;
+          const formErrors = restakeSoloFormValidation(restakeForm, context);
+          await soloRestake(id, restakeForm?.restakeAmountSolo, formErrors, context);
+          break;
+        }
+
+      case 'soloRestakeReview':
+        await showSpinner(id, 'Loading, please wait ...');
+        await reviewSoloRestake(id, context);
+        break;
+
+      case 'soloRestakeConfirm':
+        await showSpinner(id, 'Working, please wait ...');
+        await confirmSoloRestake(id, context);
+        break;
       //===================================OTHERS===================================//
       case 'vote':
         await voting(id);

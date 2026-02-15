@@ -1,13 +1,11 @@
 import { Box, Text, Image, SnapComponent } from "@metamask/snaps-sdk/jsx";
-import { BN } from "@polkadot/util";
 import { activeIcon, inActiveIcon } from "../../../image/icons";
 
 interface Props {
-  amount: string | BN | undefined;
+  isActive: boolean;
 }
 
-export const ActiveStatus: SnapComponent<Props> = ({ amount }) => {
-  const isActive = !!amount && !new BN(amount).isZero();
+export const ActiveStatus: SnapComponent<Props> = ({ isActive }) => {
 
   return (
     <Box direction="horizontal" alignment="end" center>

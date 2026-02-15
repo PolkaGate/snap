@@ -2,6 +2,7 @@ import type { HexString } from "@polkadot/util/types";
 import getChainName, { sanitizeChainName } from "../../../util/getChainName";
 import { ajuna, acala, astar, bittensor, bifrost, basilisk, centrifuge, composable, darwinia, karura, kulupu, picasso, globe, hydradx, kusama, ternoa, nodle, polkadot, westend, zeitgeist, edgeware, equilibrium, frequency, integritee, parallel, pendulum, phala, polimec, polymesh, sora, vara, paseo, polkadotAssetHub, kusamaAssetHub, westendAssetHub, paseoAssetHub, polkadotPeople, westendPeople, kusamaPeople, paseoPeople } from ".";
 import { KusamaSqr, PaseoSqr, PolkadotSqr, WestendSqr } from "../chainsSquare";
+import { mapHubToRelay } from "../../../util/migrateHubUtils";
 
 /**
  * Fetches the logo URL based on the given chain name, with an optional square format option.
@@ -10,7 +11,7 @@ import { KusamaSqr, PaseoSqr, PolkadotSqr, WestendSqr } from "../chainsSquare";
  * @returns A string representing the URL of the logo for the given chain name.
  */
 export const getLogoByChainName = (chainName?: string, showSquare?: boolean): string => {
-    const sanitizedChainName = sanitizeChainName(chainName)?.toLowerCase();
+    const sanitizedChainName = sanitizeChainName(chainName, true)?.toLowerCase();
 
     if (!sanitizedChainName) {
         return globe
@@ -147,6 +148,7 @@ export const getLogoByChainName = (chainName?: string, showSquare?: boolean): st
  * @returns A promise that resolves to the logo URL as a string.
  */
 export const getLogoByGenesisHash = async (genesisHash: HexString, showSquare?: boolean): Promise<string> => {
-    const chainName = await getChainName(genesisHash);
+   const migratedGenesisHash = mapHubToRelay(genesisHash);
+    const chainName = await getChainName((migratedGenesisHash ?? genesisHash) as HexString);
     return getLogoByChainName(chainName, showSquare);
 };

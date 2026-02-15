@@ -16,7 +16,8 @@ import { getSoloUnstake } from "./util/getSoloUnstake";
 import { OUTPUT_TYPE } from "../../../../constants";
 import { FlowHeader } from "../../../components/FlowHeader";
 
-const ui = (amount: string | undefined,
+const ui = (
+  amount: string | undefined,
   decimal: number,
   formErrors: StakeFormErrors,
   logo: string,

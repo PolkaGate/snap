@@ -16,7 +16,7 @@ export const YourPool: SnapComponent<Props> = ({ poolId, poolName }) => {
 
   return (
     <Section direction="vertical" alignment="start">
-      <Text color='muted'>
+      <Text color='muted' size="sm">
         {`Your pool (#${poolId})`}
       </Text>
       <Box direction="horizontal" alignment="start">

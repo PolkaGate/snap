@@ -7,7 +7,8 @@ import type { PalletStakingStakingLedger } from '@polkadot/types/lookup';
 import { handleOutput } from "../../../../../util/handleOutput";
 import { amountToMachine } from "../../../../../util/amountToMachine";
 import type { CallParamsType } from "../../../types";
-import { STAKED_AMOUNT_DECIMAL_POINT } from "../../../const";
+import { DEFAULT_DECIMAL_POINT } from "../../../const";
+import { getSpanCount } from "../../../utils/getSpanCount";
 
 export const getSoloUnstake = async (
   address: string,
@@ -28,10 +29,7 @@ export const getSoloUnstake = async (
   const unlockingLen = stakingLedger.isSome ? stakingLedger.unwrap().unlocking?.length : 0;
   const active = stakingLedger.isSome ? stakingLedger.unwrap().active : 0;
   const maxUnlockingChunks = (api.consts.staking.maxUnlockingChunks as u32).toNumber();
-
-
-  const optSpans = await api.query.staking.slashingSpans(address);
-  const spanCount = optSpans.isNone ? 0 : optSpans.unwrap().prior.length + 1;
+  const spanCount = await getSpanCount(api, address)
 
   const unbonded = api.tx.staking.unbond;
   let call = unbonded;
@@ -42,7 +40,7 @@ export const getSoloUnstake = async (
     params.push(withdrawUnbonded(spanCount));
   }
 
-  const isUnstakingAll = Number(amountToHuman(active, decimal, STAKED_AMOUNT_DECIMAL_POINT)) === Number(userInputAmount);
+  const isUnstakingAll = Number(amountToHuman(active, decimal, DEFAULT_DECIMAL_POINT)) === Number(userInputAmount);
 
   if (isUnstakingAll) {
     _amount = active;

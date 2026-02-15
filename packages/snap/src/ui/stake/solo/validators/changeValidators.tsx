@@ -12,7 +12,7 @@ import { recommended } from "../../../image/icons";
 
 const ui = (
   isAlreadySelectedRecommended: boolean,
-  nominators: string[],
+  nominators: string[] | undefined,
   recommendedValidatorsOnThisChain: string[],
 ) => {
 
@@ -54,7 +54,7 @@ const ui = (
         </Button>
         <Box alignment="end" direction="horizontal">
           <Text color='muted'>
-            {`${nominators.length} (max${recommendedValidatorsOnThisChain.length})`}
+            {`${nominators?.length ?? 0} (max${recommendedValidatorsOnThisChain.length})`}
           </Text>
           <Button name='changeValidatorsByMySelf' type='button'>
             <Icon name='arrow-right' color='muted' size='md' />

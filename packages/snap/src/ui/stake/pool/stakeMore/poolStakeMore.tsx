@@ -46,7 +46,7 @@ const ui = (
           name='stakeMoreAmount'
           placeHolder="0"
           token={token}
-          transferable={transferable}
+          available={transferable}
           price={price}
         />
         <Section>

@@ -3,7 +3,7 @@
 
 import type { Balance } from '@polkadot/types/interfaces';
 import { Box, Divider, Icon, Image, Section, SnapComponent, Text, Tooltip } from '@metamask/snaps-sdk/jsx';
-import { getLogoByChainName } from '../image/chains/getLogoByGenesisHash';
+import { getLogoByChainName } from '../image/chains/getLogo';
 import { Row2 } from '../components';
 import { AnyTuple } from '@polkadot/types/types';
 import { KNOWN_METHODS } from './Body';
@@ -52,7 +52,7 @@ const Rest: SnapComponent<Props> = ({ docs, chainName }) => {
 
 export const PopupFooter: SnapComponent<Props> = ({ action, args, docs, chainName, partialFee }) => {
 
-  const showWarningText = !(KNOWN_METHODS.includes(action) || args?.length ===0);
+  const showWarningText = !(KNOWN_METHODS.includes(action) || args?.length === 0);
 
   return (
     <Box>

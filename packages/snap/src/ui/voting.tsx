@@ -28,7 +28,7 @@ const ui = () => {
         </Section>
       </Box>
       <Footer>
-        <Button name='backToHomeWithoutUpdate' variant="destructive">
+        <Button name='backToHomeWithoutUpdate'>
           Back
         </Button>
       </Footer>

@@ -2,7 +2,7 @@ import { Box, Container, Section, Text, Footer, Button, Icon, Bold } from "@meta
 import type { HexString } from "@polkadot/util/types";
 import { amountToHuman } from "../../util/amountToHuman";
 import { getBalances, getKeyPair } from "../../util";
-import { getLogoByGenesisHash } from "../image/chains/getLogoByGenesisHash";
+import { getLogoByGenesisHash } from "../image/chains/getLogo";
 import { getSnapState } from "../../rpc/stateManagement";
 import { StakeForm } from "./components/StakeForm";
 import { POLKAGATE_POOL_IDS } from "./const";
@@ -52,7 +52,7 @@ const ui = (
           formErrors={formErrors}
           logo={logo}
           token={token}
-          transferable={transferable}
+          available={transferable}
           price={price}
         />
         {!!stakingType && !!amount &&
