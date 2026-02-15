@@ -59,6 +59,8 @@ const ui = (address: string) => {
             name='export'
             icon='export'
           />
+        </Section>
+        <Section>
           <Box direction="horizontal" alignment="start">
             <Icon color="muted" size='md' name='explore' />
             <Link href={`https://portfolio.subscan.io/account/${address}`}>
