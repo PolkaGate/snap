@@ -39,7 +39,7 @@ const Preference: SnapComponent<PreferenceProps> = ({ icon, label, value }) => (
   </Box>
 );
 
-const ui = (address: string) => {
+const ui = (address: string, hasAccountRequestedBefore: boolean) => {
 
   return (
     <Container>
@@ -67,6 +67,21 @@ const ui = (address: string) => {
               View Account on Explorer
             </Link>
           </Box>
+        </Section>
+
+        <Text color='muted' size="sm">
+          TOOL
+        </Text>
+        {!hasAccountRequestedBefore &&
+          <Text color='muted' size="sm">
+            After clicking the menu below, open and close MetaMask once to select your account list.
+          </Text>}
+        <Section>
+          <ActionRow
+            label='MetaMask → Polkadot Addresses'
+            name='metamaskAddressesToPolkadot'
+            icon='view-in-ar'
+          />
         </Section>
 
         <Text color='muted' size="sm">
@@ -120,12 +135,14 @@ const ui = (address: string) => {
 export async function settings(id: string) {
 
   const { address } = await getKeyPair();
+  const metamaskAddresses = await ethereum.request({ method: "eth_accounts" });
+  const hasAccountRequestedBefore = !!metamaskAddresses.length;
 
   await snap.request({
     method: 'snap_updateInterface',
     params: {
       id,
-      ui: ui(address)
+      ui: ui(address, hasAccountRequestedBefore)
     },
   });
 }

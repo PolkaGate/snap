@@ -7,7 +7,7 @@
     "url": "https://github.com/polkagate/snap.git"
   },
   "source": {
-    "shasum": "TwSx2jjvpNOaM04mhoI2HbR43ZmIm0xA6AKGPeukHxw=",
+    "shasum": "vdwO40UWBtR9MIgMcvhTkYceZLJSPcFIH6I+F1rMoOo=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -32,6 +32,7 @@
     },
     "endowment:webassembly": {},
     "endowment:lifecycle-hooks": {},
+    "endowment:ethereum-provider": {},
     "snap_dialog": {},
     "snap_getBip44Entropy": [
       {
@@ -43,6 +44,6 @@
     ],
     "snap_manageState": {}
   },
-  "platformVersion": "9.3.0",
+  "platformVersion": "10.4.0",
   "manifestVersion": "0.1"
 }

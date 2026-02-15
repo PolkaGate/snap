@@ -84,7 +84,7 @@
   },
   "resolutions": {
     "eslint-plugin-react": "^7.32.0",
-    "@metamask/snaps-sdk": "9.3.0",
+    "@metamask/snaps-sdk": "10.4.0",
     "@metamask/snaps-utils": "^11.5.0"
   }
 }

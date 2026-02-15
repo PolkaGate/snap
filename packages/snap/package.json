@@ -30,7 +30,7 @@
     "@dicebear/avatars-identicon-sprites": "latest",
     "@metamask/key-tree": "^10.1.1",
     "@metamask/rpc-errors": "^7.0.3",
-    "@metamask/snaps-sdk": "^9.3.0",
+    "@metamask/snaps-sdk": "^10.4.0",
     "@polkadot/extension-chains": "^0.62.1",
     "@polkadot/networks": "^13.5.6 ",
     "@polkadot/types-known": "^16.4.8",

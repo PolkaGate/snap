@@ -72,6 +72,7 @@ import { soloRestake } from '../ui/stake/solo/restake';
 import { RestakeSoloFormState, restakeSoloFormValidation } from '../ui/stake/solo/restake/util/restakeSoloFormValidation';
 import { reviewSoloRestake } from '../ui/stake/solo/restake/reviewSoloRestake';
 import { confirmSoloRestake } from '../ui/stake/solo/restake/confirmSoloRestake';
+import { ContractFormState, metamaskAddressesToPolkadot } from '../ui/settings/metamaskAddressesToPolkadot';
 
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
@@ -83,6 +84,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
 
   const sendForm = state.sendForm as unknown as SendFormState;
   const stakeForm = state.stakeForm as unknown as StakeFormState;
+  const contractForm = state.contractForm as unknown as ContractFormState;
 
   if (event.type === UserInputEventType.ButtonClickEvent || event.type === UserInputEventType.InputChangeEvent) {
 
@@ -497,6 +499,22 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
 
       case 'settings':
         await settings(id);
+        break;
+
+      case 'metamaskAddressesToPolkadot':
+      case 'contractAddress':
+      case 'clearContractAddress':
+        const clearAddress = event.name === 'clearContractAddress';
+        const { contractAddress } = contractForm || {}
+        const displayClearIcon = !clearAddress && Boolean(contractAddress) && contractAddress != '';
+
+        await metamaskAddressesToPolkadot(id, clearAddress, clearAddress ? undefined : contractAddress, displayClearIcon);
+        break;
+
+      case 'switchMetamaskToSubstrateChain':
+        const chainName = event.value;
+
+        await metamaskAddressesToPolkadot(id, false, contractForm?.contractAddress, false, chainName);
         break;
 
       case 'export':
