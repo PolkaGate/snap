@@ -1,7 +1,7 @@
 import { hexToU8a, u8aConcat } from '@polkadot/util';
 import { encodeAddress } from '@polkadot/util-crypto';
 import { getChain } from '../chains';
-import { CHAIN_ID_TO_GENESISHASH } from '../listeners/onTransaction/consts';
+import { CHAIN_ID_TO_GENESISHASH } from '../constants';
 
 const POLKADOT_CHAIN_PREFIX = 0;
 
