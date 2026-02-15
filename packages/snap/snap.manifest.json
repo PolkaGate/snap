@@ -7,7 +7,7 @@
     "url": "https://github.com/polkagate/snap.git"
   },
   "source": {
-    "shasum": "Ml48wD784J9c+lYYK+9IUrNhwx1K2J6x0HK4OYUebrk=",
+    "shasum": "SUUqcZtwJbcwf7d8YcgMUwmG0bX5e5btjTKc4HmxJlA=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -26,9 +26,6 @@
   "initialPermissions": {
     "endowment:transaction-insight": {
       "allowTransactionOrigin": true
-    },
-    "endowment:signature-insight": {
-      "allowSignatureOrigin": true
     },
     "endowment:network-access": {},
     "endowment:page-home": {},

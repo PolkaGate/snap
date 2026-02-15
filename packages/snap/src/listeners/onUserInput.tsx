@@ -68,9 +68,6 @@ import { confirmChangeValidators } from '../ui/stake/solo/validators/confirmChan
 import { pendingRewards } from '../ui/stake/solo/pending_rewards';
 import { confirmPayout } from '../ui/stake/solo/pending_rewards/confirmPayout';
 import { reviewPayout } from '../ui/stake/solo/pending_rewards/reviewPayout';
-import { registerAccount } from '../ui/settings/register';
-import { reviewRegisterAccount } from '../ui/settings/register/reviewRegisterAccount';
-
 
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
@@ -490,23 +487,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
           await showJsonContent(id, exportPasswordForm?.exportAccountPassword as string);
           break;
         }
-
-      /** ---------------------------- Register Account --------------------------------- */
-      case 'register':
-        await registerAccount(id);
-        break;
-
-      case 'switchChainInRegisterAccount': {
-        const genesisHash = event.value;
-        await registerAccount(id, genesisHash);
-        break;
-      }
-
-      case 'registerAccountReview':
-        await showSpinner(id, 'Loading, please wait ...');
-
-        await reviewRegisterAccount(id, context);
-        break;
 
       default:
         break;

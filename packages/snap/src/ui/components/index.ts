@@ -4,5 +4,4 @@
 export * from './BalanceInfo';
 export * from './ChainSwitch';
 export * from './Row2';
-export * from './AddressRow';
 export * from './Price';
