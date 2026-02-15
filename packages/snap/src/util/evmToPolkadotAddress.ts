@@ -5,7 +5,21 @@ import { CHAIN_ID_TO_GENESISHASH } from '../listeners/onTransaction/consts';
 
 const POLKADOT_CHAIN_PREFIX = 0;
 
-export function evmToPolkadotAddress(ethAddress: string | undefined, chainId?: string) {
+/**
+ * Convert an EVM address to a Substrate/Polkadot SS58 address.
+ *
+ * The conversion:
+ * - Takes the 20‑byte EVM address
+ * - Appends twelve `0xEE` bytes to reach 32 bytes
+ * - Encodes the result using the chain SS58 prefix
+ *
+ * If a `chainId` is provided, the corresponding chain prefix is resolved
+ * via its genesis hash; otherwise the Polkadot prefix (0) is used.
+ * @param ethAddress - The EVM address (0x‑prefixed hex).
+ * @param chainId - Optional EVM chain ID used to determine the target SS58 prefix.
+ * @returns The SS58‑encoded address, or `undefined` if no address is provided.
+ */
+export function evmToPolkadotAddress(ethAddress: string | undefined, chainId?: string): string | undefined {
   if (!ethAddress) {
     return;
   }

@@ -4,6 +4,7 @@ yarn && yarn dev && yarn start
 
 
 To Publish on NPM:
+npx snapper -p ./packages/snap
 
 adjust version in package.json and snap.manifest.json
 yarn build

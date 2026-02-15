@@ -4,7 +4,7 @@
 import { Transaction } from '@metamask/utils';
 import { ApiPromise } from '@polkadot/api/cjs/index';
 import { keccak256 } from 'ethers';
-import { encode as rlpEncode } from '@ethersproject/rlp';
+import { encode } from '@ethersproject/rlp';
 import { evmToPolkadotAddress } from '../../util/evmToPolkadotAddress';
 import { ContractAddress } from './types';
 
@@ -28,7 +28,7 @@ export const getContractAddress = async (api: ApiPromise, transaction: Transacti
   const nonce = await api.call.reviveApi.nonce(from) as number;
 
   const nonceBytes = numberToBytes(nonce);
-  const rlpEncoded = rlpEncode([from, nonceBytes]);
+  const rlpEncoded = encode([from, nonceBytes]);
   const hash = keccak256(rlpEncoded);
   const address = '0x' + hash.slice(-40)
 

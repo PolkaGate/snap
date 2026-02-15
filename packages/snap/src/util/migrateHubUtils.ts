@@ -3,7 +3,7 @@
 
 import { KUSAMA_GENESIS, PASEO_GENESIS, POLKADOT_GENESIS, WESTEND_GENESIS } from '@polkagate/apps-config';
 
-import { KUSAMA_PEOPLE_GENESIS_HASH, NATIVE_TOKEN_ASSET_ID, NATIVE_TOKEN_ASSET_ID_ON_ASSETHUB, PASEO_ASSET_HUB_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, RELAY_CHAINS, RELAY_CHAINS_NAMES, STAKING_CHAINS, STATEMINE_GENESIS_HASH, STATEMINT_GENESIS_HASH, WESTEND_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH, WESTMINT_GENESIS_HASH } from '../constants';
+import { KUSAMA_PEOPLE_GENESIS_HASH, NATIVE_TOKEN_ASSET_ID, NATIVE_TOKEN_ASSET_ID_ON_ASSETHUB, PASEO_ASSET_HUB_GENESIS_HASH, PASEO_PEOPLE_GENESIS_HASH, POLKADOT_PEOPLE_GENESIS_HASH, RELAY_CHAINS, RELAY_CHAINS_NAMES, STAKING_CHAINS, STATEMINE_GENESIS_HASH, STATEMINT_GENESIS_HASH, WESTEND_PEOPLE_GENESIS_HASH, WESTMINT_GENESIS_HASH } from '../constants';
 
 /** 
  * These two lines will need to be updated when adding Polkadot hub migration support.
@@ -62,9 +62,7 @@ export function mapRelayToSystemGenesisIfMigrated (genesisHash: string | null | 
     return;
   }
 
-  const chains = migratedRelaysToSystemChains as RelayToSystemChainsType;
-
-  return chains[genesisHash]?.[type] ?? genesisHash;
+  return migratedRelaysToSystemChains[genesisHash]?.[type] ?? genesisHash;
 }
 
 /**
@@ -98,7 +96,7 @@ export function mapHubToRelay (genesisHash: string | undefined | null): string |
     return;
   }
 
-  return (hubToRelay as Record<string, string>)?.[genesisHash] ?? genesisHash;
+  return hubToRelay?.[genesisHash] ?? genesisHash;
 }
 
 /**
@@ -117,7 +115,7 @@ export function isMigratedRelay (genesisHash: string): boolean {
  */
 export function isMigratedHub (info: string | undefined): boolean {
   return !!(info && (
-    (hubToRelay as Record<string, string>)?.[info] || // check by genesishash
+    hubToRelay?.[info] || // check by genesishash
     (info.toLowerCase().includes('hub') && migratedRelayNames.find((relayName) => info?.toLowerCase()?.includes(relayName)))// check by chain name
   ));
 }
