@@ -26,11 +26,13 @@ export const PEOPLE_CHAINS = {
 export const POLKADOT_ASSET_HUB = '0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f'
 export const KUSAMA_ASSET_HUB = '0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a'
 export const WESTEND_ASSET_HUB = '0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9'
+export const PASEO_ASSET_HUB = '0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2'
 
 export const ASSET_HUBS = {
     'Polkadot Asset Hub': POLKADOT_ASSET_HUB,
     'Kusama Asset Hub': KUSAMA_ASSET_HUB,
     'Westend Asset Hub': WESTEND_ASSET_HUB,
+    'Paseo Asset Hub': PASEO_ASSET_HUB
 }
 
 export const OUTPUT_TYPE = {
