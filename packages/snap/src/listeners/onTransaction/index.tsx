@@ -4,9 +4,9 @@
 import type { OnTransactionHandler } from "@metamask/snaps-sdk";
 import { Address, Box, Copyable, Divider, Icon, Text, Tooltip } from "@metamask/snaps-sdk/jsx";
 import { getApi } from "../../util/getApi";
-import { CHAIN_ID_TO_GENESISHASH } from "./consts";
 import { getContractAddress } from "./getContractAddress";
 import { ContractAddress } from "./types";
+import { CHAIN_ID_TO_GENESISHASH } from "../../constants";
 
 export const onTransaction: OnTransactionHandler = async ({
   transaction,

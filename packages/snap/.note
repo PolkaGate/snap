@@ -7,7 +7,7 @@ yarn && yarn dev && yarn start
 
 npx snapper -p ./packages/snap
 
-adjust version in package.json and snap.manifest.json
-yarn build
+## adjust version in package.json (and snap.manifest.json)
+yarn && yarn build
 cd packages/snap/
 npm publish --auth-type=web 
