@@ -41,7 +41,7 @@
     "@polkadot/ui-keyring": "^3.11.3",
     "@polkadot/util": "^13.2.3",
     "@polkadot/util-crypto": "^13.5.6 ",
-    "@polkagate/apps-config": "^0.144.6",
+    "@polkagate/apps-config": "^1.2.1",
     "buffer": "^6.0.3",
     "ethers": "latest",
     "umi-request": "^1.4.0"
