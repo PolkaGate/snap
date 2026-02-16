@@ -4,6 +4,12 @@
 ![license](https://img.shields.io/badge/License-Apache%202.0-blue?logo=apache&style=flat-square)
 ![](https://img.shields.io/github/issues-raw/PolkaGate/snap)
 [![ci](https://github.com/PolkaGate/snap/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/PolkaGate/snap/actions/workflows/ci-workflow.yml)
+![last commit](https://img.shields.io/github/last-commit/PolkaGate/snap?style=flat-square)
+![npm version](https://img.shields.io/npm/v/@polkagate/snap?logo=npm&style=flat-square)
+![npm downloads](https://img.shields.io/npm/dw/@polkagate/snap?logo=npm&style=flat-square)
+![MetaMask Snap](https://img.shields.io/badge/MetaMask-Snap-orange?logo=metamask&style=flat-square)
+![polkadot](https://img.shields.io/badge/Polkadot-API-E6007A?logo=polkadot&style=flat-square)
+![audit](https://img.shields.io/badge/audit-Sayfer%20passed-success?style=flat-square)
 
 
  A MetaMask snap for seamless interaction with the Polkadot ecosystem, a prominent platform for cross-chain communication and scalability. Now you can use your MetaMask wallet to access Polkadot dApps and tokens effortlessly.
