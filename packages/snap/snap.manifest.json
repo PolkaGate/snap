@@ -24,6 +24,9 @@
     "https://kusama.subsquare.io": {}
   },
   "initialPermissions": {
+    "endowment:transaction-insight": {
+      "allowTransactionOrigin": true
+    },
     "endowment:network-access": {},
     "endowment:page-home": {},
     "endowment:rpc": {

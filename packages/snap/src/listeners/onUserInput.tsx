@@ -74,7 +74,6 @@ import { reviewSoloRestake } from '../ui/stake/solo/restake/reviewSoloRestake';
 import { confirmSoloRestake } from '../ui/stake/solo/restake/confirmSoloRestake';
 import { ContractFormState, metamaskAddressesToPolkadot } from '../ui/settings/metamaskAddressesToPolkadot';
 
-
 export const onUserInput: OnUserInputHandler = async ({ id, event, context }) => {
 
   const state = await snap.request({
@@ -440,7 +439,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event, context }) =>
         break;
 
       /** ---------------------------- Rewards Solo--------------------------------- */
-
       case 'pendingRewards':
         await showSpinner(id, 'Loading, please wait ...');
       case 'selectAllToPayOut':
