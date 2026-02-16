@@ -12,7 +12,7 @@ const ui = (maybePassword?: string) => {
           label='Export account'
           showHome
         />
-        <Text alignment='start' color='muted'>
+        <Text alignment='start' color='alternative'>
           Here, you can export your account as a JSON file, which can be used to import your account in another extension or wallet.
         </Text>
         <Section>

@@ -83,11 +83,15 @@ export async function getPooledBalance(api: ApiPromise, address: string): Promis
     return { pooledBalance: BN_ZERO };
   }
 
-  const [bondedPool, progress, stashIdAccount, claimable = BN_ZERO, metadata] = await Promise.all([
+  const claimablePromise =
+    api.call['nominationPoolsApi']?.['pendingRewards']?.(address) ??
+    Promise.resolve(BN_ZERO);
+
+  const [bondedPool, progress, stashIdAccount, claimable, metadata] = await Promise.all([
     api.query['nominationPools']['bondedPools'](poolId),
     api.derive.session.progress(),
     api.derive.staking.account(accounts.stashId),
-    api.call['nominationPoolsApi']?.['pendingRewards']?.(address) as unknown as BN,
+    claimablePromise,
     api.query.nominationPools.metadata(poolId),
   ]);
 

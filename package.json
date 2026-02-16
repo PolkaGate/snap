@@ -37,11 +37,14 @@
     "@metamask/eslint-config-jest": "^14.0.0",
     "@metamask/eslint-config-nodejs": "^14.0.0",
     "@metamask/eslint-config-typescript": "^14.0.0",
+    "@metamask/snaps-cli": "^6.5.4",
+    "@metamask/snaps-jest": "^8.5.0",
     "@sayfer_io/snapper": "^0.19.1",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-import-x": "^4.16.1",
     "eslint-plugin-jest": "^29.0.1",
@@ -66,7 +69,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@metamask/snaps-utils": "^11.5.0",
+    "@metamask/snaps-utils": "^12.1.0",
     "@polkadot/api": "^12.4.2",
     "@polkadot/extension-chains": "^0.62.1 ",
     "@polkadot/keyring": "^13.5.6",
@@ -84,7 +87,7 @@
   },
   "resolutions": {
     "eslint-plugin-react": "^7.32.0",
-    "@metamask/snaps-sdk": "9.3.0",
-    "@metamask/snaps-utils": "^11.5.0"
+    "@metamask/snaps-sdk": "10.4.0",
+    "@metamask/snaps-utils": "^12.1.0"
   }
 }
