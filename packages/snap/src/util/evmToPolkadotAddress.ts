@@ -19,7 +19,7 @@ const POLKADOT_CHAIN_PREFIX = 0;
  * @param chainId - Optional EVM chain ID used to determine the target SS58 prefix.
  * @returns The SS58‑encoded address, or `undefined` if no address is provided.
  */
-export function evmToPolkadotAddress(ethAddress: string, chainId?: string): string | undefined {
+export function evmToPolkadotAddress(ethAddress: string | undefined, chainId?: string): string | undefined {
   if (!ethAddress) {
     return;
   }
