@@ -16,6 +16,6 @@ export const getContractAddress = async (api: ApiPromise, transaction: Transacti
 
   return {
     evm: address,
-    substrate: evmToPolkadotAddress(from as string, chainId)
+    substrate: evmToPolkadotAddress(address, chainId)
   }
 }
