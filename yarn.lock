@@ -9804,7 +9804,7 @@ __metadata:
 
 "@polkagate/extension-dapp@file:../extension-dapp::locator=polkamask_dapp%40workspace%3Apackages%2Fdapp":
   version: 0.50.2-1-x
-  resolution: "@polkagate/extension-dapp@file:../extension-dapp#../extension-dapp::hash=205ae1&locator=polkamask_dapp%40workspace%3Apackages%2Fdapp"
+  resolution: "@polkagate/extension-dapp@file:../extension-dapp#../extension-dapp::hash=9551d9&locator=polkamask_dapp%40workspace%3Apackages%2Fdapp"
   dependencies:
     "@metamask/utils": ^9.0.0
     "@polkadot/extension-inject": 0.50.1
@@ -9816,7 +9816,7 @@ __metadata:
     "@polkadot/api": "*"
     "@polkadot/util": "*"
     "@polkadot/util-crypto": "*"
-  checksum: f200158812b3b76c7f9088a5dcaa501a726baae5cf306b2706106b486be82ad4568b435d678e0f58d7d046d73c5a7bb2f4efa510da0694f8684cce7c35f4e8e0
+  checksum: 926b3c74ed0ad670aec2c1344aec2f1df85ad37ed7f093077260a818500c8c9c38f2b210ae0364e49a8340923b0328de5a207d5235d4dbd75512a9ea167e95fb
   languageName: node
   linkType: hard
 

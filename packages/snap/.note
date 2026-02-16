@@ -1,9 +1,10 @@
-To run in dev environment with polkagate/extension-dapp build in an appropriate path(see setDappPath file):
+# To run in dev environment with polkagate/extension-dapp build in an appropriate path(see setDappPath file):
 
 yarn && yarn dev && yarn start
 
 
-To Publish on NPM:
+# To Publish on NPM:
+
 npx snapper -p ./packages/snap
 
 adjust version in package.json and snap.manifest.json
