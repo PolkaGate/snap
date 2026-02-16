@@ -28,7 +28,6 @@
   "dependencies": {
     "@dicebear/avatars": "latest",
     "@dicebear/avatars-identicon-sprites": "latest",
-    "@ethersproject/rlp": "latest",
     "@metamask/key-tree": "^10.0.2",
     "@metamask/rpc-errors": "^7.0.3",
     "@metamask/snaps-sdk": "^10.4.0",

@@ -2770,7 +2770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/rlp@npm:^5.8.0, @ethersproject/rlp@npm:latest":
+"@ethersproject/rlp@npm:^5.8.0":
   version: 5.8.0
   resolution: "@ethersproject/rlp@npm:5.8.0"
   dependencies:
@@ -9826,7 +9826,6 @@ __metadata:
   dependencies:
     "@dicebear/avatars": latest
     "@dicebear/avatars-identicon-sprites": latest
-    "@ethersproject/rlp": latest
     "@jest/globals": ^29.7.0
     "@lavamoat/allow-scripts": ^3.0.4
     "@metamask/auto-changelog": ^4.0.0
